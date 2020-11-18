@@ -1,0 +1,95 @@
+# log4j2 配置，待具体配置
+Configuration:
+  name: Log4j2YAMLConfiguration
+  # 设置 log4j2 内部的信息输出级别
+  status: warn
+  # 设置 log4j2 自动重新配置的事件间隔
+  monitorInterval: 1800
+  # 定义全局变量
+  properties:
+    property:
+      # 定义日志的根路径
+      - name: log.basepath
+        value: log
+      # 定义项目名称
+      - name: project.name
+        value: piduoduo
+      # 定义控制台的日志输出格式
+      - name: log.console.pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %l - %m%n"
+      # 定义文件的日志输出格式
+      - name: log.file.pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C.%M[%L line] - %m%n"
+      # 定义一个目录下存放的同类日志的最大数量
+      - name: log.max
+        value: 100
+  thresholdFilter:
+    level: debug
+  appenders:
+    # 控制台输出
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: ${log.console.pattern}
+    # 滚动日志
+    RollingFile:
+      # 数据库日志
+      - name: DataBaseRollingFile
+        fileName: ${log.basepath}/db/${project.name}-db.log
+        filePattern: ${log.basepath}/db/history/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz
+        PatternLayout:
+          Pattern: ${log.console.pattern}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          DefaultRolloverStrategy:
+            max: ${log.max}
+      # 业务日志
+      - name: BusinessRollingFile
+        fileName: ${log.basepath}/business/${project.name}-business.log
+        filePattern: ${log.basepath}/business/history/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz
+        PatternLayout:
+          Pattern: ${log.console.pattern}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          DefaultRolloverStrategy:
+            max: ${log.max}
+      # 系统日志
+      - name: SystemRollingFile
+        fileName: ${log.basepath}/system/${project.name}-system.log
+        filePattern: ${log.basepath}/system/history/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz
+        PatternLayout:
+          Pattern: ${log.console.pattern}
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 1
+          DefaultRolloverStrategy:
+            max: ${log.max}
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: Console
+    Logger:
+      - name: db
+        level: info
+        AppenderRef:
+          ref: DataBaseRollingFile
+      - name: business
+        level: info
+        AppenderRef:
+          ref: BusinessRollingFile
+      - name: system
+        level: info
+        AppenderRef:
+          ref: SystemRollingFile
+      - name: debug
+        level: debug
+        additivity: false
+        AppenderRef:
+          ref: Console
