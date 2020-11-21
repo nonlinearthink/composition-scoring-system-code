@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HelloService
+public class UserService
 {
 
     private UserMapper userMapper;
 
     @Autowired(required = false)
-    public HelloService(UserMapper userMapper)
+    public UserService(UserMapper userMapper)
     {
         this.userMapper = userMapper;
     }
