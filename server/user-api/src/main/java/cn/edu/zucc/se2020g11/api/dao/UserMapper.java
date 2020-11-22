@@ -1,6 +1,6 @@
-package cn.edu.zucc.se2020g11.apiserver.dao;
+package cn.edu.zucc.se2020g11.api.dao;
 
-import cn.edu.zucc.se2020g11.apiserver.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

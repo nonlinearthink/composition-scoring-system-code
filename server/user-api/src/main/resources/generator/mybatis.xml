@@ -20,7 +20,7 @@
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
         <!-- 对象的位置 -->
-        <javaModelGenerator targetPackage="cn.edu.zucc.se2020g11.apiserver.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="cn.edu.zucc.se2020g11.api.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -29,7 +29,7 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- DAO的位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.edu.zucc.se2020g11.apiserver.dao"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.edu.zucc.se2020g11.api.dao"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

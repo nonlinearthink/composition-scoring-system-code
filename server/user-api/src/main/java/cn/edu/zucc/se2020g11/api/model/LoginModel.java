@@ -1,4 +1,4 @@
-package cn.edu.zucc.se2020g11.apiserver.model;
+package cn.edu.zucc.se2020g11.api.model;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package cn.edu.zucc.se2020g11.apiserver.entity;
+package cn.edu.zucc.se2020g11.api.entity;
 
 import lombok.Getter;
 import lombok.Setter;

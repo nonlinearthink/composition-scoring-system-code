@@ -1,6 +1,6 @@
 ## Getting Started
 
-启动 [UserApiApplication](src/main/java/cn/edu/zucc/se2020g11/apiserver/UserApiApplication.java)
+启动 [UserApiApplication](src/main/java/cn/edu/zucc/se2020g11/api/UserApiApplication.java)
 
 ## Develop Tools
 
@@ -8,7 +8,7 @@
 
 ### Druid Stat
 
-这是一个监控程序，当你启动 [UserApiApplication](src/main/java/cn/edu/zucc/se2020g11/apiserver/UserApiApplication.java) 时，它就已经可以运行了。
+这是一个监控程序，当你启动 [UserApiApplication](src/main/java/cn/edu/zucc/se2020g11/api/UserApiApplication.java) 时，它就已经可以运行了。
 
 访问 [localhost:8080/druid](https://localhost:8080/druid) ，你会看到一个登录界面，默认情况下，提供的账号是 `admin`，密码是 `123`。
 

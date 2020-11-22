@@ -1,8 +1,8 @@
-package cn.edu.zucc.se2020g11.apiserver.controller;
+package cn.edu.zucc.se2020g11.api.controller;
 
-import cn.edu.zucc.se2020g11.apiserver.entity.UserEntity;
-import cn.edu.zucc.se2020g11.apiserver.model.LoginModel;
-import cn.edu.zucc.se2020g11.apiserver.service.UserService;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.LoginModel;
+import cn.edu.zucc.se2020g11.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
