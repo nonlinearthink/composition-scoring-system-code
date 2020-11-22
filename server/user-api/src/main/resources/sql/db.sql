@@ -3,263 +3,51 @@
 /* Created on:     2020/11/17 14:40:41                          */
 /*==============================================================*/
 
-
-alter table advertisement
-   drop foreign key FK_ADVERTIS_RELEASE_ADVERTIS;
-
-alter table composition
-   drop foreign key FK_COMPOSIT_WRITE_USER;
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_HAVE8_COMPOSIT;
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_REPLY3_COMPOSIT;
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_SUBMIT_USER;
-
-alter table composition_favorite
-   drop foreign key FK_COMPOSIT_FAVORITE_USER;
-
-alter table composition_favorite
-   drop foreign key FK_COMPOSIT_HAVE10_COMPOSIT;
-
-alter table composition_history
-   drop foreign key FK_COMPOSIT_HAVE12_COMPOSIT;
-
-alter table composition_history
-   drop foreign key FK_COMPOSIT_HAVE13_USER;
-
-alter table composition_support
-   drop foreign key FK_COMPOSIT_GIVE6_USER;
-
-alter table composition_support
-   drop foreign key FK_COMPOSIT_HAVE11_COMPOSIT;
-
-alter table dynamic
-   drop foreign key FK_DYNAMIC_WRITE3_USER;
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__COMMENT_USER;
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__HAVE7_DYNAMIC;
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__REPLY2_DYNAMIC_;
-
-alter table dynamic_support
-   drop foreign key FK_DYNAMIC__GIVE4_USER;
-
-alter table dynamic_support
-   drop foreign key FK_DYNAMIC__HAVE6_DYNAMIC;
-
-alter table essay
-   drop foreign key FK_ESSAY_WRITE2_USER;
-
-alter table essay_comment
-   drop foreign key FK_ESSAY_CO_GIVE2_USER;
-
-alter table essay_comment
-   drop foreign key FK_ESSAY_CO_HAVE3_ESSAY;
-
-alter table essay_favorite
-   drop foreign key FK_ESSAY_FA_GIVE_USER;
-
-alter table essay_favorite
-   drop foreign key FK_ESSAY_FA_HAVE5_ESSAY;
-
-alter table essay_history
-   drop foreign key FK_ESSAY_HI_HAVE_USER;
-
-alter table essay_history
-   drop foreign key FK_ESSAY_HI_HAVE2_ESSAY;
-
-alter table essay_support
-   drop foreign key FK_ESSAY_SU_GIVE3_USER;
-
-alter table essay_support
-   drop foreign key FK_ESSAY_SU_HAVE4_ESSAY;
-
-alter table feedback
-   drop foreign key FK_FEEDBACK_GIVE5_USER;
-
-alter table follow
-   drop foreign key FK_FOLLOW_RELATIONS_USER;
-
-alter table grammer_error
-   drop foreign key FK_GRAMMER__RELATIONS_COMPOSIT;
-
-alter table message
-   drop foreign key FK_MESSAGE_RECEIVE_USER;
-
-alter table message
-   drop foreign key FK_MESSAGE_SEND_USER;
-
-alter table spell_error
-   drop foreign key FK_SPELL_ER_RELATIONS_COMPOSIT;
-
 drop table if exists admin;
-
-
-alter table advertisement
-   drop foreign key FK_ADVERTIS_RELEASE_ADVERTIS;
 
 drop table if exists advertisement;
 
 drop table if exists advertiser;
 
-
-alter table composition
-   drop foreign key FK_COMPOSIT_WRITE_USER;
-
 drop table if exists composition;
-
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_REPLY3_COMPOSIT;
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_SUBMIT_USER;
-
-alter table composition_comment
-   drop foreign key FK_COMPOSIT_HAVE8_COMPOSIT;
 
 drop table if exists composition_comment;
 
-
-alter table composition_favorite
-   drop foreign key FK_COMPOSIT_HAVE10_COMPOSIT;
-
-alter table composition_favorite
-   drop foreign key FK_COMPOSIT_FAVORITE_USER;
-
 drop table if exists composition_favorite;
-
-
-alter table composition_history
-   drop foreign key FK_COMPOSIT_HAVE12_COMPOSIT;
-
-alter table composition_history
-   drop foreign key FK_COMPOSIT_HAVE13_USER;
 
 drop table if exists composition_history;
 
-
-alter table composition_support
-   drop foreign key FK_COMPOSIT_GIVE6_USER;
-
-alter table composition_support
-   drop foreign key FK_COMPOSIT_HAVE11_COMPOSIT;
-
 drop table if exists composition_support;
-
-
-alter table dynamic
-   drop foreign key FK_DYNAMIC_WRITE3_USER;
 
 drop table if exists dynamic;
 
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__REPLY2_DYNAMIC_;
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__COMMENT_USER;
-
-alter table dynamic_comment
-   drop foreign key FK_DYNAMIC__HAVE7_DYNAMIC;
-
 drop table if exists dynamic_comment;
-
-
-alter table dynamic_support
-   drop foreign key FK_DYNAMIC__HAVE6_DYNAMIC;
-
-alter table dynamic_support
-   drop foreign key FK_DYNAMIC__GIVE4_USER;
 
 drop table if exists dynamic_support;
 
-
-alter table essay
-   drop foreign key FK_ESSAY_WRITE2_USER;
-
 drop table if exists essay;
-
-
-alter table essay_comment
-   drop foreign key FK_ESSAY_CO_HAVE3_ESSAY;
-
-alter table essay_comment
-   drop foreign key FK_ESSAY_CO_GIVE2_USER;
 
 drop table if exists essay_comment;
 
-
-alter table essay_favorite
-   drop foreign key FK_ESSAY_FA_GIVE_USER;
-
-alter table essay_favorite
-   drop foreign key FK_ESSAY_FA_HAVE5_ESSAY;
-
 drop table if exists essay_favorite;
-
-
-alter table essay_history
-   drop foreign key FK_ESSAY_HI_HAVE_USER;
-
-alter table essay_history
-   drop foreign key FK_ESSAY_HI_HAVE2_ESSAY;
 
 drop table if exists essay_history;
 
-
-alter table essay_support
-   drop foreign key FK_ESSAY_SU_GIVE3_USER;
-
-alter table essay_support
-   drop foreign key FK_ESSAY_SU_HAVE4_ESSAY;
-
 drop table if exists essay_support;
-
-
-alter table feedback
-   drop foreign key FK_FEEDBACK_GIVE5_USER;
 
 drop table if exists feedback;
 
-
-alter table follow
-   drop foreign key FK_FOLLOW_RELATIONS_USER;
-
 drop table if exists follow;
-
-
-alter table grammer_error
-   drop foreign key FK_GRAMMER__RELATIONS_COMPOSIT;
 
 drop table if exists grammer_error;
 
-
-alter table message
-   drop foreign key FK_MESSAGE_SEND_USER;
-
-alter table message
-   drop foreign key FK_MESSAGE_RECEIVE_USER;
-
 drop table if exists message;
-
-
-alter table spell_error
-   drop foreign key FK_SPELL_ER_RELATIONS_COMPOSIT;
 
 drop table if exists spell_error;
 
 drop table if exists system_message;
 
-drop table if exists user;
+drop table if exists userEntity;
 
 /*==============================================================*/
 /* Table: admin                                                 */
@@ -514,7 +302,7 @@ create table message
    message_id           int not null auto_increment  comment '通信ID',
    user_name            varchar(32)  comment '用户名',
    next_user_name       varchar(32)  comment '用户名',
-   "order"              int  comment '序号',
+   `order`              int  comment '序号',
    message_body         varchar(256)  comment '消息内容',
    date_time            timestamp  comment '日期',
    primary key (message_id)
@@ -543,9 +331,9 @@ create table system_message
 );
 
 /*==============================================================*/
-/* Table: user                                                  */
+/* Table: userEntity                                                  */
 /*==============================================================*/
-create table user
+create table userEntity
 (
    user_name            varchar(32) not null  comment '用户名',
    password             varchar(32) not null  comment '密码',
@@ -564,7 +352,7 @@ alter table advertisement add constraint FK_ADVERTIS_RELEASE_ADVERTIS foreign ke
       references advertiser (advertiser_name) on delete restrict on update restrict;
 
 alter table composition add constraint FK_COMPOSIT_WRITE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table composition_comment add constraint FK_COMPOSIT_HAVE8_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
@@ -573,10 +361,10 @@ alter table composition_comment add constraint FK_COMPOSIT_REPLY3_COMPOSIT forei
       references composition_comment (ccomment_id3) on delete restrict on update restrict;
 
 alter table composition_comment add constraint FK_COMPOSIT_SUBMIT_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table composition_favorite add constraint FK_COMPOSIT_FAVORITE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table composition_favorite add constraint FK_COMPOSIT_HAVE10_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
@@ -585,19 +373,19 @@ alter table composition_history add constraint FK_COMPOSIT_HAVE12_COMPOSIT forei
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table composition_history add constraint FK_COMPOSIT_HAVE13_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table composition_support add constraint FK_COMPOSIT_GIVE6_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table composition_support add constraint FK_COMPOSIT_HAVE11_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table dynamic add constraint FK_DYNAMIC_WRITE3_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table dynamic_comment add constraint FK_DYNAMIC__COMMENT_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table dynamic_comment add constraint FK_DYNAMIC__HAVE7_DYNAMIC foreign key (dynamic_id)
       references dynamic (dynamic_id) on delete restrict on update restrict;
@@ -606,52 +394,52 @@ alter table dynamic_comment add constraint FK_DYNAMIC__REPLY2_DYNAMIC_ foreign k
       references dynamic_comment (dcomment_id2) on delete restrict on update restrict;
 
 alter table dynamic_support add constraint FK_DYNAMIC__GIVE4_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table dynamic_support add constraint FK_DYNAMIC__HAVE6_DYNAMIC foreign key (dynamic_id)
       references dynamic (dynamic_id) on delete restrict on update restrict;
 
 alter table essay add constraint FK_ESSAY_WRITE2_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table essay_comment add constraint FK_ESSAY_CO_GIVE2_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table essay_comment add constraint FK_ESSAY_CO_HAVE3_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_favorite add constraint FK_ESSAY_FA_GIVE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table essay_favorite add constraint FK_ESSAY_FA_HAVE5_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_history add constraint FK_ESSAY_HI_HAVE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table essay_history add constraint FK_ESSAY_HI_HAVE2_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_support add constraint FK_ESSAY_SU_GIVE3_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table essay_support add constraint FK_ESSAY_SU_HAVE4_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table feedback add constraint FK_FEEDBACK_GIVE5_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table follow add constraint FK_FOLLOW_RELATIONS_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table grammer_error add constraint FK_GRAMMER__RELATIONS_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table message add constraint FK_MESSAGE_RECEIVE_USER foreign key (next_user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table message add constraint FK_MESSAGE_SEND_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+      references userEntity (user_name) on delete restrict on update restrict;
 
 alter table spell_error add constraint FK_SPELL_ER_RELATIONS_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;

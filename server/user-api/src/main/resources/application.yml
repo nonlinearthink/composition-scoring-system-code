@@ -4,9 +4,9 @@ spring:
   datasource:
     name: test
     druid:
-      url: jdbc:mysql://127.0.0.1:3306/test
+      url: jdbc:mysql://127.0.0.1:3306/test?useSSL=false
       username: root
-      password: 123
+      password: 123456
       driver-class-name: com.mysql.jdbc.Driver
       initial-size: 5
       min-idle: 5
@@ -32,7 +32,7 @@ spring:
         url-pattern: /druid/*
         reset-enable: false
         login-username: admin
-        login-password: 123
+        login-password: 123456
         allow: 127.0.0.1
 # Swagger 待具体配置
 # 配置文档 https://github.com/SpringForAll/spring-boot-starter-swagger
@@ -64,4 +64,4 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: cn.edu.zucc.se2020g11.apiserver.bean
+  type-aliases-package: cn.edu.zucc.se2020g11.apiserver.entity

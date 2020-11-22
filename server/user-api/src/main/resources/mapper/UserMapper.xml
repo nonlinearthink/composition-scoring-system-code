@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zucc.se2020g11.apiserver.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.apiserver.bean.User">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.apiserver.entity.UserEntity">
     <id column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
@@ -18,23 +18,23 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from userEntity
     where user_name = #{userName,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user
+    delete from userEntity
     where user_name = #{userName,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.apiserver.bean.User">
-    insert into user (user_name, password, nick_name, 
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.apiserver.entity.UserEntity">
+    insert into userEntity (user_name, password, nick_name,
       signature, avatar_url, phone, 
       email, is_male, vip_days)
     values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{signature,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{isMale,jdbcType=BIT}, #{vipDays,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.apiserver.bean.User">
-    insert into user
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.apiserver.entity.UserEntity">
+    insert into userEntity
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userName != null">
         user_name,
@@ -94,8 +94,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.apiserver.bean.User">
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.apiserver.entity.UserEntity">
+    update userEntity
     <set>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
@@ -124,8 +124,8 @@
     </set>
     where user_name = #{userName,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.apiserver.bean.User">
-    update user
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.apiserver.entity.UserEntity">
+    update userEntity
     set password = #{password,jdbcType=VARCHAR},
       nick_name = #{nickName,jdbcType=VARCHAR},
       signature = #{signature,jdbcType=VARCHAR},

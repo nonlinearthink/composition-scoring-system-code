@@ -20,7 +20,7 @@
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
         <!-- 对象的位置 -->
-        <javaModelGenerator targetPackage="cn.edu.zucc.se2020g11.apiserver.bean" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="cn.edu.zucc.se2020g11.apiserver.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -34,7 +34,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- 需要生成的表，需要视情况配置多张 -->
-        <table tableName="user" domainObjectName="User" enableCountByExample="false"
+        <table tableName="userEntity" domainObjectName="UserEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
     </context>
