@@ -1,5 +1,7 @@
-package cn.edu.zucc.se2020g11.api.util.exception;
+package cn.edu.zucc.se2020g11.api.plugin;
 
+import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
+import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
 import cn.edu.zucc.se2020g11.api.util.log.LogLevel;
 import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
 import cn.edu.zucc.se2020g11.api.util.log.LogUtil;

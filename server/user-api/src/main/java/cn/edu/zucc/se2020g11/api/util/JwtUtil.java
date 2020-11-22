@@ -1,10 +1,9 @@
 package cn.edu.zucc.se2020g11.api.util;
 
+import cn.edu.zucc.se2020g11.api.model.LoginModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import reactor.util.annotation.Nullable;
 
@@ -29,6 +28,10 @@ public class JwtUtil {
      * 私钥
      */
     private static final String PRIVATE_KEY = "023bdc63c3c5a4587*9ee6581508b9d03ad39a74fc0c9a9cce604743367c9646b";
+    /**
+     * 在HTTP header中的标签
+     */
+    public static final String HEADER = "Authorization";
 
     /**
      * 判断 token 过期
@@ -93,16 +96,24 @@ public class JwtUtil {
      * @throws BaseException token过期或者签发人不合法
      */
     public static String validateToken(String token) throws BaseException {
-        // 解析 token 得到JWT申明信息
-        Claims jwtClaims = Jwts.parser().setSigningKey(PRIVATE_KEY).parseClaimsJws(token).getBody();
-        // 判断是否过期
-        if (JwtUtil.isTokenExpired(jwtClaims)) {
+        try {
+            // 解析 token 得到JWT申明信息
+            Claims jwtClaims = Jwts.parser().setSigningKey(PRIVATE_KEY).parseClaimsJws(token).getBody();
+            // 判断签发人是否合法
+            if (!JwtUtil.isValidIssuer(jwtClaims)) {
+                throw new BaseException(ExceptionDictionary.TOKEN_INVALID_ISSUER);
+            }
+            return jwtClaims.getSubject();
+        } catch (ExpiredJwtException e) {
             throw new BaseException(ExceptionDictionary.TOKEN_EXPIRATION);
+        } catch (UnsupportedJwtException e) {
+            throw new BaseException(ExceptionDictionary.TOKEN_UNSUPPORTED);
+        } catch (MalformedJwtException e) {
+            throw new BaseException(ExceptionDictionary.TOKEN_MALFORMED);
+        } catch (SignatureException e) {
+            throw new BaseException(ExceptionDictionary.AUTHORIZATION_FAILED);
+        } catch (IllegalArgumentException e) {
+            throw new BaseException(ExceptionDictionary.TOKEN_MISSING);
         }
-        // 判断签发人是否合法
-        if (!JwtUtil.isValidIssuer(jwtClaims)) {
-            throw new BaseException(ExceptionDictionary.TOKEN_INVALID_ISSUER);
-        }
-        return jwtClaims.getSubject();
     }
 }
