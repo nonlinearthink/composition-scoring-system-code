@@ -41,7 +41,11 @@ public enum ExceptionDictionary {
     /**
      * 数据库错误
      */
-    SQL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 8, "内部错误");
+    SQL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 8, "内部错误"),
+    /**
+     * 参数不规范
+     */
+    NONSTANDARD_PARAMETERS(HttpStatus.NOT_ACCEPTABLE, 9, "接口传入参数不规范");
 
     @Getter
     @Setter

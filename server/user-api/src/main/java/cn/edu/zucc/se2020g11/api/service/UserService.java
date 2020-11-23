@@ -1,7 +1,7 @@
 package cn.edu.zucc.se2020g11.api.service;
 
+import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
-import cn.edu.zucc.se2020g11.api.dao.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 public class UserService
 {
 
-    private UserMapper userMapper;
+    private final UserEntityMapper userEntityMapper;
 
     @Autowired(required = false)
-    public UserService(UserMapper userMapper)
+    public UserService(UserEntityMapper userEntityMapper)
     {
-        this.userMapper = userMapper;
+        this.userEntityMapper = userEntityMapper;
     }
     public void insert(UserEntity userEntity)
     {
-        userMapper.insert(userEntity);
+        userEntityMapper.insert(userEntity);
     }
 
 }
