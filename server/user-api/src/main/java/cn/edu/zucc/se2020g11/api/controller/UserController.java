@@ -38,10 +38,23 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    
+    @GetMapping("/")
+    @ApiOperation(value="获取信息", notes="获取所有用户信息")
+    public ResponseEntity<SuccessModel> getAll() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    @ApiOperation(value="注册", notes="实现用户注册")
+    @ApiImplicitParam(paramType="body", name="userEntity", value="注册信息", required=true, dataType="UserEntity")
+    public ResponseEntity<SuccessModel> signup(@RequestBody UserEntity userEntity) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PostMapping("/session")
     @ApiOperation(value="登录", notes="实现用户登录")
-    @ApiImplicitParam(paramType="body", name = "loginModel", value = "登录信息", required = true, dataType = "LoginModel")
+    @ApiImplicitParam(paramType="body", name="loginModel", value="登录信息", required=true, dataType="LoginModel")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginModel loginModel) {
         if(loginModel.getUserName() == null || loginModel.getPassword() == null){
             throw new BaseException(ExceptionDictionary.NONSTANDARD_PARAMETERS);
@@ -55,22 +68,28 @@ public class UserController {
     @LoginRequired
     @DeleteMapping("/session/{username}")
     @ApiOperation(value="登出", notes="实现用户登出")
-    @ApiImplicitParam(paramType="body", name = "username", value = "登出", required = true, dataType = "String")
+    @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
     public ResponseEntity<UserEntity> logout(@PathVariable("username") String username) {
         System.out.println(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    @ApiOperation(value="注册", notes="实现用户注册")
-    @ApiImplicitParam(paramType="body", name = "userEntity", value = "注册", required = true, dataType = "UserEntity")
-    public ResponseEntity<SuccessModel> signup(@RequestBody UserEntity userEntity) {
+    @LoginRequired
+    @PutMapping("/{username}/password")
+    @ApiOperation(value="修改信息", notes="修改用户密码")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String"),
+        @ApiImplicitParam(paramType="body", name="passwordModel", value="密码信息",required=true, dataType="PasswordModel")
+    })
+    public ResponseEntity<UserEntity> changeUserPassword(@PathVariable("username") String username, @RequestBody PasswordModel passwordModel) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginRequired
-    @GetMapping("/detail")
-    public ResponseEntity<UserEntity> getDetail(@RequestBody UserEntity userEntity) {
+    @GetMapping("/{username}/details")
+    @ApiOperation(value="获取信息", notes="获取用户信息")
+    @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
+    public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
