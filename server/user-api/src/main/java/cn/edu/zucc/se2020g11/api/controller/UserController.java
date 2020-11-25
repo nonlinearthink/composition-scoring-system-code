@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.LoginModel;
+import cn.edu.zucc.se2020g11.api.model.SuccessModel;
 import cn.edu.zucc.se2020g11.api.service.UserService;
 import cn.edu.zucc.se2020g11.api.util.JwtUtil;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
@@ -40,7 +41,7 @@ public class UserController {
 
     @PostMapping("/session")
     @ApiOperation(value="登录", notes="实现用户登录")
-    @ApiImplicitParam(paramType="query", name = "loginModel", value = "登录信息", required = true, dataType = "LoginModel")
+    @ApiImplicitParam(paramType="body", name = "loginModel", value = "登录信息", required = true, dataType = "LoginModel")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginModel loginModel) {
         if(loginModel.getUserName() == null || loginModel.getPassword() == null){
             throw new BaseException(ExceptionDictionary.NONSTANDARD_PARAMETERS);
@@ -53,13 +54,17 @@ public class UserController {
 
     @LoginRequired
     @DeleteMapping("/session/{username}")
+    @ApiOperation(value="登出", notes="实现用户登出")
+    @ApiImplicitParam(paramType="body", name = "username", value = "登出", required = true, dataType = "String")
     public ResponseEntity<UserEntity> logout(@PathVariable("username") String username) {
         System.out.println(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserEntity> signup(@RequestBody UserEntity userEntity) {
+    @ApiOperation(value="注册", notes="实现用户注册")
+    @ApiImplicitParam(paramType="body", name = "userEntity", value = "注册", required = true, dataType = "UserEntity")
+    public ResponseEntity<SuccessModel> signup(@RequestBody UserEntity userEntity) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

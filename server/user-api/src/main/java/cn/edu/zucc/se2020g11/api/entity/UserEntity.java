@@ -19,6 +19,8 @@ public class UserEntity {
 
     private Integer vipDays;
 
+    private Integer anthority;
+
     public String getUserName() {
         return userName;
     }
@@ -89,5 +91,13 @@ public class UserEntity {
 
     public void setVipDays(Integer vipDays) {
         this.vipDays = vipDays;
+    }
+
+    public Integer getAnthority() {
+        return anthority;
+    }
+
+    public void setAnthority(Integer anthority) {
+        this.anthority = anthority;
     }
 }

@@ -52,7 +52,7 @@
         <table tableName="composition_comment" domainObjectName="CompositionCommentEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <table tableName="composition_favourite" domainObjectName="CompositionFavouriteEntity" enableCountByExample="false"
+        <table tableName="composition_favorite" domainObjectName="CompositionFavoriteEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
         <table tableName="composition_history" domainObjectName="CompositionHistoryEntity" enableCountByExample="false"
@@ -76,7 +76,7 @@
         <table tableName="essay_comment" domainObjectName="EssayCommentEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <table tableName="essay_favourite" domainObjectName="EssayFavouriteEntity" enableCountByExample="false"
+        <table tableName="essay_favorite" domainObjectName="EssayFavoriteEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
         <table tableName="essay_history" domainObjectName="EssayHistoryEntity" enableCountByExample="false"
@@ -91,7 +91,7 @@
         <table tableName="follow" domainObjectName="FollowEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <table tableName="grammer_error" domainObjectName="GrammerErrorEntity" enableCountByExample="false"
+        <table tableName="grammar_error" domainObjectName="GrammarErrorEntity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
         <table tableName="spell_error" domainObjectName="SpellErrorEntity" enableCountByExample="false"
