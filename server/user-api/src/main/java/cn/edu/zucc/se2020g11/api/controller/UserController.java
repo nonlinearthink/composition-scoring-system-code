@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.LoginModel;
+import cn.edu.zucc.se2020g11.api.model.PasswordModel;
 import cn.edu.zucc.se2020g11.api.model.SuccessModel;
 import cn.edu.zucc.se2020g11.api.service.UserService;
 import cn.edu.zucc.se2020g11.api.util.JwtUtil;
@@ -13,6 +14,7 @@ import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
 import cn.edu.zucc.se2020g11.api.util.log.LogUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

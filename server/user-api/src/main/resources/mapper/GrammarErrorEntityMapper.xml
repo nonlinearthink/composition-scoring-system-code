@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.GrammarErrorEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.GrammarErrorEntity">
+    <id column="grammer_error_id" jdbcType="INTEGER" property="grammerErrorId" />
+    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    grammer_error_id, composition_id, text
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from grammar_error
+    where grammer_error_id = #{grammerErrorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from grammar_error
+    where grammer_error_id = #{grammerErrorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.GrammarErrorEntity">
+    insert into grammar_error (grammer_error_id, composition_id, text
+      )
+    values (#{grammerErrorId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.GrammarErrorEntity">
+    insert into grammar_error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="grammerErrorId != null">
+        grammer_error_id,
+      </if>
+      <if test="compositionId != null">
+        composition_id,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="grammerErrorId != null">
+        #{grammerErrorId,jdbcType=INTEGER},
+      </if>
+      <if test="compositionId != null">
+        #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.GrammarErrorEntity">
+    update grammar_error
+    <set>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grammer_error_id = #{grammerErrorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.GrammarErrorEntity">
+    update grammar_error
+    set composition_id = #{compositionId,jdbcType=INTEGER},
+      text = #{text,jdbcType=VARCHAR}
+    where grammer_error_id = #{grammerErrorId,jdbcType=INTEGER}
+  </update>
+</mapper>

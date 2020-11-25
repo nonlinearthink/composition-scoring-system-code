@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.EssayFavoriteEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.EssayFavoriteEntity">
+    <id column="e_favorite_id" jdbcType="INTEGER" property="eFavoriteId" />
+    <result column="essay_id" jdbcType="INTEGER" property="essayId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="date_time" jdbcType="TIMESTAMP" property="dateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    e_favorite_id, essay_id, user_name, date_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from essay_favorite
+    where e_favorite_id = #{eFavoriteId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from essay_favorite
+    where e_favorite_id = #{eFavoriteId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.EssayFavoriteEntity">
+    insert into essay_favorite (e_favorite_id, essay_id, user_name, 
+      date_time)
+    values (#{eFavoriteId,jdbcType=INTEGER}, #{essayId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{dateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.EssayFavoriteEntity">
+    insert into essay_favorite
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eFavoriteId != null">
+        e_favorite_id,
+      </if>
+      <if test="essayId != null">
+        essay_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="dateTime != null">
+        date_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eFavoriteId != null">
+        #{eFavoriteId,jdbcType=INTEGER},
+      </if>
+      <if test="essayId != null">
+        #{essayId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="dateTime != null">
+        #{dateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.EssayFavoriteEntity">
+    update essay_favorite
+    <set>
+      <if test="essayId != null">
+        essay_id = #{essayId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="dateTime != null">
+        date_time = #{dateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where e_favorite_id = #{eFavoriteId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.EssayFavoriteEntity">
+    update essay_favorite
+    set essay_id = #{essayId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      date_time = #{dateTime,jdbcType=TIMESTAMP}
+    where e_favorite_id = #{eFavoriteId,jdbcType=INTEGER}
+  </update>
+</mapper>

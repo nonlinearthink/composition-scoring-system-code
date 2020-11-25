@@ -1,5 +1,18 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.SuccessModel;
+import cn.edu.zucc.se2020g11.api.service.EssayService;
+import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 /**
  * @author nonlinearthink
  */
