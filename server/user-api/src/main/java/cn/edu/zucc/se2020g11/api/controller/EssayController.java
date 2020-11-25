@@ -41,24 +41,90 @@ public class EssayController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @LoginRequired
+    @PostMapping("/{username}/details")
+    @ApiOperation(value="添加信息", notes="添加用户随笔信息")
+    @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
+    public ResponseEntity<UserEntity> insertEssayDetail(@PathVariable("username") String username) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/{username}/details/{essayId}")
     @ApiOperation(value="获取信息", notes="获取用户随笔信息")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
         @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
     })
-    public ResponseEntity<UserEntity> getEssayDetail(@PathVariable("username") String username, @PathVariable("essayId") String essayId) {
+    public ResponseEntity<UserEntity> getEssayDetail(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @DeleteMapping("/{username}/details/{essayId}")
+    @ApiOperation(value="删除信息", notes="删除用户随笔信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
+            @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
+    })
+    public ResponseEntity<UserEntity> deleteEssayDetail(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginRequired
     @PutMapping("/{username}/details/{essayId}")
-    @ApiOperation(value="获取信息", notes="获取用户随笔信息")
+    @ApiOperation(value="修改信息", notes="修改用户随笔信息")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
         @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
     })
-    public ResponseEntity<UserEntity> updateEssayDetail(@PathVariable("username") String username, @PathVariable("essayId") String essayId) {
+    public ResponseEntity<UserEntity> updateEssayDetail(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @PostMapping("/{username}/details/{essayId}")
+    @ApiOperation(value="添加评论", notes="添加用户随笔评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
+            @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
+    })
+    public ResponseEntity<UserEntity> insertEssayComment(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @GetMapping("/{username}/details/{essayId}/{eCommentId}")
+    @ApiOperation(value="获取信息", notes="获取用户随笔评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
+            @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),
+            @ApiImplicitParam(paramType="path", name="eCommentId", value="评论编号", required=true, dataType="Integer")
+    })
+    public ResponseEntity<UserEntity> getEssayComment(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId, @PathVariable("eCommentId") Integer eCommentId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @DeleteMapping("/{username}/details/{essayId}/{eCommentId}")
+    @ApiOperation(value="删除信息", notes="删除用户随笔评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
+            @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),
+            @ApiImplicitParam(paramType="path", name="eCommentId", value="评论编号", required=true, dataType="Integer")
+    })
+    public ResponseEntity<UserEntity> deleteEssayComment(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId, @PathVariable("eCommentId") Integer eCommentId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @PutMapping("/{username}/details/{essayId}/{eCommentId}")
+    @ApiOperation(value="修改信息", notes="修改用户随笔评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
+            @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),
+            @ApiImplicitParam(paramType="path", name="eCommentId", value="评论编号", required=true, dataType="Integer")
+    })
+    public ResponseEntity<UserEntity> updateEssayComment(@PathVariable("username") String username, @PathVariable("essayId") Integer essayId, @PathVariable("eCommentId") Integer eCommentId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
