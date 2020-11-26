@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 密码修改模型
+ *
  * @author nonlinearthink
  */
 @Getter
 @Setter
-public class PasswordModel {
+public class PasswordChangeModel {
 
     private String oldPassword;
 

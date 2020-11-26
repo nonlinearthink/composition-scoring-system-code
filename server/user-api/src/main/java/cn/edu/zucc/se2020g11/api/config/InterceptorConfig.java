@@ -12,6 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
+    /**
+     * 添加拦截器
+     *
+     * @param registry 拦截器注册表
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册JWT拦截器

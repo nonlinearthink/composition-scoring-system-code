@@ -1,18 +1,22 @@
 package cn.edu.zucc.se2020g11.api.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 成功返回模型
+ * 错误返回模型
  *
  * @author nonlinearthink
  */
 @Getter
 @Setter
-public class SuccessModel {
+public class ErrorModel {
 
     private boolean success;
 
-    private Object data;
+    private int code;
+
+    private String message;
 }

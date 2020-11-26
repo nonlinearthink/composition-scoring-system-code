@@ -1,5 +1,6 @@
 package cn.edu.zucc.se2020g11.api.util.exception;
 
+import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,14 @@ public class BaseException extends RuntimeException {
     @Setter
     private String message;
 
-    public BaseException(ExceptionDictionary exceptionDictionary) {
+    @Getter
+    @Setter
+    private LogPosition logPosition;
+
+    public BaseException(ExceptionDictionary exceptionDictionary, LogPosition logPosition) {
         this.status = exceptionDictionary.getStatus();
         this.code = exceptionDictionary.getCode();
         this.message = exceptionDictionary.getMessage();
+        this.logPosition = logPosition;
     }
 }

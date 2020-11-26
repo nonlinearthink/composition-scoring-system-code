@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 是否需要用户登录，需要和JwtInterceptor一起使用
+ * 是否需要管理员登录，需要和JwtInterceptor一起使用
  *
  * @author nonlinearthink
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LoginRequired {
+public @interface AdminRequired {
 }

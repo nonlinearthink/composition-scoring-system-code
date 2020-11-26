@@ -13,27 +13,27 @@ public enum ExceptionDictionary {
     /**
      * 没有携带token
      */
-    TOKEN_MISSING(HttpStatus.UNAUTHORIZED, 1, "需要登入认证信息"),
+    TOKEN_MISSING(HttpStatus.UNAUTHORIZED, 1, "需要登录认证信息"),
     /**
      * token过期
      */
-    TOKEN_EXPIRATION(HttpStatus.UNAUTHORIZED, 2, "登入认证信息过期"),
+    TOKEN_EXPIRATION(HttpStatus.UNAUTHORIZED, 2, "登录认证信息过期"),
     /**
      * 错误构造的token
      */
-    TOKEN_MALFORMED(HttpStatus.UNAUTHORIZED, 3, "错误构造的登入认证信息"),
+    TOKEN_MALFORMED(HttpStatus.UNAUTHORIZED, 3, "错误构造的登录认证信息"),
     /**
      * 构造正确，但是不被支持的token
      */
-    TOKEN_UNSUPPORTED(HttpStatus.UNAUTHORIZED, 4, "不被支持的登入认证信息"),
+    TOKEN_UNSUPPORTED(HttpStatus.UNAUTHORIZED, 4, "不被支持的登录认证信息"),
     /**
      * token认证失败
      */
-    AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, 5, "登入认证信息认证失败"),
+    AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, 5, "登录认证信息认证失败"),
     /**
      * 无效的token签发人
      */
-    TOKEN_INVALID_ISSUER(HttpStatus.UNAUTHORIZED, 6, "无效的登入认证信息签发人"),
+    TOKEN_INVALID_ISSUER(HttpStatus.UNAUTHORIZED, 6, "无效的登录认证信息签发人"),
     /**
      * 账号和密码不匹配
      */
@@ -45,7 +45,11 @@ public enum ExceptionDictionary {
     /**
      * 参数不规范
      */
-    NONSTANDARD_PARAMETERS(HttpStatus.NOT_ACCEPTABLE, 9, "接口传入参数不规范");
+    NONSTANDARD_PARAMETERS(HttpStatus.NOT_ACCEPTABLE, 9, "接口传入参数不规范"),
+    /**
+     * JWT应用重复注册
+     */
+    ALREADY_REGISTERED_JWT(HttpStatus.NOT_ACCEPTABLE, 10, "JWT应用已经被注册");
 
     @Getter
     @Setter
