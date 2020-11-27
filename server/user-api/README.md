@@ -22,6 +22,19 @@
 
 [swagger-ui 官网网站](https://swagger.io/tools/swagger-ui/)
 
+#### 生成 swagger 文档
+
+获取 swagger 文档的 JSON 文件：[http://localhost:8080/v2/api-docs](http://localhost:8080/v2/api-docs)
+
+下载转换器：[https://github.com/JMCuixy/swagger2word](https://github.com/JMCuixy/swagger2word)
+
+> 原项目的端口号和本项目使用的端口号相同，提供更改过端口号的版本：[https://github.com/nonlinearthink/swagger2word](https://github.com/nonlinearthink
+>/swagger2word)。
+
+通过访问 [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html) ，调用其中的 API 可实现自动生成 Word文档。
+
+推荐使用传递 JSON 地址的方式。
+
 ### Mybatis-Generator
 
 根据项目的实际情况配置 [mybatis.xml](src/main/resources/generator/mybatis.xml)，具体的配置规则见[MyBatis Generator](http://mybatis.org/generator/configreference

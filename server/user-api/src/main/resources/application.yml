@@ -38,7 +38,7 @@ spring:
 # 配置文档 https://github.com/SpringForAll/spring-boot-starter-swagger
 swagger:
   enabled: true
-  title: Composition Scoring System API Doc
+  title: 批多多系统API文档
   description:
   version: 1.0.0.RELEASE
   license: Apache License, Version 2.0
