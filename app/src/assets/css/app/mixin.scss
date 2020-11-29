@@ -1,0 +1,15 @@
+@mixin padding-vertical($size) {
+  padding: $size 0;
+}
+
+@mixin padding-horizontal($size) {
+  padding: 0 $size;
+}
+
+@mixin margin-vertical($size) {
+  margin: $size 0;
+}
+
+@mixin margin-horizontal($size) {
+  margin: 0 $size;
+}

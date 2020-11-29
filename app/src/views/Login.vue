@@ -1,19 +1,22 @@
 <template>
   <div id="login-page">
-    <van-image
-      :src="require('../assets/images/icon.svg')"
-      fit="scale-down"
-      width="6rem"
-    />
-    <div class="app-name">
-      批多多
+    <van-nav-bar title="登录" fixed placeholder />
+    <div id="logo">
+      <van-image
+        :src="require('../assets/images/icon.svg')"
+        fit="scale-down"
+        width="6rem"
+      />
+      <div class="app-name">
+        批多多
+      </div>
     </div>
     <van-form @submit="onSubmit">
       <van-field
-        class="field"
         v-for="field in form.fields"
         :key="field.name"
         v-model="field.value"
+        class="field"
         :name="field.name"
         :type="field.type"
         :placeholder="field.placeholder"
@@ -21,18 +24,30 @@
         <template #left-icon>
           <van-icon
             :name="field.icon"
-            @click="onClickLeftIcon(field)"
             class="icon"
             :size="form.iconSize"
+            @click="onClickLeftIcon(field)"
           />
         </template>
       </van-field>
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">
-          提交
-        </van-button>
+      <div class="login-button">
+        <van-button
+          :text="form.submit.text"
+          color="#02A7F0"
+          square
+          block
+          type="info"
+          native-type="submit"
+          size="large"
+          :loading="form.submit.loading"
+          :loading-text="form.submit.loading ? form.submit.loadingText : ''"
+        />
       </div>
     </van-form>
+    <van-row class="tool">
+      <van-col span="12" class="link">注册新用户</van-col>
+      <van-col span="12" class="link">忘记密码</van-col>
+    </van-row>
   </div>
 </template>
 
@@ -59,16 +74,34 @@ export default {
             icon: "closed-eye",
             iconToggle: "eye-o"
           }
-        ]
+        ],
+        submit: {
+          text: "登录",
+          loading: false,
+          loadingText: "登录中..."
+        }
       }
     };
   },
   methods: {
     onClickLeftIcon(field) {
+      // 密码加密解密处理
       if (field.name == "password") {
         [field.icon, field.iconToggle] = [field.iconToggle, field.icon];
         field.type = field.type == "text" ? "password" : "text";
       }
+    },
+    onSubmit(values) {
+      // 开启加载动效
+      this.form.submit.loading = true;
+      console.log(values);
+      // 模拟登录耗时
+      setTimeout(() => {
+        // 设置登录状态
+        localStorage.setItem("isLogin", true);
+        // 界面跳转
+        this.$router.push("/");
+      }, 3000);
     }
   }
 };
@@ -76,14 +109,40 @@ export default {
 
 <style lang="scss" scoped>
 #login-page {
-  padding: 0 1rem;
+  padding: 0 $blank-default;
+  .van-nav-bar {
+    @include margin-horizontal(-$blank-default);
+  }
+}
+
+#logo {
+  @include margin-vertical($blank-default);
+  text-align: center;
+  .app-name {
+    font-size: 1.2rem;
+  }
+}
+
+.tool {
+  text-align: center;
+  .link {
+    color: $theme-text-color;
+  }
 }
 
 .field {
   font-size: 1rem;
-  padding: 1rem;
+  padding: $blank-default;
   .icon {
-    margin-right: 1rem;
+    margin-right: $blank-default;
+  }
+}
+
+.login-button {
+  @include margin-vertical($blank-default);
+  button {
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
   }
 }
 </style>
