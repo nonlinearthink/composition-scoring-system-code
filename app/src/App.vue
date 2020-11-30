@@ -58,10 +58,10 @@ export default {
     }
   },
   beforeCreate() {
-    localStorage.clear();
-    if (!localStorage.getItem("isLogin")) {
-      this.$router.push("/login");
-    }
+    // localStorage.clear();
+    // if (!localStorage.getItem("isLogin")) {
+    //   this.$router.push("/login");
+    // }
   }
 };
 </script>

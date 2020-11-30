@@ -1,16 +1,7 @@
 <template>
   <div id="login-page">
     <van-nav-bar title="登录" fixed placeholder />
-    <div id="logo">
-      <van-image
-        :src="require('../assets/images/icon.svg')"
-        fit="scale-down"
-        width="6rem"
-      />
-      <div class="app-name">
-        批多多
-      </div>
-    </div>
+    <app-logo />
     <van-form @submit="onSubmit">
       <van-field
         v-for="field in form.fields"
@@ -33,7 +24,7 @@
       <div class="login-button">
         <van-button
           :text="form.submit.text"
-          color="#02A7F0"
+          :color="form.submit.color"
           square
           block
           type="info"
@@ -44,18 +35,23 @@
         />
       </div>
     </van-form>
-    <van-row class="tool">
-      <van-col span="12" class="link">注册新用户</van-col>
-      <van-col span="12" class="link">忘记密码</van-col>
+    <van-row class="options">
+      <van-col span="12" class="a-text" @click="onChangeRoute('/signup')"
+        >注册新用户</van-col
+      >
+      <van-col span="12" class="a-text">忘记密码</van-col>
     </van-row>
   </div>
 </template>
 
 <script>
+import AppLogo from "@/components/AppLogo.vue";
 export default {
+  components: {
+    AppLogo
+  },
   data() {
     return {
-      icon: {},
       form: {
         iconSize: "1.2rem",
         fields: [
@@ -77,6 +73,7 @@ export default {
         ],
         submit: {
           text: "登录",
+          color: "#02a7f0",
           loading: false,
           loadingText: "登录中..."
         }
@@ -84,8 +81,11 @@ export default {
     };
   },
   methods: {
+    onChangeRoute(to) {
+      this.$router.push(to);
+    },
     onClickLeftIcon(field) {
-      // 密码加密解密处理
+      // 密码显示和隐藏
       if (field.name == "password") {
         [field.icon, field.iconToggle] = [field.iconToggle, field.icon];
         field.type = field.type == "text" ? "password" : "text";
@@ -109,40 +109,29 @@ export default {
 
 <style lang="scss" scoped>
 #login-page {
-  padding: 0 $blank-default;
+  @include padding-horizontal($blank-size);
   .van-nav-bar {
-    @include margin-horizontal(-$blank-default);
-  }
-}
-
-#logo {
-  @include margin-vertical($blank-default);
-  text-align: center;
-  .app-name {
-    font-size: 1.2rem;
-  }
-}
-
-.tool {
-  text-align: center;
-  .link {
-    color: $theme-text-color;
+    @include margin-horizontal(-$blank-size);
   }
 }
 
 .field {
-  font-size: 1rem;
-  padding: $blank-default;
+  font-size: $text-size-main;
+  padding: $blank-size;
   .icon {
-    margin-right: $blank-default;
+    margin-right: $blank-size;
   }
 }
 
 .login-button {
-  @include margin-vertical($blank-default);
+  @include margin-vertical($blank-size);
   button {
-    font-size: 1.2rem;
+    font-size: $text-size-main;
     border-radius: 0.5rem;
   }
+}
+
+.options {
+  text-align: center;
 }
 </style>

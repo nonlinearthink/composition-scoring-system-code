@@ -1,0 +1,12 @@
+@import "./variable.scss";
+@import "./mixin.scss";
+
+.a-text {
+  display: inline-block;
+  color: $color-accent;
+}
+
+.a-text-disabled {
+  display: inline-block;
+  color: #888;
+}
