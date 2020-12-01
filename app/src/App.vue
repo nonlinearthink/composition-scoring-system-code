@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition :name="transitionName">
+      <router-view />
+    </transition>
     <van-tabbar v-show="tabbar.enable" v-model="tabbar.active" route>
       <van-tabbar-item
         v-for="item in tabbar.items"
@@ -44,16 +46,24 @@ export default {
           },
           { name: "user", route: "/user", icon: "user-circle-o", text: "我的" }
         ]
-      }
+      },
+      transitionName: ""
     };
   },
   watch: {
-    $route: function(to) {
+    $route: function(to, from) {
+      // 设置 tabbar 在那些页面可见
       let tabbarWhiteList = ["/", "/feed", "/chat", "/user"];
       if (tabbarWhiteList.includes(to.path)) {
         this.tabbar.enable = true;
       } else {
         this.tabbar.enable = false;
+      }
+      // 设置转场动画
+      if (to.meta.index > from.meta.index) {
+        this.transitionName = "slide-left";
+      } else {
+        this.transitionName = "slide-right";
       }
     }
   },
@@ -78,5 +88,31 @@ export default {
   color: #2c3e50;
   width: 100vw;
   height: 100vh;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 250ms;
+  width: 100%;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
 }
 </style>

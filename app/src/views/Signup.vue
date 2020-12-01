@@ -1,6 +1,13 @@
 <template>
   <div class="signup-page">
-    <van-nav-bar title="注册" fixed placeholder left-arrow safe-area-inset-top/>
+    <van-nav-bar
+      title="注册"
+      fixed
+      placeholder
+      left-arrow
+      safe-area-inset-top
+      @click-left="goBack"
+    />
     <van-form
       validate-trigger="onSubmit"
       :show-error="false"
@@ -31,15 +38,13 @@
           </div>
         </template>
       </van-field>
-      <van-radio-group v-model="form.userAgreement.agree">
-        <van-radio class="agreement" name="true" @click="onClickRadio">
-          同意《
-          <div class="a-text">
-            用户服务协议
-          </div>
-          》
-        </van-radio>
-      </van-radio-group>
+      <van-checkbox v-model="form.userAgreement.agree" class="agreement">
+        同意《
+        <div class="a-text">
+          {{ form.userAgreement.aText }}
+        </div>
+        》
+      </van-checkbox>
       <div class="signup-button">
         <van-button
           :text="form.submit.text"
@@ -49,6 +54,7 @@
           type="info"
           native-type="submit"
           size="large"
+          :disabled="!form.userAgreement.agree"
           :loading="form.submit.loading"
           :loading-text="form.submit.loading ? form.submit.loadingText : ''"
         />
@@ -58,11 +64,7 @@
 </template>
 
 <script>
-// import AppLogo from "@/components/AppLogo.vue";
 export default {
-  components: {
-    // AppLogo
-  },
   data() {
     return {
       form: {
@@ -99,7 +101,6 @@ export default {
                 required: true,
                 message: "必须填写密码"
               }
-              // TODO
             ]
           },
           {
@@ -164,9 +165,8 @@ export default {
           }
         ],
         userAgreement: {
-          agree: "false",
-          disabled: true,
-          name: ""
+          agree: false,
+          aText: "用户服务协议"
         },
         submit: {
           text: "注册",
@@ -178,12 +178,8 @@ export default {
     };
   },
   methods: {
-    onClickLeftIcon(field) {
-      // 密码显示和隐藏
-      if (field.name == "password" || field.name == "passwordComfirm") {
-        [field.icon, field.iconToggle] = [field.iconToggle, field.icon];
-        field.type = field.type == "text" ? "password" : "text";
-      }
+    goBack() {
+      this.$router.go(-1);
     },
     onSubmit(values) {
       // 开启加载动效
@@ -196,10 +192,6 @@ export default {
         // 界面跳转
         this.$router.push("/login");
       }, 3000);
-    },
-    onClickRadio() {
-      this.form.userAgreement.agree =
-        this.form.userAgreement.agree == "false" ? "true" : "false";
     },
     onClickRightIcon(field) {
       if (field.name == "code") this.sendVerificationCode(field);

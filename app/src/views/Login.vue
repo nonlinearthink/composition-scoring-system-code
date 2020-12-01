@@ -1,13 +1,16 @@
 <template>
   <div id="login-page">
-    <van-nav-bar title="登录" fixed placeholder safe-area-inset-top/>
-    <app-logo class="logo-t"/>
+    <van-nav-bar title="登录" fixed placeholder safe-area-inset-top />
+    <app-logo class="logo-t" />
     <van-form @submit="onSubmit">
       <van-field
         v-for="field in form.fields"
         :key="field.name"
         v-model="field.value"
         class="field"
+        :type="field.type"
+        :name="field.name"
+        :placeholder="field.placeholder"
       >
         <template #left-icon>
           <van-icon
@@ -15,15 +18,6 @@
             class="icon"
             :size="form.iconSize"
             @click="onClickLeftIcon(field)"
-          />
-        </template>
-        <template #input>
-          <input
-            :type="field.type"
-            :name="field.name"
-            :placeholder="field.placeholder"
-            class="van-field__control"
-            autocapitalize="off"
           />
         </template>
       </van-field>

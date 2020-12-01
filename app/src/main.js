@@ -9,6 +9,8 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   Button,
+  Checkbox,
+  CheckboxGroup,
   Col,
   Divider,
   Field,
@@ -16,8 +18,6 @@ import {
   Icon,
   Image as VanImage,
   NavBar,
-  Radio,
-  RadioGroup,
   Row,
   Sticky,
   Tabbar,
@@ -26,14 +26,14 @@ import {
 } from "vant";
 
 Vue.use(Button)
+  .use(Checkbox)
+  .use(CheckboxGroup)
   .use(Col)
   .use(Divider)
   .use(Field)
   .use(Form)
   .use(Icon)
   .use(NavBar)
-  .use(Radio)
-  .use(RadioGroup)
   .use(Row)
   .use(Sticky)
   .use(Tabbar)
