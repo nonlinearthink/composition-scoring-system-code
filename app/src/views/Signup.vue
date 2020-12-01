@@ -1,6 +1,6 @@
 <template>
   <div class="signup-page">
-    <van-nav-bar title="注册" fixed placeholder left-arrow />
+    <van-nav-bar title="注册" fixed placeholder left-arrow safe-area-inset-top/>
     <van-form
       validate-trigger="onSubmit"
       :show-error="false"
@@ -12,10 +12,11 @@
         :key="field.name"
         v-model="field.value"
         class="field"
-        :name="field.name"
-        :type="field.type"
-        :placeholder="field.placeholder"
         :rules="field.rules"
+        :type="field.type"
+        :name="field.name"
+        :placeholder="field.placeholder"
+        autosize
       >
         <template #left-icon>
           <van-icon :name="field.icon" class="icon" :size="form.iconSize" />
@@ -39,7 +40,7 @@
           》
         </van-radio>
       </van-radio-group>
-      <div class="login-button">
+      <div class="signup-button">
         <van-button
           :text="form.submit.text"
           :color="form.submit.color"
@@ -98,6 +99,7 @@ export default {
                 required: true,
                 message: "必须填写密码"
               }
+              // TODO
             ]
           },
           {
@@ -110,6 +112,10 @@ export default {
               {
                 required: true,
                 message: "必须填写确认密码"
+              },
+              {
+                validator: this.isSamePassword,
+                message: "密码不一致"
               }
             ]
           },
@@ -199,33 +205,49 @@ export default {
       if (field.name == "code") this.sendVerificationCode(field);
     },
     updateState(field, count) {
+      // 缓存不存在的时候创建缓存
       if (!field.rightIcon.aTextCache)
         field.rightIcon.aTextCache = new String(field.rightIcon.aText);
+      // 根据缓存更新文字
       field.rightIcon.aText = `${field.rightIcon.aTextCache}(${count})`;
     },
     resetState(field) {
+      // 把原本的缓存重新更新到文字
       field.rightIcon.aText = field.rightIcon.aTextCache;
+      // 清空缓存
       field.rightIcon.aTextCache = null;
+      // 清空计时器
       clearInterval(this.form.verification.timer);
       this.form.verification.timer = null;
+      // 设置按钮可用
       field.rightIcon.enable = true;
     },
     sendVerificationCode(field) {
+      // 设置最大倒计时
       const TIME_OUT = 60;
       if (!this.form.verification.timer) {
+        // 设置按钮不可用
         field.rightIcon.enable = false;
+        // 创建计时器
         this.form.verification.timer = (() => {
+          // 属性闭包，用于保存倒计时
           let count = TIME_OUT;
           return setInterval(() => {
             if (count > 1 && count <= TIME_OUT) {
+              // 计数减一，并且更新状态
               count--;
               this.updateState(field, count);
             } else {
+              // 重置状态
               this.resetState(field);
             }
           }, 1000);
         })();
       }
+    },
+    isSamePassword(value) {
+      let field = this.form.fields.filter(field => "password" == field.name)[0];
+      return field.value == value;
     }
   }
 };
@@ -240,15 +262,15 @@ export default {
   }
 }
 
-.login-button {
+.agreement {
+  margin: $blank-size;
+}
+
+.signup-button {
   margin: $blank-size;
   button {
     font-size: $text-size-main;
     border-radius: 0.5rem;
   }
-}
-
-.agreement {
-  margin: $blank-size;
 }
 </style>

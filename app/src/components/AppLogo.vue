@@ -13,7 +13,10 @@
 
 <style lang="scss" scoped>
 .logo {
-  @include margin-vertical($blank-size);
+  @include padding-vertical($blank-size);
+  // 兼容iOS顶部安全区域适配
+  padding-top: calc(#{$blank-size} + constant(safe-area-inset-top));
+  padding-top: calc(#{$blank-size} + env(safe-area-inset-top));
   text-align: center;
   .text {
     font-size: $text-size-title;
