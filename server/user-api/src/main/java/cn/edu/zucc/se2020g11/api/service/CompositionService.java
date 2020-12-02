@@ -16,9 +16,9 @@ public class CompositionService
     {
         this.compositionEntityMapper = compositionEntityMapper;
     }
-    public void insert(CompositionEntity compositionEntity)
-    {
-        compositionEntityMapper.insert(compositionEntity);
-    }
+//    public void insert(CompositionEntity compositionEntity)
+//    {
+//        compositionEntityMapper.insert(compositionEntity);
+//    }
 
 }

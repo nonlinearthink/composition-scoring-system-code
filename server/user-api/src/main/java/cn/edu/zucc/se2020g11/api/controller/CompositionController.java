@@ -29,13 +29,13 @@ public class CompositionController {
     }
 
     @GetMapping("/")
-    @ApiOperation(value="获取信息", notes="获取所有作文信息")
+    @ApiOperation(value="获取所有作文信息")
     public ResponseEntity<SuccessModel> getAll() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/details")
-    @ApiOperation(value="获取信息", notes="获取用户所有作文信息")
+    @ApiOperation(value="获取用户所有作文信息")
     @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
     public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
@@ -43,14 +43,14 @@ public class CompositionController {
 
     @LoginRequired
     @PostMapping("/{username}/details")
-    @ApiOperation(value="添加信息", notes="添加用户作文信息")
+    @ApiOperation(value="添加用户作文信息")
     @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
     public ResponseEntity<UserEntity> insertCompositionDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="获取信息", notes="获取用户作文信息")
+    @ApiOperation(value="获取用户作文信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")
@@ -61,7 +61,7 @@ public class CompositionController {
 
     @LoginRequired
     @DeleteMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="删除信息", notes="删除用户作文信息")
+    @ApiOperation(value="删除用户作文信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")
@@ -72,7 +72,7 @@ public class CompositionController {
 
     @LoginRequired
     @PutMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="修改信息", notes="修改用户作文信息")
+    @ApiOperation(value="修改用户作文信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")

@@ -29,13 +29,13 @@ public class EssayController {
     }
     
     @GetMapping("/")
-    @ApiOperation(value="获取信息", notes="获取所有随笔信息")
+    @ApiOperation(value="获取所有随笔信息")
     public ResponseEntity<SuccessModel> getAll() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/details")
-    @ApiOperation(value="获取信息", notes="获取用户所有随笔信息")
+    @ApiOperation(value="获取用户所有随笔信息")
     @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
     public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
@@ -43,14 +43,14 @@ public class EssayController {
 
     @LoginRequired
     @PostMapping("/{username}/details")
-    @ApiOperation(value="添加信息", notes="添加用户随笔信息")
+    @ApiOperation(value="添加用户随笔信息")
     @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
     public ResponseEntity<UserEntity> insertEssayDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{username}/details/{essayId}")
-    @ApiOperation(value="获取信息", notes="获取用户随笔信息")
+    @ApiOperation(value="获取用户随笔信息")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
         @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
@@ -61,7 +61,7 @@ public class EssayController {
 
     @LoginRequired
     @DeleteMapping("/{username}/details/{essayId}")
-    @ApiOperation(value="删除信息", notes="删除用户随笔信息")
+    @ApiOperation(value="删除用户随笔信息")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
@@ -72,7 +72,7 @@ public class EssayController {
 
     @LoginRequired
     @PutMapping("/{username}/details/{essayId}")
-    @ApiOperation(value="修改信息", notes="修改用户随笔信息")
+    @ApiOperation(value="修改用户随笔信息")
     @ApiImplicitParams({
         @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
         @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
@@ -83,7 +83,7 @@ public class EssayController {
 
     @LoginRequired
     @PostMapping("/{username}/details/{essayId}")
-    @ApiOperation(value="添加评论", notes="添加用户随笔评论")
+    @ApiOperation(value="添加用户随笔评论")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer")
@@ -94,7 +94,7 @@ public class EssayController {
 
     @LoginRequired
     @GetMapping("/{username}/details/{essayId}/{eCommentId}")
-    @ApiOperation(value="获取信息", notes="获取用户随笔评论")
+    @ApiOperation(value="获取用户随笔评论")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),
@@ -106,7 +106,7 @@ public class EssayController {
 
     @LoginRequired
     @DeleteMapping("/{username}/details/{essayId}/{eCommentId}")
-    @ApiOperation(value="删除信息", notes="删除用户随笔评论")
+    @ApiOperation(value="删除用户随笔评论")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),
@@ -118,7 +118,7 @@ public class EssayController {
 
     @LoginRequired
     @PutMapping("/{username}/details/{essayId}/{eCommentId}")
-    @ApiOperation(value="修改信息", notes="修改用户随笔评论")
+    @ApiOperation(value="修改用户随笔评论")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
             @ApiImplicitParam(paramType="path", name="essayId", value="随笔编号", required=true, dataType="Integer"),

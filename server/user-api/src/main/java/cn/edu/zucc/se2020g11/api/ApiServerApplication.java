@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @EnableSwagger2Doc
 @SpringBootApplication
+@MapperScan("cn.edu.zucc.se2020g11.api.dao")
 public class ApiServerApplication {
 
     public static void main(String[] args) {

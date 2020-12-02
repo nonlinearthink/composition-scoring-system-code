@@ -333,7 +333,7 @@ create table system_message
 /*==============================================================*/
 /* Table: userEntity                                                  */
 /*==============================================================*/
-create table userEntity
+create table user
 (
    user_name            varchar(32) not null  comment '用户名',
    password             varchar(32) not null  comment '密码',
@@ -352,7 +352,7 @@ alter table advertisement add constraint FK_ADVERTIS_RELEASE_ADVERTIS foreign ke
       references advertiser (advertiser_name) on delete restrict on update restrict;
 
 alter table composition add constraint FK_COMPOSIT_WRITE_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table composition_comment add constraint FK_COMPOSIT_HAVE8_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
@@ -361,10 +361,10 @@ alter table composition_comment add constraint FK_COMPOSIT_REPLY3_COMPOSIT forei
       references composition_comment (ccomment_id3) on delete restrict on update restrict;
 
 alter table composition_comment add constraint FK_COMPOSIT_SUBMIT_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table composition_favorite add constraint FK_COMPOSIT_FAVORITE_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table composition_favorite add constraint FK_COMPOSIT_HAVE10_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
@@ -373,19 +373,19 @@ alter table composition_history add constraint FK_COMPOSIT_HAVE12_COMPOSIT forei
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table composition_history add constraint FK_COMPOSIT_HAVE13_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table composition_support add constraint FK_COMPOSIT_GIVE6_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table composition_support add constraint FK_COMPOSIT_HAVE11_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table dynamic add constraint FK_DYNAMIC_WRITE3_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table dynamic_comment add constraint FK_DYNAMIC__COMMENT_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table dynamic_comment add constraint FK_DYNAMIC__HAVE7_DYNAMIC foreign key (dynamic_id)
       references dynamic (dynamic_id) on delete restrict on update restrict;
@@ -394,52 +394,52 @@ alter table dynamic_comment add constraint FK_DYNAMIC__REPLY2_DYNAMIC_ foreign k
       references dynamic_comment (dcomment_id2) on delete restrict on update restrict;
 
 alter table dynamic_support add constraint FK_DYNAMIC__GIVE4_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table dynamic_support add constraint FK_DYNAMIC__HAVE6_DYNAMIC foreign key (dynamic_id)
       references dynamic (dynamic_id) on delete restrict on update restrict;
 
 alter table essay add constraint FK_ESSAY_WRITE2_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table essay_comment add constraint FK_ESSAY_CO_GIVE2_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table essay_comment add constraint FK_ESSAY_CO_HAVE3_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_favorite add constraint FK_ESSAY_FA_GIVE_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table essay_favorite add constraint FK_ESSAY_FA_HAVE5_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_history add constraint FK_ESSAY_HI_HAVE_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table essay_history add constraint FK_ESSAY_HI_HAVE2_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table essay_support add constraint FK_ESSAY_SU_GIVE3_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table essay_support add constraint FK_ESSAY_SU_HAVE4_ESSAY foreign key (essay_id)
       references essay (essay_id) on delete restrict on update restrict;
 
 alter table feedback add constraint FK_FEEDBACK_GIVE5_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table follow add constraint FK_FOLLOW_RELATIONS_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table grammer_error add constraint FK_GRAMMER__RELATIONS_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
 alter table message add constraint FK_MESSAGE_RECEIVE_USER foreign key (next_user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table message add constraint FK_MESSAGE_SEND_USER foreign key (user_name)
-      references userEntity (user_name) on delete restrict on update restrict;
+      references user (user_name) on delete restrict on update restrict;
 
 alter table spell_error add constraint FK_SPELL_ER_RELATIONS_COMPOSIT foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;

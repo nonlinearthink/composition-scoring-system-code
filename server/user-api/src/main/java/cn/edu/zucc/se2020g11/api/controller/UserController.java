@@ -95,7 +95,7 @@ public class UserController {
 
     @LoginRequired
     @GetMapping("/{username}/details")
-    @ApiOperation(value = "获取信息", notes = "获取用户信息")
+    @ApiOperation(value = "获取用户信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
     public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
