@@ -13,8 +13,8 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!-- 配置数据库 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/test"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.98.219.27:3306/composition"
                         userId="root"
                         password="123456">
             <property name="nullCatalogMeansCurrent" value="true" />

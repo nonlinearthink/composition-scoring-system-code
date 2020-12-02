@@ -1,9 +1,7 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.CompositionSupportEntity;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface CompositionSupportEntityMapper {
     int deleteByPrimaryKey(Integer dsupportId3);
 

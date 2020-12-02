@@ -1,9 +1,7 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface SystemMessageEntityMapper {
     int deleteByPrimaryKey(Integer sMessageId);
 
