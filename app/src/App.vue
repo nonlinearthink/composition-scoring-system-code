@@ -68,17 +68,17 @@ export default {
     }
   },
   beforeCreate() {
-    localStorage.clear();
-    if (!localStorage.getItem("isLogin")) {
-      this.$router.push("/login");
-    }
+    // localStorage.clear();
+    // if (!localStorage.getItem("isLogin")) {
+    //   this.$router.push("/login");
+    // }
   }
 };
 </script>
 
 <style lang="scss">
 :root {
-  background-color: #f6f6f6;
+  background-color: $color-app-background;
 }
 
 #app {
