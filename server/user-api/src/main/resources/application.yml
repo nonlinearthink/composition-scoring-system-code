@@ -34,6 +34,20 @@ spring:
         login-username: admin
         login-password: 123456
         allow: 127.0.0.1
+# 邮件发送相关的配置
+#  mail:
+#    host: smtp.qq.com
+#    username: 1016767658@qq.com
+#    password: ivhkrc*****kbdcf
+#    port: 465
+#    default-encoding: utf-8
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
+#            required: true
+
 # Swagger 待具体配置
 # 配置文档 https://github.com/SpringForAll/spring-boot-starter-swagger
 swagger:
@@ -65,3 +79,6 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: cn.edu.zucc.se2020g11.apiserver.entity
+jwt:
+  http-header: Authorization
+  private-key-length: 16

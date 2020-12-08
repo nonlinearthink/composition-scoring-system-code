@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @author nonlinearthink
  */
 @Component
-@ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {
     /**
      * 在HTTP header中的标签

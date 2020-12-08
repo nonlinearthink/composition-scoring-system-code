@@ -3,13 +3,13 @@ package cn.edu.zucc.se2020g11.api.dao;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 
 public interface UserEntityMapper {
-    int deleteByPrimaryKey(String userName);
+    int deleteByPrimaryKey(String username);
 
     int insert(UserEntity record);
 
     int insertSelective(UserEntity record);
 
-    UserEntity selectByPrimaryKey(String userName);
+    UserEntity selectByPrimaryKey(String username);
 
     int updateByPrimaryKeySelective(UserEntity record);
 

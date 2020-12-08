@@ -3,17 +3,19 @@
 <mapper namespace="cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper">
   <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     <id column="composition_id" jdbcType="INTEGER" property="compositionId" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="composition_body" jdbcType="VARCHAR" property="compositionBody" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
-    <result column="composition_type" jdbcType="VARCHAR" property="compositionType" />
-    <result column="share_count" jdbcType="INTEGER" property="shareCount" />
+    <result column="composition_body" jdbcType="VARCHAR" property="compositionBody" />
+    <result column="is_draft" jdbcType="BIT" property="isDraft" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="visibility" jdbcType="INTEGER" property="visibility" />
     <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="valid" jdbcType="BIT" property="valid" />
   </resultMap>
   <sql id="Base_Column_List">
-    composition_id, user_name, title, composition_body, release_time, composition_type, 
-    share_count, score
+    composition_id, username, release_time, composition_body, is_draft, title, description, 
+    visibility, score, valid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -26,12 +28,14 @@
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
-    insert into composition (composition_id, user_name, title, 
-      composition_body, release_time, composition_type, 
-      share_count, score)
-    values (#{compositionId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{compositionBody,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, #{compositionType,jdbcType=VARCHAR}, 
-      #{shareCount,jdbcType=INTEGER}, #{score,jdbcType=INTEGER})
+    insert into composition (composition_id, username, release_time, 
+      composition_body, is_draft, title, 
+      description, visibility, score, 
+      valid)
+    values (#{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, 
+      #{compositionBody,jdbcType=VARCHAR}, #{isDraft,jdbcType=BIT}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{visibility,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
+      #{valid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     insert into composition
@@ -39,91 +43,111 @@
       <if test="compositionId != null">
         composition_id,
       </if>
-      <if test="userName != null">
-        user_name,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="compositionBody != null">
-        composition_body,
+      <if test="username != null">
+        username,
       </if>
       <if test="releaseTime != null">
         release_time,
       </if>
-      <if test="compositionType != null">
-        composition_type,
+      <if test="compositionBody != null">
+        composition_body,
       </if>
-      <if test="shareCount != null">
-        share_count,
+      <if test="isDraft != null">
+        is_draft,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="visibility != null">
+        visibility,
       </if>
       <if test="score != null">
         score,
+      </if>
+      <if test="valid != null">
+        valid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="compositionId != null">
         #{compositionId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="compositionBody != null">
-        #{compositionBody,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="releaseTime != null">
         #{releaseTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="compositionType != null">
-        #{compositionType,jdbcType=VARCHAR},
+      <if test="compositionBody != null">
+        #{compositionBody,jdbcType=VARCHAR},
       </if>
-      <if test="shareCount != null">
-        #{shareCount,jdbcType=INTEGER},
+      <if test="isDraft != null">
+        #{isDraft,jdbcType=BIT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="visibility != null">
+        #{visibility,jdbcType=INTEGER},
       </if>
       <if test="score != null">
         #{score,jdbcType=INTEGER},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=BIT},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     update composition
     <set>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="compositionBody != null">
-        composition_body = #{compositionBody,jdbcType=VARCHAR},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="releaseTime != null">
         release_time = #{releaseTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="compositionType != null">
-        composition_type = #{compositionType,jdbcType=VARCHAR},
+      <if test="compositionBody != null">
+        composition_body = #{compositionBody,jdbcType=VARCHAR},
       </if>
-      <if test="shareCount != null">
-        share_count = #{shareCount,jdbcType=INTEGER},
+      <if test="isDraft != null">
+        is_draft = #{isDraft,jdbcType=BIT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="visibility != null">
+        visibility = #{visibility,jdbcType=INTEGER},
       </if>
       <if test="score != null">
         score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=BIT},
       </if>
     </set>
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     update composition
-    set user_name = #{userName,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      composition_body = #{compositionBody,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
       release_time = #{releaseTime,jdbcType=TIMESTAMP},
-      composition_type = #{compositionType,jdbcType=VARCHAR},
-      share_count = #{shareCount,jdbcType=INTEGER},
-      score = #{score,jdbcType=INTEGER}
+      composition_body = #{compositionBody,jdbcType=VARCHAR},
+      is_draft = #{isDraft,jdbcType=BIT},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      visibility = #{visibility,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      valid = #{valid,jdbcType=BIT}
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
 </mapper>

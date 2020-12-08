@@ -2,7 +2,7 @@ package cn.edu.zucc.se2020g11.api.util.security;
 
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
-import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
+import cn.edu.zucc.se2020g11.api.config.LogPosition;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.apache.commons.lang3.RandomStringUtils;

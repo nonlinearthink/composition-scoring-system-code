@@ -12,11 +12,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-//@ApiModel
+@ApiModel
 public class LoginModel {
-//    @ApiModelProperty(value = "用户名", required = true, example = "wty")
+    @ApiModelProperty(value = "用户名", required = true, example = "wty")
     private String userName;
 
-//    @ApiModelProperty(value = "密码", required = true, example = "123456")
+    @ApiModelProperty(value = "密码", required = true, example = "123456")
     private String password;
 }

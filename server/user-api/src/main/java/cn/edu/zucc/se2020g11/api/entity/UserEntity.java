@@ -1,32 +1,36 @@
 package cn.edu.zucc.se2020g11.api.entity;
 
+import java.util.Date;
+
 public class UserEntity {
-    private String userName;
+    private String username;
 
     private String password;
 
-    private String nickName;
+    private String nickname;
+
+    private String email;
+
+    private String phone;
 
     private String signature;
 
     private String avatarUrl;
 
-    private String phone;
-
-    private String email;
-
     private Boolean isMale;
 
     private Integer vipDays;
 
-    private Integer anthority;
+    private Boolean frozen;
 
-    public String getUserName() {
-        return userName;
+    private Date defrostingTime;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
     public String getPassword() {
@@ -37,12 +41,28 @@ public class UserEntity {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName == null ? null : nickName.trim();
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public String getSignature() {
@@ -61,22 +81,6 @@ public class UserEntity {
         this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
     public Boolean getIsMale() {
         return isMale;
     }
@@ -93,11 +97,19 @@ public class UserEntity {
         this.vipDays = vipDays;
     }
 
-    public Integer getAnthority() {
-        return anthority;
+    public Boolean getFrozen() {
+        return frozen;
     }
 
-    public void setAnthority(Integer anthority) {
-        this.anthority = anthority;
+    public void setFrozen(Boolean frozen) {
+        this.frozen = frozen;
+    }
+
+    public Date getDefrostingTime() {
+        return defrostingTime;
+    }
+
+    public void setDefrostingTime(Date defrostingTime) {
+        this.defrostingTime = defrostingTime;
     }
 }

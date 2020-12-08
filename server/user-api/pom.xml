@@ -33,6 +33,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- Spring Boot 邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- 支持自定义的 Spring Boot 配置 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- Spring Boot 2.3.4.RELEASE 没有自动引入 validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

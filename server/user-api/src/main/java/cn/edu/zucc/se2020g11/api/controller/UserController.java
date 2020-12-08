@@ -1,7 +1,6 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
-import cn.edu.zucc.se2020g11.api.model.ErrorModel;
 import cn.edu.zucc.se2020g11.api.model.LoginModel;
 import cn.edu.zucc.se2020g11.api.model.PasswordChangeModel;
 import cn.edu.zucc.se2020g11.api.model.SuccessModel;
@@ -10,7 +9,7 @@ import cn.edu.zucc.se2020g11.api.util.annotation.AdminRequired;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
-import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
+import cn.edu.zucc.se2020g11.api.config.LogPosition;
 import cn.edu.zucc.se2020g11.api.util.security.JwtRegistry;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,28 +38,23 @@ public class UserController {
 
     @AdminRequired
     @GetMapping("/")
-    @ApiOperation(value = "获取所有用户及其附带信息的信息")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "成功"), @ApiResponse(code = 401, message = "认证失败")})
+    @ApiOperation(value = "获取所有用户及其属性")
     public ResponseEntity<SuccessModel> getAllUserData() {
-        // TODO 组合Service完成处理
         SuccessModel successModel = new SuccessModel();
         successModel.setSuccess(true);
-        // TODO 调用successModel.setData
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/")
     @ApiOperation(value = "用户注册")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "用户登录成功")})
-    @ApiImplicitParam(paramType = "body", name = "userEntity", value = "注册信息", required = true, dataType = "UserEntity")
+    @ApiImplicitParam(paramType = "body", name = "userEntity", value = "注册表单", required = true, dataType = "UserEntity")
     public ResponseEntity<SuccessModel> signup(@RequestBody UserEntity userEntity) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/session")
     @ApiOperation(value = "用户登录")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "用户注册成功")})
-    @ApiImplicitParam(paramType = "body", name = "LoginModel", value = "登录表单", required = true, dataType = "LoginModel")
+    @ApiImplicitParam(paramType = "body", name = "loginModel", value = "登录表单", required = true, dataType = "LoginModel")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginModel loginModel) {
         if (loginModel.getUserName() == null || loginModel.getPassword() == null) {
             throw new BaseException(ExceptionDictionary.NONSTANDARD_PARAMETERS, LogPosition.SYSTEM);
@@ -98,6 +92,20 @@ public class UserController {
     @ApiOperation(value = "获取用户信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
     public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @PostMapping("/{username}/follow")
+    @ApiOperation(value = "他人关注用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
+    public ResponseEntity<UserEntity> addFollow(@PathVariable("username") String username,
+                                                @RequestParam("follower") String follower) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

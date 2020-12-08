@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.SupportEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    <id column="support_id" jdbcType="INTEGER" property="supportId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    support_id, username, composition_id, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from support
+    where support_id = #{supportId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from support
+    where support_id = #{supportId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    insert into support (support_id, username, composition_id, 
+      time)
+    values (#{supportId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    insert into support
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="supportId != null">
+        support_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="compositionId != null">
+        composition_id,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="supportId != null">
+        #{supportId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="compositionId != null">
+        #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    update support
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where support_id = #{supportId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    update support
+    set username = #{username,jdbcType=VARCHAR},
+      composition_id = #{compositionId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP}
+    where support_id = #{supportId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,6 +1,6 @@
 package cn.edu.zucc.se2020g11.api.util.exception;
 
-import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
+import cn.edu.zucc.se2020g11.api.config.LogPosition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

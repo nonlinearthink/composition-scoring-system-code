@@ -3,29 +3,28 @@
 <mapper namespace="cn.edu.zucc.se2020g11.api.dao.FollowEntityMapper">
   <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
     <id column="follow_id" jdbcType="INTEGER" property="followId" />
-    <id column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="date_time" jdbcType="TIMESTAMP" property="dateTime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="target_username" jdbcType="VARCHAR" property="targetUsername" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Base_Column_List">
-    follow_id, user_name, date_time
+    follow_id, username, target_username, time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntityKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from follow
     where follow_id = #{followId,jdbcType=INTEGER}
-      and user_name = #{userName,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntityKey">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from follow
     where follow_id = #{followId,jdbcType=INTEGER}
-      and user_name = #{userName,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
-    insert into follow (follow_id, user_name, date_time
-      )
-    values (#{followId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{dateTime,jdbcType=TIMESTAMP}
-      )
+    insert into follow (follow_id, username, target_username, 
+      time)
+    values (#{followId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{targetUsername,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
     insert into follow
@@ -33,39 +32,51 @@
       <if test="followId != null">
         follow_id,
       </if>
-      <if test="userName != null">
-        user_name,
+      <if test="username != null">
+        username,
       </if>
-      <if test="dateTime != null">
-        date_time,
+      <if test="targetUsername != null">
+        target_username,
+      </if>
+      <if test="time != null">
+        time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="followId != null">
         #{followId,jdbcType=INTEGER},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
-      <if test="dateTime != null">
-        #{dateTime,jdbcType=TIMESTAMP},
+      <if test="targetUsername != null">
+        #{targetUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
     update follow
     <set>
-      <if test="dateTime != null">
-        date_time = #{dateTime,jdbcType=TIMESTAMP},
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="targetUsername != null">
+        target_username = #{targetUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
       </if>
     </set>
     where follow_id = #{followId,jdbcType=INTEGER}
-      and user_name = #{userName,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
     update follow
-    set date_time = #{dateTime,jdbcType=TIMESTAMP}
+    set username = #{username,jdbcType=VARCHAR},
+      target_username = #{targetUsername,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
     where follow_id = #{followId,jdbcType=INTEGER}
-      and user_name = #{userName,jdbcType=VARCHAR}
   </update>
 </mapper>

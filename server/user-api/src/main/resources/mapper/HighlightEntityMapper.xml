@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.HighlightEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.HighlightEntity">
+    <id column="highlight_id" jdbcType="INTEGER" property="highlightId" />
+    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="highlight_type" jdbcType="VARCHAR" property="highlightType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    highlight_id, composition_id, text, highlight_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from highlight
+    where highlight_id = #{highlightId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from highlight
+    where highlight_id = #{highlightId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HighlightEntity">
+    insert into highlight (highlight_id, composition_id, text, 
+      highlight_type)
+    values (#{highlightId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 
+      #{highlightType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HighlightEntity">
+    insert into highlight
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="highlightId != null">
+        highlight_id,
+      </if>
+      <if test="compositionId != null">
+        composition_id,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="highlightType != null">
+        highlight_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="highlightId != null">
+        #{highlightId,jdbcType=INTEGER},
+      </if>
+      <if test="compositionId != null">
+        #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="highlightType != null">
+        #{highlightType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HighlightEntity">
+    update highlight
+    <set>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="highlightType != null">
+        highlight_type = #{highlightType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where highlight_id = #{highlightId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.HighlightEntity">
+    update highlight
+    set composition_id = #{compositionId,jdbcType=INTEGER},
+      text = #{text,jdbcType=VARCHAR},
+      highlight_type = #{highlightType,jdbcType=VARCHAR}
+    where highlight_id = #{highlightId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,6 +1,6 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.entity.*;
 import cn.edu.zucc.se2020g11.api.model.SuccessModel;
 import cn.edu.zucc.se2020g11.api.service.CompositionService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
@@ -29,55 +29,116 @@ public class CompositionController {
     }
 
     @GetMapping("/")
-    @ApiOperation(value="获取所有作文信息")
-    public ResponseEntity<SuccessModel> getAll() {
+    @ApiOperation(value = "获取所有作文信息")
+    public ResponseEntity<SuccessModel> queryAllComposition() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/details")
-    @ApiOperation(value="获取用户所有作文信息")
-    @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
-    public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @LoginRequired
-    @PostMapping("/{username}/details")
-    @ApiOperation(value="添加用户作文信息")
-    @ApiImplicitParam(paramType="path", name="username", value="用户名", required=true, dataType="String")
-    public ResponseEntity<UserEntity> insertCompositionDetail(@PathVariable("username") String username) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="获取用户作文信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
-            @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")
-    })
-    public ResponseEntity<UserEntity> getCompositionDetail(@PathVariable("username") String username, @PathVariable("compositionId") Integer compositionId) {
+    @GetMapping("/{username}")
+    @ApiOperation(value = "获取单个用户所有作文信息")
+    @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
+    public ResponseEntity<SuccessModel> queryCompositionWithUser(@PathVariable("username") String username) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginRequired
-    @DeleteMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="删除用户作文信息")
+    @PostMapping("/{username}")
+    @ApiOperation(value = "用户添加作文")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
-            @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
+                    "CompositionEntity")
     })
-    public ResponseEntity<UserEntity> deleteCompositionDetail(@PathVariable("username") String username, @PathVariable("compositionId") Integer compositionId) {
+    public ResponseEntity<SuccessModel> addComposition(@PathVariable("username") String username,
+                                                       @RequestBody CompositionEntity compositionEntity) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginRequired
-    @PutMapping("/{username}/details/{compositionId}")
-    @ApiOperation(value="修改用户作文信息")
+    @ApiOperation(value = "用户删除作文")
+    @DeleteMapping("/{username}/{compositionId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="path", name="username",value="用户名", required=true, dataType="String"),
-            @ApiImplicitParam(paramType="path", name="compositionId", value="作文编号", required=true, dataType="Integer")
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer")
     })
-    public ResponseEntity<UserEntity> updateCompositionDetail(@PathVariable("username") String username, @PathVariable("compositionId") Integer compositionId) {
+    public ResponseEntity<SuccessModel> deleteComposition(@PathVariable("username") String username,
+                                                          @PathVariable("compositionId") Integer compositionId) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @ApiOperation(value = "用户修改作文")
+    @PutMapping("/{username}/{compositionId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
+                    "CompositionEntity")
+    })
+    public ResponseEntity<SuccessModel> updateComposition(@PathVariable("username") String username,
+                                                          @PathVariable("compositionId") Integer compositionId,
+                                                          @RequestBody CompositionEntity compositionEntity) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @ApiOperation(value = "他人为作文添加评论")
+    @PostMapping("/{compositionId}/comments")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "评论", required = true, dataType =
+                    "CommentEntity")
+    })
+    public ResponseEntity<SuccessModel> addComment(@PathVariable("compositionId") Integer compositionId,
+                                                   @RequestBody CommentEntity commentEntity) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @ApiOperation(value = "他人为作文添加点赞")
+    @PostMapping("/{compositionId}/support")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "点赞", required = true, dataType =
+                    "SupportEntity")
+    })
+    public ResponseEntity<SuccessModel> addSupport(@PathVariable("compositionId") Integer compositionId,
+                                                   @RequestBody SupportEntity supportEntity) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @ApiOperation(value = "他人为作文添加收藏")
+    @PostMapping("/{compositionId}/favorite")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "favoriteEntity", value = "收藏", required = true, dataType =
+                    "FavoriteEntity")
+    })
+    public ResponseEntity<SuccessModel> addFavorite(@PathVariable("compositionId") Integer compositionId,
+                                                    @RequestBody FavoriteEntity favoriteEntity) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @LoginRequired
+    @ApiOperation(value = "他人为作文添加举报")
+    @PostMapping("/{compositionId}/report")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "reportEntity", value = "举报", required = true, dataType =
+                    "ReportEntity")
+    })
+    public ResponseEntity<SuccessModel> addReport(@PathVariable("compositionId") Integer compositionId,
+                                                  @RequestBody ReportEntity reportEntity) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

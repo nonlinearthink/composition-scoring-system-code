@@ -3,7 +3,7 @@ package cn.edu.zucc.se2020g11.api.plugin;
 import cn.edu.zucc.se2020g11.api.model.ErrorModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
-import cn.edu.zucc.se2020g11.api.util.log.LogPosition;
+import cn.edu.zucc.se2020g11.api.config.LogPosition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
