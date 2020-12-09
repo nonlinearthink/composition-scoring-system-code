@@ -15,6 +15,14 @@ public enum ErrorDictionary {
      */
     SQL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 1, "数据库错误"),
     /**
+     * 过于频繁的请求
+     */
+    REQUEST_TOO_FREQUENTLY(HttpStatus.FORBIDDEN, 2, "过于频繁地请求"),
+    /**
+     * 参数校验失败
+     */
+    INVALID_PARAMETER(HttpStatus.NOT_ACCEPTABLE, 3, "参数校验失败"),
+    /**
      * 没有携带token
      */
     TOKEN_MISSING(HttpStatus.UNAUTHORIZED, 10, "没有携带token"),
@@ -35,37 +43,25 @@ public enum ErrorDictionary {
      */
     TOKEN_AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, 14, "token认证失败"),
     /**
-     * 用户名不能为空
-     */
-    USERNAME_IS_NULL(HttpStatus.NOT_ACCEPTABLE, 20, "用户名不能为空"),
-    /**
-     * 密码不能为空
-     */
-    PASSWORD_IS_NULL(HttpStatus.NOT_ACCEPTABLE, 21, "密码不能为空"),
-    /**
-     * 邮箱不能为空
-     */
-    EMAIL_IS_NULL(HttpStatus.NOT_ACCEPTABLE, 22, "邮箱不能为空"),
-    /**
      * 密码错误
      */
-    INCORRECT_PASSWORD(HttpStatus.FORBIDDEN, 23, "密码错误"),
+    INCORRECT_PASSWORD(HttpStatus.FORBIDDEN, 20, "密码错误"),
     /**
      * 验证码错误
      */
-    INCORRECT_VERIFY_CODE(HttpStatus.NOT_ACCEPTABLE, 24, "验证码错误"),
+    INCORRECT_VERIFY_CODE(HttpStatus.NOT_ACCEPTABLE, 21, "验证码错误"),
     /**
      * 用户名冲突
      */
-    USERNAME_CONFLICTS(HttpStatus.FORBIDDEN, 25, "用户名冲突"),
+    USERNAME_CONFLICTS(HttpStatus.FORBIDDEN, 22, "用户名冲突"),
     /**
      * 用户名不存在
      */
-    USERNAME_NOT_EXIST(HttpStatus.NOT_ACCEPTABLE, 26, "用户名不存在"),
+    USERNAME_NOT_EXIST(HttpStatus.NOT_ACCEPTABLE, 23, "用户名不存在"),
     /**
      * 账号冻结中
      */
-    ACCOUNT_BEING_FROZEN(HttpStatus.FORBIDDEN, 27, "账号冻结中");
+    ACCOUNT_BEING_FROZEN(HttpStatus.FORBIDDEN, 24, "账号冻结中");
 
     @Getter
     @Setter

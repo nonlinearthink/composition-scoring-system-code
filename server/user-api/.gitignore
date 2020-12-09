@@ -37,3 +37,6 @@ build/
 
 ### maven wrapper ###
 .mvn
+
+### JasyptTest ###
+**/JasyptTest.java

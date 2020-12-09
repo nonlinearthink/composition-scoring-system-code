@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 登录表结构
  *
@@ -13,10 +15,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel
-public class LoginModel {
-    @ApiModelProperty(value = "用户名", required = true, example = "wty")
-    private String userName;
+public class LoginForm {
+    @ApiModelProperty(value = "用户名", required = true, example = "test")
+    @NotNull(message = "username不能为空")
+    private String username;
 
     @ApiModelProperty(value = "密码", required = true, example = "123456")
+    @NotNull(message = "password不能为空")
     private String password;
 }

@@ -38,19 +38,26 @@ spring:
     host: localhost
     password:
     port: 6379
-# 邮件发送相关的配置
-#  mail:
-#    host: smtp.qq.com
-#    username: 1016767658@qq.com
-#    password: ivhkrc*****kbdcf
-#    port: 465
-#    default-encoding: utf-8
-#    properties:
-#      mail:
-#        smtp:
-#          ssl:
-#            enable: true
-#            required: true
+    timeout: 2000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+  # 邮件发送相关的配置
+  mail:
+    host: smtp.qq.com
+    username: ENC(l2mYVkmuCMYLS862B/KiI57oT+t1GeaG8Wc7GWkiTPws4nWJl9WsxTx2x8k96ByTIPfSs/kxg9d2OzBdUadsXw==)
+    password: ENC(d0kiHPLsZfDw69Dg8t8uPAaNbloQWuJLYFdtKm4YfyLEJdSeNStQUvzqN/6H2sLxhAHFs/gfgGvw1HCQWlAxGA==)
+    port: 465
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+            required: true
 
 # Swagger 待具体配置
 # 配置文档 https://github.com/SpringForAll/spring-boot-starter-swagger
@@ -83,6 +90,9 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: cn.edu.zucc.se2020g11.apiserver.entity
+jasypt:
+  encryptor:
+    password: paQDrGrPn5iZXNNX
 jwt:
   http-header: Authorization
   private-key-length: 16

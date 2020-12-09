@@ -72,7 +72,7 @@ public class JwtService {
                 // 设置加密算法和私钥
                 .signWith(SignatureAlgorithm.HS256, privateKeyType == UserType.ADMIN ? adminPrivateKey : userPrivateKey)
                 .compact();
-        logger.info("用户" + username + "请求生成密钥: " + token);
+        logger.info("用户" + username + "请求生成密钥 " + token);
         return token;
     }
 
@@ -88,7 +88,7 @@ public class JwtService {
             Claims jwtClaims =
                     Jwts.parser().setSigningKey(privateKeyType == UserType.ADMIN ? adminPrivateKey : userPrivateKey).parseClaimsJws(token).getBody();
             String username = jwtClaims.getSubject();
-            logger.info("解析" + token + "的结果为" + username);
+            logger.info("解析" + token + "的结果为 " + username);
             return username;
         } catch (ExpiredJwtException e) {
             throw new BaseException(ErrorDictionary.TOKEN_EXPIRATION, LogCategory.SYSTEM);

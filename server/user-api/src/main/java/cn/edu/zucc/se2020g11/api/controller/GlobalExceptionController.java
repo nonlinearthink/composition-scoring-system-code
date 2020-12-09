@@ -1,18 +1,23 @@
-package cn.edu.zucc.se2020g11.api.config;
+package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
-import cn.edu.zucc.se2020g11.api.model.ErrorModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 全局异常处理器
@@ -20,7 +25,8 @@ import java.sql.SQLException;
  * @author nonlinearthink
  */
 @ControllerAdvice
-public class GlobalExceptionHandler {
+@RestController
+public class GlobalExceptionController {
     private final Logger dbLogger = LogManager.getLogger(LogCategory.DB);
     private final Logger systemLogger = LogManager.getLogger(LogCategory.SYSTEM);
     private final Logger businessLogger = LogManager.getLogger(LogCategory.BUSINESS);
@@ -74,6 +80,27 @@ public class GlobalExceptionHandler {
         result.setCode(errorMsg.getCode());
         result.setMsg(errorMsg.getMessage());
         dbLogger.error(exception.getMessage(), exception);
+        return ResponseEntity.status(errorMsg.getStatus()).body(result);
+    }
+
+    /**
+     * 参数检验错误
+     *
+     * @param exception 参数检验异常
+     * @return 统一错误信息返回格式
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResult<Object>> methodArgumentNotValidExceptionHandler(HttpServletRequest request,
+                                                                                    MethodArgumentNotValidException exception) {
+        ErrorDictionary errorMsg = ErrorDictionary.INVALID_PARAMETER;
+        ApiResult<Object> result = new ApiResult<>();
+        result.setCode(errorMsg.getCode());
+        result.setMsg(errorMsg.getMessage());
+        Map<String, Object> data = new HashMap<>(1);
+        // 收集所有错误信息
+        data.put("details", exception.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage));
+        result.setData(data);
+        businessLogger.error(exception.getMessage(), exception);
         return ResponseEntity.status(errorMsg.getStatus()).body(result);
     }
 }
