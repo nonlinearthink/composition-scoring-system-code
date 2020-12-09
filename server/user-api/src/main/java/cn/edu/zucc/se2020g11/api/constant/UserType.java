@@ -1,4 +1,4 @@
-package cn.edu.zucc.se2020g11.api.config;
+package cn.edu.zucc.se2020g11.api.constant;
 
 import lombok.Getter;
 import lombok.Setter;

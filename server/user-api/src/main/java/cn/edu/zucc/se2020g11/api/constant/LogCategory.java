@@ -1,4 +1,4 @@
-package cn.edu.zucc.se2020g11.api.config;
+package cn.edu.zucc.se2020g11.api.constant;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
  *
  * @author nonlinearthink
  */
-public enum LogPosition {
+public enum LogCategory {
     /**
      * 数据库层的log
      */
@@ -26,7 +26,7 @@ public enum LogPosition {
     @Setter
     private String position;
 
-    LogPosition(String position) {
+    LogCategory(String position) {
         this.position = position;
     }
 }

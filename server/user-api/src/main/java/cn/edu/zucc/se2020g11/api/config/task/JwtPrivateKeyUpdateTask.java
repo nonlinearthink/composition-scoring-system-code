@@ -1,7 +1,7 @@
-package cn.edu.zucc.se2020g11.api.task;
+package cn.edu.zucc.se2020g11.api.config.task;
 
 import cn.edu.zucc.se2020g11.api.service.JwtService;
-import cn.edu.zucc.se2020g11.api.config.LogPosition;
+import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,11 +21,11 @@ public class JwtPrivateKeyUpdateTask {
     /**
      * 日志记录器
      */
-    private final Logger logger = LogManager.getLogger(LogPosition.SYSTEM);
+    private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
     /**
      * 运行间隔
      */
-    private final int interval = 5000;
+    private final int interval = 86400000;
     /**
      * 私钥长度，从 Spring Boot 配置项获取
      */
@@ -33,7 +33,7 @@ public class JwtPrivateKeyUpdateTask {
     private int privateKeyLength;
 
     /**
-     *  具体任务细节
+     * 具体任务细节
      */
     @Scheduled(fixedRate = interval)
     public void doUpdate() {

@@ -18,7 +18,7 @@ spring:
         stat:
           enabled: true
           log-slow-sql: true
-          slow-sql-millis: 10
+          slow-sql-millis: 200
         log4j2:
           enabled: true
       web-stat-filter:
@@ -34,6 +34,10 @@ spring:
         login-username: admin
         login-password: 123456
         allow: 127.0.0.1
+  redis:
+    host: localhost
+    password:
+    port: 6379
 # 邮件发送相关的配置
 #  mail:
 #    host: smtp.qq.com

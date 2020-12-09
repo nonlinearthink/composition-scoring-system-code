@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.ResponseEntity;
 
 /**
  * 成功返回模型
@@ -10,9 +11,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SuccessModel {
+public class ApiResult<T> {
 
-    private boolean success;
+    private int code;
 
-    private Object data;
+    private String msg;
+
+    private T data;
 }

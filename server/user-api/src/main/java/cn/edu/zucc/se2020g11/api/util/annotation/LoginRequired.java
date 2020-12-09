@@ -1,5 +1,7 @@
 package cn.edu.zucc.se2020g11.api.util.annotation;
 
+import cn.edu.zucc.se2020g11.api.constant.UserType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,6 +15,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginRequired {
-    boolean passUser() default false;
-    boolean passAdmin() default false;
+    UserType type() default UserType.ADMIN;
 }

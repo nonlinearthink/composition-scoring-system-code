@@ -1,6 +1,7 @@
 package cn.edu.zucc.se2020g11.api.config;
 
-import cn.edu.zucc.se2020g11.api.plugin.JwtInterceptor;
+import cn.edu.zucc.se2020g11.api.config.intercepter.JwtInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
+    @Value("${jwt.http-header}")
+    private String httpHeader;
+
     /**
      * 添加拦截器
      *
@@ -20,6 +24,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册JWT拦截器
-        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new JwtInterceptor(httpHeader)).addPathPatterns("/**");
     }
 }

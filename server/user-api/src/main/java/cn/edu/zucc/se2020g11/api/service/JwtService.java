@@ -1,9 +1,9 @@
 package cn.edu.zucc.se2020g11.api.service;
 
-import cn.edu.zucc.se2020g11.api.config.UserType;
-import cn.edu.zucc.se2020g11.api.config.LogPosition;
+import cn.edu.zucc.se2020g11.api.constant.UserType;
+import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
-import cn.edu.zucc.se2020g11.api.util.exception.ExceptionDictionary;
+import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class JwtService {
     /**
      * 日志记录器
      */
-    private final Logger logger = LogManager.getLogger(LogPosition.SYSTEM);
+    private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
     /**
      * 用户私钥
      */
@@ -49,7 +49,7 @@ public class JwtService {
      * @param privateKeyType 私钥类型，根据用户类型划分
      * @return JWT字符串
      */
-    public String generateToken(UserType privateKeyType) {
+    public String generateToken(String username, UserType privateKeyType) {
         Calendar calendar = Calendar.getInstance();
         // 签发的时间
         Date issuedAt = calendar.getTime();
@@ -63,13 +63,17 @@ public class JwtService {
                 // 设置签发时间
                 .setIssuedAt(issuedAt)
                 // 设置过期时间
-                .setExpiration(expiration);
-        return Jwts.builder()
+                .setExpiration(expiration)
+                // 设置用户
+                .setSubject(username);
+        String token = Jwts.builder()
                 // 设置JWT声明
                 .setClaims(jwtClaims)
                 // 设置加密算法和私钥
                 .signWith(SignatureAlgorithm.HS256, privateKeyType == UserType.ADMIN ? adminPrivateKey : userPrivateKey)
                 .compact();
+        logger.info("用户" + username + "请求生成密钥: " + token);
+        return token;
     }
 
     /**
@@ -83,17 +87,19 @@ public class JwtService {
             // 解析 token 得到JWT申明信息
             Claims jwtClaims =
                     Jwts.parser().setSigningKey(privateKeyType == UserType.ADMIN ? adminPrivateKey : userPrivateKey).parseClaimsJws(token).getBody();
-            return jwtClaims.getSubject();
+            String username = jwtClaims.getSubject();
+            logger.info("解析" + token + "的结果为" + username);
+            return username;
         } catch (ExpiredJwtException e) {
-            throw new BaseException(ExceptionDictionary.TOKEN_EXPIRATION, LogPosition.SYSTEM);
+            throw new BaseException(ErrorDictionary.TOKEN_EXPIRATION, LogCategory.SYSTEM);
         } catch (UnsupportedJwtException e) {
-            throw new BaseException(ExceptionDictionary.TOKEN_UNSUPPORTED, LogPosition.SYSTEM);
+            throw new BaseException(ErrorDictionary.TOKEN_UNSUPPORTED, LogCategory.SYSTEM);
         } catch (MalformedJwtException e) {
-            throw new BaseException(ExceptionDictionary.TOKEN_MALFORMED, LogPosition.SYSTEM);
+            throw new BaseException(ErrorDictionary.TOKEN_MALFORMED, LogCategory.SYSTEM);
         } catch (SignatureException e) {
-            throw new BaseException(ExceptionDictionary.AUTHORIZATION_FAILED, LogPosition.SYSTEM);
+            throw new BaseException(ErrorDictionary.TOKEN_AUTHORIZATION_FAILED, LogCategory.SYSTEM);
         } catch (IllegalArgumentException e) {
-            throw new BaseException(ExceptionDictionary.TOKEN_MISSING, LogPosition.SYSTEM);
+            throw new BaseException(ErrorDictionary.TOKEN_MISSING, LogCategory.SYSTEM);
         }
     }
 

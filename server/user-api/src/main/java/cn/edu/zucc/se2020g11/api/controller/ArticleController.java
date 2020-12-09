@@ -1,8 +1,8 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
+import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.PushArticle;
-import cn.edu.zucc.se2020g11.api.model.SuccessModel;
-import cn.edu.zucc.se2020g11.api.util.annotation.AdminRequired;
+import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,25 +19,25 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "ArticleController")
 public class ArticleController {
 
-    @AdminRequired
+    @LoginRequired(type = UserType.ADMIN)
     @PostMapping("")
     @ApiOperation(value = "添加推送文章")
     @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
             "PushArticle")
-    public ResponseEntity<SuccessModel> addArticle(@RequestBody PushArticle pushArticle) {
+    public ResponseEntity<String> addArticle(@RequestBody PushArticle pushArticle) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @AdminRequired
+    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "删除推送文章")
     @DeleteMapping("/{articleId}")
     @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
             "Integer")
-    public ResponseEntity<SuccessModel> deleteArticle(@PathVariable("articleId") Integer articleId) {
+    public ResponseEntity<String> deleteArticle(@PathVariable("articleId") Integer articleId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @AdminRequired
+    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "更新推送文章")
     @PutMapping("/{articleId}")
     @ApiImplicitParams({
@@ -46,14 +46,14 @@ public class ArticleController {
             @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
                     "PushArticle")
     })
-    public ResponseEntity<SuccessModel> updateArticle(@PathVariable("articleId") Integer articleId,
+    public ResponseEntity<String> updateArticle(@PathVariable("articleId") Integer articleId,
                                                       @RequestBody PushArticle pushArticle) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "请求所有推送文章")
     @GetMapping("")
-    public ResponseEntity<SuccessModel> queryAllArticle() {
+    public ResponseEntity<String> queryAllArticle() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
