@@ -73,8 +73,8 @@ public class VerifyCodeService {
      */
     @Async
     public void cacheVerifyCode(String email, String verifyCode) {
-        logger.info("设置验证码缓存 " + prefix + email);
         stringRedisTemplate.opsForValue().set(prefix + email, verifyCode, 60, TimeUnit.SECONDS);
+        logger.info("设置验证码缓存 " + prefix + email);
     }
 
     /**

@@ -1,8 +1,8 @@
 package cn.edu.zucc.se2020g11.api.model;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
+@ApiModel
 public class SignupForm {
     @NotNull(message = "username不能为空")
     private String username;

@@ -1,5 +1,6 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
+import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
@@ -12,6 +13,7 @@ import cn.edu.zucc.se2020g11.api.service.UserService;
 import cn.edu.zucc.se2020g11.api.service.VerifyCodeService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
+import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,8 +91,8 @@ public class UserController {
 
     @PostMapping("/session")
     @ApiOperation(value = "用户登录")
-    @ApiImplicitParam(paramType = "body", name = "loginModel", value = "登录表单", required = true, dataType = "LoginModel")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody @Validated LoginForm loginForm) {
+    @ApiImplicitParam(paramType = "body", name = "loginForm", value = "登录表单", required = true, dataType = "LoginForm")
+    public ResponseEntity<ApiResult<Map<String, Object>>> login(@RequestBody @Validated LoginForm loginForm) {
         // 登录检测
         userService.login(loginForm);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -99,16 +102,23 @@ public class UserController {
         // 创建 token
         data.put("token", jwtService.generateToken(loginForm.getUsername(), UserType.USER));
         result.setData(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/session/{username}")
     @ApiOperation(value = "用户登出")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<UserEntity> logout(@PathVariable("username") String username) {
-        System.out.println(username);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiResult<Boolean>> logout(@PathVariable("username") String username,
+                                                     HttpServletRequest request) {
+        if (!username.equals(request.getAttribute("username"))) {
+            throw new BaseException(ErrorDictionary.INVALID_REQUEST, LogCategory.BUSINESS);
+        }
+        jwtService.clearTokenCache(username);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setCode(0);
+        result.setMsg("删除成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)

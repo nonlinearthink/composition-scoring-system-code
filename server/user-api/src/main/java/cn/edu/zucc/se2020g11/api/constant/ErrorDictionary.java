@@ -19,9 +19,13 @@ public enum ErrorDictionary {
      */
     REQUEST_TOO_FREQUENTLY(HttpStatus.FORBIDDEN, 2, "过于频繁地请求"),
     /**
+     * 非法请求
+     */
+    INVALID_REQUEST(HttpStatus.FORBIDDEN, 3, "非法请求"),
+    /**
      * 参数校验失败
      */
-    INVALID_PARAMETER(HttpStatus.NOT_ACCEPTABLE, 3, "参数校验失败"),
+    INVALID_PARAMETER(HttpStatus.NOT_ACCEPTABLE, 4, "参数校验失败"),
     /**
      * 没有携带token
      */

@@ -2,7 +2,7 @@ package cn.edu.zucc.se2020g11.api.config.intercepter;
 
 import cn.edu.zucc.se2020g11.api.service.JwtService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,12 +16,13 @@ import java.lang.reflect.Method;
  * @author nonlinearthink
  */
 public class JwtInterceptor implements HandlerInterceptor {
-    private final JwtService jwtService = new JwtService();
+    private final JwtService jwtService;
 
     private final String httpHeader;
 
-    public JwtInterceptor(String httpHeader) {
+    public JwtInterceptor(String httpHeader, RedisTemplate<String, String> redisTemplate) {
         this.httpHeader = httpHeader;
+        this.jwtService = new JwtService(redisTemplate);
     }
 
     /**
@@ -48,6 +49,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (loginRequired != null) {
             // 获取token
             String token = request.getHeader(httpHeader);
+            System.out.println(token);
             // 设置 username 参数
             request.setAttribute("username", jwtService.validateToken(token, loginRequired.type()));
         }
