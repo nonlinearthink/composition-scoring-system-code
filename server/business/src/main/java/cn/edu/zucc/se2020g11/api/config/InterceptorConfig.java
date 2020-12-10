@@ -1,10 +1,12 @@
 package cn.edu.zucc.se2020g11.api.config;
 
+import cn.edu.zucc.se2020g11.api.config.intercepter.CorsInterceptor;
 import cn.edu.zucc.se2020g11.api.config.intercepter.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -35,6 +37,8 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
         //注册JWT拦截器
         registry.addInterceptor(new JwtInterceptor(httpHeader, redisTemplate)).addPathPatterns(
                 "/**");
+        registry.addInterceptor(new CorsInterceptor()).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
+
 }

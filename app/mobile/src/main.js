@@ -2,6 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import axios from "axios";
+import VueAxios from "vue-axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 // import { faFontAwesome } from "@fortawesome/free-brands-svg-icons";
@@ -40,6 +42,20 @@ Vue.use(Button)
   .use(TabbarItem)
   .use(VanImage)
   .use(Uploader);
+
+axios.defaults.baseURL = "http://localhost:8000/api";
+axios.interceptors.request.use(
+  config => {
+    // 在每次请求的时候添加 token
+    const token = localStorage.getItem("token");
+    token && (config.headers.Authorization = token);
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+Vue.use(VueAxios, axios);
 
 library.add(faLock);
 Vue.component("font-awesome-icon", FontAwesomeIcon);

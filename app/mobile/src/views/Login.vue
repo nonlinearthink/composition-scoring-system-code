@@ -4,9 +4,9 @@
     <app-logo class="logo-t" />
     <van-form @submit="onSubmit">
       <van-field
-        v-for="field in form.fields"
+        v-for="field in layout.fields"
         :key="field.name"
-        v-model="field.value"
+        v-model="form[field.name]"
         class="field"
         :type="field.type"
         :name="field.name"
@@ -16,29 +16,31 @@
           <van-icon
             :name="field.icon"
             class="icon"
-            :size="form.iconSize"
+            :size="layout.iconSize"
             @click="onClickLeftIcon(field)"
           />
         </template>
       </van-field>
       <div class="login-button">
         <van-button
-          :text="form.submit.text"
-          :color="form.submit.color"
+          :text="layout.submitBotton.text"
+          :color="layout.submitBotton.color"
           square
           block
           type="info"
           native-type="submit"
           size="large"
-          :loading="form.submit.loading"
-          :loading-text="form.submit.loading ? form.submit.loadingText : ''"
+          :loading="layout.submitBotton.loading"
+          :loading-text="
+            layout.submitBotton.loading ? layout.submitBotton.loadingText : ''
+          "
         />
       </div>
     </van-form>
     <van-row class="options">
-      <van-col span="12" class="a-text" @click="onChangeRoute('/signup')"
-        >注册新用户</van-col
-      >
+      <van-col span="12" class="a-text" @click="onChangeRoute('/signup')">
+        注册新用户
+      </van-col>
       <van-col span="12" class="a-text">忘记密码</van-col>
     </van-row>
   </div>
@@ -53,25 +55,27 @@ export default {
   data() {
     return {
       form: {
+        username: "",
+        password: ""
+      },
+      layout: {
         iconSize: "1.2rem",
         fields: [
           {
             name: "username",
-            value: "",
             type: "text",
             placeholder: "用户名",
             icon: "user-circle-o"
           },
           {
             name: "password",
-            value: "",
             type: "password",
             placeholder: "密码",
             icon: "closed-eye",
             iconToggle: "eye-o"
           }
         ],
-        submit: {
+        submitBotton: {
           text: "登录",
           color: "#02a7f0",
           loading: false,

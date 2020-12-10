@@ -9,15 +9,16 @@
       @click-left="goBack"
     />
     <van-form
-      validate-trigger="onSubmit"
+      ref="signupForm"
+      validate-trigger="onBlur"
       :show-error="false"
       :submit-on-enter="false"
       @submit="onSubmit"
     >
       <van-field
-        v-for="field in form.fields"
+        v-for="field in layout.fields"
         :key="field.name"
-        v-model="field.value"
+        v-model="form[field.name]"
         class="field"
         :rules="field.rules"
         :type="field.type"
@@ -26,7 +27,11 @@
         autosize
       >
         <template #left-icon>
-          <van-icon :name="field.icon" class="icon" :size="form.iconSize" />
+          <van-icon
+            :name="field.icon"
+            class="icon"
+            :size="layout.defaultIconSize"
+          />
         </template>
         <template #right-icon>
           <div
@@ -38,25 +43,27 @@
           </div>
         </template>
       </van-field>
-      <van-checkbox v-model="form.userAgreement.agree" class="agreement">
+      <van-checkbox v-model="layout.userAgreement.agree" class="agreement">
         同意《
         <div class="a-text">
-          {{ form.userAgreement.aText }}
+          {{ layout.userAgreement.aText }}
         </div>
         》
       </van-checkbox>
       <div class="signup-button">
         <van-button
-          :text="form.submit.text"
-          :color="form.submit.color"
+          :text="layout.submitButton.text"
+          :color="layout.submitButton.color"
           square
           block
           type="info"
           native-type="submit"
           size="large"
-          :disabled="!form.userAgreement.agree"
-          :loading="form.submit.loading"
-          :loading-text="form.submit.loading ? form.submit.loadingText : ''"
+          :disabled="!layout.userAgreement.agree"
+          :loading="layout.submitButton.loading"
+          :loading-text="
+            layout.submitButton.loading ? layout.submitButton.loadingText : ''
+          "
         />
       </div>
     </van-form>
@@ -67,15 +74,20 @@
 export default {
   data() {
     return {
+      timer: null,
       form: {
-        iconSize: "1.2rem",
-        verification: {
-          timer: null
-        },
+        username: "",
+        password: "",
+        passwordComfirm: "",
+        phone: "",
+        email: "",
+        verifyCode: ""
+      },
+      layout: {
+        defaultIconSize: "1.2rem",
         fields: [
           {
             name: "username",
-            value: "",
             type: "text",
             placeholder: "登录用户名",
             icon: "user-circle-o",
@@ -92,7 +104,6 @@ export default {
           },
           {
             name: "password",
-            value: "",
             type: "password",
             placeholder: "登录密码",
             icon: "closed-eye",
@@ -105,7 +116,6 @@ export default {
           },
           {
             name: "passwordComfirm",
-            value: "",
             type: "password",
             placeholder: "确认登录密码",
             icon: "closed-eye",
@@ -115,14 +125,13 @@ export default {
                 message: "必须填写确认密码"
               },
               {
-                validator: this.isSamePassword,
+                validator: value => this.form["password"] == value,
                 message: "密码不一致"
               }
             ]
           },
           {
             name: "phone",
-            value: "",
             type: "text",
             placeholder: "电话",
             icon: "phone-o",
@@ -151,7 +160,7 @@ export default {
             ]
           },
           {
-            name: "code",
+            name: "verifyCode",
             value: "",
             type: "text",
             placeholder: "验证码",
@@ -159,8 +168,7 @@ export default {
             rightIcon: {
               enable: true,
               aText: "发送验证码",
-              aTextCache: null,
-              onClick: "sendVerificationCode"
+              aTextCache: null
             }
           }
         ],
@@ -168,7 +176,7 @@ export default {
           agree: false,
           aText: "用户服务协议"
         },
-        submit: {
+        submitButton: {
           text: "注册",
           color: "#02a7f0",
           loading: false,
@@ -181,20 +189,35 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    onSubmit(values) {
+    onSubmit() {
       // 开启加载动效
-      this.form.submit.loading = true;
-      console.log(values);
-      // 模拟登录耗时
-      setTimeout(() => {
-        // 设置登录状态
-        localStorage.setItem("isLogin", true);
-        // 界面跳转
-        this.$router.push("/login");
-      }, 3000);
+      this.layout.submitButton.loading = true;
+      let formData = { ...this.form };
+      delete formData["passwordComfirm"];
+      this.axios
+        .post("user", formData)
+        .then(res => {
+          // 界面跳转
+          this.$router.push("/login");
+          console.log(res.data);
+        })
+        .catch(err => {
+          // 关闭加载特效
+          this.layout.submitButton.loading = false;
+          console.error(err);
+        });
     },
     onClickRightIcon(field) {
-      if (field.name == "code") this.sendVerificationCode(field);
+      if (field.name == "verifyCode") {
+        // 调用组件实例方法验证邮箱是否正确
+        this.$refs.signupForm
+          .validate("email")
+          .then(() => {
+            // 发送验证码
+            this.sendVerifyCode(field);
+          })
+          .catch(error => console.error(error));
+      }
     },
     updateState(field, count) {
       // 缓存不存在的时候创建缓存
@@ -209,19 +232,27 @@ export default {
       // 清空缓存
       field.rightIcon.aTextCache = null;
       // 清空计时器
-      clearInterval(this.form.verification.timer);
-      this.form.verification.timer = null;
+      clearInterval(this.timer);
+      this.timer = null;
       // 设置按钮可用
       field.rightIcon.enable = true;
     },
-    sendVerificationCode(field) {
+    sendVerifyCode(field) {
       // 设置最大倒计时
       const TIME_OUT = 60;
-      if (!this.form.verification.timer) {
+      if (!this.timer) {
         // 设置按钮不可用
         field.rightIcon.enable = false;
+        this.axios
+          .get("user/verify-code", { params: { email: this.form.email } })
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.error(err);
+          });
         // 创建计时器
-        this.form.verification.timer = (() => {
+        this.timer = (() => {
           // 属性闭包，用于保存倒计时
           let count = TIME_OUT;
           return setInterval(() => {
@@ -236,10 +267,6 @@ export default {
           }, 1000);
         })();
       }
-    },
-    isSamePassword(value) {
-      let field = this.form.fields.filter(field => "password" == field.name)[0];
-      return field.value == value;
     }
   }
 };

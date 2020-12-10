@@ -3,6 +3,8 @@ package cn.edu.zucc.se2020g11.api.config.intercepter;
 import cn.edu.zucc.se2020g11.api.service.JwtService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 

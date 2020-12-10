@@ -35,8 +35,8 @@ spring:
         login-password: 123456
         allow: 127.0.0.1
   redis:
-    host: localhost
-    password:
+    host: 47.98.219.27
+    password: 123456
     port: 6379
     timeout: 2000
     lettuce:

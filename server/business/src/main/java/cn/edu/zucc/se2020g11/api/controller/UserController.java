@@ -75,9 +75,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @ApiOperation(value = "用户注册")
-    @ApiImplicitParam(paramType = "body", name = "userEntity", value = "注册表单", required = true, dataType = "UserEntity")
+    @ApiImplicitParam(paramType = "body", name = "signupForm", value = "注册表单", required = true, dataType = "SignupForm")
     public ResponseEntity<ApiResult<Boolean>> signup(@RequestBody @Validated SignupForm signupForm) {
         // 过滤验证码错误的用户
         verifyCodeService.validateCode(signupForm.getEmail(), signupForm.getVerifyCode());
