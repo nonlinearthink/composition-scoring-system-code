@@ -4,9 +4,8 @@
 
 | 应用名称        | 地址            | 开发状态 | 需求 |
 | --------------- | --------------- | -------- | ---- |
-| 移动端用户APP   | [app](app)             | 开发中   | 必做 |
-| 用户API         | [server/user-api](server/user-api) | 开发中   | 必做 |
-| 深度学习打分API |                 | 开发中   | 必做 |
-| 管理员应用      |                 | 开发中   | 必做 |
-| 网页端用户应用  |                 | 开发中   | 可选 |
-
+| 用户API         | [server/business](server/business) | 开发中   | 必做 |
+| 深度学习打分API | [server/deeplearning](server/deeplearning) | 开发中   | 必做 |
+| 管理员应用      | [admin](admin) | 开发中   | 必做 |
+| 网页端用户应用  | [app/web](app/web) | 开发中   | 可选 |
+| 移动端用户APP   | [app/mobile](app/mobile)             | 开发中   | 必做 |
