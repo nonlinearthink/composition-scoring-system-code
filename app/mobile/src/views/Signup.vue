@@ -204,7 +204,7 @@ export default {
         .catch(err => {
           // 关闭加载特效
           this.layout.submitButton.loading = false;
-          console.error(err);
+          console.error(err.response.data);
         });
     },
     onClickRightIcon(field) {
@@ -216,7 +216,7 @@ export default {
             // 发送验证码
             this.sendVerifyCode(field);
           })
-          .catch(error => console.error(error));
+          .catch(reject => console.error(reject));
       }
     },
     updateState(field, count) {
@@ -249,7 +249,7 @@ export default {
             console.log(res.data);
           })
           .catch(err => {
-            console.error(err);
+            console.error(err.response.data);
           });
         // 创建计时器
         this.timer = (() => {

@@ -11,6 +11,8 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   Button,
+  Cell,
+  CellGroup,
   Checkbox,
   CheckboxGroup,
   Col,
@@ -28,6 +30,8 @@ import {
 } from "vant";
 
 Vue.use(Button)
+  .use(Cell)
+  .use(CellGroup)
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(Col)

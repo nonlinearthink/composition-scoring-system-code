@@ -95,17 +95,24 @@ export default {
         field.type = field.type == "text" ? "password" : "text";
       }
     },
-    onSubmit(values) {
+    onSubmit() {
       // 开启加载动效
-      this.form.submit.loading = true;
-      console.log(values);
-      // 模拟登录耗时
-      setTimeout(() => {
-        // 设置登录状态
-        localStorage.setItem("isLogin", true);
-        // 界面跳转
-        this.$router.push("/");
-      }, 3000);
+      this.layout.submitBotton.loading = true;
+      this.axios
+        .post("user/session", this.form)
+        .then(res => {
+          // 设置登录状态和token
+          localStorage.setItem("isLogin", true);
+          localStorage.setItem("token", res.data["token"]);
+          // 界面跳转
+          this.$router.push("/");
+          console.log(res.data);
+        })
+        .catch(err => {
+          // 关闭加载动效
+          this.layout.submitBotton.loading = false;
+          console.error(err.response.data);
+        });
     }
   }
 };

@@ -23,39 +23,109 @@
         </van-col>
       </van-row>
       <van-row class="statistic-bar">
-        <van-col v-for="statistic in statistics" :key="statistic.name" span="8">
-          <van-row>{{ statistic.count }}{{ statistic.unit }}</van-row>
-          <van-row>{{ statistic.name }}</van-row>
+        <van-col
+          v-for="item in layout.statisticBar"
+          :key="item.name"
+          :span="24 / layout.statisticBar.length"
+        >
+          <van-row>{{ statistic[item.name] }}{{ item.unit }}</van-row>
+          <van-row>{{ item.text }}</van-row>
         </van-col>
       </van-row>
     </div>
-    <div class="tool-card"></div>
+    <float-card class="float-card">
+      <van-row class="card-view">
+        <van-col
+          v-for="(item, index) in layout.toolCardItem"
+          :key="index"
+          :span="24 / layout.toolCardItem.length"
+        >
+          <van-row>
+            <van-icon :name="item.icon" :size="layout.toolCardIconSize" />
+          </van-row>
+          <van-row>
+            {{ item.text }}
+          </van-row>
+        </van-col>
+      </van-row>
+      <template #extra>
+        <van-cell is-link>
+          <template #title>
+            <van-icon name="gem-o" />
+            会员中心
+          </template>
+        </van-cell>
+      </template>
+    </float-card>
+    <van-cell-group class="setting-group">
+      <van-cell></van-cell>
+    </van-cell-group>
   </div>
 </template>
 
 <script>
+import FloatCard from "@/components/FloatCard.vue";
 export default {
+  components: {
+    FloatCard
+  },
   data() {
     return {
       nickname: "闪光绝对天龙人",
       signature: "我难道不是最强的吗？",
-      statistics: [
-        {
-          count: 0,
-          unit: "人",
-          name: "粉丝"
-        },
-        {
-          count: 0,
-          unit: "个",
-          name: "关注"
-        },
-        {
-          count: 0,
-          unit: "篇",
-          name: "累计创作"
-        }
-      ]
+      statistic: {
+        fan: 0,
+        follow: 0,
+        compositionTotal: 0
+      },
+      layout: {
+        statisticBar: [
+          {
+            name: "fan",
+            unit: "人",
+            text: "粉丝"
+          },
+          {
+            name: "follow",
+            unit: "个",
+            text: "关注"
+          },
+          {
+            name: "compositionTotal",
+            unit: "篇",
+            text: "累计创作"
+          }
+        ],
+        toolCardIconSize: "2rem",
+        toolCardItem: [
+          {
+            icon: "star-o",
+            text: "我的收藏"
+          },
+          {
+            icon: "todo-list-o",
+            text: "浏览记录"
+          },
+          {
+            icon: "good-job-o",
+            text: "我赞过的"
+          }
+        ],
+        settingGroupItem: [
+          {
+            icon: "",
+            text: ""
+          },
+          {
+            icon: "",
+            text: ""
+          },
+          {
+            icon: "",
+            text: ""
+          }
+        ]
+      }
     };
   }
 };
@@ -85,12 +155,14 @@ export default {
     font-size: $text-size-title;
   }
 }
-.tool-card {
-  margin-top: -$blank-size * 2;
-  width: 90vw;
-  height: 20vh;
+.float-card {
+  width: 100vw;
   background: white;
-  border-radius: $text-size-main;
-  text-align: center;
+  .card-view {
+    text-align: center;
+  }
+}
+.setting-group {
+  margin-top: $blank-size;
 }
 </style>

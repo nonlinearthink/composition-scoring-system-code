@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.edu.zucc.se2020g11</groupId>
-    <artifactId>api-server</artifactId>
+    <artifactId>api.business</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>userEntity-api</name>
+    <name>piduoduo-api-business</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

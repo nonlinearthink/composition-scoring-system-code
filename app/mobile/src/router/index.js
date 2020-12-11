@@ -11,10 +11,10 @@ const routes = [
     component: () => import("../views/Home.vue")
   },
   {
-    path: "/feed",
-    name: "FeedPage",
+    path: "/writing",
+    name: "WritingPage",
     meta: { index: 2 },
-    component: () => import("../views/Feed.vue")
+    component: () => import("../views/Writing.vue")
   },
   {
     path: "/chat",

@@ -35,8 +35,7 @@ export default {
         iconSizeWithText: "1.5rem",
         items: [
           { name: "home", route: "/", icon: "home-o", text: "首页" },
-          { name: "feed", route: "/feed", icon: "fire-o", text: "动态" },
-          { name: "add", icon: "add", iconColor: "#1989fa" },
+          { name: "feed", route: "/feed", icon: "edit", text: "写作" },
           {
             name: "chat",
             route: "/chat",
