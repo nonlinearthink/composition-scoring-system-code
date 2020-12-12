@@ -2,12 +2,8 @@
   <v-touch @swipeleft="rotate" @swiperight="rotate">
     <div
       ref="wrapper"
-      :class="
-        isResersed
-          ? 'piduoduo-rotate-card-reversed'
-          : 'piduoduo-rotate-card-normal'
-      "
-      :style="{ height: wrapperHeight }"
+      :class="`piduoduo-rotate-card-${state}`"
+      :style="{ height: wrapperHeight, animation: animation }"
     >
       <div
         ref="front"
@@ -31,9 +27,12 @@
 export default {
   data() {
     return {
+      state: "init",
+      first: true,
       isResersed: false,
       wrapperHeight: null,
-      contentWidth: null
+      contentWidth: null,
+      animation: null
     };
   },
   mounted() {
@@ -46,7 +45,17 @@ export default {
   },
   methods: {
     rotate() {
-      this.isResersed = !this.isResersed;
+      if (this.first) {
+        this.first = false;
+        this.isResersed = true;
+        this.state = "reversed";
+      } else if (!this.first && !this.isResersed) {
+        this.isResersed = true;
+        this.state = "reversed";
+      } else {
+        this.isResersed = false;
+        this.state = "normal";
+      }
     }
   }
 };
@@ -74,6 +83,9 @@ export default {
   background: white;
   position: relative;
   transform-style: preserve-3d;
+}
+.piduoduo-rotate-card-init {
+  @extend %piduoduo-rotate-card;
 }
 .piduoduo-rotate-card-normal {
   @extend %piduoduo-rotate-card;
