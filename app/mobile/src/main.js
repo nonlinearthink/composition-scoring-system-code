@@ -26,6 +26,7 @@ import {
   Sticky,
   Tabbar,
   TabbarItem,
+  Tag,
   Uploader
 } from "vant";
 
@@ -44,6 +45,7 @@ Vue.use(Button)
   .use(Sticky)
   .use(Tabbar)
   .use(TabbarItem)
+  .use(Tag)
   .use(VanImage)
   .use(Uploader);
 
@@ -60,6 +62,9 @@ axios.interceptors.request.use(
   }
 );
 Vue.use(VueAxios, axios);
+
+import VueTouch from "vue-touch";
+Vue.use(VueTouch, { name: "v-touch" });
 
 library.add(faLock);
 Vue.component("font-awesome-icon", FontAwesomeIcon);

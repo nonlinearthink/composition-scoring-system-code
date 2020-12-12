@@ -18,7 +18,6 @@ export default {};
   // 让行内或类行内元素居中
   text-align: center;
   .piduoduo-float-card {
-    width: 90%;
     // 设置垂直 padding
     @include padding-vertical($blank-size);
     // 负外边框，产生浮动效果
