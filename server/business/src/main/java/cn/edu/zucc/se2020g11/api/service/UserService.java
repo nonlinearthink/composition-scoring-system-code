@@ -5,6 +5,7 @@ import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.LoginForm;
+import cn.edu.zucc.se2020g11.api.model.PasswordChangeModel;
 import cn.edu.zucc.se2020g11.api.model.SignupForm;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.apache.logging.log4j.LogManager;
@@ -68,7 +69,7 @@ public class UserService {
      * @throws BaseException 异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public void login(LoginForm loginForm) throws BaseException {
+    public UserEntity login(LoginForm loginForm) throws BaseException {
         // 查询用户
         UserEntity user = userEntityMapper.selectByPrimaryKey(loginForm.getUsername());
         if (user == null) {
@@ -76,6 +77,46 @@ public class UserService {
         } else if (!user.getPassword().equals(oneWayEncryption(loginForm.getPassword()))) {
             throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
         }
+        return user;
     }
 
+    /**
+     * 更改密码服务
+     *
+     * @param passwordChangeModel 密码修改模型
+     * @throws BaseException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void changeUserPassword(String username, PasswordChangeModel passwordChangeModel) throws BaseException {
+        // 查询用户
+        UserEntity user = userEntityMapper.selectByPrimaryKey(username);
+        if (user == null) {
+            throw new BaseException(ErrorDictionary.USERNAME_NOT_EXIST, LogCategory.BUSINESS);
+        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword()))) {
+            throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
+        }
+        // 修改密码
+        user.setPassword(oneWayEncryption(passwordChangeModel.getNewPassword()));
+        userEntityMapper.updateByPrimaryKey(user);
+    }
+
+    /**
+     * 更改密码服务
+     *
+     * @param passwordChangeModel 密码修改模型
+     * @throws BaseException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(String username, PasswordChangeModel passwordChangeModel) throws BaseException {
+        // 查询用户
+        UserEntity user = userEntityMapper.selectByPrimaryKey(username);
+        if (user == null) {
+            throw new BaseException(ErrorDictionary.USERNAME_NOT_EXIST, LogCategory.BUSINESS);
+        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword()))) {
+            throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
+        }
+        // 修改密码
+        user.setPassword(oneWayEncryption(passwordChangeModel.getNewPassword()));
+        userEntityMapper.updateByPrimaryKey(user);
+    }
 }

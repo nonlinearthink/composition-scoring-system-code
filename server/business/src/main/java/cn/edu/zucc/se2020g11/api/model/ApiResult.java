@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 @Setter
 public class ApiResult<T> {
 
-    private int code;
+    private int code = 0;
 
     private String msg;
 

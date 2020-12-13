@@ -70,7 +70,6 @@ public class UserController {
         // 发送邮件
         mailService.sendSimpleMail(email, "批多多注册认证服务", "注册验证码:" + verifyCode + "(区分大小写)");
         ApiResult<Boolean> result = new ApiResult<>();
-        result.setCode(0);
         result.setMsg("请求成功");
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -84,7 +83,6 @@ public class UserController {
         // 注册
         userService.signup(signupForm);
         ApiResult<Boolean> result = new ApiResult<>();
-        result.setCode(0);
         result.setMsg("创建成功");
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -94,29 +92,24 @@ public class UserController {
     @ApiImplicitParam(paramType = "body", name = "loginForm", value = "登录表单", required = true, dataType = "LoginForm")
     public ResponseEntity<ApiResult<Map<String, Object>>> login(@RequestBody @Validated LoginForm loginForm) {
         // 登录检测
-        userService.login(loginForm);
+        UserEntity user = userService.login(loginForm);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
-        result.setCode(0);
         result.setMsg("创建成功");
         Map<String, Object> data = new HashMap<>(1);
         // 创建 token
         data.put("token", jwtService.generateToken(loginForm.getUsername(), UserType.USER));
+        data.put("user", user);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @LoginRequired(type = UserType.USER)
-    @DeleteMapping("/session/{username}")
+    @DeleteMapping("/session")
     @ApiOperation(value = "用户登出")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<ApiResult<Boolean>> logout(@PathVariable("username") String username,
-                                                     HttpServletRequest request) {
-        if (!username.equals(request.getAttribute("username"))) {
-            throw new BaseException(ErrorDictionary.INVALID_REQUEST, LogCategory.BUSINESS);
-        }
-        jwtService.clearTokenCache(username);
+    public ResponseEntity<ApiResult<Boolean>> logout(HttpServletRequest request) {
+        jwtService.clearTokenCache((String)request.getAttribute("username"));
         ApiResult<Boolean> result = new ApiResult<>();
-        result.setCode(0);
         result.setMsg("删除成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -127,12 +120,16 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
                     "String"),
-            @ApiImplicitParam(paramType = "body", name = "passwordModel", value = "密码信息", required = true, dataType =
-                    "PasswordModel")
+            @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
+                    "PasswordChangeModel")
     })
-    public ResponseEntity<UserEntity> changeUserPassword(@PathVariable("username") String username,
-                                                         @RequestBody PasswordChangeModel passwordChangeModel) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiResult<Boolean>> changeUserPassword(@PathVariable("username") String username,
+                                                         @RequestBody @Validated PasswordChangeModel passwordChangeModel) {
+        // 修改密码
+        userService.changeUserPassword(username, passwordChangeModel);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)
