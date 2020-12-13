@@ -20,3 +20,7 @@
 .piduoduo-avatar {
   @include margin-horizontal($blank-size);
 }
+
+.piduoduo-action-button {
+  font-size: $text-large;
+}

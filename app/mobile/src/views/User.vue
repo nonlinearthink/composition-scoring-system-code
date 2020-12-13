@@ -14,11 +14,11 @@
         </div>
         <div v-if="isLogin" class="user-info-other">
           <div class="nickname">
-            {{ layout.nickname }}
+            {{ user.nickname }}
           </div>
-          <van-row class="signature">
+          <van-row v-if="user.signature" class="signature">
             <van-tag color="orange">个性签名</van-tag>
-            {{ layout.signature }}
+            {{ user.signature }}
           </van-row>
         </div>
         <div v-else class="user-info-other" @click="goLogin">
@@ -69,9 +69,9 @@
         v-for="item in layout.settingGroupItem"
         :key="item.text"
         is-link
-        :icon="item.icon"
         size="large"
         center
+        :to="item.to"
       >
         <template #icon>
           <van-icon :name="item.icon" class="piduoduo-setting-icon" />
@@ -86,6 +86,7 @@
 
 <script>
 import FloatCard from "@/components/FloatCard.vue";
+import { mapState } from "vuex";
 export default {
   components: {
     FloatCard
@@ -99,10 +100,6 @@ export default {
       },
       layout: {
         avatar: require("../assets/images/avatar.svg"),
-        nickname:
-          "闪光耳机绝对天龙人闪光耳机绝对天龙人闪光耳机绝对天龙人闪光耳机绝对天龙人",
-        signature:
-          "我难道不是最强的吗？asdasdjkas hdkasjdhasjkdh asdkjashd askjdahskdas hdajkdhasjd ahsda sdhakdas dhakadkasdka dkajdasda sdjakdskadas sajdasdad sasjk dasd kasdsa",
         statisticBar: [
           {
             name: "fan",
@@ -141,24 +138,28 @@ export default {
         settingGroupItem: [
           {
             icon: "question-o",
-            text: "帮助手册"
+            text: "帮助手册",
+            to: ""
           },
           {
             icon: "envelop-o",
-            text: "意见反馈"
+            text: "意见反馈",
+            to: ""
           },
           {
             icon: "setting-o",
-            text: "设置"
+            text: "设置",
+            to: "/setting/main"
           }
         ]
       }
     };
   },
   computed: {
-    isLogin() {
-      return localStorage.getItem("isLogin");
-    }
+    // isLogin() {
+    //   return localStorage.getItem("isLogin");
+    // },
+    ...mapState(["user", "token", "isLogin"])
   },
   methods: {
     goLogin() {

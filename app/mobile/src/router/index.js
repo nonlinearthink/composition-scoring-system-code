@@ -11,10 +11,10 @@ const routes = [
     component: () => import("../views/Home.vue")
   },
   {
-    path: "/writing",
-    name: "WritingPage",
+    path: "/manager",
+    name: "WritingManagerPage",
     meta: { index: 2 },
-    component: () => import("../views/Writing.vue")
+    component: () => import("../views/WritingManager.vue")
   },
   {
     path: "/chat",
@@ -39,6 +39,36 @@ const routes = [
     name: "SignupPage",
     meta: { index: 6 },
     component: () => import("../views/Signup.vue")
+  },
+  {
+    path: "/setting/main",
+    name: "SettingMainPage",
+    meta: { index: 5 },
+    component: () => import("../views/SettingMain.vue")
+  },
+  {
+    path: "/setting/user",
+    name: "SettingUserPage",
+    meta: { index: 6 },
+    component: () => import("../views/SettingUser.vue")
+  },
+  {
+    path: "/setting/security",
+    name: "SettingSecurityPage",
+    meta: { index: 6 },
+    component: () => import("../views/SettingSecurity.vue")
+  },
+  {
+    path: "/setting/about",
+    name: "SettingAboutPage",
+    meta: { index: 6 },
+    component: () => import("../views/SettingAbout.vue")
+  },
+  {
+    path: "/writing",
+    name: "WritingPage",
+    meta: { index: 3 },
+    component: () => import("../views/Writing.vue")
   }
 ];
 
