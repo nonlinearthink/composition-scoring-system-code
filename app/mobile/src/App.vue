@@ -3,7 +3,13 @@
     <transition :name="transitionName">
       <router-view />
     </transition>
-    <van-tabbar v-show="tabbar.enable" v-model="tabbar.active" route>
+    <van-tabbar
+      v-if="tabbar.enable"
+      v-model="tabbar.active"
+      route
+      fixed
+      placeholder
+    >
       <van-tabbar-item
         v-for="item in tabbar.items"
         :key="item.name"
@@ -35,7 +41,7 @@ export default {
         iconSizeWithText: "1.5rem",
         items: [
           { name: "home", route: "/", icon: "home-o", text: "首页" },
-          { name: "feed", route: "/feed", icon: "edit", text: "写作" },
+          { name: "feed", route: "/manager", icon: "edit", text: "写作" },
           {
             name: "chat",
             route: "/chat",
@@ -52,12 +58,13 @@ export default {
   watch: {
     $route: function(to, from) {
       // 设置 tabbar 在那些页面可见
-      let tabbarWhiteList = ["/", "/feed", "/chat", "/user"];
+      let tabbarWhiteList = this.tabbar.items.map(item => item.route);
       if (tabbarWhiteList.includes(to.path)) {
         this.tabbar.enable = true;
       } else {
         this.tabbar.enable = false;
       }
+
       // 设置转场动画
       if (to.meta.index > from.meta.index) {
         this.transitionName = "slide-left";

@@ -10,3 +10,17 @@
   display: inline-block;
   color: #888;
 }
+
+.piduoduo-setting-icon {
+  padding-right: $blank-size / 2;
+  font-size: $text-size-title;
+  color: $color-primary;
+}
+
+.piduoduo-avatar {
+  @include margin-horizontal($blank-size);
+}
+
+.piduoduo-action-button {
+  font-size: $text-large;
+}

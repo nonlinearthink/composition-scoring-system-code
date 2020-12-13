@@ -103,7 +103,10 @@ export default {
         .then(res => {
           // 设置登录状态和token
           localStorage.setItem("isLogin", true);
-          localStorage.setItem("token", res.data["token"]);
+          this.$store.commit("login");
+          this.$store.commit("updateToken", res.data.data.token);
+          this.$store.commit("updateUser", res.data.data.user);
+          console.log(this.$store.state);
           // 界面跳转
           this.$router.push("/");
           console.log(res.data);

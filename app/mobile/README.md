@@ -48,3 +48,7 @@ npm run build-app
 ### 自定义配置
 
 详情见 [Configuration Reference](https://cli.vuejs.org/config/)。
+
+## 浏览器兼容性
+
+

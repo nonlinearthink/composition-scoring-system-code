@@ -26,5 +26,6 @@ pnpm-debug.log*
 # Cordova (added by vue-cli-plugin-cordova-simple)
 platforms
 plugins
+!src/plugins
 www
 
