@@ -17,9 +17,12 @@ import {
   NavBar,
   Popup,
   Row,
+  Search,
   Sticky,
+  Tab,
   Tabbar,
   TabbarItem,
+  Tabs,
   Tag,
   Toast,
   Uploader
@@ -40,9 +43,12 @@ Vue.use(ActionSheet)
   .use(NavBar)
   .use(Popup)
   .use(Row)
+  .use(Search)
   .use(Sticky)
+  .use(Tab)
   .use(Tabbar)
   .use(TabbarItem)
+  .use(Tabs)
   .use(Tag)
   .use(Toast)
   .use(VanImage)

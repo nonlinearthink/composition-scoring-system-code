@@ -1,6 +1,6 @@
 <template>
   <div id="writing-manager-page">
-    <van-nav-bar title="写作" fixed placeholder safe-area-inset-top>
+    <van-nav-bar title="作文" fixed placeholder safe-area-inset-top>
       <template #right>
         <van-icon
           name="plus"

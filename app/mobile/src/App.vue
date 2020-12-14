@@ -41,7 +41,7 @@ export default {
         iconSizeWithText: "1.5rem",
         items: [
           { name: "home", route: "/", icon: "home-o", text: "首页" },
-          { name: "feed", route: "/manager", icon: "edit", text: "写作" },
+          { name: "feed", route: "/manager", icon: "edit", text: "作文" },
           {
             name: "chat",
             route: "/chat",

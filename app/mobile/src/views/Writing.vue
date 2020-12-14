@@ -81,13 +81,22 @@
     />
     <van-dialog
       v-model="editor.saveConfirm"
-      title="有未保存的内容"
+      title="是否缓存更改"
+      message="缓存的内容在你下次进入写作页面的时候会自动加载"
       show-cancel-button
-      confirm-button-text="保存并退出"
-      cancel-button-text="直接退出"
+      confirm-button-text="缓存写作"
+      cancel-button-text="退出写作"
+      close-on-click-overlay
       @confirm="saveConfirm"
       @cancel="saveCancel"
+      @close="cancelSave"
     />
+    <van-popup v-model="howSelectPublish" position="bottom">
+      <van-row>
+        <van-col></van-col>
+        <van-col></van-col>
+      </van-row>
+    </van-popup>
   </div>
 </template>
 
@@ -98,6 +107,7 @@ export default {
     return {
       showSelectVisibility: false,
       showDescription: false,
+      showSelectPublish: false,
       passSave: false,
       toCache: null,
       visibilityList: [
@@ -166,6 +176,9 @@ export default {
       this.$store.commit("closeSaveConfirm");
       // 跳转到之前缓存的路径
       this.$router.push(this.toCache);
+    },
+    cancelSave() {
+      this.editor.saveConfirm = false;
     },
     submit() {
       this.showPopup = true;
