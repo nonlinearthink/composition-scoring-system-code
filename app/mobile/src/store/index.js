@@ -12,6 +12,7 @@ export default new Vuex.Store({
     token: "",
     user: null,
     editor: {
+      saveConfirm: false,
       composition: {
         title: "",
         visibility: 1,
@@ -33,8 +34,14 @@ export default new Vuex.Store({
     logout(state) {
       state.isLogin = false;
     },
-    saveEditor(state) {
-      state.editor.isSave = true;
+    saveEditor(state, composition) {
+      state.editor.composition = composition;
+    },
+    openSaveConfirm(state) {
+      state.editor.saveConfirm = true;
+    },
+    closeSaveConfirm(state) {
+      state.editor.saveConfirm = false;
     }
   },
   actions: {},

@@ -9,7 +9,7 @@
       @click-left="goBack"
     >
       <template #right>
-        <van-icon name="success" class="action-button" />
+        <van-icon name="success" class="action-button" @click="submit" />
       </template>
     </van-nav-bar>
     <div class="composition">
@@ -29,14 +29,47 @@
           </template>
         </van-field>
       </van-sticky>
-      <van-field
-        v-model="composition.compositionBody"
-        type="textarea"
-        placeholder="输入作文"
-        class="composition-body"
-        :border="false"
-        autosize
-      />
+      <van-cell-group title="写作">
+        <van-field
+          v-model="composition.compositionBody"
+          type="textarea"
+          placeholder="输入作文"
+          class="composition-body"
+          :border="false"
+          autosize
+        />
+      </van-cell-group>
+      <van-cell-group>
+        <template #title>
+          <van-row
+            v-if="composition.description == '' && !showDescription"
+            class="composition-extra"
+            @click="startDescription"
+          >
+            <van-col>
+              <van-icon name="add" class="add-description-icon" />
+            </van-col>
+            <van-col>
+              <div class="icon-hint">
+                添加描述
+              </div>
+            </van-col>
+          </van-row>
+          <span v-else>
+            描述
+          </span>
+        </template>
+        <van-field
+          v-if="showDescription"
+          v-model="composition.description"
+          type="textarea"
+          placeholder="输入作文描述"
+          class="composition-description"
+          :border="false"
+          autosize
+        />
+      </van-cell-group>
+      <div></div>
     </div>
     <van-action-sheet
       v-model="showSelectVisibility"
@@ -45,6 +78,15 @@
       cancel-text="取消"
       close-on-popstate
       @select="changeVisibility"
+    />
+    <van-dialog
+      v-model="editor.saveConfirm"
+      title="有未保存的内容"
+      show-cancel-button
+      confirm-button-text="保存并退出"
+      cancel-button-text="直接退出"
+      @confirm="saveConfirm"
+      @cancel="saveCancel"
     />
   </div>
 </template>
@@ -55,6 +97,9 @@ export default {
   data() {
     return {
       showSelectVisibility: false,
+      showDescription: false,
+      passSave: false,
+      toCache: null,
       visibilityList: [
         { id: 1, name: "私密" },
         { id: 2, name: "仅粉丝可见" },
@@ -87,6 +132,13 @@ export default {
     },
     ...mapState(["editor"])
   },
+  created() {
+    // 加载缓存，注意不能使用引用赋值
+    this.composition = Object.assign({}, this.editor.composition);
+    if (this.composition.description != "") {
+      this.showDescription = true;
+    }
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -98,10 +150,44 @@ export default {
       this.showSelectVisibility = false;
       this.composition.visibility = value.id;
       this.$toast(`${value.name}`);
+    },
+    saveConfirm() {
+      // 保存编辑器
+      this.$store.commit("saveEditor", this.composition);
+      // 关闭保存确认按钮
+      this.$store.commit("closeSaveConfirm");
+      // 跳转到之前缓存的路径
+      this.$router.push(this.toCache);
+    },
+    saveCancel() {
+      // 设置不保存
+      this.passSave = true;
+      // 关闭保存确认按钮
+      this.$store.commit("closeSaveConfirm");
+      // 跳转到之前缓存的路径
+      this.$router.push(this.toCache);
+    },
+    submit() {
+      this.showPopup = true;
+    },
+    startDescription() {
+      this.showDescription = true;
     }
   },
   beforeRouteLeave(to, from, next) {
-    if (!this.isSave) next(false);
+    this.toCache = to;
+    if (this.passSave) next();
+    else {
+      if (!this.isSave) {
+        next(false);
+        setTimeout(() => {
+          // 设置一个时间缓存，防止状态更新在路由刷新之前发生
+          this.$store.commit("openSaveConfirm");
+        }, 500);
+      } else {
+        next();
+      }
+    }
   }
 };
 </script>
@@ -115,11 +201,21 @@ export default {
 }
 .composition-title {
   font-size: $text-large;
-  margin-bottom: $blank-size;
 }
 .composition-visibility {
   margin-left: $blank-size;
   color: $color-primary;
   font-size: $text-normal;
+}
+.composition-extra {
+  .add-description-icon {
+    color: $color-primary;
+    font-size: $text-normal;
+  }
+  .icon-hint {
+    color: $color-fade;
+    font-size: $text-normal;
+    margin-left: $blank-size/4;
+  }
 }
 </style>
