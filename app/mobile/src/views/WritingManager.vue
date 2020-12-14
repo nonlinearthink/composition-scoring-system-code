@@ -5,11 +5,71 @@
         <van-icon
           name="plus"
           class="piduoduo-action-button"
-          @click="goWriting"
+          @click="onRouteToWriting"
         />
       </template>
     </van-nav-bar>
-    <div class="main-container">
+    <van-tabs v-model="activeTab" animated>
+      <van-tab v-for="tab in layout.tabs" :key="tab.state" :title="tab.title">
+        <div class="main-container">
+          <rotate-card
+            v-for="item in layout.compositions"
+            :key="item.id"
+            class="composition-card"
+          >
+            <div class="front-side" @click="showDelete(item)">
+              <van-row class="title">{{ item.title }}</van-row>
+              <van-row class="update-time">
+                {{ timeIntervalString(item.releaseDate) }}
+              </van-row>
+              <van-row class="brief">{{ item.compositionBody }} </van-row>
+              <van-row type="flex" justify="space-between" class="tool-bar">
+                <van-col v-if="item.score">
+                  {{ item.score }}/{{ totalScore }}
+                </van-col>
+              </van-row>
+            </div>
+            <template #reverse>
+              <div class="back-side">
+                <van-row class="row">
+                  <van-col span="8">亮点内容</van-col>
+                  <van-col span="8">
+                    亮点词:
+                    <span class="highlight">
+                      {{ 0 + "个" }}
+                    </span>
+                  </van-col>
+                  <van-col span="8">
+                    亮点句:
+                    <span class="highlight">
+                      {{ 0 + "个" }}
+                    </span>
+                  </van-col>
+                </van-row>
+                <van-row class="row">
+                  <van-col span="8">错误内容</van-col>
+                  <van-col span="8">
+                    拼写错误:
+                    <span class="error">{{ 0 + "个" }}</span>
+                  </van-col>
+                  <van-col span="8">
+                    语法错误:
+                    <span class="error">
+                      {{ 0 + "个" }}
+                    </span>
+                  </van-col>
+                </van-row>
+                <van-row class="row">
+                  <van-col span="8">高频错误</van-col>
+                  <van-col span="16"></van-col>
+                </van-row>
+              </div>
+            </template>
+          </rotate-card>
+        </div>
+      </van-tab>
+    </van-tabs>
+    <!-- <div class="main-container">
       <rotate-card
         v-for="item in composition"
         :key="item.id"
@@ -70,18 +130,31 @@
           </div>
         </template>
       </rotate-card>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import RotateCard from "@/components/RotateCard";
+import { mapState } from "vuex";
+import dateUtils from "../assets/js/common/dateUtils";
 export default {
   components: {
     RotateCard
   },
   data() {
     return {
+      activeTab: "",
+      layout: {
+        tabs: [
+          { title: "全部", state: 0 },
+          { title: "草稿", state: 1 },
+          { title: "评分中", state: 2 },
+          { title: "已发布", state: 3 }
+        ],
+        compositions: []
+      },
+      tabbar: "",
       totalScore: 10,
       composition: [
         {
@@ -116,6 +189,27 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState(["compositions"])
+  },
+  watch: {
+    activeTab(value) {
+      console.log(value);
+      this.layout.compositions = this.compositions.filter(composition => {
+        if (value == 0) {
+          return true;
+        } else {
+          return composition.status == value;
+        }
+      });
+    }
+  },
+  created() {
+    // this.axios
+    //   .get("composition")
+    //   .then(res => {})
+    //   .catch();
+  },
   methods: {
     showDelete(item) {
       item.showDelete = !item.showDelete;
@@ -124,9 +218,10 @@ export default {
       this.composition.splice(this.composition.indexOf(item), 1);
       this.$forceUpdate();
     },
-    goWriting() {
+    onRouteToWriting() {
       this.$router.push("/writing");
-    }
+    },
+    timeIntervalString: dateUtils.timeIntervalString
   }
 };
 </script>

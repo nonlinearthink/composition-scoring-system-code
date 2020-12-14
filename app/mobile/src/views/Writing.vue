@@ -6,200 +6,164 @@
       placeholder
       left-arrow
       safe-area-inset-top
-      @click-left="goBack"
+      @click-left="onRouteBack"
     >
       <template #right>
-        <van-icon name="success" class="action-button" @click="submit" />
+        <van-icon
+          name="success"
+          class="piduoduo-actionbar-item"
+          @click="onSubmit"
+        />
       </template>
     </van-nav-bar>
-    <div class="composition">
-      <van-sticky>
-        <van-field
-          ref="compositionTitle"
-          v-model="composition.title"
-          placeholder="输入发布标题"
-          center
-          size="large"
-          class="composition-title"
-        >
-          <template #extra>
-            <div class="composition-visibility" @click="selectVisibility">
-              {{ visibilityText }}
-            </div>
-          </template>
-        </van-field>
-      </van-sticky>
-      <van-cell-group title="写作">
-        <van-field
-          v-model="composition.compositionBody"
-          type="textarea"
-          placeholder="输入作文"
-          class="composition-body"
-          :border="false"
-          autosize
-        />
-      </van-cell-group>
-      <van-cell-group>
-        <template #title>
-          <van-row
-            v-if="composition.description == '' && !showDescription"
-            class="composition-extra"
-            @click="startDescription"
-          >
-            <van-col>
-              <van-icon name="add" class="add-description-icon" />
-            </van-col>
-            <van-col>
-              <div class="icon-hint">
-                添加描述
-              </div>
-            </van-col>
-          </van-row>
-          <span v-else>
-            描述
-          </span>
-        </template>
-        <van-field
-          v-if="showDescription"
-          v-model="composition.description"
-          type="textarea"
-          placeholder="输入作文描述"
-          class="composition-description"
-          :border="false"
-          autosize
-        />
-      </van-cell-group>
-      <div></div>
+    <div id="writing-statebar">
+      <van-row type="flex" justify="space-between">
+        <van-col>单词统计: {{ wordCount }} words</van-col>
+        <van-col>{{ isEditing ? "编辑中..." : "" }}</van-col>
+      </van-row>
     </div>
-    <van-action-sheet
-      v-model="showSelectVisibility"
-      :actions="visibilityList"
-      close-on-click-action
-      cancel-text="取消"
-      close-on-popstate
-      @select="changeVisibility"
+    <van-field
+      v-model="composition.body"
+      type="textarea"
+      placeholder="输入作文"
+      :border="false"
+      autosize
+      @focus="onFocus"
+      @blur="onBlur"
     />
     <van-dialog
-      v-model="editor.saveConfirm"
-      title="是否缓存更改"
-      message="缓存的内容在你下次进入写作页面的时候会自动加载"
+      v-model="enableQuitConfirm"
+      title="内容未保存"
       show-cancel-button
-      confirm-button-text="缓存写作"
-      cancel-button-text="退出写作"
+      confirm-button-text="保存"
+      cancel-button-text="退出"
       close-on-click-overlay
-      @confirm="saveConfirm"
-      @cancel="saveCancel"
-      @close="cancelSave"
+      @confirm="onConfirmSave"
+      @cancel="onCancelSave"
     />
-    <van-popup v-model="howSelectPublish" position="bottom">
-      <van-row>
-        <van-col></van-col>
-        <van-col></van-col>
-      </van-row>
-    </van-popup>
+    <van-dialog
+      v-model="enableLoginRequire"
+      title="请先登录"
+      message="游客模式下不能提交作文"
+      confirm-button-text="登录"
+      close-on-click-overlay
+      @confirm="onRouteToLogin"
+    />
+    <van-dialog
+      v-model="enableSubmit"
+      title="选择提交类型"
+      show-cancel-button
+      confirm-button-text="生成评价"
+      cancel-button-text="提交草稿"
+      close-on-click-overlay
+      @confirm="onSubmitConfirm(2)"
+      @cancel="onSubmitConfirm(1)"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import Composition from "../assets/js/types/composition";
 export default {
   data() {
     return {
-      showSelectVisibility: false,
-      showDescription: false,
-      showSelectPublish: false,
-      passSave: false,
-      toCache: null,
-      visibilityList: [
-        { id: 1, name: "私密" },
-        { id: 2, name: "仅粉丝可见" },
-        { id: 3, name: "公开" }
-      ],
+      toRouteCache: null,
       composition: {
-        title: "",
-        visibility: 1,
-        compositionBody: "",
-        description: ""
-      }
+        body: ""
+      },
+      isSubmit: false,
+      enableQuitConfirm: false,
+      enableLoginRequire: false,
+      enableSubmit: false,
+      routePassport: false,
+      isEditing: false
     };
   },
   computed: {
-    visibilityText() {
-      return this.visibilityList[this.composition.visibility - 1].name;
+    // 当前内容是否已缓存
+    isCache() {
+      return this.editing.composition.body == this.composition.body;
     },
-    isSave() {
-      if (this.composition.title != this.editor.composition.title) return false;
-      if (this.composition.visibility != this.editor.composition.visibility)
-        return false;
-      if (
-        this.composition.compositionBody !=
-        this.editor.composition.compositionBody
-      )
-        return false;
-      if (this.composition.description != this.editor.composition.description)
-        return false;
-      return true;
+    wordCount() {
+      if (this.composition && this.composition.body) {
+        return this.composition.body.match(/\b\w+\b/gm).length;
+      } else {
+        return 0;
+      }
     },
-    ...mapState(["editor"])
+    ...mapState(["editing", "isLogin"])
+  },
+  watch: {
+    enableQuitConfirm(value) {
+      console.log(value);
+    }
   },
   created() {
     // 加载缓存，注意不能使用引用赋值
-    this.composition = Object.assign({}, this.editor.composition);
-    if (this.composition.description != "") {
-      this.showDescription = true;
-    }
+    this.composition = Object.assign({}, this.editing.composition);
   },
   methods: {
-    goBack() {
+    /**
+     * @description 路由返回
+     */
+    onRouteBack() {
       this.$router.go(-1);
     },
-    selectVisibility() {
-      this.showSelectVisibility = true;
+    onRouteToLogin() {
+      this.routePassport = true;
+      this.$router.push("/login");
     },
-    changeVisibility(value) {
-      this.showSelectVisibility = false;
-      this.composition.visibility = value.id;
-      this.$toast(`${value.name}`);
-    },
-    saveConfirm() {
+    onConfirmSave() {
       // 保存编辑器
-      this.$store.commit("saveEditor", this.composition);
-      // 关闭保存确认按钮
-      this.$store.commit("closeSaveConfirm");
+      this.$store.commit("updateEditingComposition", this.composition.body);
       // 跳转到之前缓存的路径
-      this.$router.push(this.toCache);
+      this.$router.push(this.toRouteCache);
     },
-    saveCancel() {
+    onCancelSave() {
       // 设置不保存
-      this.passSave = true;
-      // 关闭保存确认按钮
-      this.$store.commit("closeSaveConfirm");
+      this.routePassport = true;
       // 跳转到之前缓存的路径
-      this.$router.push(this.toCache);
+      this.$router.push(this.toRouteCache);
     },
-    cancelSave() {
-      this.editor.saveConfirm = false;
+    onFocus() {
+      this.isEditing = true;
     },
-    submit() {
-      this.showPopup = true;
+    onBlur() {
+      this.isEditing = false;
     },
-    startDescription() {
-      this.showDescription = true;
+    onSubmit() {
+      this.enableSubmit = true;
+    },
+    onSubmitConfirm(type) {
+      if (this.isLogin) {
+        this.routePassport = true;
+        this.$store.commit(
+          "addComposition",
+          new Composition({
+            compositionId: this.$store.state.compositions.length,
+            compositionBody: this.composition.body,
+            status: type,
+            releaseDate: new Date().getTime()
+          })
+        );
+        this.$router.push("/manager");
+        this.$toast("添加成功");
+      } else {
+        this.enableLoginRequire = true;
+      }
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.toCache = to;
-    if (this.passSave) next();
-    else {
-      if (!this.isSave) {
-        next(false);
-        setTimeout(() => {
-          // 设置一个时间缓存，防止状态更新在路由刷新之前发生
-          this.$store.commit("openSaveConfirm");
-        }, 500);
-      } else {
-        next();
-      }
+    if (this.routePassport || this.isCache) {
+      next();
+    } else {
+      this.toRouteCache = to;
+      next(false);
+      setTimeout(() => {
+        // 设置一个时间缓存，防止状态更新在路由刷新之前发生
+        this.enableQuitConfirm = true;
+      }, 500);
     }
   }
 };
@@ -208,27 +172,10 @@ export default {
 <style lang="scss" scoped>
 #writing-page {
   height: 100vh;
-}
-.action-button {
-  font-size: $text-large;
-}
-.composition-title {
-  font-size: $text-large;
-}
-.composition-visibility {
-  margin-left: $blank-size;
-  color: $color-primary;
-  font-size: $text-normal;
-}
-.composition-extra {
-  .add-description-icon {
-    color: $color-primary;
-    font-size: $text-normal;
-  }
-  .icon-hint {
-    color: $color-fade;
-    font-size: $text-normal;
-    margin-left: $blank-size/4;
+  background: white;
+  #writing-statebar {
+    margin: $blank-size/2 $blank-size;
+    font-size: $text-small;
   }
 }
 </style>

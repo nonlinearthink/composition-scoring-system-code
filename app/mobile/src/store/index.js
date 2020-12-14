@@ -11,6 +11,15 @@ export default new Vuex.Store({
     isLogin: false,
     token: "",
     user: null,
+    editing: {
+      composition: {
+        body: ""
+      }
+    },
+    compositions: [],
+    setting: {
+      cacheEditingComposition: true
+    },
     editor: {
       saveConfirm: false,
       composition: {
@@ -22,6 +31,12 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateEditingComposition(state, text) {
+      state.editing.composition.body = text;
+    },
+    addComposition(state, composition) {
+      state.compositions.push(composition);
+    },
     updateUser(state, user) {
       state.user = user;
     },
