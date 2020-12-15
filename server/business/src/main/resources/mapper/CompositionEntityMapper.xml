@@ -150,7 +150,7 @@
       valid = #{valid,jdbcType=BIT}
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
-  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity" resultMap="BaseResultMap">
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" resultMap="BaseResultMap">
     select *
     from composition
     <where>

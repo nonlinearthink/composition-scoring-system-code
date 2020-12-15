@@ -18,5 +18,7 @@ public interface FollowEntityMapper {
 
     int updateByPrimaryKey(FollowEntity record);
 
-    List<FollowEntity> selectAllSelective(UserEntity record);
+    List<FollowEntity> selectAllSelective(FollowEntity record);
+
+    List<FollowEntity> selectAllSelectiveByUser(FollowEntity record);
 }
