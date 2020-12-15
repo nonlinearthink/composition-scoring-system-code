@@ -28,3 +28,8 @@
 .piduoduo-actionbar-item {
   font-size: $text-large;
 }
+
+.piduoduo-tag {
+  @include margin-horizontal($blank-size/4);
+  padding: $blank-size/4 0;
+}

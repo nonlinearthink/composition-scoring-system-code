@@ -79,8 +79,6 @@ export default {
   }
 }
 %piduoduo-rotate-card {
-  border-radius: $blank-size;
-  background: white;
   position: relative;
   transform-style: preserve-3d;
 }
@@ -96,10 +94,14 @@ export default {
   animation: rotate cubic-bezier(0.76, -0.51, 0.29, 1.5) 1s forwards;
 }
 .rotate-card-front-side {
+  border-radius: $blank-size;
+  background: white;
   position: absolute;
   backface-visibility: hidden;
 }
 .rotate-card-back-side {
+  border-radius: $blank-size;
+  background: white;
   transform: rotateY(180deg);
   backface-visibility: hidden;
   height: 100%;

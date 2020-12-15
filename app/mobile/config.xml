@@ -11,6 +11,12 @@
     <preference name="StatusBarBackgroundColor" value="#000000" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="StatusBarDefaultScrollToTop" value="false" />
+    <preference name="NativeXHRLogging" value="full|none" />
+    <preference name="AllowUntrustedCerts"  value="true|false" />
+    <preference name="InterceptRemoteRequests" value="all|secureOnly" />
+    <preference name="CustomUserAgent" value="my_custom_user_agent" />
+    <preference name="allowFileAccessFromFileURLs" value="true|false" />
+    <preference name="allowUniversalAccessFromFileURLs" value="true|false" />
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />

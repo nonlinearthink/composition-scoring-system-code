@@ -102,7 +102,6 @@ export default {
         .post("user/session", this.form)
         .then(res => {
           // 设置登录状态和token
-          localStorage.setItem("isLogin", true);
           this.$store.commit("login");
           this.$store.commit("updateToken", res.data.data.token);
           this.$store.commit("updateUser", res.data.data.user);
@@ -115,6 +114,7 @@ export default {
           // 关闭加载动效
           this.layout.submitBotton.loading = false;
           console.error(err.response.data);
+          this.$toast.fail(err.response.data);
         });
     }
   }

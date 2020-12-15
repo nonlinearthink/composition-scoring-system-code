@@ -7,6 +7,9 @@ import "./plugins/axios";
 import "./plugins/vant";
 import "./plugins/vueTouch";
 import "./plugins/fontAwesome";
+// 虚拟控制台，用于移动端调试
+import Vconsole from "vconsole";
+new Vconsole();
 
 Vue.config.productionTip = false;
 

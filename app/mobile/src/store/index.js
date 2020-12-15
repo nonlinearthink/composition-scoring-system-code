@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import Composition from "../assets/js/types/composition";
 
 Vue.use(Vuex);
 
@@ -12,9 +13,10 @@ export default new Vuex.Store({
     token: "",
     user: null,
     editing: {
-      composition: {
-        body: ""
-      }
+      type: "cache",
+      cache: null,
+      draft: null,
+      publish: null
     },
     compositions: [],
     setting: {
@@ -31,11 +33,42 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    updateEditingComposition(state, text) {
-      state.editing.composition.body = text;
+    editingCache(state) {
+      if (!state.editing.cache) {
+        state.editing.cache = new Composition({ compositionBody: "" });
+      }
+      state.editing.type = "cache";
+    },
+    editingDraft(state, composition) {
+      state.editing.draft = composition;
+      state.editing.type = "draft";
+    },
+    editingPublish(state, composition) {
+      state.editing.publish = composition;
+      state.editing.type = "publish";
+    },
+    doEditingCache(state, composition) {
+      state.editing.cache = composition;
+    },
+    clearCache(state) {
+      state.editing.cache = null;
     },
     addComposition(state, composition) {
       state.compositions.push(composition);
+    },
+    clearCompositions(state) {
+      state.compositions = [];
+    },
+    deleteComposition(state, compositionId) {
+      state.compositions = state.compositions.filter(
+        composition => composition.compositionId != compositionId
+      );
+    },
+    updateComposition(state, composition) {
+      let index = state.compositions.findIndex(
+        item => item.compositionId == composition.compositionId
+      );
+      state.compositions.splice(index, 1, composition);
     },
     updateUser(state, user) {
       state.user = user;

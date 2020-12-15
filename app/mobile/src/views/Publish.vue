@@ -1,18 +1,24 @@
 <template>
-  <div id="writing-page">
+  <div id="publish-page">
+    <!-- 顶部导航栏 -->
     <van-nav-bar
-      title="写作"
+      title="编辑"
       fixed
       placeholder
       left-arrow
       safe-area-inset-top
-      @click-left="goBack"
+      @click-left="onRouteBack"
     >
       <template #right>
-        <van-icon name="success" class="action-button" @click="submit" />
+        <van-icon
+          name="success"
+          class="piduoduo-actionbar-item"
+          @click="onSubmit"
+        />
       </template>
     </van-nav-bar>
-    <div class="composition">
+    <!-- 作文元信息编辑区 -->
+    <div class="composition-meta">
       <van-sticky>
         <van-field
           ref="compositionTitle"
@@ -23,80 +29,38 @@
           class="composition-title"
         >
           <template #extra>
-            <div class="composition-visibility" @click="selectVisibility">
-              {{ visibilityText }}
+            <div class="composition-visibility" @click="enableSelectVisibility">
+              {{ translate(composition.visibility) }}
             </div>
           </template>
         </van-field>
       </van-sticky>
-      <van-cell-group title="写作">
+      <van-cell-group title="作文描述">
         <van-field
-          v-model="composition.compositionBody"
+          v-model="composition.description"
           type="textarea"
-          placeholder="输入作文"
+          placeholder="输入作文描述"
           class="composition-body"
           :border="false"
           autosize
         />
       </van-cell-group>
-      <van-cell-group>
-        <template #title>
-          <van-row
-            v-if="composition.description == '' && !showDescription"
-            class="composition-extra"
-            @click="startDescription"
-          >
-            <van-col>
-              <van-icon name="add" class="add-description-icon" />
-            </van-col>
-            <van-col>
-              <div class="icon-hint">
-                添加描述
-              </div>
-            </van-col>
-          </van-row>
-          <span v-else>
-            描述
-          </span>
-        </template>
-        <van-field
-          v-if="showDescription"
-          v-model="composition.description"
-          type="textarea"
-          placeholder="输入作文描述"
-          class="composition-description"
-          :border="false"
-          autosize
-        />
-      </van-cell-group>
-      <div></div>
     </div>
     <van-action-sheet
-      v-model="showSelectVisibility"
+      v-model="isSelectVisibility"
       :actions="visibilityList"
       close-on-click-action
       cancel-text="取消"
       close-on-popstate
-      @select="changeVisibility"
+      @select="onSelectVisibility"
     />
     <van-dialog
-      v-model="editor.saveConfirm"
-      title="是否缓存更改"
-      message="缓存的内容在你下次进入写作页面的时候会自动加载"
-      show-cancel-button
-      confirm-button-text="缓存写作"
-      cancel-button-text="退出写作"
+      v-model="submitConfirm"
+      :title="composition.status == 3 ? '是否更新' : '是否发布'"
+      confirm-button-text="确认"
       close-on-click-overlay
-      @confirm="saveConfirm"
-      @cancel="saveCancel"
-      @close="cancelSave"
+      @confirm="onPublish"
     />
-    <van-popup v-model="howSelectPublish" position="bottom">
-      <van-row>
-        <van-col></van-col>
-        <van-col></van-col>
-      </van-row>
-    </van-popup>
   </div>
 </template>
 
@@ -105,112 +69,89 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      showSelectVisibility: false,
-      showDescription: false,
-      showSelectPublish: false,
+      isSelectVisibility: false,
+      submitConfirm: false,
       passSave: false,
       toCache: null,
       visibilityList: [
-        { id: 1, name: "私密" },
-        { id: 2, name: "仅粉丝可见" },
-        { id: 3, name: "公开" }
+        { value: 1, name: "私密" },
+        { value: 2, name: "仅粉丝可见" },
+        { value: 3, name: "公开" }
       ],
-      composition: {
-        title: "",
-        visibility: 1,
-        compositionBody: "",
-        description: ""
-      }
+      composition: null
     };
   },
   computed: {
-    visibilityText() {
-      return this.visibilityList[this.composition.visibility - 1].name;
-    },
-    isSave() {
-      if (this.composition.title != this.editor.composition.title) return false;
-      if (this.composition.visibility != this.editor.composition.visibility)
-        return false;
+    ...mapState({ publish: state => state.editing.publish }),
+    isUpdated() {
       if (
-        this.composition.compositionBody !=
-        this.editor.composition.compositionBody
-      )
+        this.composition.title == this.publish.title &&
+        this.composition.compositionBody == this.publish.compositionBody &&
+        this.composition.visibility == this.publish.visibility
+      ) {
         return false;
-      if (this.composition.description != this.editor.composition.description)
-        return false;
+      }
       return true;
-    },
-    ...mapState(["editor"])
+    }
   },
   created() {
-    // 加载缓存，注意不能使用引用赋值
-    this.composition = Object.assign({}, this.editor.composition);
-    if (this.composition.description != "") {
-      this.showDescription = true;
-    }
+    // 加载需要发布的文章
+    this.composition = Object.assign({}, this.publish);
   },
   methods: {
-    goBack() {
+    translate(value) {
+      if (value) {
+        let visibility = this.visibilityList.find(
+          visibility => visibility.value == value
+        );
+        return visibility.name;
+      }
+      return this.visibilityList[0].name;
+    },
+    onRouteChange(route) {
+      this.$router.push(route);
+    },
+    onRouteBack() {
       this.$router.go(-1);
     },
-    selectVisibility() {
-      this.showSelectVisibility = true;
+    enableSelectVisibility() {
+      this.isSelectVisibility = true;
     },
-    changeVisibility(value) {
-      this.showSelectVisibility = false;
-      this.composition.visibility = value.id;
-      this.$toast(`${value.name}`);
+    onSelectVisibility(visibility) {
+      this.isSelectVisibility = false;
+      this.composition.visibility = visibility.value;
+      this.$toast(`${visibility.name}`);
     },
-    saveConfirm() {
-      // 保存编辑器
-      this.$store.commit("saveEditor", this.composition);
-      // 关闭保存确认按钮
-      this.$store.commit("closeSaveConfirm");
-      // 跳转到之前缓存的路径
-      this.$router.push(this.toCache);
-    },
-    saveCancel() {
-      // 设置不保存
-      this.passSave = true;
-      // 关闭保存确认按钮
-      this.$store.commit("closeSaveConfirm");
-      // 跳转到之前缓存的路径
-      this.$router.push(this.toCache);
-    },
-    cancelSave() {
-      this.editor.saveConfirm = false;
-    },
-    submit() {
-      this.showPopup = true;
-    },
-    startDescription() {
-      this.showDescription = true;
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.toCache = to;
-    if (this.passSave) next();
-    else {
-      if (!this.isSave) {
-        next(false);
-        setTimeout(() => {
-          // 设置一个时间缓存，防止状态更新在路由刷新之前发生
-          this.$store.commit("openSaveConfirm");
-        }, 500);
-      } else {
-        next();
+    onSubmit() {
+      if (!this.composition.title) {
+        this.$toast.fail("请输入发布标题");
+        return;
       }
+      if (this.isUpdated) {
+        this.submitConfirm = true;
+      } else {
+        this.onRouteChange("/manager");
+      }
+    },
+    onPublish() {
+      this.axios
+        .put(`/composition/${this.composition.compositionId}`, this.composition)
+        .then(res => {
+          console.log(res.data);
+          this.$store.commit("updateComposition", this.composition);
+          this.onRouteChange("/manager");
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-#writing-page {
+#publish-page {
   height: 100vh;
-}
-.action-button {
-  font-size: $text-large;
 }
 .composition-title {
   font-size: $text-large;

@@ -28,7 +28,8 @@ export default {
   components: {},
   data() {
     return {
-      searchString: ""
+      searchString: "",
+      active: 0
     };
   }
 };

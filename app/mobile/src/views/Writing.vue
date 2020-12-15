@@ -23,7 +23,7 @@
       </van-row>
     </div>
     <van-field
-      v-model="composition.body"
+      v-model="composition.compositionBody"
       type="textarea"
       placeholder="输入作文"
       :border="false"
@@ -47,14 +47,14 @@
       message="游客模式下不能提交作文"
       confirm-button-text="登录"
       close-on-click-overlay
-      @confirm="onRouteToLogin"
+      @confirm="onRouteChange('login')"
     />
     <van-dialog
       v-model="enableSubmit"
-      title="选择提交类型"
-      show-cancel-button
+      :title="editing.type == 'cache' ? '选择提交类型' : '确认评价'"
+      :show-cancel-button="editing.type == 'cache'"
       confirm-button-text="生成评价"
-      cancel-button-text="提交草稿"
+      :cancel-button-text="editing.type == 'cache' ? '提交草稿' : ''"
       close-on-click-overlay
       @confirm="onSubmitConfirm(2)"
       @cancel="onSubmitConfirm(1)"
@@ -69,9 +69,7 @@ export default {
   data() {
     return {
       toRouteCache: null,
-      composition: {
-        body: ""
-      },
+      composition: null,
       isSubmit: false,
       enableQuitConfirm: false,
       enableLoginRequire: false,
@@ -83,25 +81,23 @@ export default {
   computed: {
     // 当前内容是否已缓存
     isCache() {
-      return this.editing.composition.body == this.composition.body;
+      return (
+        this.editing[this.editing.type].compositionBody ==
+        this.composition.compositionBody
+      );
     },
     wordCount() {
-      if (this.composition && this.composition.body) {
-        return this.composition.body.match(/\b\w+\b/gm).length;
+      if (this.composition && this.composition.compositionBody) {
+        return this.composition.compositionBody.match(/\b\w+\b/gm).length;
       } else {
         return 0;
       }
     },
-    ...mapState(["editing", "isLogin"])
-  },
-  watch: {
-    enableQuitConfirm(value) {
-      console.log(value);
-    }
+    ...mapState(["isLogin", "editing"])
   },
   created() {
     // 加载缓存，注意不能使用引用赋值
-    this.composition = Object.assign({}, this.editing.composition);
+    this.composition = Object.assign({}, this.editing[this.editing.type]);
   },
   methods: {
     /**
@@ -110,21 +106,44 @@ export default {
     onRouteBack() {
       this.$router.go(-1);
     },
-    onRouteToLogin() {
+    onRouteChange(route) {
       this.routePassport = true;
-      this.$router.push("/login");
+      this.$router.push(route);
     },
-    onConfirmSave() {
+    onConfirmCache() {
       // 保存编辑器
-      this.$store.commit("updateEditingComposition", this.composition.body);
+      this.$store.commit("doEditingCache", this.composition);
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
     },
-    onCancelSave() {
+    onCancelCache() {
       // 设置不保存
       this.routePassport = true;
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
+    },
+    onConfirmDraft() {
+      this.onCreateComposition();
+    },
+    onCancelDraft() {
+      // 设置不保存
+      this.routePassport = true;
+      // 跳转到之前缓存的路径
+      this.$router.push(this.toRouteCache);
+    },
+    onConfirmSave() {
+      if (this.editing.type == "cache") {
+        this.onConfirmCache();
+      } else {
+        this.onConfirmDraft();
+      }
+    },
+    onCancelSave() {
+      if (this.editing.type == "cache") {
+        this.onCancelCache();
+      } else {
+        this.onCancelDraft();
+      }
     },
     onFocus() {
       this.isEditing = true;
@@ -135,20 +154,45 @@ export default {
     onSubmit() {
       this.enableSubmit = true;
     },
-    onSubmitConfirm(type) {
-      if (this.isLogin) {
+    onCreateComposition(type) {
+      let composition = new Composition({
+        compositionBody: this.composition.compositionBody,
+        status: type,
+        releaseDate: new Date().getTime()
+      });
+      this.axios.post("/composition", composition).then(res => {
+        composition.compositionId = res.data.data.compositionId;
+        this.$store.commit("addComposition", composition);
         this.routePassport = true;
-        this.$store.commit(
-          "addComposition",
-          new Composition({
-            compositionId: this.$store.state.compositions.length,
-            compositionBody: this.composition.body,
-            status: type,
-            releaseDate: new Date().getTime()
-          })
-        );
         this.$router.push("/manager");
         this.$toast("添加成功");
+      });
+    },
+    onUpdateComposition() {
+      this.axios
+        .put(`/composition/${this.composition.compositionId}`, this.composition)
+        .then(res => {
+          console.log(res.data);
+          this.$store.commit("updateComposition", this.composition);
+          this.routePassport = true;
+          this.$router.push("/manager");
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+    },
+    onSubmitConfirm(type) {
+      if (this.isLogin) {
+        if (this.editing.type == "cache") {
+          if (type == 2) {
+            this.composition.status += 1;
+          }
+          this.onCreateComposition(type);
+          this.$store.commit("clearCache");
+        } else {
+          this.composition.status += 1;
+          this.onUpdateComposition();
+        }
       } else {
         this.enableLoginRequire = true;
       }

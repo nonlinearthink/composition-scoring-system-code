@@ -69,6 +69,12 @@ const routes = [
     name: "WritingPage",
     meta: { index: 3 },
     component: () => import("../views/Writing.vue")
+  },
+  {
+    path: "/publish",
+    name: "PublishPage",
+    meta: { index: 3 },
+    component: () => import("../views/Publish.vue")
   }
 ];
 

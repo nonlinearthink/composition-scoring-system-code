@@ -1,6 +1,6 @@
 class Composition {
   compositionId;
-  releaseDate;
+  releaseTime;
   compositionBody;
   status;
   title;
@@ -10,7 +10,7 @@ class Composition {
   vaild;
   constructor({
     compositionId,
-    releaseDate,
+    releaseTime,
     compositionBody,
     status,
     title,
@@ -20,7 +20,7 @@ class Composition {
     vaild
   }) {
     this.compositionId = compositionId;
-    this.releaseDate = releaseDate;
+    this.releaseTime = releaseTime;
     this.compositionBody = compositionBody;
     this.status = status;
     this.title = title;

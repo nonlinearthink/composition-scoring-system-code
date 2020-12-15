@@ -15,7 +15,9 @@ import {
   Icon,
   Image as VanImage,
   NavBar,
+  Popover,
   Popup,
+  PullRefresh,
   Row,
   Search,
   Sticky,
@@ -41,7 +43,9 @@ Vue.use(ActionSheet)
   .use(Form)
   .use(Icon)
   .use(NavBar)
+  .use(Popover)
   .use(Popup)
+  .use(PullRefresh)
   .use(Row)
   .use(Search)
   .use(Sticky)
