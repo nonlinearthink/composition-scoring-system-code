@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.*;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.CompositionService;
+import cn.edu.zucc.se2020g11.api.service.PermissionService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,10 +29,12 @@ import java.util.Map;
 public class CompositionController {
 
     private CompositionService compositionService;
+    private PermissionService permissionService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService) {
+    public CompositionController(CompositionService compositionService, PermissionService permissionService) {
         this.compositionService = compositionService;
+        this.permissionService = permissionService;
     }
 
     @LoginRequired(type = UserType.ADMIN)
@@ -85,15 +88,15 @@ public class CompositionController {
 
     @LoginRequired(type = UserType.USER)
     @ApiOperation(value = "用户删除作文")
-    @DeleteMapping("/{username}/{compositionId}")
+    @DeleteMapping("/{compositionId}")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
                     "String"),
             @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
                     "Integer")
     })
-    public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("username") String username,
-                                                          @PathVariable("compositionId") Integer compositionId) {
+    public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
+        permissionService.validateComposition((String)request.getAttribute("username"), compositionId);
         compositionService.deleteComposition(compositionId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
@@ -102,7 +105,7 @@ public class CompositionController {
 
     @LoginRequired(type = UserType.USER)
     @ApiOperation(value = "用户修改作文")
-    @PutMapping("/{username}/{compositionId}")
+    @PutMapping("/{compositionId}")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
                     "String"),
@@ -111,10 +114,13 @@ public class CompositionController {
             @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
                     "CompositionEntity")
     })
-    public ResponseEntity<String> updateComposition(@PathVariable("username") String username,
-                                                          @PathVariable("compositionId") Integer compositionId,
-                                                          @RequestBody CompositionEntity compositionEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiResult<Boolean>> updateComposition(@PathVariable("compositionId") Integer compositionId,
+                                                          @RequestBody CompositionEntity compositionEntity, HttpServletRequest request) {
+        permissionService.validateComposition((String)request.getAttribute("username"), compositionId);
+        compositionService.updateComposition(compositionEntity, compositionId);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)

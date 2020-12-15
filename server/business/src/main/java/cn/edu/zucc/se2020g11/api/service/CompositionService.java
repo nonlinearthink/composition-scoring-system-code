@@ -32,4 +32,10 @@ public class CompositionService
     {
         compositionEntityMapper.deleteByPrimaryKey(compositionId);
     }
+    public void updateComposition(CompositionEntity compositionEntity, Integer compositionId)
+    {
+        compositionEntity.setCompositionId(compositionId);
+        compositionEntityMapper.updateByPrimaryKeySelective(compositionEntity);
+    }
+
 }

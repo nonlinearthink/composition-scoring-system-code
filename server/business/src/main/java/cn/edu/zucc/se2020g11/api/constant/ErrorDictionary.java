@@ -65,7 +65,11 @@ public enum ErrorDictionary {
     /**
      * 账号冻结中
      */
-    ACCOUNT_BEING_FROZEN(HttpStatus.FORBIDDEN, 24, "账号冻结中");
+    ACCOUNT_BEING_FROZEN(HttpStatus.FORBIDDEN, 24, "账号冻结中"),
+    /**
+     * 没有对应权限
+     */
+    NO_PERMISSION(HttpStatus.FORBIDDEN, 25, "没有对应权限");
 
     @Getter
     @Setter

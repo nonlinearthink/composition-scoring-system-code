@@ -20,7 +20,7 @@
     delete from follow
     where follow_id = #{followId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" useGeneratedKeys="true" keyProperty="followId">
     insert into follow (follow_id, username, target_username, 
       time)
     values (#{followId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{targetUsername,jdbcType=VARCHAR}, 
@@ -79,4 +79,13 @@
       time = #{time,jdbcType=TIMESTAMP}
     where follow_id = #{followId,jdbcType=INTEGER}
   </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity" resultMap="BaseResultMap">
+    select *
+    from follow
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>
