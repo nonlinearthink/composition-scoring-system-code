@@ -1,7 +1,6 @@
 package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.dao.FollowEntityMapper;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,12 @@ public class FollowService
         followEntityMapper.insert(followEntity);
         return followEntity.getFollowId();
     }
-    public List<FollowEntity> selectAllFollows(UserEntity userEntity)
+    public List<FollowEntity> selectAllFollows(FollowEntity followEntity)
     {
-        return followEntityMapper.selectAllSelective(userEntity);
+        return followEntityMapper.selectAllSelective(followEntity);
+    }
+    public List<FollowEntity> selectAllFollowers(FollowEntity followEntity)
+    {
+        return followEntityMapper.selectAllSelectiveByUser(followEntity);
     }
 }
