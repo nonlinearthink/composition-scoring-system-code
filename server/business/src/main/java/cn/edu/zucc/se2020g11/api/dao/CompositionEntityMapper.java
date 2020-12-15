@@ -1,6 +1,9 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+
+import java.util.List;
 
 public interface CompositionEntityMapper {
     int deleteByPrimaryKey(Integer compositionId);
@@ -14,4 +17,6 @@ public interface CompositionEntityMapper {
     int updateByPrimaryKeySelective(CompositionEntity record);
 
     int updateByPrimaryKey(CompositionEntity record);
+
+    List<CompositionEntity> selectAllSelective(UserEntity record);
 }

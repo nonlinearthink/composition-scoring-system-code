@@ -11,7 +11,7 @@ public class CompositionEntity {
 
     private String compositionBody;
 
-    private Boolean isDraft;
+    private int status;
 
     private String title;
 
@@ -55,12 +55,12 @@ public class CompositionEntity {
         this.compositionBody = compositionBody == null ? null : compositionBody.trim();
     }
 
-    public Boolean getIsDraft() {
-        return isDraft;
+    public int getStatus() {
+        return status;
     }
 
-    public void setIsDraft(Boolean isDraft) {
-        this.isDraft = isDraft;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getTitle() {

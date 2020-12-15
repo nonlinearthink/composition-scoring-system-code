@@ -6,7 +6,7 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
     <result column="composition_body" jdbcType="VARCHAR" property="compositionBody" />
-    <result column="is_draft" jdbcType="BIT" property="isDraft" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="visibility" jdbcType="INTEGER" property="visibility" />
@@ -14,7 +14,7 @@
     <result column="valid" jdbcType="BIT" property="valid" />
   </resultMap>
   <sql id="Base_Column_List">
-    composition_id, username, release_time, composition_body, is_draft, title, description, 
+    composition_id, username, release_time, composition_body, status, title, description,
     visibility, score, valid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,13 +27,13 @@
     delete from composition
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" useGeneratedKeys="true" keyProperty="compositionId">
     insert into composition (composition_id, username, release_time, 
-      composition_body, is_draft, title, 
+      composition_body, status, title,
       description, visibility, score, 
       valid)
     values (#{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, 
-      #{compositionBody,jdbcType=VARCHAR}, #{isDraft,jdbcType=BIT}, #{title,jdbcType=VARCHAR}, 
+      #{compositionBody,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
       #{description,jdbcType=VARCHAR}, #{visibility,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
       #{valid,jdbcType=BIT})
   </insert>
@@ -52,8 +52,8 @@
       <if test="compositionBody != null">
         composition_body,
       </if>
-      <if test="isDraft != null">
-        is_draft,
+      <if test="status != null">
+        status,
       </if>
       <if test="title != null">
         title,
@@ -84,8 +84,8 @@
       <if test="compositionBody != null">
         #{compositionBody,jdbcType=VARCHAR},
       </if>
-      <if test="isDraft != null">
-        #{isDraft,jdbcType=BIT},
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
@@ -116,8 +116,8 @@
       <if test="compositionBody != null">
         composition_body = #{compositionBody,jdbcType=VARCHAR},
       </if>
-      <if test="isDraft != null">
-        is_draft = #{isDraft,jdbcType=BIT},
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -142,7 +142,7 @@
     set username = #{username,jdbcType=VARCHAR},
       release_time = #{releaseTime,jdbcType=TIMESTAMP},
       composition_body = #{compositionBody,jdbcType=VARCHAR},
-      is_draft = #{isDraft,jdbcType=BIT},
+      status = #{status,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       visibility = #{visibility,jdbcType=INTEGER},
@@ -150,4 +150,13 @@
       valid = #{valid,jdbcType=BIT}
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity" resultMap="BaseResultMap">
+    select *
+    from composition
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

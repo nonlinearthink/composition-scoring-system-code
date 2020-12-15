@@ -8,6 +8,7 @@ import cn.edu.zucc.se2020g11.api.model.LoginForm;
 import cn.edu.zucc.se2020g11.api.model.PasswordChangeModel;
 import cn.edu.zucc.se2020g11.api.model.SignupForm;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
+import org.apache.catalina.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,14 +88,13 @@ public class UserService {
      * @throws BaseException 异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public void changeUserPassword(String username, PasswordChangeModel passwordChangeModel) throws BaseException {
+    public void updateUserPassword(String username, PasswordChangeModel passwordChangeModel) throws BaseException {
         // 查询用户
         UserEntity user = userEntityMapper.selectByPrimaryKey(username);
         if (user == null) {
             throw new BaseException(ErrorDictionary.USERNAME_NOT_EXIST, LogCategory.BUSINESS);
-        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword()))) {
+        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword())))
             throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
-        }
         // 修改密码
         user.setPassword(oneWayEncryption(passwordChangeModel.getNewPassword()));
         userEntityMapper.updateByPrimaryKey(user);
@@ -103,20 +103,13 @@ public class UserService {
     /**
      * 更改密码服务
      *
-     * @param passwordChangeModel 密码修改模型
+     * @param userEntity 密码修改模型
      * @throws BaseException 异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateUser(String username, PasswordChangeModel passwordChangeModel) throws BaseException {
-        // 查询用户
-        UserEntity user = userEntityMapper.selectByPrimaryKey(username);
-        if (user == null) {
-            throw new BaseException(ErrorDictionary.USERNAME_NOT_EXIST, LogCategory.BUSINESS);
-        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword()))) {
-            throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
-        }
-        // 修改密码
-        user.setPassword(oneWayEncryption(passwordChangeModel.getNewPassword()));
-        userEntityMapper.updateByPrimaryKey(user);
+    public void updateUserDetail(String username, UserEntity userEntity) throws BaseException {
+        // 修改信息
+        userEntity.setUsername(username);
+        userEntityMapper.updateByPrimaryKeySelective(userEntity);
     }
 }

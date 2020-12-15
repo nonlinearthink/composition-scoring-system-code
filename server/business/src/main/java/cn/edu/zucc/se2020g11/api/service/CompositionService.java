@@ -2,8 +2,11 @@ package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompositionService
@@ -16,9 +19,17 @@ public class CompositionService
     {
         this.compositionEntityMapper = compositionEntityMapper;
     }
-//    public void insert(CompositionEntity compositionEntity)
-//    {
-//        compositionEntityMapper.insert(compositionEntity);
-//    }
-
+    public int addComposition(CompositionEntity compositionEntity)
+    {
+        compositionEntityMapper.insert(compositionEntity);
+        return compositionEntity.getCompositionId();
+    }
+    public List<CompositionEntity> selectAllCompositions(UserEntity userEntity)
+    {
+        return compositionEntityMapper.selectAllSelective(userEntity);
+    }
+    public void deleteComposition(Integer compositionId)
+    {
+        compositionEntityMapper.deleteByPrimaryKey(compositionId);
+    }
 }

@@ -115,40 +115,35 @@ public class UserController {
     }
 
     @LoginRequired(type = UserType.USER)
-    @PutMapping("/{username}/password")
+    @PutMapping("/account/password")
     @ApiOperation(value = "修改用户密码信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
-                    "String"),
-            @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
+    @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
                     "PasswordChangeModel")
-    })
-    public ResponseEntity<ApiResult<Boolean>> changeUserPassword(@PathVariable("username") String username,
-                                                         @RequestBody @Validated PasswordChangeModel passwordChangeModel) {
+    public ResponseEntity<ApiResult<Boolean>> updateUserPassword(@RequestBody @Validated PasswordChangeModel passwordChangeModel, HttpServletRequest request) {
         // 修改密码
-        userService.changeUserPassword(username, passwordChangeModel);
+        userService.updateUserPassword((String)request.getAttribute("username"), passwordChangeModel);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)
-    @GetMapping("/{username}/details")
-    @ApiOperation(value = "获取用户信息")
-    @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<UserEntity> getDetail(@PathVariable("username") String username) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/account/details")
+    @ApiOperation(value = "修改用户信息")
+    @ApiImplicitParam(paramType = "body", name = "userEntity", value = "用户实体", required = true, dataType =
+            "UserEntity")
+    public ResponseEntity<ApiResult<Boolean>> updateUserDetail(@RequestBody @Validated UserEntity userEntity, HttpServletRequest request) {
+        // 修改用户信息
+        userService.updateUserDetail((String)request.getAttribute("username"), userEntity);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)
-    @PostMapping("/{username}/follow")
-    @ApiOperation(value = "他人关注用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType =
-                    "String"),
-            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
-                    "String")
-    })
+    @PostMapping("/password")
+    @ApiOperation(value = "忘记密码")
+    @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
     public ResponseEntity<UserEntity> addFollow(@PathVariable("username") String username,
                                                 @RequestParam("follower") String follower) {
         return new ResponseEntity<>(HttpStatus.OK);
