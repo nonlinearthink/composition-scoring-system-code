@@ -99,6 +99,11 @@ export default {
     this.composition = Object.assign({}, this.publish);
   },
   methods: {
+    /**
+     * @description 翻译可见性
+     * @param {Number} value 可见性
+     * @return 可见性解析之后的字符串
+     */
     translate(value) {
       if (value) {
         let visibility = this.visibilityList.find(
@@ -108,20 +113,37 @@ export default {
       }
       return this.visibilityList[0].name;
     },
+    /**
+     * @description 路由跳转
+     * @param {String} route 路由字符串
+     */
     onRouteChange(route) {
       this.$router.push(route);
     },
+    /**
+     * @description 路由返回
+     */
     onRouteBack() {
       this.$router.go(-1);
     },
+    /**
+     * @description 开启可见性选择
+     */
     enableSelectVisibility() {
       this.isSelectVisibility = true;
     },
+    /**
+     * @description 选择可见性
+     * @param {Object} visibility 可见性，见data中的visibilityList
+     */
     onSelectVisibility(visibility) {
       this.isSelectVisibility = false;
       this.composition.visibility = visibility.value;
       this.$toast(`${visibility.name}`);
     },
+    /**
+     * @description 确认发布
+     */
     onSubmit() {
       if (!this.composition.title) {
         this.$toast.fail("请输入发布标题");
@@ -133,6 +155,9 @@ export default {
         this.onRouteChange("/manager");
       }
     },
+    /**
+     * @description 发布作文
+     */
     onPublish() {
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)

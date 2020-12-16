@@ -14,6 +14,7 @@ import {
   Form,
   Icon,
   Image as VanImage,
+  Loading,
   NavBar,
   Popover,
   Popup,
@@ -42,6 +43,7 @@ Vue.use(ActionSheet)
   .use(Field)
   .use(Form)
   .use(Icon)
+  .use(Loading)
   .use(NavBar)
   .use(Popover)
   .use(Popup)

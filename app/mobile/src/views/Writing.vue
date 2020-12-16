@@ -1,5 +1,6 @@
 <template>
   <div id="writing-page">
+    <!-- 顶部导航栏 -->
     <van-nav-bar
       title="写作"
       fixed
@@ -18,10 +19,13 @@
     </van-nav-bar>
     <div id="writing-statebar">
       <van-row type="flex" justify="space-between">
+        <!-- 单词统计 -->
         <van-col>单词统计: {{ wordCount }} words</van-col>
+        <!-- 编辑中提示 -->
         <van-col>{{ isEditing ? "编辑中..." : "" }}</van-col>
       </van-row>
     </div>
+    <!-- 作文 -->
     <van-field
       v-model="composition.compositionBody"
       type="textarea"
@@ -31,6 +35,7 @@
       @focus="onFocus"
       @blur="onBlur"
     />
+    <!-- 内容未保存确认 -->
     <van-dialog
       v-model="enableQuitConfirm"
       title="内容未保存"
@@ -41,6 +46,7 @@
       @confirm="onConfirmSave"
       @cancel="onCancelSave"
     />
+    <!-- 游客模式提交拦截 -->
     <van-dialog
       v-model="enableLoginRequire"
       title="请先登录"
@@ -49,6 +55,7 @@
       close-on-click-overlay
       @confirm="onRouteChange('login')"
     />
+    <!-- 提交确认 -->
     <van-dialog
       v-model="enableSubmit"
       :title="editing.type == 'cache' ? '选择提交类型' : '确认评价'"
@@ -106,31 +113,50 @@ export default {
     onRouteBack() {
       this.$router.go(-1);
     },
+    /**
+     * @description 路由跳转
+     * @param {String} route 路由字符串
+     */
     onRouteChange(route) {
       this.routePassport = true;
       this.$router.push(route);
     },
+    /**
+     * @description 保存缓存编辑
+     */
     onConfirmCache() {
       // 保存编辑器
       this.$store.commit("doEditingCache", this.composition);
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
     },
+    /**
+     * @description 关闭缓存编辑
+     */
     onCancelCache() {
       // 设置不保存
       this.routePassport = true;
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
     },
+    /**
+     * @description 保存草稿编辑
+     */
     onConfirmDraft() {
       this.onCreateComposition();
     },
+    /**
+     * @description 关闭草稿编辑
+     */
     onCancelDraft() {
       // 设置不保存
       this.routePassport = true;
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
     },
+    /**
+     * @description 保存编辑
+     */
     onConfirmSave() {
       if (this.editing.type == "cache") {
         this.onConfirmCache();
@@ -138,6 +164,9 @@ export default {
         this.onConfirmDraft();
       }
     },
+    /**
+     * @description 关闭编辑
+     */
     onCancelSave() {
       if (this.editing.type == "cache") {
         this.onCancelCache();
@@ -145,15 +174,28 @@ export default {
         this.onCancelDraft();
       }
     },
+    /**
+     * @description 设置状态为编辑中
+     */
     onFocus() {
       this.isEditing = true;
     },
+    /**
+     * @description 取消编辑中状态
+     */
     onBlur() {
       this.isEditing = false;
     },
+    /**
+     * @description 提交
+     */
     onSubmit() {
       this.enableSubmit = true;
     },
+    /**
+     * @description 创建作文
+     * @param {Number} type 创建的类型，即status
+     */
     onCreateComposition(type) {
       let composition = new Composition({
         compositionBody: this.composition.compositionBody,
@@ -168,6 +210,9 @@ export default {
         this.$toast("添加成功");
       });
     },
+    /**
+     * @description 更新作文
+     */
     onUpdateComposition() {
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)
@@ -181,6 +226,10 @@ export default {
           console.error(err.response.data);
         });
     },
+    /**
+     * @description 提交作文确认
+     * @param {Number} type 创建的类型，即status
+     */
     onSubmitConfirm(type) {
       if (this.isLogin) {
         if (this.editing.type == "cache") {
@@ -198,6 +247,12 @@ export default {
       }
     }
   },
+  /**
+   * @description 路由拦截
+   * @param {String} to 路由跳转目的地
+   * @param {String} from 路由跳转源
+   * @param {Function} next
+   */
   beforeRouteLeave(to, from, next) {
     if (this.routePassport || this.isCache) {
       next();

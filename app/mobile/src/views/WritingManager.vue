@@ -1,5 +1,6 @@
 <template>
   <div id="writing-manager-page">
+    <!-- 顶部导航栏 -->
     <van-nav-bar
       title="作文"
       fixed
@@ -15,37 +16,44 @@
         />
       </template>
     </van-nav-bar>
+    <!-- 主体部分，tab组 -->
     <van-tabs
       v-model="activeTab"
       animated
       sticky
-      swipeable
       background="#02a7f0"
       title-inactive-color="white"
       title-active-color="white"
     >
+      <!-- 单个tab的主体内容 -->
       <van-tab v-for="tab in layout.tabs" :key="tab.state" :title="tab.title">
         <div class="main-container">
+          <!-- 翻转卡片列表 -->
           <rotate-card
             v-for="item in layout.compositions"
             :key="item.compositionId"
             class="composition-card"
           >
+            <!-- 卡片正面 -->
             <div class="front-side" @click="onEnterEditing(item)">
+              <!-- 标题 -->
               <van-row class="title">
                 <van-col>
                   {{ item.title ? item.title : "(未定义标题)" }}
                 </van-col>
               </van-row>
               <van-row>
+                <!-- 更新时间 -->
                 <van-col class="update-time">
                   {{ timeIntervalString(item.releaseTime) }}
                 </van-col>
+                <!-- 状态码标签 -->
                 <van-col class="piduoduo-tag first-tag">
                   <van-tag plain :color="layout.statusColor[item.status - 1]">
                     {{ translateStatus(item.status) }}
                   </van-tag>
                 </van-col>
+                <!-- 可见性标签 -->
                 <van-col class="piduoduo-tag">
                   <van-tag
                     v-show="item.visibility"
@@ -56,16 +64,22 @@
                   </van-tag>
                 </van-col>
               </van-row>
+              <!-- 正文(作文)概述 -->
               <van-row class="brief">{{ item.compositionBody }} </van-row>
               <van-row type="flex" justify="space-between" class="tool-bar">
+                <!-- 评分 -->
                 <van-col>
-                  <div v-if="item.score">{{ item.score }}/{{ totalScore }}</div>
+                  <div v-show="item.score">
+                    {{ item.score }}/{{ totalScore }}
+                  </div>
                 </van-col>
-                <van-col class="action-button-icon">
+                <!-- 删除按键 -->
+                <van-col v-if="item.status != 2" class="action-button-icon">
                   <van-icon name="delete" @click.stop="onDelete(item)" />
                 </van-col>
               </van-row>
             </div>
+            <!-- 反面 -->
             <template #reverse>
               <div class="back-side">
                 <van-row class="row">
@@ -109,7 +123,7 @@
     <van-pull-refresh
       v-model="layout.loading"
       success-text="刷新成功"
-      @refresh="onLoad"
+      @refresh="onRefresh"
     />
     <van-dialog
       v-model="enableDeleteConfirm"
@@ -135,10 +149,10 @@ export default {
   data() {
     return {
       activeTab: "", // 当前选中的tab
-      enableDeleteConfirm: false,
-      deleteCache: null,
+      enableDeleteConfirm: false, // 打开删除确认
+      deleteCache: null, // 需要删除的数据的暂存
       layout: {
-        loading: false, //是否处于加载中
+        loading: false, // 是否处于加载中
         // tab
         tabs: [
           { title: "全部", state: 0 },
@@ -147,8 +161,8 @@ export default {
           { title: "已发布", state: 3 }
         ],
         compositions: [], // 作文
-        statusColor: ["#07c160", "#ee0a24", "#1989fa"],
-        visibilityColor: ["#969799", "#646566", "#323233"]
+        statusColor: ["#07c160", "#ee0a24", "#1989fa"], // 状态标签颜色
+        visibilityColor: ["#969799", "#646566", "#323233"] // 可见性标签颜色
       },
       totalScore: 10, // 总分
       visibilityList: [
@@ -175,6 +189,11 @@ export default {
   },
   methods: {
     ...dateUtils,
+    /**
+     * @description 翻译可见性
+     * @param {Number} value 可见性
+     * @return 可见性解析之后的字符串
+     */
     translateVisibility(value) {
       if (value) {
         let visibility = this.visibilityList.find(
@@ -184,6 +203,11 @@ export default {
       }
       return this.visibilityList[0].name;
     },
+    /**
+     * @description 翻译状态码
+     * @param {Number} value 状态码
+     * @return 状态码解析之后的字符串
+     */
     translateStatus(value) {
       if (value) {
         let tab = this.layout.tabs.find(tab => tab.state == value);
@@ -207,6 +231,7 @@ export default {
     },
     /**
      * @description 路由跳转
+     * @param {String} route 路由字符串
      */
     onRouteChange(route) {
       this.$router.push(route);
@@ -251,6 +276,7 @@ export default {
      * @description 刷新
      */
     onRefresh() {
+      this.layout.loading = true;
       this.onLoad(
         () => this.$toast("刷新成功"),
         () => this.$toast.fail("请检查网络")
@@ -301,6 +327,9 @@ export default {
         return;
       }
     },
+    /**
+     * @description 创建文章
+     */
     onCreate() {
       this.$store.commit("editingCache");
       this.onRouteChange("/writing");

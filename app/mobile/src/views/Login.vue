@@ -114,7 +114,7 @@ export default {
           // 关闭加载动效
           this.layout.submitBotton.loading = false;
           console.error(err.response.data);
-          this.$toast.fail(err.response.data);
+          this.$toast.fail(err.response.data.msg);
         });
     }
   }
