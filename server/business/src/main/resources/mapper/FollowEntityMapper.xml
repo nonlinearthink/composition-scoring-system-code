@@ -21,9 +21,9 @@
     where follow_id = #{followId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" useGeneratedKeys="true" keyProperty="followId">
-    insert into follow (follow_id, username, target_username, 
+    insert into follow (follow_id, username, target_username,
       time)
-    values (#{followId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{targetUsername,jdbcType=VARCHAR}, 
+    values (#{followId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{targetUsername,jdbcType=VARCHAR},
       #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
@@ -96,5 +96,14 @@
         target_username = #{targetUsername,jdbcType=VARCHAR}
       </if>
     </where>
+  </select>
+  <delete id="deleteByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    delete from follow
+    where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
+    select *
+    from follow
+    where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}
   </select>
 </mapper>

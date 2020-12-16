@@ -20,7 +20,7 @@
     delete from support
     where support_id = #{supportId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" useGeneratedKeys="true" keyProperty="supportId">
     insert into support (support_id, username, composition_id, 
       time)
     values (#{supportId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
@@ -79,4 +79,22 @@
       time = #{time,jdbcType=TIMESTAMP}
     where support_id = #{supportId,jdbcType=INTEGER}
   </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">
+    select *
+    from support
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    delete from support
+    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+  </delete>
+  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">
+    select *
+    from support
+    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>

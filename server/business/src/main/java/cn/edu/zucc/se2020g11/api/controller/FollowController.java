@@ -2,9 +2,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.FollowService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
@@ -64,10 +62,12 @@ public class FollowController
     }
 
     @LoginRequired(type = UserType.USER)
-    @PostMapping("")
+    @PostMapping("/{username}")
     @ApiOperation(value = "用户添加关注")
-    public ResponseEntity<ApiResult<Map<String, Object>>> addFollow(@RequestBody FollowEntity followEntity, HttpServletRequest request) {
+    public ResponseEntity<ApiResult<Map<String, Object>>> addFollow(@PathVariable("username") String username, HttpServletRequest request) {
+        FollowEntity followEntity = new FollowEntity();
         followEntity.setUsername((String)request.getAttribute("username"));
+        followEntity.setTargetUsername(username);
         int id = followService.addFollow(followEntity);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("添加成功");
@@ -75,5 +75,18 @@ public class FollowController
         data.put("followId", id);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @LoginRequired(type = UserType.USER)
+    @DeleteMapping("/{username}")
+    @ApiOperation(value = "用户取消关注")
+    public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("username") String username, HttpServletRequest request) {
+        FollowEntity followEntity = new FollowEntity();
+        followEntity.setUsername((String)request.getAttribute("username"));
+        followEntity.setTargetUsername(username);
+        followService.deleteFollow(followEntity);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("删除成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

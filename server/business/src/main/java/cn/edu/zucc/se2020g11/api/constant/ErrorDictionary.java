@@ -69,7 +69,27 @@ public enum ErrorDictionary {
     /**
      * 没有对应权限
      */
-    NO_PERMISSION(HttpStatus.FORBIDDEN, 25, "没有对应权限");
+    NO_PERMISSION(HttpStatus.FORBIDDEN, 25, "没有对应权限"),
+    /**
+     * 关注错误
+     */
+    FOLLOW_ERROR(HttpStatus.FORBIDDEN, 26, "关注错误"),
+    /**
+     * 重复关注
+     */
+    REPEAT_FOLLOW(HttpStatus.FORBIDDEN, 27, "重复关注"),
+    /**
+     * 没有关注记录
+     */
+    NO_FOLLOW(HttpStatus.FORBIDDEN, 28, "没有关注记录"),
+    /**
+     * 重复点赞
+     */
+    REPEAT_SUPPORT(HttpStatus.FORBIDDEN, 29, "重复点赞"),
+    /**
+     * 没有点赞记录
+     */
+    NO_SUPPORT(HttpStatus.FORBIDDEN, 30, "没有点赞记录");
 
     @Getter
     @Setter

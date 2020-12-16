@@ -1,12 +1,13 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 
 import java.util.List;
 
 public interface FollowEntityMapper {
     int deleteByPrimaryKey(Integer followId);
+
+    int deleteByUsername(FollowEntity record);
 
     int insert(FollowEntity record);
 
@@ -21,4 +22,6 @@ public interface FollowEntityMapper {
     List<FollowEntity> selectAllSelective(FollowEntity record);
 
     List<FollowEntity> selectAllSelectiveByUser(FollowEntity record);
+
+    List<FollowEntity> selectByUsername(FollowEntity record);
 }

@@ -2,8 +2,12 @@ package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 
+import java.util.List;
+
 public interface SupportEntityMapper {
     int deleteByPrimaryKey(Integer supportId);
+
+    int deleteByCompositionId(SupportEntity record);
 
     int insert(SupportEntity record);
 
@@ -14,4 +18,8 @@ public interface SupportEntityMapper {
     int updateByPrimaryKeySelective(SupportEntity record);
 
     int updateByPrimaryKey(SupportEntity record);
+
+    List<SupportEntity> selectAllSelective(String username);
+
+    List<SupportEntity> selectByUsername(SupportEntity record);
 }
