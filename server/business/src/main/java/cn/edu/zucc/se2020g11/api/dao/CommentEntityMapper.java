@@ -2,8 +2,12 @@ package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 
+import java.util.List;
+
 public interface CommentEntityMapper {
     int deleteByPrimaryKey(Integer commentId);
+
+    int deleteByCompositionId(CommentEntity record);
 
     int insert(CommentEntity record);
 
@@ -14,4 +18,6 @@ public interface CommentEntityMapper {
     int updateByPrimaryKeySelective(CommentEntity record);
 
     int updateByPrimaryKey(CommentEntity record);
+
+    List<CommentEntity> selectAllSelective(Integer compositionId);
 }

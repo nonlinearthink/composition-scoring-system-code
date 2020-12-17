@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
+import cn.edu.zucc.se2020g11.api.dao.CommentEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
@@ -26,11 +27,13 @@ public class PermissionService
 
     private final UserEntityMapper userEntityMapper;
     private final CompositionEntityMapper compositionEntityMapper;
+    private final CommentEntityMapper commentEntityMapper;
 
     @Autowired(required = false)
-    public PermissionService(UserEntityMapper userEntityMapper, CompositionEntityMapper compositionEntityMapper) {
+    public PermissionService(UserEntityMapper userEntityMapper, CompositionEntityMapper compositionEntityMapper, CommentEntityMapper commentEntityMapper) {
         this.userEntityMapper = userEntityMapper;
         this.compositionEntityMapper = compositionEntityMapper;
+        this.commentEntityMapper = commentEntityMapper;
     }
 
     public void validateComposition(String username, Integer compositionId) throws BaseException
@@ -39,5 +42,13 @@ public class PermissionService
             throw new BaseException(ErrorDictionary.NO_PERMISSION, LogCategory.BUSINESS);
         }
         logger.info("文章权限认证成功");
+    }
+
+    public void validateComment(String username, Integer commentId) throws BaseException
+    {
+        if (!username.equals(commentEntityMapper.selectByPrimaryKey(commentId).getUsername())) {
+            throw new BaseException(ErrorDictionary.NO_PERMISSION, LogCategory.BUSINESS);
+        }
+        logger.info("评论权限认证成功");
     }
 }

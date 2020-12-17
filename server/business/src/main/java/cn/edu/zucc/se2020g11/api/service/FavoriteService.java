@@ -40,8 +40,8 @@ public class FavoriteService
     public List<CompositionEntity> findFavoriteComposition(List<FavoriteEntity> favoriteEntityList)
     {
         List<CompositionEntity>  compositionEntityList = new ArrayList<>();
-        for (FavoriteEntity s : favoriteEntityList) {
-            compositionEntityList.add(compositionEntityMapper.selectByPrimaryKey(s.getCompositionId()));
+        for (FavoriteEntity f : favoriteEntityList) {
+            compositionEntityList.add(compositionEntityMapper.selectByPrimaryKey(f.getCompositionId()));
         }
         return compositionEntityList;
     }

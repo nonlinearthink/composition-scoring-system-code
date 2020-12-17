@@ -3,12 +3,12 @@
 <mapper namespace="cn.edu.zucc.se2020g11.api.dao.FavoriteEntityMapper">
   <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     <id column="favorite_id" jdbcType="INTEGER" property="favoriteId" />
-    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Base_Column_List">
-    favorite_id, composition_id, username, time
+    favorite_id, username, composition_id, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,9 +21,9 @@
     where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" useGeneratedKeys="true" keyProperty="favoriteId">
-    insert into favorite (favorite_id, composition_id, username,
+    insert into favorite (favorite_id, username, composition_id,
       time)
-    values (#{favoriteId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+    values (#{favoriteId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER},
       #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
@@ -32,11 +32,11 @@
       <if test="favoriteId != null">
         favorite_id,
       </if>
-      <if test="compositionId != null">
-        composition_id,
-      </if>
       <if test="username != null">
         username,
+      </if>
+      <if test="compositionId != null">
+        composition_id,
       </if>
       <if test="time != null">
         time,
@@ -46,11 +46,11 @@
       <if test="favoriteId != null">
         #{favoriteId,jdbcType=INTEGER},
       </if>
-      <if test="compositionId != null">
-        #{compositionId,jdbcType=INTEGER},
-      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="compositionId != null">
+        #{compositionId,jdbcType=INTEGER},
       </if>
       <if test="time != null">
         #{time,jdbcType=TIMESTAMP},
@@ -60,11 +60,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     update favorite
     <set>
-      <if test="compositionId != null">
-        composition_id = #{compositionId,jdbcType=INTEGER},
-      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER},
       </if>
       <if test="time != null">
         time = #{time,jdbcType=TIMESTAMP},
@@ -74,8 +74,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     update favorite
-    set composition_id = #{compositionId,jdbcType=INTEGER},
-      username = #{username,jdbcType=VARCHAR},
+    set username = #{username,jdbcType=VARCHAR},
+      composition_id = #{compositionId,jdbcType=INTEGER},
       time = #{time,jdbcType=TIMESTAMP}
     where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </update>

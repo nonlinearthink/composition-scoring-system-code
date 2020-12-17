@@ -22,7 +22,7 @@
     delete from comment
     where comment_id = #{commentId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity" useGeneratedKeys="true" keyProperty="commentId">
     insert into comment (comment_id, composition_id, username, 
       comment_body, time, valid
       )
@@ -103,4 +103,17 @@
       valid = #{valid,jdbcType=BIT}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity" resultMap="BaseResultMap">
+    select *
+    from comment
+    <where>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
+    delete from comment
+    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+  </delete>
 </mapper>

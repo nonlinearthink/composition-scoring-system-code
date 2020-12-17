@@ -3,7 +3,9 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.FollowModel;
 import cn.edu.zucc.se2020g11.api.service.FollowService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -39,11 +41,13 @@ public class FollowController
     @ApiOperation(value = "获取当前用户关注的所有人")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFollows(@PathVariable("username") String username, FollowEntity followEntity) {
         followEntity.setUsername(username);
-        List<FollowEntity> followList = followService.selectAllFollows(followEntity);
+        List<FollowEntity> followEntityList = followService.selectAllFollows(followEntity);
+        List<UserEntity> userEntityList = followService.findFollows(followEntityList);
+        List<FollowModel> followModelList = followService.getFollowInfo(userEntityList);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("followList", followList);
+        data.put("followList", followModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -52,11 +56,13 @@ public class FollowController
     @ApiOperation(value = "获取关注当前用户的所有人")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFollowers(@PathVariable("username") String username, FollowEntity followEntity) {
         followEntity.setTargetUsername(username);
-        List<FollowEntity> followList = followService.selectAllFollowers(followEntity);
+        List<FollowEntity> followEntityList = followService.selectAllFollowers(followEntity);
+        List<UserEntity> userEntityList = followService.findFollowers(followEntityList);
+        List<FollowModel> followModelList = followService.getFollowInfo(userEntityList);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("followList", followList);
+        data.put("followList", followModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
