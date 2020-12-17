@@ -24,6 +24,7 @@ import {
   Row,
   Search,
   Sticky,
+  List,
   Tab,
   Tabbar,
   TabbarItem,
@@ -34,6 +35,7 @@ import {
 } from "vant";
 
 Vue.use(ActionSheet)
+  .use(List)
   .use(Button)
   .use(Cell)
   .use(CellGroup)

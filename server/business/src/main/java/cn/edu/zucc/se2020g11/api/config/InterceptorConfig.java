@@ -34,10 +34,10 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new CorsInterceptor()).addPathPatterns("/**");
         //注册JWT拦截器
         registry.addInterceptor(new JwtInterceptor(httpHeader, redisTemplate)).addPathPatterns(
                 "/**");
-        registry.addInterceptor(new CorsInterceptor()).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 

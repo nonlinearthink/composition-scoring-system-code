@@ -32,4 +32,5 @@
 .piduoduo-tag {
   @include margin-horizontal($blank-size/4);
   padding: $blank-size/4 0;
+  backface-visibility: hidden;
 }

@@ -81,6 +81,18 @@ const routes = [
     name: "PublishPage",
     meta: { index: 3 },
     component: () => import("../views/Publish.vue")
+  },
+  {
+    path: "/user/follow",
+    name: "UserFollowPage",
+    meta: { index: 5 },
+    component: () => import("../views/UserFollow.vue")
+  },
+  {
+    path: "/composition",
+    name: "CompositionPage",
+    meta: { index: 2 },
+    component: () => import("../views/Composition.vue")
   }
 ];
 

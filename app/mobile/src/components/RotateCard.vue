@@ -1,5 +1,9 @@
 <template>
-  <v-touch @swipeleft="rotate" @swiperight="rotate">
+  <v-touch
+    :swipe-options="{ direction: 'horizontal' }"
+    @swipeleft="rotate"
+    @swiperight="rotate"
+  >
     <div
       ref="wrapper"
       :class="`piduoduo-rotate-card-${state}`"

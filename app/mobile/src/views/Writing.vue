@@ -214,6 +214,7 @@ export default {
      * @description 更新作文
      */
     onUpdateComposition() {
+      this.composition.releaseDate = new Date().getTime();
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)
         .then(res => {
@@ -226,6 +227,13 @@ export default {
           console.error(err.response.data);
         });
     },
+    onPublish() {
+      this.routePassport = true;
+      // 设置需要编辑的作文
+      this.$store.commit("editingPublish", new Composition(this.composition));
+      // 跳转到发布编辑界面
+      this.onRouteChange("/publish");
+    },
     /**
      * @description 提交作文确认
      * @param {Number} type 创建的类型，即status
@@ -234,10 +242,12 @@ export default {
       if (this.isLogin) {
         if (this.editing.type == "cache") {
           if (type == 2) {
-            this.composition.status += 1;
+            this.onCreateComposition(2);
+            this.onPublish();
+            this.$store.commit("clearCache");
+          } else {
+            this.onCreateComposition(2);
           }
-          this.onCreateComposition(type);
-          this.$store.commit("clearCache");
         } else {
           this.composition.status += 1;
           this.onUpdateComposition();
