@@ -94,11 +94,14 @@ export default {
       );
     },
     wordCount() {
-      if (this.composition && this.composition.compositionBody) {
-        return this.composition.compositionBody.match(/\b\w+\b/gm).length;
-      } else {
+      let len;
+      try {
+        len = this.composition.compositionBody.match(/\b\w+\b/gm).length;
+      } catch (e) {
+        console.error(e);
         return 0;
       }
+      return len;
     },
     ...mapState(["isLogin", "editing"])
   },
@@ -118,7 +121,6 @@ export default {
      * @param {String} route 路由字符串
      */
     onRouteChange(route) {
-      this.routePassport = true;
       this.$router.push(route);
     },
     /**
@@ -134,7 +136,7 @@ export default {
      * @description 关闭缓存编辑
      */
     onCancelCache() {
-      // 设置不保存
+      // 发放护照
       this.routePassport = true;
       // 跳转到之前缓存的路径
       this.$router.push(this.toRouteCache);
@@ -143,7 +145,7 @@ export default {
      * @description 保存草稿编辑
      */
     onConfirmDraft() {
-      this.onCreateComposition();
+      this.onCreateComposition(1);
     },
     /**
      * @description 关闭草稿编辑
@@ -241,15 +243,10 @@ export default {
     onSubmitConfirm(type) {
       if (this.isLogin) {
         if (this.editing.type == "cache") {
-          if (type == 2) {
-            this.onCreateComposition(2);
-            this.onPublish();
-            this.$store.commit("clearCache");
-          } else {
-            this.onCreateComposition(2);
-          }
+          this.onCreateComposition(type);
+          this.$store.commit("clearCache");
         } else {
-          this.composition.status += 1;
+          this.composition.status = 2;
           this.onUpdateComposition();
         }
       } else {

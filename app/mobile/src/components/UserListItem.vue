@@ -9,13 +9,15 @@
               height="2.5rem"
               fit="cover"
               round
-              :src="avatar"
+              :src="avatar ? avatar : defaultAvatar"
               class="avatar"
             />
           </van-col>
           <van-col span="19">
             <van-row class="nickname">{{ nickname }}</van-row>
-            <van-row class="signature">{{ signature }}</van-row>
+            <van-row class="signature">
+              {{ signature ? signature : defaultSignature }}
+            </van-row>
           </van-col>
         </van-row>
       </van-col>
@@ -24,8 +26,9 @@
           <van-tag
             round
             plain
-            :color="follow ? '646566' : 'red'"
+            :color="follow ? '#646566' : 'red'"
             class="button"
+            @click="onClick"
           >
             {{ follow ? "已关注" : "关注" }}
           </van-tag>
@@ -44,15 +47,26 @@ export default {
     },
     avatar: {
       type: [String],
-      default: require("../assets/images/avatar.svg")
+      default: null
     },
     signature: {
       type: String,
-      default: "此人很懒，什么都没有写"
+      default: null
     },
     follow: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      defaultSignature: "此人很懒，什么都没有写",
+      defaultAvatar: require("../assets/images/avatar.svg")
+    };
+  },
+  methods: {
+    onClick() {
+      this.$emit("follow");
     }
   }
 };
