@@ -263,7 +263,7 @@ export default {
           }
         })
         .catch(err => {
-          console.error(err);
+          console.error(err.response);
           // 关闭加载动效
           this.layout.loading = false;
           // 失败回调

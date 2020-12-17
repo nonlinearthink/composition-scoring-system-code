@@ -27,9 +27,9 @@ import java.util.Map;
 @ControllerAdvice
 @RestController
 public class GlobalExceptionController {
-    private final Logger dbLogger = LogManager.getLogger(LogCategory.DB);
-    private final Logger systemLogger = LogManager.getLogger(LogCategory.SYSTEM);
-    private final Logger businessLogger = LogManager.getLogger(LogCategory.BUSINESS);
+    private final Logger dbLogger = LogManager.getLogger(LogCategory.DB.getPosition());
+    private final Logger systemLogger = LogManager.getLogger(LogCategory.SYSTEM.getPosition());
+    private final Logger businessLogger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
 
     /**
      * 根据 log 的位置获取对应的 Logger

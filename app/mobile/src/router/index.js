@@ -59,6 +59,12 @@ const routes = [
     component: () => import("../views/SettingSecurity.vue")
   },
   {
+    path: "/setting/security/password",
+    name: "SettingPasswordPage",
+    meta: { index: 7 },
+    component: () => import("../views/SettingPassword.vue")
+  },
+  {
     path: "/setting/about",
     name: "SettingAboutPage",
     meta: { index: 6 },

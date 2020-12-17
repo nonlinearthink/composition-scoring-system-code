@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-about">
     <van-nav-bar
-      title="注册"
+      title="设置"
       fixed
       placeholder
       left-arrow

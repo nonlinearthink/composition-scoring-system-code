@@ -36,7 +36,7 @@ public class VerifyCodeService {
     @Autowired
     public VerifyCodeService(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
-        this.logger = LogManager.getLogger(LogCategory.BUSINESS);
+        this.logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
     }
 
     /**

@@ -90,25 +90,30 @@ export default {
           "everything is ok, ,s ,ds,d,sd, ,, ,s,d,sd,s,d ,sd,s,dsdh sdgaudash gdauydgh agasid asdguadu aduadasdad adgfad adauaa ajag aa agay asyaugaa a  yagaaa ausag a asdas sa ds s afd   a s fsd  sd ds fsd fs fs fdsf s "
       },
       defaultAvatar: require("../assets/images/avatar.svg"),
-      followList: [
-        { username: "nonlinearthink1", avatarUrl: null },
-        { username: "nonlinearthink2", avatarUrl: null },
-        { username: "nonlinearthink3", avatarUrl: null },
-        { username: "nonlinearthink4", avatarUrl: null },
-        { username: "nonlinearthink5", avatarUrl: null },
-        { username: "nonlinearthink6", avatarUrl: null },
-        { username: "nonlinearthink7", avatarUrl: null },
-        { username: "nonlinearthink8", avatarUrl: null },
-        { username: "nonlinearthink9", avatarUrl: null },
-        { username: "nonlinearthink10", avatarUrl: null },
-        { username: "nonlinearthink11", avatarUrl: null },
-        { username: "nonlinearthink12", avatarUrl: null },
-        { username: "nonlinearthink13", avatarUrl: null }
-      ]
+      followList: [],
+      composition: {
+        follow: [],
+        top: [],
+        fresh: []
+      }
     };
   },
   computed: {
     ...mapState(["user"])
+  },
+  created() {
+    this.axios
+      .get(`/follow/${this.user.username}`)
+      .then(res => {
+        console.log(res);
+        res.data.data.followList.forEach(follow => {
+          this.followList.push({
+            username: follow.targetUsername,
+            avatarUrl: null
+          });
+        });
+      })
+      .catch(err => console.error(err.response.data));
   },
   methods: {
     onSwipeLeft() {

@@ -23,7 +23,7 @@ import org.springframework.util.DigestUtils;
 @Service
 public class UserService {
 
-    private final Logger logger = LogManager.getLogger(LogCategory.BUSINESS);
+    private final Logger logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
 
     private final UserEntityMapper userEntityMapper;
     private final StringRedisTemplate stringRedisTemplate;

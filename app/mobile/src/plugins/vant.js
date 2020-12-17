@@ -19,6 +19,8 @@ import {
   Popover,
   Popup,
   PullRefresh,
+  Radio,
+  RadioGroup,
   Row,
   Search,
   Sticky,
@@ -48,6 +50,8 @@ Vue.use(ActionSheet)
   .use(Popover)
   .use(Popup)
   .use(PullRefresh)
+  .use(Radio)
+  .use(RadioGroup)
   .use(Row)
   .use(Search)
   .use(Sticky)

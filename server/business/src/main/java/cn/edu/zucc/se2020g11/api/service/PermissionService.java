@@ -22,7 +22,7 @@ public class PermissionService
     /**
      * 日志记录器
      */
-    private final Logger logger = LogManager.getLogger(LogCategory.BUSINESS);
+    private final Logger logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
 
     private final UserEntityMapper userEntityMapper;
     private final CompositionEntityMapper compositionEntityMapper;

@@ -16,10 +16,10 @@ Configuration:
         value: piduoduo
       # 定义控制台的日志输出格式
       - name: log.console.pattern
-        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %l - %m%n"
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-4level] %l - %m%n"
       # 定义文件的日志输出格式
       - name: log.file.pattern
-        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C.%M[%L line] - %m%n"
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-4level] %C.%M[%L line] - %m%n"
       # 定义一个目录下存放的同类日志的最大数量
       - name: log.max
         value: 100
@@ -88,8 +88,3 @@ Configuration:
         level: info
         AppenderRef:
           ref: SystemRollingFile
-      - name: debug
-        level: debug
-        additivity: false
-        AppenderRef:
-          ref: Console

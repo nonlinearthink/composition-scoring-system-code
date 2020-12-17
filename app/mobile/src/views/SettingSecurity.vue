@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-security">
     <van-nav-bar
-      title="注册"
+      title="设置"
       fixed
       placeholder
       left-arrow
@@ -15,6 +15,7 @@
         is-link
         size="large"
         center
+        :to="item.to"
       >
         <template #label>
           <div v-if="item.name == 'email'">
@@ -42,7 +43,8 @@ export default {
           },
           {
             text: "更改密码",
-            name: "password"
+            name: "password",
+            to: "/setting/security/password"
           }
         ]
       }

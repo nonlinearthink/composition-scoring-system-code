@@ -1,51 +1,61 @@
 <template>
   <div id="setting-user-page">
     <van-nav-bar
-      title="注册"
+      title="编辑个人资料"
       fixed
       placeholder
       left-arrow
       safe-area-inset-top
-      @click-left="goBack"
+      @click-left="onRouteBack"
+    >
+      <template #right>
+        <div class="action-button" @click="onSubmit">保存</div>
+      </template>
+    </van-nav-bar>
+    <van-form>
+      <van-field
+        v-model="form.username"
+        label="昵称"
+        placeholder="请填写昵称"
+        :rules="[{ required: true, message: '昵称不能为空' }]"
+      />
+      <van-field name="radio" label="性别">
+        <template #input>
+          <van-radio-group v-model="form.isMale" direction="horizontal">
+            <van-radio name="true" icon-size="1rem">
+              <font-awesome-icon id="mars-icon" icon="mars" />
+            </van-radio>
+            <van-radio name="false" icon-size="1rem">
+              <font-awesome-icon id="venus-icon" icon="venus" />
+            </van-radio>
+          </van-radio-group>
+        </template>
+      </van-field>
+      <van-field
+        v-model="form.phone"
+        label="手机"
+        placeholder="请填写手机号"
+        :rules="[{ pattern: /^1[34578]\d{9}$|^$/, message: '非法手机号' }]"
+      />
+      <van-field
+        v-model="form.signature"
+        autosize
+        label="个性签名"
+        type="textarea"
+        placeholder="请输入个性签名"
+      />
+    </van-form>
+    <!-- 内容未保存确认 -->
+    <van-dialog
+      v-model="enableSubmit"
+      title="是否保存修改"
+      :show-cancel-button="enableSubmitCancel"
+      confirm-button-text="确认"
+      cancel-button-text="直接退出"
+      close-on-click-overlay
+      @confirm="onSubmitConfirm"
+      @cancel="onSubmitCancel"
     />
-    <van-cell-group class="setting-group">
-      <van-cell
-        v-for="item in layout.settingGroupItem"
-        :key="item.text"
-        size="large"
-        center
-        is-link
-      >
-        <template #default>
-          <div class="cell-value">
-            <div v-if="item.name == 'avatar'">
-              <van-image
-                width="1rem"
-                height="1rem"
-                fit="cover"
-                round
-                :src="user.avatarUrl ? user.avatarUrl : layout.defaultAvatar"
-              />
-            </div>
-            <div v-else-if="item.name == 'nickname'">
-              {{ user.nickname }}
-            </div>
-            <div v-else-if="item.name == 'sex'">
-              {{ sex }}
-            </div>
-            <div v-else-if="item.name == 'phone'">
-              {{ user.phone ? user.phone : "未设置" }}
-            </div>
-            <div v-else-if="item.name == 'signature'">
-              {{ user.signature ? user.signature : "未设置" }}
-            </div>
-          </div>
-        </template>
-        <template #title>
-          {{ item.text }}
-        </template>
-      </van-cell>
-    </van-cell-group>
   </div>
 </template>
 
@@ -54,52 +64,96 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      layout: {
-        defaultAvatar: require("../assets/images/avatar.svg"),
-        settingGroupItem: [
-          {
-            icon: "coupon-o",
-            text: "头像",
-            name: "avatar"
-          },
-          {
-            icon: "envelop-o",
-            text: "昵称",
-            name: "nickname"
-          },
-          {
-            icon: "setting-o",
-            text: "性别",
-            name: "sex"
-          },
-          {
-            icon: "setting-o",
-            text: "手机",
-            name: "phone"
-          },
-          {
-            icon: "setting-o",
-            text: "个性签名",
-            name: "signature"
-          }
-        ]
+      enableSubmitCancel: false,
+      enableSubmit: false,
+      routePassport: false,
+      form: {
+        username: "",
+        isMale: null,
+        signature: null,
+        phone: null
       }
     };
   },
   computed: {
-    sex() {
-      if (this.user.isMale === true) {
-        return "男";
-      } else if (this.user.isMale === false) {
-        return "女";
+    isChange() {
+      if (
+        this.user.nickname != this.form.nickname ||
+        this.user.signature != this.form.signature ||
+        this.user.phone != this.form.phone
+      ) {
+        return true;
+      } else if (
+        (this.user.isMale == true && this.form.isMale == "false") ||
+        (this.user.isMale == false && this.form.isMale == "true")
+      ) {
+        return true;
+      } else {
+        return false;
       }
-      return "未设置";
     },
     ...mapState(["user"])
   },
+  created() {
+    this.form = Object.assign({}, this.user);
+    if (this.user.isMale) {
+      this.form.isMale = "true";
+    } else {
+      this.form.isMale = "false";
+    }
+  },
   methods: {
-    goBack() {
+    /**
+     * @description 路由返回
+     */
+    onRouteBack() {
       this.$router.go(-1);
+    },
+    onSubmit() {
+      if (this.isChange) {
+        this.enableSubmit = true;
+      }
+    },
+    onSubmitConfirm() {
+      this.axios
+        .put(`/user/account/details`, this.form)
+        .then(res => {
+          console.log(res);
+          if (this.form.isMale == "true") {
+            this.form.isMale = true;
+          } else {
+            this.form.isMale = false;
+          }
+          this.$store.commit("updateUser", this.form);
+          this.routePassport = true;
+          this.onRouteBack();
+        })
+        .catch(err => {
+          console.error(err.response.data);
+          this.$toast(err.response.data.msg);
+        });
+    },
+    onSubmitCancel() {
+      this.routePassport = true;
+      this.onRouteBack();
+    }
+  },
+  /**
+   * @description 路由拦截
+   * @param {String} to 路由跳转目的地
+   * @param {String} from 路由跳转源
+   * @param {Function} next
+   */
+  beforeRouteLeave(to, from, next) {
+    if (this.routePassport || !this.isChange) {
+      next();
+    } else {
+      next(false);
+      setTimeout(() => {
+        // 设置一个时间缓存，防止状态更新在路由刷新之前发生
+        this.enableSubmit = true;
+        this.enableSubmitCancel = true;
+      }, 500);
     }
   }
 };
@@ -110,5 +164,14 @@ export default {
   .cell-value {
     margin-right: $blank-size/2;
   }
+}
+#mars-icon {
+  color: #1989fa;
+}
+#venus-icon {
+  color: #ee0a24;
+}
+.action-button {
+  color: white;
 }
 </style>

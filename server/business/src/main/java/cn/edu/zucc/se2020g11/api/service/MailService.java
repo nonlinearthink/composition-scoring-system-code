@@ -33,7 +33,7 @@ public class MailService {
     @Autowired
     public MailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        logger = LogManager.getLogger(LogCategory.BUSINESS);
+        logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
     }
 
     /**

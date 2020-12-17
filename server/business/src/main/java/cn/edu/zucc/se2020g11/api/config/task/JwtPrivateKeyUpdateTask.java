@@ -21,7 +21,7 @@ public class JwtPrivateKeyUpdateTask {
     /**
      * 日志记录器
      */
-    private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
+    private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM.getPosition());
     /**
      * 运行间隔
      */
