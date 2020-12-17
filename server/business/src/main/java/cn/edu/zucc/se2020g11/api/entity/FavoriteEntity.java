@@ -3,7 +3,7 @@ package cn.edu.zucc.se2020g11.api.entity;
 import java.util.Date;
 
 public class FavoriteEntity {
-    private Integer favotiteId;
+    private Integer favoriteId;
 
     private Integer compositionId;
 
@@ -11,12 +11,12 @@ public class FavoriteEntity {
 
     private Date time;
 
-    public Integer getFavotiteId() {
-        return favotiteId;
+    public Integer getFavoriteId() {
+        return favoriteId;
     }
 
-    public void setFavotiteId(Integer favotiteId) {
-        this.favotiteId = favotiteId;
+    public void setFavoriteId(Integer favoriteId) {
+        this.favoriteId = favoriteId;
     }
 
     public Integer getCompositionId() {

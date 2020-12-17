@@ -2,35 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zucc.se2020g11.api.dao.FavoriteEntityMapper">
   <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
-    <id column="favotite_id" jdbcType="INTEGER" property="favotiteId" />
+    <id column="favorite_id" jdbcType="INTEGER" property="favoriteId" />
     <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Base_Column_List">
-    favotite_id, composition_id, username, time
+    favorite_id, composition_id, username, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from favorite
-    where favotite_id = #{favotiteId,jdbcType=INTEGER}
+    where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from favorite
-    where favotite_id = #{favotiteId,jdbcType=INTEGER}
+    where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
-    insert into favorite (favotite_id, composition_id, username, 
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" useGeneratedKeys="true" keyProperty="favoriteId">
+    insert into favorite (favorite_id, composition_id, username,
       time)
-    values (#{favotiteId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+    values (#{favoriteId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
       #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     insert into favorite
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="favotiteId != null">
-        favotite_id,
+      <if test="favoriteId != null">
+        favorite_id,
       </if>
       <if test="compositionId != null">
         composition_id,
@@ -43,8 +43,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="favotiteId != null">
-        #{favotiteId,jdbcType=INTEGER},
+      <if test="favoriteId != null">
+        #{favoriteId,jdbcType=INTEGER},
       </if>
       <if test="compositionId != null">
         #{compositionId,jdbcType=INTEGER},
@@ -70,13 +70,31 @@
         time = #{time,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where favotite_id = #{favotiteId,jdbcType=INTEGER}
+    where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     update favorite
     set composition_id = #{compositionId,jdbcType=INTEGER},
       username = #{username,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP}
-    where favotite_id = #{favotiteId,jdbcType=INTEGER}
+    where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" resultMap="BaseResultMap">
+    select *
+    from favorite
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
+    delete from favorite
+    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+  </delete>
+  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" resultMap="BaseResultMap">
+    select *
+    from favorite
+    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>

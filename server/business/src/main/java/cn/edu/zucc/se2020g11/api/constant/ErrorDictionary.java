@@ -89,7 +89,15 @@ public enum ErrorDictionary {
     /**
      * 没有点赞记录
      */
-    NO_SUPPORT(HttpStatus.FORBIDDEN, 30, "没有点赞记录");
+    NO_SUPPORT(HttpStatus.FORBIDDEN, 30, "没有点赞记录"),
+    /**
+     * 重复收藏
+     */
+    REPEAT_FAVORITE(HttpStatus.FORBIDDEN, 31, "重复收藏"),
+    /**
+     * 没有收藏记录
+     */
+    NO_FAVORITE(HttpStatus.FORBIDDEN, 32, "没有收藏记录");
 
     @Getter
     @Setter
