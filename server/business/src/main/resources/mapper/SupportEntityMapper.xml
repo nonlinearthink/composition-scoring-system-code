@@ -88,7 +88,7 @@
       </if>
     </where>
   </select>
-  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+  <delete id="deleteByUsernameAndCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
     delete from support
     where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
@@ -97,4 +97,8 @@
     from support
     where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
+    delete from support
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </delete>
 </mapper>

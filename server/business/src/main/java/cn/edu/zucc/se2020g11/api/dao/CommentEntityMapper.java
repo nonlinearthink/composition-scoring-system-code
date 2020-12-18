@@ -7,7 +7,7 @@ import java.util.List;
 public interface CommentEntityMapper {
     int deleteByPrimaryKey(Integer commentId);
 
-    int deleteByCompositionId(CommentEntity record);
+    int deleteByCompositionId(Integer compositionId);
 
     int insert(CommentEntity record);
 

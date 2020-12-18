@@ -48,9 +48,13 @@ public class SupportService
     }
     public void deleteSupport(SupportEntity supportEntity)
     {
-        int num = supportEntityMapper.deleteByCompositionId(supportEntity);
+        int num = supportEntityMapper.deleteByUsernameAndCompositionId(supportEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_SUPPORT, LogCategory.BUSINESS);
         }
+    }
+    public void deleteSupportByCompositionId(Integer compositionId)
+    {
+        supportEntityMapper.deleteByCompositionId(compositionId);
     }
 }
