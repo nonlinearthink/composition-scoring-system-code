@@ -5,7 +5,8 @@ import store from "../store";
 import router from "../router/index";
 
 // axios.defaults.baseURL = "http://192.168.123.204:8000/api";
-axios.defaults.baseURL = "http://localhost:8000/api";
+// axios.defaults.baseURL = "http://localhost:8000/api";
+axios.defaults.baseURL = "http://192.168.43.185:8000/api";
 
 axios.interceptors.request.use(
   config => {
