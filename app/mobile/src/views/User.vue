@@ -30,6 +30,7 @@
           v-for="item in layout.statisticBar"
           :key="item.name"
           :span="24 / layout.statisticBar.length"
+          @click="onClickStatisticBar(item)"
         >
           <van-row>{{ statistic[item.name] }}{{ item.unit }}</van-row>
           <van-row>{{ item.text }}</van-row>
@@ -96,23 +97,24 @@ export default {
       statistic: {
         fan: 0,
         follow: 0,
-        compositionTotal: 0
+        composition: 0
       },
       layout: {
         avatar: require("../assets/images/avatar.svg"),
         statisticBar: [
-          {
-            name: "fan",
-            unit: "人",
-            text: "粉丝"
-          },
           {
             name: "follow",
             unit: "个",
             text: "关注"
           },
           {
-            name: "compositionTotal",
+            name: "fan",
+            unit: "人",
+            text: "粉丝"
+          },
+
+          {
+            name: "composition",
             unit: "篇",
             text: "累计创作"
           }
@@ -161,9 +163,50 @@ export default {
     // },
     ...mapState(["user", "token", "isLogin"])
   },
+  created() {
+    this.axios
+      .get(`/follow/${this.user.username}`)
+      .then(res => {
+        console.log(res.data);
+        this.statistic.follow = res.data.data.followList.length;
+      })
+      .catch(err => {
+        console.error(err.response.data);
+      });
+    this.axios
+      .get(`/follow/${this.user.username}/follower`)
+      .then(res => {
+        console.log(res.data);
+        this.statistic.fan = res.data.data.followList.length;
+      })
+      .catch(err => {
+        console.error(err.response.data);
+      });
+    this.axios
+      .get("composition")
+      .then(res => {
+        console.log(res.data);
+        this.statistic.composition = res.data.data.compositionList.filter(
+          item => item.status == 3
+        ).length;
+      })
+      .catch(err => {
+        console.error(err.response.data);
+      });
+  },
   methods: {
     goLogin() {
       this.$router.push("/login");
+    },
+    onClickStatisticBar(item) {
+      if (item.name == "composition") {
+        this.$store.commit("setRouteAnchor", 2);
+        this.$router.push("/manager");
+      } else if (item.name == "fan") {
+        this.$router.push({ path: "/user/follow", query: { tab: 1 } });
+      } else {
+        this.$router.push({ path: "/user/follow", query: { tab: 0 } });
+      }
     }
   }
 };

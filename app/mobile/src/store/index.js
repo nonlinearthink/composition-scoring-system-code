@@ -22,17 +22,12 @@ export default new Vuex.Store({
     setting: {
       cacheEditingComposition: true
     },
-    editor: {
-      saveConfirm: false,
-      composition: {
-        title: "",
-        visibility: 1,
-        compositionBody: "",
-        description: ""
-      }
-    }
+    routeAnchor: -1
   },
   mutations: {
+    setRouteAnchor(state, routerAnchor) {
+      state.routeAnchor = routerAnchor;
+    },
     editingCache(state) {
       if (!state.editing.cache) {
         state.editing.cache = new Composition({ compositionBody: "" });
@@ -81,15 +76,6 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isLogin = false;
-    },
-    saveEditor(state, composition) {
-      state.editor.composition = composition;
-    },
-    openSaveConfirm(state) {
-      state.editor.saveConfirm = true;
-    },
-    closeSaveConfirm(state) {
-      state.editor.saveConfirm = false;
     }
   },
   actions: {},

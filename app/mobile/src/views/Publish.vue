@@ -2,7 +2,7 @@
   <div id="publish-page">
     <!-- 顶部导航栏 -->
     <van-nav-bar
-      title="编辑"
+      title="编辑发布信息"
       fixed
       placeholder
       left-arrow
@@ -56,7 +56,7 @@
     />
     <van-dialog
       v-model="submitConfirm"
-      :title="composition.status == 3 ? '是否更新' : '是否发布'"
+      :title="composition.status == 4 ? '是否更新发布信息' : '是否发布'"
       confirm-button-text="确认"
       close-on-click-overlay
       @confirm="onPublish"
@@ -159,6 +159,8 @@ export default {
      * @description 发布作文
      */
     onPublish() {
+      this.composition.releaseTime = new Date().getTime();
+      this.composition.status = 4;
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)
         .then(res => {

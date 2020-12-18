@@ -37,9 +37,9 @@
             <!-- 卡片正面 -->
             <div class="front-side" @click="onEnterEditing(item)">
               <!-- 标题 -->
-              <van-row class="title">
+              <van-row v-if="item.title" class="title">
                 <van-col>
-                  {{ item.title ? item.title : "(未定义标题)" }}
+                  {{ item.title }}
                 </van-col>
               </van-row>
               <van-row>
@@ -155,13 +155,12 @@ export default {
         loading: false, // 是否处于加载中
         // tab
         tabs: [
-          { title: "全部", state: 0 },
           { title: "草稿", state: 1 },
-          { title: "评分中", state: 2 },
-          { title: "已发布", state: 3 }
+          { title: "已提交", state: 3 },
+          { title: "已发布", state: 4 }
         ],
         compositions: [], // 作文
-        statusColor: ["#07c160", "#ee0a24", "#1989fa"], // 状态标签颜色
+        statusColor: ["#07c160", "#ee0a24", "#1989fa", "#ff976a"], // 状态标签颜色
         visibilityColor: ["#969799", "#646566", "#323233"] // 可见性标签颜色
       },
       totalScore: 10, // 总分
@@ -173,7 +172,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["compositions", "user"])
+    ...mapState(["compositions", "user", "routeAnchor"])
   },
   watch: {
     activeTab() {
@@ -184,6 +183,11 @@ export default {
     }
   },
   created() {
+    this.activeTab = Number(this.$route.query.tab);
+    if (this.routeAnchor >= 0) {
+      this.activeTab = this.routeAnchor;
+      this.$store.commit("setRouteAnchor", -1);
+    }
     // 加载数据
     this.onLoad();
   },
@@ -209,11 +213,8 @@ export default {
      * @return 状态码解析之后的字符串
      */
     translateStatus(value) {
-      if (value) {
-        let tab = this.layout.tabs.find(tab => tab.state == value);
-        return tab.title;
-      }
-      return this.layout.tabs[1].title;
+      let status = ["草稿", "评价中", "评价完成", "已发布"];
+      return status[value - 1];
     },
     /**
      * @description 界面重布局
@@ -223,7 +224,12 @@ export default {
       this.layout.compositions = [];
       for (let composition of this.compositions) {
         // 根据当前的 tab 做筛选
-        if (this.activeTab == 0 || composition.status == this.activeTab) {
+        if (
+          (composition.status == 1 && this.activeTab == 0) ||
+          (composition.status == 2 && this.activeTab == 1) ||
+          (composition.status == 3 && this.activeTab == 1) ||
+          (composition.status == 4 && this.activeTab == 2)
+        ) {
           // 添加到作文布局
           this.layout.compositions.push({ ...composition });
         }
@@ -318,9 +324,10 @@ export default {
       if (item.status == 1) {
         this.$store.commit("editingDraft", new Composition(item));
         this.onRouteChange("/writing");
-      } else if (item.status == 3) {
+      } else if (item.status == 3 || item.status == 4) {
         // 设置需要编辑的作文
         this.$store.commit("editingPublish", new Composition(item));
+        this.$store.commit("setRouteAnchor", item.status - 2);
         // 跳转到发布编辑界面
         this.onRouteChange("/publish");
       } else {
