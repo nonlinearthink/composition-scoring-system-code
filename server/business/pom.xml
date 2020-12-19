@@ -146,6 +146,16 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>3.0.3</version>
         </dependency>
+        <!-- word-checker, 用于单词拼写检查 -->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>word-checker</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

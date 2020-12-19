@@ -1,10 +1,12 @@
-package cn.edu.zucc.se2020g11.api.entity;
+package cn.edu.zucc.se2020g11.api.model;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * 密码修改模型
@@ -12,8 +14,12 @@ import javax.persistence.Entity;
  * @author nonlinearthink
  */
 @Entity(name = "img")
-public class ImgEntity
+@Setter
+@Getter
+public class ImgModel
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String url;

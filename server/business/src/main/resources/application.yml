@@ -58,6 +58,13 @@ spring:
           ssl:
             enable: true
             required: true
+  http:
+    multipart:
+      max-file-size: -1
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 # Swagger 待具体配置
 # 配置文档 https://github.com/SpringForAll/spring-boot-starter-swagger

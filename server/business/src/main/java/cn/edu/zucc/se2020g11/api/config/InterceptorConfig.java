@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
@@ -40,4 +41,11 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
         super.addInterceptors(registry);
     }
 
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry)
+    {
+        //指向外部目录
+        registry.addResourceHandler("img//**").addResourceLocations("file:C:/img/");
+        super.addResourceHandlers(registry);
+    }
 }
