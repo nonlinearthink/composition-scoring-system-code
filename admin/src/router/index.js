@@ -30,9 +30,14 @@ const routes = [
     component: () => import("../views/SystemMessage.vue")
   },
   {
-    path: "/review/normal",
-    name: "ReviewNormalPage",
-    component: () => import("../views/ReviewNormal.vue")
+    path: "/review/composition",
+    name: "ReviewCompositionPage",
+    component: () => import("../views/ReviewComposition.vue")
+  },
+  {
+    path: "/review/comment",
+    name: "ReviewCommentPage",
+    component: () => import("../views/ReviewComment.vue")
   },
   {
     path: "/review/report",

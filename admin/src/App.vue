@@ -31,15 +31,18 @@
           </a-sub-menu>
           <a-sub-menu key="3" title="内容审查">
             <a-menu-item key="3-1">
-              <router-link to="/review/normal">文本审查</router-link>
+              <router-link to="/review/composition">作文审查</router-link>
             </a-menu-item>
             <a-menu-item key="3-2">
+              <router-link to="/review/comment">评论审查</router-link>
+            </a-menu-item>
+            <a-menu-item key="3-3">
               <router-link to="/review/report">举报处理</router-link>
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="4" title="用户管理">
             <a-menu-item key="4-1">
-              <router-link to="/user/defense">用户申诉</router-link>
+              <router-link to="/user/defense">封号申诉</router-link>
             </a-menu-item>
             <a-menu-item key="4-2">
               <router-link to="/user/infraction">违规处理</router-link>

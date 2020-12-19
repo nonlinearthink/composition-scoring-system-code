@@ -1,13 +1,22 @@
 <template>
-  <div id="review-composition-page">
+  <div id="review-comment-page">
     <a-row type="flex">
       <a-col class="action-button">
         <a-button
           type="primary"
           :disabled="rowSelected.length == 0"
-          @click="onHandle"
+          @click="onSetValid"
         >
-          标记为已处理
+          标记为通过
+        </a-button>
+      </a-col>
+      <a-col class="action-button">
+        <a-button
+          type="danger"
+          :disabled="rowSelected.length == 0"
+          @click="onSetInvalid"
+        >
+          标记为违规
         </a-button>
       </a-col>
     </a-row>
@@ -18,22 +27,22 @@
       :row-selection="rowSelection"
     >
       <!-- 如果有需求，在此自定义每个单元格的样式 -->
-      <a slot="feedback" slot-scope="text">
+      <a slot="comment" slot-scope="text, record">
         <a-popover title="评论内容">
           <template slot="content">
             {{ text }}
           </template>
-          <div>{{ text }}</div>
+          <div>{{ record.brief }}</div>
         </a-popover>
       </a>
       <span
         slot="status"
         slot-scope="text"
         :style="{
-          color: text == 0 ? '#f5222d' : '#000'
+          color: text == 0 ? '#000' : text == 1 ? '#1890ff' : '#f5222d'
         }"
       >
-        {{ translateStatus(text) }}
+        {{ translateValid(text) }}
       </span>
     </a-table>
   </div>
@@ -46,38 +55,32 @@ export default {
     const tableColumns = [
       {
         title: "ID",
-        dataIndex: "feedbackId",
-        key: "feedbackId",
+        dataIndex: "commentId",
+        key: "commentId",
+        scopedSlots: { customRender: "id" },
         width: 80
       },
       {
-        title: "反馈内容",
-        dataIndex: "feedbackBody",
-        key: "feedbackBody",
-        scopedSlots: { customRender: "feedback" }
+        title: "评论内容",
+        dataIndex: "commentBody",
+        key: "commentBody",
+        scopedSlots: { customRender: "comment" }
       },
       {
-        title: "反馈类型",
-        dataIndex: "feedbackType",
-        key: "feedbackType",
-        width: 100
-      },
-      {
-        title: "提交者",
+        title: "发布者",
         dataIndex: "username",
-        key: "username",
-        width: 100
+        key: "username"
       },
       {
-        title: "反馈时间",
+        title: "修改时间",
         dataIndex: "time",
         key: "time",
         width: 180
       },
       {
         title: "状态",
-        dataIndex: "status",
-        key: "status",
+        dataIndex: "valid",
+        key: "valid",
         scopedSlots: { customRender: "status" },
         width: 80
       }
@@ -89,26 +92,32 @@ export default {
     };
     const dataSource = [
       {
-        feedbackId: "10000",
-        feedbackBody: "这软件太垃圾了，我遇到的每一个人都比我弱",
+        commentId: "10000",
+        commentBody: "我难道不是最强的吗？",
         time: "2020-11-09 20:08:30",
         username: "tuenity",
-        status: 0,
-        feedbackType: "使用建议"
+        valid: 0
       },
       {
-        feedbackId: "10001",
-        feedbackBody:
-          "我就问，还有谁比我光芒耳机绝对冰天龙人还要强的人，如果有的话，那一定是我的小号-光芒耳机绝对天龙人",
+        commentId: "10001",
+        commentBody:
+          "我是光芒耳机绝对天龙人，之所以叫光芒是因为我每一个见到我的人都会被我亮瞎眼，之所以戴耳机是因为我有钱到可以用钱砸死你全家，之所以叫绝对是因为我无人能敌，之所以叫天龙人是因为你们都不配。",
         time: "2020-11-09 20:08:30",
         username: "tuenity",
-        status: 0,
-        feedbackType: "BUG反馈"
+        valid: 0
+      },
+      {
+        commentId: "10002",
+        commentBody: "哈哈哈，你是真的菜！",
+        time: "2020-11-09 20:08:30",
+        username: "tuenity",
+        valid: 0
       }
     ];
+    dataSource.forEach(item => (item.brief = this.textBrief(item.commentBody)));
     return {
       screenWidth: document.body.clientWidth,
-      primaryKey: "feedbackId",
+      primaryKey: "commentId",
       tableColumns,
       // 在此编辑测试数据
       dataSource,
@@ -124,11 +133,13 @@ export default {
     };
   },
   methods: {
-    translateStatus(status) {
-      if (status == 0) {
-        return "待处理";
-      } else if (status == 1) {
-        return "已处理";
+    translateValid(valid) {
+      if (valid == 0) {
+        return "待审核";
+      } else if (valid == 1) {
+        return "通过";
+      } else if (valid == 2) {
+        return "违规";
       }
     },
     textBrief(text) {
@@ -145,9 +156,15 @@ export default {
       }
       return text;
     },
-    onHandle() {
+    onSetValid() {
       this.rowSelected.forEach(row => {
-        row.status = 1;
+        row.valid = 1;
+      });
+      this.$message.success(`更新记录状态`, 1);
+    },
+    onSetInvalid() {
+      this.rowSelected.forEach(row => {
+        row.valid = 2;
       });
       this.$message.success(`更新记录状态`, 1);
     }
@@ -155,7 +172,7 @@ export default {
   watch: {
     screenWidth() {
       this.dataSource.forEach(
-        item => (item.brief = this.textBrief(item.feedbackBody))
+        item => (item.brief = this.textBrief(item.commentBody))
       );
     }
   }

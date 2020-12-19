@@ -1,5 +1,5 @@
 <template>
-  <div id="system-message-page">
+  <div id="review-composition-page">
     <a-modal
       v-model="viewVisible"
       title="快速查看"
@@ -15,7 +15,7 @@
           {{ viewTarget.username }}
         </a-descriptions-item>
         <a-descriptions-item label="可见性">
-          {{ viewTarget.visibility }}
+          {{ translateVisibility(viewTarget.visibility) }}
         </a-descriptions-item>
         <a-descriptions-item label="更新时间" :span="2">
           {{ viewTarget.releaseTime }}
@@ -55,7 +55,11 @@
       :row-selection="rowSelection"
     >
       <!-- 如果有需求，在此自定义每个单元格的样式 -->
-      <a slot="id" slot-scope="text, record" @click="onQuickView(record)">
+      <a
+        slot="composition"
+        slot-scope="text, record"
+        @click="onQuickView(record)"
+      >
         {{ text }}
       </a>
       <span
@@ -80,13 +84,13 @@ export default {
         title: "ID",
         dataIndex: "compositionId",
         key: "compositionId",
-        scopedSlots: { customRender: "id" },
         width: 80
       },
       {
         title: "作文标题",
         dataIndex: "title",
         key: "title",
+        scopedSlots: { customRender: "composition" },
         width: 200
       },
       {
@@ -171,6 +175,20 @@ export default {
       } else if (valid == 2) {
         return "违规";
       }
+    },
+    translateVisibility(value) {
+      let visibilityList = [
+        { value: 1, name: "私密" },
+        { value: 2, name: "仅粉丝可见" },
+        { value: 3, name: "公开" }
+      ];
+      if (value) {
+        let visibility = visibilityList.find(
+          visibility => visibility.value == value
+        );
+        return visibility.name;
+      }
+      return this.visibilityList[0].name;
     },
     onSetValid() {
       this.rowSelected.forEach(row => {

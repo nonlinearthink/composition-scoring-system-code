@@ -245,7 +245,7 @@ export default {
       }
       .signature {
         font-size: $text-small;
-        white-space: no-wrap;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
