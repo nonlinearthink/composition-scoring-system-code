@@ -21,12 +21,12 @@
           <a-menu-item key="1">
             <router-link to="/">首页</router-link>
           </a-menu-item>
-          <a-sub-menu key="2" title="系统推送">
+          <a-sub-menu key="2" title="推送管理">
             <a-menu-item key="2-1">
-              <router-link to="/message/editor">新建推送</router-link>
+              <router-link to="/article">系统推送</router-link>
             </a-menu-item>
             <a-menu-item key="2-2">
-              <router-link to="/message/table">管理推送</router-link>
+              <router-link to="/message">系统消息</router-link>
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="3" title="内容审查">

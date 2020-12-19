@@ -20,14 +20,14 @@ const routes = [
     component: () => import("../views/Help.vue")
   },
   {
-    path: "/message/editor",
-    name: "MessageEditorPage",
-    component: () => import("../views/MessageEditor.vue")
+    path: "/article",
+    name: "ArticlePage",
+    component: () => import("../views/Article.vue")
   },
   {
-    path: "/message/table",
-    name: "MessageTable",
-    component: () => import("../views/MessageTable.vue")
+    path: "/message",
+    name: "SystemMessagePage",
+    component: () => import("../views/SystemMessage.vue")
   },
   {
     path: "/review/normal",

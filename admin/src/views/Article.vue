@@ -1,9 +1,13 @@
 <template>
-  <div class="message-table">
+  <div id="article-page">
     <a-modal v-model="editorVisible" title="编辑" okText="提交" @ok="onUpdate">
+      <!-- 在此插入编辑用的表单 -->
+      <a-form-model-item label="推送标题">
+        <a-input v-model="editorForm.articleName" />
+      </a-form-model-item>
       <a-form-model-item label="消息内容">
         <a-textarea
-          v-model="editorForm.sMessageBody"
+          v-model="editorForm.articleBody"
           placeholder="请输入消息内容"
           allowClear
           autoSize
@@ -15,6 +19,7 @@
       :data-source="dataSource"
       :rowKey="primaryKey"
     >
+      <!-- 如果有需求，在此自定义每个单元格的样式 -->
       <span slot="action" slot-scope="text, record">
         <a @click="onEdit(record)">Edit</a>
         <a-divider type="vertical" />
@@ -29,17 +34,23 @@
 <script>
 export default {
   data() {
+    // 在此定义表结构
     const tableColumns = [
       {
         title: "ID",
-        dataIndex: "sMessageId",
-        key: "sMessageId",
+        dataIndex: "articleId",
+        key: "articleId",
         width: 80
       },
       {
-        title: "消息内容",
-        dataIndex: "sMessageBody",
-        key: "sMessageBody"
+        title: "推送标题",
+        dataIndex: "articleName",
+        key: "articleName"
+      },
+      {
+        title: "推送内容",
+        dataIndex: "articleBody",
+        key: "articleBody"
       },
       {
         title: "修改时间",
@@ -62,12 +73,14 @@ export default {
     ];
     return {
       editorVisible: false,
-      primaryKey: "sMessageId",
+      primaryKey: "articleId",
       tableColumns,
+      // 在此编辑测试数据
       dataSource: [
         {
-          sMessageId: "10000",
-          sMessageBody: "hello",
+          articleId: "10000",
+          articleName: "天龙人为什么这么强",
+          articleBody: "hello",
           time: "2020-11-09 20:08:30",
           adminName: "root"
         }
@@ -89,8 +102,11 @@ export default {
       this.editorVisible = true;
     },
     onUpdate() {
-      this.editingTarget.sMessageBody = this.editorForm.sMessageBody;
+      // 在此插入需要更新的内容
+      this.editingTarget.articleName = this.editorForm.articleName;
+      this.editingTarget.articleBody = this.editorForm.articleBody;
       this.editingTarget.time = new Date().getTime();
+      // 插入结束
       this.$message.success(
         `修改记录${this.editingTarget[this.primaryKey]}成功`,
         1
