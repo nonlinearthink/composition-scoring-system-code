@@ -114,6 +114,6 @@
   </select>
   <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
     delete from comment
-    where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
+    where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
 </mapper>

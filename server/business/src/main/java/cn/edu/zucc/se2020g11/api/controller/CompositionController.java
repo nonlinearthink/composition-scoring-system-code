@@ -3,8 +3,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.*;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
-import cn.edu.zucc.se2020g11.api.service.CompositionService;
-import cn.edu.zucc.se2020g11.api.service.PermissionService;
+import cn.edu.zucc.se2020g11.api.service.*;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,11 +28,17 @@ import java.util.Map;
 public class CompositionController {
 
     private CompositionService compositionService;
+    private SupportService supportService;
+    private FavoriteService favoriteService;
+    private CommentService commentService;
     private PermissionService permissionService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService, PermissionService permissionService) {
+    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService) {
         this.compositionService = compositionService;
+        this.supportService = supportService;
+        this.favoriteService = favoriteService;
+        this.commentService = commentService;
         this.permissionService = permissionService;
     }
 
@@ -97,6 +102,9 @@ public class CompositionController {
     })
     public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         permissionService.validateComposition((String)request.getAttribute("username"), compositionId);
+        supportService.deleteSupportByCompositionId(compositionId);
+        favoriteService.deleteFavoriteByCompositionId(compositionId);
+        commentService.deleteCommentByCompositionId(compositionId);
         compositionService.deleteComposition(compositionId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
@@ -121,48 +129,6 @@ public class CompositionController {
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "他人为作文添加评论")
-    @PostMapping("/{compositionId}/comments")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
-                    "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "评论", required = true, dataType =
-                    "CommentEntity")
-    })
-    public ResponseEntity<String> addComment(@PathVariable("compositionId") Integer compositionId,
-                                                   @RequestBody CommentEntity commentEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "他人为作文添加点赞")
-    @PostMapping("/{compositionId}/support")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
-                    "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "点赞", required = true, dataType =
-                    "SupportEntity")
-    })
-    public ResponseEntity<String> addSupport(@PathVariable("compositionId") Integer compositionId,
-                                                   @RequestBody SupportEntity supportEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "他人为作文添加收藏")
-    @PostMapping("/{compositionId}/favorite")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
-                    "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "favoriteEntity", value = "收藏", required = true, dataType =
-                    "FavoriteEntity")
-    })
-    public ResponseEntity<String> addFavorite(@PathVariable("compositionId") Integer compositionId,
-                                                    @RequestBody FavoriteEntity favoriteEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @LoginRequired(type = UserType.USER)

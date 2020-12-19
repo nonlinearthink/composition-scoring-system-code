@@ -7,7 +7,9 @@ import java.util.List;
 public interface FavoriteEntityMapper {
     int deleteByPrimaryKey(Integer favoriteId);
 
-    int deleteByCompositionId(FavoriteEntity record);
+    int deleteByUsernameAndCompositionId(FavoriteEntity record);
+
+    int deleteByCompositionId(Integer compositionId);
 
     int insert(FavoriteEntity record);
 

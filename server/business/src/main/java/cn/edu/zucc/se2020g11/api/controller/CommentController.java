@@ -40,7 +40,6 @@ public class CommentController
     @ApiOperation(value = "获取当前作文的所有评论")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllComments(@PathVariable("compositionId") Integer compositionId) {
         List<CommentEntity> commentEntityList = commentService.selectAllComments(compositionId);
-//        List<CompositionEntity> compositionEntityList = supportService.findSupportedComposition(supportEntityList);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);

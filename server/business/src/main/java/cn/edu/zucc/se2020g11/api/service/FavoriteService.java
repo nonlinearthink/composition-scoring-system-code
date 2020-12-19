@@ -47,9 +47,13 @@ public class FavoriteService
     }
     public void deleteFavorite(FavoriteEntity favoriteEntity)
     {
-        int num = favoriteEntityMapper.deleteByCompositionId(favoriteEntity);
+        int num = favoriteEntityMapper.deleteByUsernameAndCompositionId(favoriteEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_FAVORITE, LogCategory.BUSINESS);
         }
+    }
+    public void deleteFavoriteByCompositionId(Integer compositionId)
+    {
+        favoriteEntityMapper.deleteByCompositionId(compositionId);
     }
 }

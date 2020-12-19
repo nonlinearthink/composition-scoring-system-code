@@ -7,7 +7,9 @@ import java.util.List;
 public interface SupportEntityMapper {
     int deleteByPrimaryKey(Integer supportId);
 
-    int deleteByCompositionId(SupportEntity record);
+    int deleteByUsernameAndCompositionId(SupportEntity record);
+
+    int deleteByCompositionId(Integer compositionId);
 
     int insert(SupportEntity record);
 
