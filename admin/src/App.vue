@@ -5,8 +5,8 @@
         collapsible
         breakpoint="lg"
         collapsed-width="0"
-        @collapse="onCollapse"
         width="200"
+        :style="{ height: '100vh' }"
       >
         <div class="logo">
           <piduoduo-logo class="logo-icon" />
@@ -56,16 +56,24 @@
         </a-menu>
       </a-layout-sider>
       <a-layout>
-        <a-layout-header :style="{ background: '#fff', padding: 0 }" />
+        <a-layout-header :style="{ background: '#fff', padding: 0 }">
+          <a-row type="flex" justify="end">
+            <a-col class="header-action-bar-item">
+              <a-icon type="user" /> {{ admin.adminName }}
+            </a-col>
+            <a-col class="header-action-bar-item">
+              <a-icon type="poweroff" />
+            </a-col>
+          </a-row>
+        </a-layout-header>
         <a-layout-content :style="{ margin: '24px 16px 0' }">
-          <div
-            :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
-          >
+          <div :style="{ padding: '24px', background: '#fff', height: '100%' }">
             <router-view />
           </div>
         </a-layout-content>
-        <a-layout-footer style="textAlign: center">
-          Ant Design ©2018 Created by Ant UED
+        <a-layout-footer class="footer-information">
+          Copyright © www.piduoduo.xyz, All Rights Reserved.<br />
+          助力英文写作学习
         </a-layout-footer>
       </a-layout>
     </a-layout>
@@ -73,7 +81,8 @@
 </template>
 
 <script>
-import PiduoduoLogo from "@/assets/logo.svg";
+import { mapState } from "vuex";
+import PiduoduoLogo from "@/assets/images/logo.svg";
 export default {
   components: {
     PiduoduoLogo
@@ -81,14 +90,10 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    onCollapse(collapsed, type) {
-      console.log(collapsed, type);
-    },
-    onBreakpoint(broken) {
-      console.log(broken);
-    }
-  }
+  computed: {
+    ...mapState(["admin"])
+  },
+  methods: {}
 };
 </script>
 
@@ -125,13 +130,27 @@ export default {
 .logo {
   text-align: left;
   color: white;
+  padding: 1rem 0;
   .logo-icon {
-    height: 2rem;
-    height: 2rem;
+    height: 2.5rem;
+    height: 2.5rem;
     display: inline-block;
   }
   .logo-text {
+    font-size: 1.2rem;
     text-align: center;
   }
+}
+.header-action-bar-item {
+  font-size: 1.1rem;
+  padding: 0 1.5rem;
+  &:hover {
+    background: #f6f6f6;
+    cursor: pointer;
+  }
+}
+.footer-information {
+  text-align: center;
+  color: #9e9d9d;
 }
 </style>
