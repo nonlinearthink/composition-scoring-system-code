@@ -36,7 +36,7 @@ public class ArticleController
         this.articleService = articleService;
     }
 
-//    @LoginRequired(type = UserType.ADMIN)
+    @LoginRequired(type = UserType.ADMIN)
     @PostMapping("")
     @ApiOperation(value = "添加推送文章")
     @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
@@ -47,12 +47,12 @@ public class ArticleController
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("添加成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("compositionId", id);
+        data.put("pushArticleId", id);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-//    @LoginRequired(type = UserType.ADMIN)
+    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "删除推送文章")
     @DeleteMapping("/{articleId}")
     @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
@@ -64,7 +64,7 @@ public class ArticleController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-//    @LoginRequired(type = UserType.ADMIN)
+    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "更新推送文章")
     @PutMapping("/{articleId}")
     @ApiImplicitParams({
@@ -74,14 +74,14 @@ public class ArticleController
                     "PushArticle")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateArticle(@PathVariable("articleId") Integer articleId,
-                                                      @RequestBody PushArticleEntity pushArticleEntity, HttpServletRequest request) {
+                                                      @RequestBody PushArticleEntity pushArticleEntity) {
         articleService.updateArticle(pushArticleEntity, articleId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-//    @LoginRequired(type = UserType.ADMIN)
+    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "请求所有推送文章")
     @GetMapping("")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllArticles() {
