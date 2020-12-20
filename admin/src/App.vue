@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <a-layout id="components-layout-demo-responsive">
+    <a-layout v-if="isLogin">
       <a-layout-sider
         collapsible
         breakpoint="lg"
@@ -65,7 +65,7 @@
               <a-icon type="user" /> {{ admin.adminName }}
             </a-col>
             <a-col class="header-action-bar-item">
-              <a-icon type="poweroff" />
+              <a-icon type="poweroff" @click="logout" />
             </a-col>
           </a-row>
         </a-layout-header>
@@ -80,11 +80,14 @@
         </a-layout-footer>
       </a-layout>
     </a-layout>
+    <div v-else>
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import PiduoduoLogo from "@/assets/images/logo.svg";
 export default {
   components: {
@@ -94,9 +97,26 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["admin"])
+    ...mapState(["admin", "isLogin"])
   },
-  methods: {}
+  created() {
+    if (!this.isLogin) {
+      this.$router.push("/login");
+    }
+  },
+  methods: {
+    ...mapMutations(["logout"])
+  },
+  watch: {
+    // $route: function(to) {
+    // 设置 tabbar 在那些页面可见
+    // }
+    isLogin(value) {
+      if (!value) {
+        this.$router.push("/login");
+      }
+    }
+  }
 };
 </script>
 
@@ -108,12 +128,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
-// #components-layout-demo-responsive .logo {
-//   height: 32px;
-//   background: rgba(255, 255, 255, 0.2);
-//   margin: 16px;
-// }
 
 #nav {
   padding: 30px;

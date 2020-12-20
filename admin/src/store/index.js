@@ -5,12 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    isLogin: false,
+    token: "",
     admin: {
-      adminName: "root",
-      password: ""
+      adminName: ""
     }
   },
-  mutations: {},
+  mutations: {
+    login(state, { adminName, token }) {
+      state.isLogin = true;
+      state.admin.adminName = adminName;
+      state.token = token;
+    },
+    logout(state) {
+      state.isLogin = false;
+      state.token = "";
+    }
+  },
   actions: {},
   modules: {}
 });

@@ -93,6 +93,12 @@ const routes = [
     name: "CompositionPage",
     meta: { index: 2 },
     component: () => import("../views/Composition.vue")
+  },
+  {
+    path: "/user/support",
+    name: "UserSupportPage",
+    meta: { index: 5 },
+    component: () => import("../views/UserSupport.vue")
   }
 ];
 

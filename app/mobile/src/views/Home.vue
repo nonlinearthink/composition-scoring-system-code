@@ -108,7 +108,7 @@ export default {
         console.log(res);
         res.data.data.followList.forEach(follow => {
           this.followList.push({
-            username: follow.targetUsername,
+            username: follow.username,
             avatarUrl: null
           });
         });
