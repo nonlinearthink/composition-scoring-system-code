@@ -159,4 +159,9 @@
       </if>
     </where>
   </select>
+  <select id="selectFollow" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" resultMap="BaseResultMap">
+    select *
+    from composition
+    where visibility > 1 and username = #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>

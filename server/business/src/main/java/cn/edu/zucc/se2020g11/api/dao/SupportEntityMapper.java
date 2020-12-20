@@ -24,4 +24,6 @@ public interface SupportEntityMapper {
     List<SupportEntity> selectAllSelective(String username);
 
     List<SupportEntity> selectByUsername(SupportEntity record);
+
+    int countSupport(Integer compositionId);
 }

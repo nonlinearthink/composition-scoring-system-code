@@ -82,7 +82,7 @@ public class ArticleController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "请求所有推送文章")
+    @ApiOperation(value = "获取推送文章")
     @GetMapping("")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllArticles() {
         List<PushArticleEntity> pushArticleEntityList = articleService.selectAllArticles();

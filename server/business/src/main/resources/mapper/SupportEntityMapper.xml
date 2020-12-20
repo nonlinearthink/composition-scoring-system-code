@@ -101,4 +101,9 @@
     delete from support
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
+  <select id="countSupport" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">
+    select count(*)
+    from support
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>
