@@ -6,13 +6,13 @@
           v-decorator="[
             'adminName',
             {
+              initialValue: admin.adminName,
               rules: [
                 { required: true, message: 'Please input your username!' }
               ]
             }
           ]"
           placeholder="管理员名"
-          :defaultValue="admin.adminName"
         >
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
         </a-input>

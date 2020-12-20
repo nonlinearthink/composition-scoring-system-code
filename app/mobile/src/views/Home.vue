@@ -40,11 +40,14 @@
             </div>
           </div>
           <piduoduo-follow-card
-            :title="testData.title"
-            :body="testData.body"
-            :username="user.username"
-            update-time="1608095543622"
-            score="9"
+            v-for="item in followCompositions"
+            :key="item.compositionId"
+            :title="item.title"
+            :body="item.compositionBody"
+            :username="item.username"
+            :update-time="item.releaseTime"
+            :score="item.score"
+            @click="onEnterComposition(item)"
           />
         </van-tab>
         <van-tab title="热榜">
@@ -72,7 +75,7 @@ import PiduoduoFreshCard from "@/components/PiduoduoFreshCard";
 import PiduoduoHotCard from "@/components/PiduoduoHotCard";
 import PiduoduoFollowCard from "@/components/PiduoduoFollowCard";
 
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Home",
   components: {
@@ -91,6 +94,7 @@ export default {
       },
       defaultAvatar: require("../assets/images/avatar.svg"),
       followList: [],
+      followCompositions: [],
       composition: {
         follow: [],
         top: [],
@@ -99,9 +103,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user", "routeAnchor"])
   },
   created() {
+    if (this.routeAnchor != -1) {
+      this.active = this.routeAnchor;
+      this.setRouteAnchor(-1);
+    }
     this.axios
       .get(`/follow/${this.user.username}`)
       .then(res => {
@@ -112,6 +120,13 @@ export default {
             avatarUrl: null
           });
         });
+      })
+      .catch(err => console.error(err.response.data));
+    this.axios
+      .get("/home/follow")
+      .then(res => {
+        console.log(res);
+        this.followCompositions = res.data.data.followCompositionList;
       })
       .catch(err => console.error(err.response.data));
   },
@@ -125,7 +140,16 @@ export default {
       if (this.active <= 3) {
         this.active += 1;
       }
-    }
+    },
+    onEnterComposition(composition) {
+      this.$router.push({
+        path: "/composition",
+        query: { compositionId: composition.compositionId }
+      });
+      this.setRouteAnchor(this.active);
+      console.log(composition);
+    },
+    ...mapMutations(["setRouteAnchor"])
   }
 };
 </script>

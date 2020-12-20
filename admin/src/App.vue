@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <a-layout v-if="isLogin">
+    <a-layout v-if="!isLoginPage">
       <a-layout-sider
         collapsible
         breakpoint="lg"
@@ -65,7 +65,7 @@
               <a-icon type="user" /> {{ admin.adminName }}
             </a-col>
             <a-col class="header-action-bar-item">
-              <a-icon type="poweroff" @click="logout" />
+              <a-icon type="poweroff" @click="onLogout" />
             </a-col>
           </a-row>
         </a-layout-header>
@@ -97,7 +97,10 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["admin", "isLogin"])
+    ...mapState(["admin", "isLogin"]),
+    isLoginPage() {
+      return this.$route.path == "/login";
+    }
   },
   created() {
     if (!this.isLogin) {
@@ -105,18 +108,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["logout"])
-  },
-  watch: {
-    // $route: function(to) {
-    // 设置 tabbar 在那些页面可见
-    // }
-    isLogin(value) {
-      if (!value) {
-        this.$router.push("/login");
-      }
+    ...mapMutations(["logout"]),
+    onLogout() {
+      this.logout();
+      this.$router.replace("/login");
     }
-  }
+  },
+  watch: {}
 };
 </script>
 

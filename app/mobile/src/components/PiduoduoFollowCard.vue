@@ -1,5 +1,5 @@
 <template>
-  <div class="piduoduo-follow-card">
+  <div class="piduoduo-follow-card" @click="$emit('click')">
     <van-row type="flex" justify="space-between">
       <van-col>
         <van-row>
@@ -22,9 +22,6 @@
       </van-col>
       <van-col class="score"> {{ score }}分 </van-col>
     </van-row>
-    <van-row></van-row>
-    <van-row></van-row>
-    <van-row></van-row>
     <van-row class="title">{{ title }}</van-row>
     <van-row class="body">{{ body }}</van-row>
     <van-row type="flex" justify="end" class="statusbar">

@@ -2,9 +2,12 @@
 
 import Vue from "vue";
 import axios from "axios";
+import store from "../store";
+import router from "../router/index";
 
 // Full config:  https://github.com/axios/axios#request-config
-axios.defaults.baseURL = "http://192.168.123.204:8000/api";
+axios.defaults.baseURL = "http://localhost:8000/api";
+// axios.defaults.baseURL = "http://192.168.123.204:8000/api";
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -19,6 +22,8 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    const token = store.state.token;
+    token && (config.headers.Authorization = token);
     return config;
   },
   function(error) {
@@ -35,6 +40,13 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+    switch (error.response.data["code"]) {
+      // token 错误跳转到登录界面
+      case 14:
+        localStorage.clear();
+        router.replace("/login");
+        break;
+    }
     return Promise.reject(error);
   }
 );
