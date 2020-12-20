@@ -60,15 +60,15 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "获取新鲜文章")
-    @GetMapping("/follow")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectNewCompositions(HttpServletRequest request) {
-        List<CompositionEntity> followCompositionList = homeService.selectFollowCompositions((String)request.getAttribute("username"));
-        ApiResult<Map<String, Object>> result = new ApiResult<>();
-        result.setMsg("获取成功");
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("followCompositionList", followCompositionList);
-        result.setData(data);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
+//    @ApiOperation(value = "获取新鲜文章")
+//    @GetMapping("/follow")
+//    public ResponseEntity<ApiResult<Map<String, Object>>> selectNewCompositions(HttpServletRequest request) {
+//        List<CompositionEntity> followCompositionList = homeService.selectFollowCompositions((String)request.getAttribute("username"));
+//        ApiResult<Map<String, Object>> result = new ApiResult<>();
+//        result.setMsg("获取成功");
+//        Map<String, Object> data = new HashMap<>(1);
+//        data.put("followCompositionList", followCompositionList);
+//        result.setData(data);
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
 }
