@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,15 @@ public class ArticleController
     @ApiOperation(value = "添加推送文章")
     @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
             "PushArticle")
-    public ResponseEntity<String> addArticle(@RequestBody PushArticleEntity pushArticleEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiResult<Map<String, Object>>> addArticle(@RequestBody PushArticleEntity pushArticleEntity, HttpServletRequest request) {
+        pushArticleEntity.setAdminName((String)request.getAttribute("username"));
+        int id = articleService.addArticle(pushArticleEntity);
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("添加成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("compositionId", id);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
 //    @LoginRequired(type = UserType.ADMIN)
@@ -49,11 +57,14 @@ public class ArticleController
     @DeleteMapping("/{articleId}")
     @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
             "Integer")
-    public ResponseEntity<String> deleteArticle(@PathVariable("articleId") Integer articleId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiResult<Boolean>> deleteArticle(@PathVariable("articleId") Integer articleId, HttpServletRequest request) {
+        articleService.deleteArticle(articleId);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("删除成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @LoginRequired(type = UserType.ADMIN)
+//    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "更新推送文章")
     @PutMapping("/{articleId}")
     @ApiImplicitParams({
@@ -62,9 +73,12 @@ public class ArticleController
             @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
                     "PushArticle")
     })
-    public ResponseEntity<String> updateArticle(@PathVariable("articleId") Integer articleId,
-                                                      @RequestBody PushArticleEntity pushArticleEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public  ResponseEntity<ApiResult<Boolean>> updateArticle(@PathVariable("articleId") Integer articleId,
+                                                      @RequestBody PushArticleEntity pushArticleEntity, HttpServletRequest request) {
+        articleService.updateArticle(pushArticleEntity, articleId);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 //    @LoginRequired(type = UserType.ADMIN)

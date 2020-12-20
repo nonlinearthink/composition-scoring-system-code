@@ -90,7 +90,11 @@ public class JwtService {
                 // 设置加密算法和私钥
                 .signWith(SignatureAlgorithm.HS256, privateKeyType == UserType.ADMIN ? adminPrivateKey : userPrivateKey)
                 .compact();
-        logger.info("用户" + username + "请求生成密钥 " + token);
+        if(privateKeyType == UserType.USER){
+            logger.info("用户" + username + "请求生成密钥 " + token);
+        } else {
+            logger.info("管理员" + username + "请求生成密钥 " + token);
+        }
         cacheToken(token, username);
         return token;
     }
@@ -131,13 +135,13 @@ public class JwtService {
     public void cacheToken(String token, String username) {
         // 设置一天的密钥
         redisTemplate.opsForValue().set(prefix + username, token);
-        logger.info("设置用户" + username + "的 token 缓存");
+        logger.info("设置" + username + "的 token 缓存");
     }
 
     @Async
     public void clearTokenCache(String username) {
         redisTemplate.delete(prefix + username);
-        logger.info("清除用户" + username + "的 token 缓存");
+        logger.info("清除" + username + "的 token 缓存");
     }
 
 }
