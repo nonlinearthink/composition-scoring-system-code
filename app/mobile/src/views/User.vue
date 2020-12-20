@@ -158,9 +158,6 @@ export default {
     };
   },
   computed: {
-    // isLogin() {
-    //   return localStorage.getItem("isLogin");
-    // },
     ...mapState(["user", "token", "isLogin"])
   },
   created() {
