@@ -20,6 +20,24 @@ public class CompositionCountModel
     @NotNull(message = "compositionId不能为空")
     private Integer compositionId;
 
+    @NotNull(message = "nickname不能为空")
+    private String nickname;
+
+    @NotNull(message = "avatarUrl不能为空")
+    private String avatarUrl;
+
+    @NotNull(message = "compositionId不能为空")
+    private String title;
+
+    @NotNull(message = "compositionId不能为空")
+    private String compositionBody;
+
+    @NotNull(message = "description不能为空")
+    private String description;
+
+    @NotNull(message = "releaseTime不能为空")
+    private Date releaseTime;
+
     @NotNull(message = "favoriteCount不能为空")
     private Integer favoriteCount;
 

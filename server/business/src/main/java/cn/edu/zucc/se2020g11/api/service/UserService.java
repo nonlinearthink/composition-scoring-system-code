@@ -103,7 +103,7 @@ public class UserService {
     /**
      * 更改密码服务
      *
-     * @param userEntity 密码修改模型
+     * @param userEntity 用户信息修改模型
      * @throws BaseException 异常
      */
     @Transactional(rollbackFor = Exception.class)
@@ -112,4 +112,5 @@ public class UserService {
         userEntity.setUsername(username);
         userEntityMapper.updateByPrimaryKeySelective(userEntity);
     }
+
 }

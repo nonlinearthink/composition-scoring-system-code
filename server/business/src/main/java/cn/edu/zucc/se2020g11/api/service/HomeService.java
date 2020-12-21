@@ -90,6 +90,7 @@ public class HomeService
         List<CompositionCountModel> compositionCountModelList = compositionEntityMapper.selectHot();
         Map<Integer, Double> map = new HashMap();
         for(CompositionCountModel c : compositionCountModelList){
+            //(总赞数*0.7+总收藏数*0.7+总评论数*0.7+总浏览数*0.3)*1000/(发布时间距离当前时间的小时差+2)^1.2
             map.put(c.getCompositionId(), (c.getSupportCount()*0.4 + c.getFavoriteCount()*0.3 + c.getCommentCount()*0.2 + c.getHistoryCount()*0.1) * 1000);
         }
         map = sortDescend(map);

@@ -3,6 +3,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.*;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.CompositionCountModel;
 import cn.edu.zucc.se2020g11.api.service.*;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -32,14 +33,16 @@ public class CompositionController {
     private FavoriteService favoriteService;
     private CommentService commentService;
     private PermissionService permissionService;
+    private UserService userService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService) {
+    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, UserService userService) {
         this.compositionService = compositionService;
         this.supportService = supportService;
         this.favoriteService = favoriteService;
         this.commentService = commentService;
         this.permissionService = permissionService;
+        this.userService = userService;
     }
 
     @LoginRequired(type = UserType.ADMIN)
@@ -76,17 +79,13 @@ public class CompositionController {
     @ApiOperation(value = "获取单篇作文信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId) {
-        CompositionEntity compositionEntity = compositionService.selectComposition(compositionId);
+        CompositionCountModel compositionCountModel = compositionService.selectCountByCompositionId(compositionId);
         List<CommentEntity> commentEntityList = commentService.selectAllComments(compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("compositionEntity", compositionEntity);
+        data.put("compositionCountModel", compositionCountModel);
         data.put("commentEntityList", commentEntityList);
-        data.put("favoriteCount", compositionService.selectCountByCompositionId(compositionId).getFavoriteCount());
-        data.put("supportCount", compositionService.selectCountByCompositionId(compositionId).getSupportCount());
-        data.put("commentCount", compositionService.selectCountByCompositionId(compositionId).getCommentCount());
-        data.put("historyCount", compositionService.selectCountByCompositionId(compositionId).getHistoryCount());
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
