@@ -116,4 +116,9 @@
     delete from comment
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
+  <select id="countComment" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from comment
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>

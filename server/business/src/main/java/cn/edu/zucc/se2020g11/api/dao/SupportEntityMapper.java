@@ -25,5 +25,5 @@ public interface SupportEntityMapper {
 
     List<SupportEntity> selectByUsername(SupportEntity record);
 
-    int countSupport(Integer compositionId);
+    Integer countSupport(Integer compositionId);
 }

@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.model.ArticleModel;
+import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
 import cn.edu.zucc.se2020g11.api.service.HomeService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -51,11 +52,11 @@ public class HomeController
     @ApiOperation(value = "获取关注文章")
     @GetMapping("/follow")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectFollowCompositions(HttpServletRequest request) {
-        List<CompositionEntity> followCompositionList = homeService.selectFollowCompositions((String)request.getAttribute("username"));
+        List<FollowCardModel> followCardModelList = homeService.selectFollowCompositions((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("followCompositionList", followCompositionList);
+        data.put("followCardModelList", followCardModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

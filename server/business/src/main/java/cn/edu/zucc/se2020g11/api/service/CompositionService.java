@@ -28,6 +28,10 @@ public class CompositionService
     {
         return compositionEntityMapper.selectAllSelective(userEntity);
     }
+    public CompositionEntity selectComposition(Integer compositionId)
+    {
+        return compositionEntityMapper.selectByPrimaryKey(compositionId);
+    }
     public void deleteComposition(Integer compositionId)
     {
         compositionEntityMapper.deleteByPrimaryKey(compositionId);

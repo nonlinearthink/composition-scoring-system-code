@@ -20,4 +20,6 @@ public interface CommentEntityMapper {
     int updateByPrimaryKey(CommentEntity record);
 
     List<CommentEntity> selectAllSelective(Integer compositionId);
+
+    Integer countComment(Integer compositionId);
 }
