@@ -4,14 +4,11 @@ import cn.edu.zucc.se2020g11.api.dao.*;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.PushArticleEntity;
-import cn.edu.zucc.se2020g11.api.model.ArticleModel;
-import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
-import cn.edu.zucc.se2020g11.api.model.NewCardModel;
+import cn.edu.zucc.se2020g11.api.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class HomeService
@@ -87,6 +84,48 @@ public class HomeService
             newCardModelList.add(newCardModel);
         }
         return newCardModelList;
+    }
+    public List<HotCardModel> selectHotCompositions()
+    {
+        List<CompositionCountModel> compositionCountModelList = compositionEntityMapper.selectHot();
+        Map<Integer, Double> map = new HashMap();
+        for(CompositionCountModel c : compositionCountModelList){
+            map.put(c.getCompositionId(), (c.getSupportCount()*0.4 + c.getFavoriteCount()*0.3 + c.getCommentCount()*0.2 + c.getHistoryCount()*0.1) * 1000);
+        }
+        map = sortDescend(map);
+        List<HotCardModel> hotCardModelList = new ArrayList<>();
+        for (Map.Entry<Integer, Double> m : map.entrySet()) {
+            HotCardModel hotCardModel = new HotCardModel();
+            hotCardModel.setCompositionId(m.getKey());
+            hotCardModel.setAvatarUrl(userEntityMapper.selectByPrimaryKey(compositionEntityMapper.selectByPrimaryKey(m.getKey()).getUsername()).getAvatarUrl());
+            hotCardModel.setNickname(userEntityMapper.selectByPrimaryKey(compositionEntityMapper.selectByPrimaryKey(m.getKey()).getUsername()).getNickname());
+            hotCardModel.setTitle(compositionEntityMapper.selectByPrimaryKey(m.getKey()).getTitle());
+            hotCardModel.setCompositionBody(compositionEntityMapper.selectByPrimaryKey(m.getKey()).getCompositionBody());
+            hotCardModel.setReleaseTime(compositionEntityMapper.selectByPrimaryKey(m.getKey()).getReleaseTime());
+            hotCardModel.setHotCount(m.getValue());
+            hotCardModelList.add(hotCardModel);
+            if(hotCardModelList.size() == 10){
+                break;
+            }
+        }
+        return hotCardModelList;
+    }
+    // Map的value值降序排序
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortDescend(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            @Override
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                int compare = (o1.getValue()).compareTo(o2.getValue());
+                return -compare;
+            }
+        });
+
+        Map<K, V> returnMap = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list) {
+            returnMap.put(entry.getKey(), entry.getValue());
+        }
+        return returnMap;
     }
 
 }

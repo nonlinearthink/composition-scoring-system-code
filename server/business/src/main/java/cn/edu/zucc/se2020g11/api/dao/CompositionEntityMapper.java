@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.CompositionCountModel;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface CompositionEntityMapper {
     List<CompositionEntity> selectFollow(String username);
 
     List<CompositionEntity> selectNew();
+
+    List<CompositionCountModel> selectHot();
 }

@@ -169,4 +169,8 @@
     from composition
     where visibility > 2
   </select>
+  <select id="selectHot" resultType="cn.edu.zucc.se2020g11.api.model.CompositionCountModel">
+    select *
+    from composition_count
+  </select>
 </mapper>
