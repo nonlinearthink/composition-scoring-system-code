@@ -4,10 +4,9 @@ import cn.edu.zucc.se2020g11.api.dao.*;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.PushArticleEntity;
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ArticleModel;
 import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
-import org.apache.catalina.User;
+import cn.edu.zucc.se2020g11.api.model.NewCardModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +57,7 @@ public class HomeService
             List<CompositionEntity> compositionEntityList = compositionEntityMapper.selectFollow(f.getTargetUsername());
             for(CompositionEntity c : compositionEntityList){
                 FollowCardModel followCardModel = new FollowCardModel();
+                followCardModel.setCompositionId(c.getCompositionId());
                 followCardModel.setAvatarUrl(userEntityMapper.selectByPrimaryKey(f.getTargetUsername()).getAvatarUrl());
                 followCardModel.setNickname(userEntityMapper.selectByPrimaryKey(f.getTargetUsername()).getNickname());
                 followCardModel.setTitle(c.getTitle());
@@ -70,18 +70,23 @@ public class HomeService
         }
         return followCardModelList;
     }
-//    public List<CompositionEntity> selectNewCompositions()
-//    {
-//        followEntity.setUsername(username);
-//        List<FollowEntity> followEntityList = followEntityMapper.selectAllSelective(followEntity);
-//        List<CompositionEntity> followCompositionList = new ArrayList<>();
-//        for(FollowEntity f : followEntityList){
-//            List<CompositionEntity> compositionEntityList = compositionEntityMapper.selectFollow(f.getTargetUsername());
-//            for(CompositionEntity c : compositionEntityList){
-//                followCompositionList.add(c);
-//            }
-//        }
-//        return followCompositionList;
-//    }
+    public List<NewCardModel> selectNewCompositions()
+    {
+        List<CompositionEntity> compositionEntityList = compositionEntityMapper.selectNew();
+        List<NewCardModel> newCardModelList = new ArrayList<>();
+        for(CompositionEntity c : compositionEntityList){
+            NewCardModel newCardModel = new NewCardModel();
+            newCardModel.setCompositionId(c.getCompositionId());
+            newCardModel.setAvatarUrl(userEntityMapper.selectByPrimaryKey(c.getUsername()).getAvatarUrl());
+            newCardModel.setNickname(userEntityMapper.selectByPrimaryKey(c.getUsername()).getNickname());
+            newCardModel.setTitle(c.getTitle());
+            newCardModel.setCompositionBody(c.getCompositionBody());
+            newCardModel.setReleaseTime(c.getReleaseTime());
+            newCardModel.setHistoryCount(supportEntityMapper.countSupport(c.getCompositionId()));
+            newCardModel.setCommentCount(commentEntityMapper.countComment(c.getCompositionId()));
+            newCardModelList.add(newCardModel);
+        }
+        return newCardModelList;
+    }
 
 }

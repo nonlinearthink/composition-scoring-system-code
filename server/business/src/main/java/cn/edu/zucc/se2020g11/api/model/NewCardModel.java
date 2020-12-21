@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ApiModel
-public class FollowCardModel
+public class NewCardModel
 {
     @NotNull(message = "compositionId不能为空")
     private Integer compositionId;
@@ -35,8 +35,8 @@ public class FollowCardModel
     @NotNull(message = "releaseTime不能为空")
     private Date releaseTime;
 
-    @NotNull(message = "supportCount不能为空")
-    private Integer supportCount;
+    @NotNull(message = "historyCount不能为空")
+    private Integer historyCount;
 
     @NotNull(message = "commentCount不能为空")
     private Integer commentCount;

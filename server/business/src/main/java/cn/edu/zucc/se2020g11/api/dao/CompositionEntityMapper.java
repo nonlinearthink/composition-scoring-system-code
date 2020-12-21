@@ -21,4 +21,6 @@ public interface CompositionEntityMapper {
     List<CompositionEntity> selectAllSelective(UserEntity record);
 
     List<CompositionEntity> selectFollow(String username);
+
+    List<CompositionEntity> selectNew();
 }
