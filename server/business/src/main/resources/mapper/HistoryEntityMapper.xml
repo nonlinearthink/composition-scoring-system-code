@@ -20,7 +20,7 @@
     delete from history
     where history_id = #{historyId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity" useGeneratedKeys="true" keyProperty="historyId">
     insert into history (history_id, username, composition_id, 
       time)
     values (#{historyId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
@@ -79,4 +79,13 @@
       time = #{time,jdbcType=TIMESTAMP}
     where history_id = #{historyId,jdbcType=INTEGER}
   </update>
+  <select id="selectHistoryByUser" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity" resultMap="BaseResultMap">
+    select *
+    from history
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>
