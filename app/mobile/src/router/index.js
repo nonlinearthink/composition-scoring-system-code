@@ -95,6 +95,12 @@ const routes = [
     component: () => import("../views/Composition.vue")
   },
   {
+    path: "/article",
+    name: "ArticlePage",
+    meta: { index: 2 },
+    component: () => import("../views/Article.vue")
+  },
+  {
     path: "/user/support",
     name: "UserSupportPage",
     meta: { index: 5 },

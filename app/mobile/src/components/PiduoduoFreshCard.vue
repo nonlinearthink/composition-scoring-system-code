@@ -1,5 +1,5 @@
 <template>
-  <div class="piduoduo-fresh-card">
+  <div class="piduoduo-fresh-card" @click="$emit('click')">
     <van-row class="title">{{ title }}</van-row>
     <van-row class="body">{{ body }}</van-row>
     <van-row type="flex" justify="space-between" class="statusbar">
