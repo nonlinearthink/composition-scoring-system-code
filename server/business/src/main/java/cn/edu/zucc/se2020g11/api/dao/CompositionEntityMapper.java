@@ -26,4 +26,6 @@ public interface CompositionEntityMapper {
     List<CompositionEntity> selectNew();
 
     List<CompositionCountModel> selectHot();
+
+    CompositionCountModel selectCountByCompositionId(Integer compositionId);
 }

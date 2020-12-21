@@ -3,6 +3,7 @@ package cn.edu.zucc.se2020g11.api.service;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.CompositionCountModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,7 @@ public class CompositionService
         compositionEntity.setCompositionId(compositionId);
         compositionEntityMapper.updateByPrimaryKeySelective(compositionEntity);
     }
-
+    public CompositionCountModel selectCountByCompositionId(Integer compositionId){
+        return compositionEntityMapper.selectCountByCompositionId(compositionId);
+    }
 }

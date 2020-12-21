@@ -75,7 +75,7 @@ public class CompositionController {
     @GetMapping("/{compositionId}")
     @ApiOperation(value = "获取单篇作文信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId) {
         CompositionEntity compositionEntity = compositionService.selectComposition(compositionId);
         List<CommentEntity> commentEntityList = commentService.selectAllComments(compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -83,6 +83,10 @@ public class CompositionController {
         Map<String, Object> data = new HashMap<>(1);
         data.put("compositionEntity", compositionEntity);
         data.put("commentEntityList", commentEntityList);
+        data.put("favoriteCount", compositionService.selectCountByCompositionId(compositionId).getFavoriteCount());
+        data.put("supportCount", compositionService.selectCountByCompositionId(compositionId).getSupportCount());
+        data.put("commentCount", compositionService.selectCountByCompositionId(compositionId).getCommentCount());
+        data.put("historyCount", compositionService.selectCountByCompositionId(compositionId).getHistoryCount());
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
