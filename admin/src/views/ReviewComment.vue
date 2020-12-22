@@ -1,5 +1,26 @@
 <template>
   <div id="review-comment-page">
+    <a-modal
+      v-model="viewVisible"
+      title="快速查看"
+      okText="确认"
+      @ok="onConfirm"
+    >
+      <a-descriptions v-if="viewVisible">
+        <a-descriptions-item label="推送ID">
+          {{ viewTarget.commentId }}
+        </a-descriptions-item>
+        <a-descriptions-item label="发布时间" :span="2">
+          {{ translateTime(viewTarget.time) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="发布者" :span="3">
+          {{ viewTarget.username }}
+        </a-descriptions-item>
+        <a-descriptions-item label="推送内容" :span="3">
+          {{ viewTarget.commentBody }}
+        </a-descriptions-item>
+      </a-descriptions>
+    </a-modal>
     <a-row type="flex">
       <a-col class="action-button">
         <a-button
@@ -27,14 +48,12 @@
       :row-selection="rowSelection"
     >
       <!-- 如果有需求，在此自定义每个单元格的样式 -->
-      <a slot="comment" slot-scope="text, record">
-        <a-popover title="评论内容">
-          <template slot="content">
-            {{ text }}
-          </template>
-          <div>{{ record.brief }}</div>
-        </a-popover>
-      </a>
+      <span slot="comment" slot-scope="text">
+        {{ text.length > 28 ? text.substring(0, 28) + "..." : text }}
+      </span>
+      <span slot="time" slot-scope="text">
+        {{ translateTime(text) }}
+      </span>
       <span
         slot="status"
         slot-scope="text"
@@ -42,13 +61,17 @@
           color: text == 0 ? '#000' : text == 1 ? '#1890ff' : '#f5222d'
         }"
       >
-        {{ translateValid(text) }}
+        {{ translateStatus(text) }}
+      </span>
+      <span slot="action" slot-scope="text, record">
+        <a @click="onView(record)">查看</a>
       </span>
     </a-table>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     // 在此定义表结构
@@ -57,7 +80,6 @@ export default {
         title: "ID",
         dataIndex: "commentId",
         key: "commentId",
-        scopedSlots: { customRender: "id" },
         width: 80
       },
       {
@@ -69,20 +91,28 @@ export default {
       {
         title: "发布者",
         dataIndex: "username",
-        key: "username"
+        key: "username",
+        width: 180
       },
       {
         title: "修改时间",
         dataIndex: "time",
         key: "time",
+        scopedSlots: { customRender: "time" },
         width: 180
       },
       {
         title: "状态",
-        dataIndex: "valid",
-        key: "valid",
+        dataIndex: "status",
+        key: "status",
         scopedSlots: { customRender: "status" },
         width: 80
+      },
+      {
+        title: "操作",
+        key: "action",
+        width: 80,
+        scopedSlots: { customRender: "action" }
       }
     ];
     const rowSelection = {
@@ -90,90 +120,68 @@ export default {
         this.rowSelected = selectedRows;
       }
     };
-    const dataSource = [
-      {
-        commentId: "10000",
-        commentBody: "我难道不是最强的吗？",
-        time: "2020-11-09 20:08:30",
-        username: "tuenity",
-        valid: 0
-      },
-      {
-        commentId: "10001",
-        commentBody:
-          "我是光芒耳机绝对天龙人，之所以叫光芒是因为我每一个见到我的人都会被我亮瞎眼，之所以戴耳机是因为我有钱到可以用钱砸死你全家，之所以叫绝对是因为我无人能敌，之所以叫天龙人是因为你们都不配。",
-        time: "2020-11-09 20:08:30",
-        username: "tuenity",
-        valid: 0
-      },
-      {
-        commentId: "10002",
-        commentBody: "哈哈哈，你是真的菜！",
-        time: "2020-11-09 20:08:30",
-        username: "tuenity",
-        valid: 0
-      }
-    ];
-    dataSource.forEach(item => (item.brief = this.textBrief(item.commentBody)));
     return {
-      screenWidth: document.body.clientWidth,
       primaryKey: "commentId",
       tableColumns,
-      // 在此编辑测试数据
-      dataSource,
+      dataSource: [],
       rowSelection,
-      rowSelected: []
+      rowSelected: [],
+      viewVisible: false,
+      viewTarget: null
     };
   },
-  mounted() {
-    window.onresize = () => {
-      return (() => {
-        this.screenWidth = document.body.clientWidth;
-      })();
-    };
+  created() {
+    this.axios
+      .get("/comment")
+      .then(res => {
+        console.log(res.data);
+        this.dataSource = res.data.data.commentEntityList;
+      })
+      .catch(err => console.error(err.response.data));
   },
   methods: {
-    translateValid(valid) {
-      if (valid == 0) {
+    translateTime(timestamp) {
+      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    },
+    translateStatus(status) {
+      if (status == 0) {
         return "待审核";
-      } else if (valid == 1) {
+      } else if (status == 1) {
         return "通过";
-      } else if (valid == 2) {
+      } else if (status == 2) {
         return "违规";
       }
     },
-    textBrief(text) {
-      if (this.screenWidth < 768) {
-        if (text.length >= 5) return text.substring(0, 5) + "...";
-      } else if (this.screenWidth < 992) {
-        if (text.length >= 11) return text.substring(0, 11) + "...";
-      } else if (this.screenWidth < 1200) {
-        if (text.length >= 13) return text.substring(0, 13) + "...";
-      } else if (this.screenWidth < 1408) {
-        if (text.length >= 30) return text.substring(0, 30) + "...";
-      } else {
-        if (text.length >= 60) return text.substring(0, 60) + "...";
-      }
-      return text;
+    onConfirm() {
+      this.viewVisible = false;
     },
     onSetValid() {
       this.rowSelected.forEach(row => {
-        row.valid = 1;
+        row.status = 1;
+        this.axios
+          .put(`/comment/valid/${row.compositionId}`, row)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => console.error(err.response.data));
       });
       this.$message.success(`更新记录状态`, 1);
     },
     onSetInvalid() {
       this.rowSelected.forEach(row => {
-        row.valid = 2;
+        row.status = 2;
+        this.axios
+          .put(`/comment/valid/${row.compositionId}`, row)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => console.error(err.response.data));
       });
       this.$message.success(`更新记录状态`, 1);
-    }
-  },
-  watch: {
-    screenWidth() {
-      this.dataSource.forEach(
-        item => (item.brief = this.textBrief(item.commentBody))
-      );
+    },
+    onView(record) {
+      this.viewTarget = record;
+      this.viewVisible = true;
     }
   }
 };
