@@ -4,7 +4,7 @@ spring:
   datasource:
     name: test
     druid:
-      url: jdbc:mysql://47.98.219.27:3306/composition?useSSL=false&characterEncoding=UTF-8
+      url: jdbc:mysql://47.98.219.27:3306/piduoduo?useSSL=false&characterEncoding=UTF-8
       username: root
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver

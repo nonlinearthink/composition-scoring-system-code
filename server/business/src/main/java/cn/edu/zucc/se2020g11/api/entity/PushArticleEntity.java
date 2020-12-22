@@ -2,17 +2,16 @@ package cn.edu.zucc.se2020g11.api.entity;
 
 import java.util.Date;
 
-public class PushArticleEntity
-{
+public class PushArticleEntity {
     private Integer articleId;
 
     private String adminName;
 
-    private Date time;
+    private String articleTitle;
 
     private String articleBody;
 
-    private String articleTitle;
+    private Date time;
 
     public Integer getArticleId() {
         return articleId;
@@ -30,12 +29,12 @@ public class PushArticleEntity
         this.adminName = adminName == null ? null : adminName.trim();
     }
 
-    public Date getTime() {
-        return time;
+    public String getArticleTitle() {
+        return articleTitle;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle == null ? null : articleTitle.trim();
     }
 
     public String getArticleBody() {
@@ -46,11 +45,11 @@ public class PushArticleEntity
         this.articleBody = articleBody == null ? null : articleBody.trim();
     }
 
-    public String getArticleTitle() {
-        return articleTitle;
+    public Date getTime() {
+        return time;
     }
 
-    public void setArticleTitle(String articleTitle) {
-        this.articleTitle = articleTitle == null ? null : articleTitle.trim();
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

@@ -1,5 +1,7 @@
 package cn.edu.zucc.se2020g11.api.entity;
 
+import java.util.Date;
+
 public class FeedbackEntity {
     private Integer feedbackId;
 
@@ -8,6 +10,10 @@ public class FeedbackEntity {
     private String feedbackBody;
 
     private String feedbackType;
+
+    private Date time;
+
+    private Integer status;
 
     public Integer getFeedbackId() {
         return feedbackId;
@@ -39,5 +45,21 @@ public class FeedbackEntity {
 
     public void setFeedbackType(String feedbackType) {
         this.feedbackType = feedbackType == null ? null : feedbackType.trim();
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

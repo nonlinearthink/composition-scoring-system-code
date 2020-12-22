@@ -13,7 +13,7 @@ public class CommentEntity {
 
     private Date time;
 
-    private Boolean valid;
+    private Integer status;
 
     public Integer getCommentId() {
         return commentId;
@@ -55,11 +55,11 @@ public class CommentEntity {
         this.time = time;
     }
 
-    public Boolean getValid() {
-        return valid;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setValid(Boolean valid) {
-        this.valid = valid;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
