@@ -26,9 +26,9 @@ public class ArticleService
     {
         return pushArticleEntityMapper.selectAll();
     }
-    public void deleteArticle(Integer compositionId)
+    public void deleteArticle(Integer articleId)
     {
-        pushArticleEntityMapper.deleteByPrimaryKey(compositionId);
+        pushArticleEntityMapper.deleteByPrimaryKey(articleId);
     }
     public void updateArticle(PushArticleEntity pushArticleEntity, Integer articleId)
     {

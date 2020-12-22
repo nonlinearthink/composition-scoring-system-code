@@ -5,9 +5,10 @@
     <id column="s_message_id" jdbcType="INTEGER" property="sMessageId" />
     <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
     <result column="s_message_body" jdbcType="VARCHAR" property="sMessageBody" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Base_Column_List">
-    s_message_id, admin_name, s_message_body
+    s_message_id, admin_name, s_message_body, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -19,10 +20,10 @@
     delete from system_message
     where s_message_id = #{sMessageId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity">
-    insert into system_message (s_message_id, admin_name, s_message_body
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity" useGeneratedKeys="true" keyProperty="sMessageId">
+    insert into system_message (s_message_id, admin_name, s_message_body, time
       )
-    values (#{sMessageId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{sMessageBody,jdbcType=VARCHAR}
+    values (#{sMessageId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{sMessageBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity">
@@ -37,6 +38,9 @@
       <if test="sMessageBody != null">
         s_message_body,
       </if>
+      <if test="time != null">
+        time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="sMessageId != null">
@@ -47,6 +51,9 @@
       </if>
       <if test="sMessageBody != null">
         #{sMessageBody,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -59,13 +66,21 @@
       <if test="sMessageBody != null">
         s_message_body = #{sMessageBody,jdbcType=VARCHAR},
       </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where s_message_id = #{sMessageId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity">
     update system_message
     set admin_name = #{adminName,jdbcType=VARCHAR},
-      s_message_body = #{sMessageBody,jdbcType=VARCHAR}
+      s_message_body = #{sMessageBody,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
     where s_message_id = #{sMessageId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity" resultMap="BaseResultMap">
+    select *
+    from system_message
+  </select>
 </mapper>
