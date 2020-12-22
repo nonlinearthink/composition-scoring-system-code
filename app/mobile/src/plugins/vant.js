@@ -2,6 +2,7 @@ import Vue from "vue";
 
 import {
   ActionSheet,
+  Badge,
   Button,
   Cell,
   CellGroup,
@@ -37,6 +38,7 @@ import {
 Vue.use(ActionSheet)
   .use(List)
   .use(Button)
+  .use(Badge)
   .use(Cell)
   .use(CellGroup)
   .use(Checkbox)

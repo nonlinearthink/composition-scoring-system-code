@@ -16,54 +16,113 @@
         background="#02a7f0"
         title-inactive-color="white"
         title-active-color="white"
+        animated
+        sticky
       >
-        <van-tab title="推荐"> </van-tab>
-        <van-tab title="关注">
-          <div class="follow-list">
+        <van-tab title="推荐">
+          <van-loading
+            v-if="!articleList"
+            color="#1989fa"
+            style="text-align: center;"
+          />
+          <div v-else>
             <div
-              v-for="item in followList"
-              :key="item.username"
-              class="follow-list-item"
+              v-for="item in articleList"
+              :key="item.articleId"
+              class="article-card"
+              @click="onEnterArticle(item)"
             >
-              <van-row class="follow-list-avatar">
-                <van-image
-                  width="3rem"
-                  height="3rem"
-                  fit="cover"
-                  round
-                  :src="item.avatarUrl ? item.avatarUrl : defaultAvatar"
-                />
-              </van-row>
-              <van-row class="follow-list-username">
-                {{ item.username }}
-              </van-row>
+              <div class="title">
+                {{ item.articleTitle }}
+              </div>
+              <div class="body">
+                {{ item.articleBody }}
+              </div>
+              <van-image
+                fit="cover"
+                class="preview-image"
+                :src="require('../assets/images/default-background.jpeg')"
+                radius="0.5rem"
+              />
             </div>
           </div>
-          <piduoduo-follow-card
-            v-for="item in followCompositions"
-            :key="item.compositionId"
-            :title="item.title"
-            :body="item.compositionBody"
-            :username="item.username"
-            :update-time="item.releaseTime"
-            :score="item.score"
-            @click="onEnterComposition(item)"
+        </van-tab>
+        <van-tab title="关注">
+          <van-loading
+            v-if="!followList || !followCompositions"
+            color="#1989fa"
+            style="text-align: center;"
           />
+          <div v-else>
+            <div class="follow-list">
+              <div
+                v-for="item in followList"
+                :key="item.username"
+                class="follow-list-item"
+              >
+                <van-row class="follow-list-avatar">
+                  <van-image
+                    width="3rem"
+                    height="3rem"
+                    fit="cover"
+                    round
+                    :src="item.avatarUrl ? item.avatarUrl : defaultAvatar"
+                  />
+                </van-row>
+                <van-row class="follow-list-username">
+                  {{ item.username }}
+                </van-row>
+              </div>
+            </div>
+            <piduoduo-follow-card
+              v-for="item in followCompositions"
+              :key="item.compositionId"
+              :title="item.title"
+              :body="item.compositionBody"
+              :username="item.nickname"
+              :update-time="item.releaseTime"
+              :score="item.score"
+              @click="onEnterComposition(item)"
+            />
+          </div>
         </van-tab>
         <van-tab title="热榜">
-          <piduoduo-hot-card
-            :title="testData.title"
-            :body="testData.body"
-            :username="user.username"
-            rank="2"
+          <van-loading
+            v-if="!hotCompositions"
+            color="#1989fa"
+            style="text-align: center;"
           />
+          <div v-else>
+            <piduoduo-hot-card
+              v-for="(item, index) in hotCompositions"
+              :key="item.compositionId"
+              :title="item.title"
+              :body="item.compositionBody"
+              :username="item.nickname"
+              :hot="item.hotCount.toFixed(2)"
+              :rank="index + 1"
+              @click="onEnterComposition(item)"
+            />
+          </div>
         </van-tab>
         <van-tab title="新鲜">
-          <piduoduo-fresh-card
-            :title="testData.title"
-            :body="testData.body"
-            :username="user.username"
+          <van-loading
+            v-if="!freshCompositions"
+            color="#1989fa"
+            style="text-align: center;"
           />
+          <div v-else>
+            <piduoduo-fresh-card
+              v-for="item in freshCompositions"
+              :key="item.compositionId"
+              :title="item.title"
+              :body="item.compositionBody"
+              :username="item.nickname"
+              :read="item.historyCount"
+              :comment="item.commentCount"
+              @click="onEnterComposition(item)"
+            />
+          </div>
         </van-tab>
       </van-tabs>
     </v-touch>
@@ -93,8 +152,11 @@ export default {
           "everything is ok, ,s ,ds,d,sd, ,, ,s,d,sd,s,d ,sd,s,dsdh sdgaudash gdauydgh agasid asdguadu aduadasdad adgfad adauaa ajag aa agay asyaugaa a  yagaaa ausag a asdas sa ds s afd   a s fsd  sd ds fsd fs fs fdsf s "
       },
       defaultAvatar: require("../assets/images/avatar.svg"),
-      followList: [],
-      followCompositions: [],
+      followList: null,
+      followCompositions: null,
+      hotCompositions: null,
+      freshCompositions: null,
+      articleList: null,
       composition: {
         follow: [],
         top: [],
@@ -126,7 +188,28 @@ export default {
       .get("/home/follow")
       .then(res => {
         console.log(res);
-        this.followCompositions = res.data.data.followCompositionList;
+        this.followCompositions = res.data.data.followCardModelList;
+      })
+      .catch(err => console.error(err.response.data));
+    this.axios
+      .get("/home/article")
+      .then(res => {
+        console.log(res);
+        this.articleList = res.data.data.articleModelList;
+      })
+      .catch(err => console.error(err.response.data));
+    this.axios
+      .get("/home/hot")
+      .then(res => {
+        console.log(res);
+        this.hotCompositions = res.data.data.hotCardModelList;
+      })
+      .catch(err => console.error(err.response.data));
+    this.axios
+      .get("/home/new")
+      .then(res => {
+        console.log(res);
+        this.freshCompositions = res.data.data.newCardModelList;
       })
       .catch(err => console.error(err.response.data));
   },
@@ -149,15 +232,16 @@ export default {
       this.setRouteAnchor(this.active);
       console.log(composition);
     },
-    ...mapMutations(["setRouteAnchor"])
+    onEnterArticle(article) {
+      this.viewArticle(article);
+      this.$router.push("/article");
+    },
+    ...mapMutations(["setRouteAnchor", "viewArticle"])
   }
 };
 </script>
 
 <style lang="scss" scoped>
-#home-page {
-  height: 100vh;
-}
 .search-bar {
   width: 100vw;
   padding-right: 2rem;
@@ -178,6 +262,34 @@ export default {
       text-overflow: ellipsis;
       width: 3rem;
     }
+  }
+}
+.article-card {
+  width: 100vw;
+  margin: $blank-size 0;
+  background: white;
+  text-align: center;
+  padding: 0.5rem 0;
+  .preview-image {
+    width: calc(100vw - 2 * #{$blank-size});
+    height: 200px;
+  }
+  .title {
+    text-align: initial;
+    font-size: $text-large;
+    padding: 0.25rem 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .body {
+    text-align: initial;
+    display: -webkit-box;
+    padding: 0.25rem 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 }
 </style>

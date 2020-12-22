@@ -1,5 +1,5 @@
 <template>
-  <div class="piduoduo-hot-card">
+  <div class="piduoduo-hot-card" @click="$emit('click')">
     <van-row>
       <van-col
         span="2"

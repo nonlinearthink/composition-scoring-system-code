@@ -22,9 +22,15 @@ export default new Vuex.Store({
     setting: {
       cacheEditingComposition: true
     },
-    routeAnchor: -1
+    routeAnchor: -1,
+    view: {
+      article: null
+    }
   },
   mutations: {
+    viewArticle(state, article) {
+      state.view.article = article;
+    },
     setRouteAnchor(state, routerAnchor) {
       state.routeAnchor = routerAnchor;
     },
