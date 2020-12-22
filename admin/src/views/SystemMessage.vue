@@ -11,17 +11,52 @@
         />
       </a-form-model-item>
     </a-modal>
+    <a-modal
+      v-model="viewVisible"
+      title="快速查看"
+      okText="确认"
+      @ok="onConfirm"
+    >
+      <a-descriptions v-if="viewVisible" :column="4">
+        <a-descriptions-item label="系统消息ID">
+          {{ viewTarget.sMessageId }}
+        </a-descriptions-item>
+        <a-descriptions-item label="编辑者">
+          {{ viewTarget.adminName }}
+        </a-descriptions-item>
+        <a-descriptions-item label="编辑时间" :span="2">
+          {{ translateTime(viewTarget.time) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="系统消息" :span="4">
+          {{ viewTarget.sMessageBody }}
+        </a-descriptions-item>
+      </a-descriptions>
+    </a-modal>
+    <a-row type="flex">
+      <a-col class="action-button">
+        <a-button type="primary" @click="onCreate">
+          新建
+        </a-button>
+      </a-col>
+    </a-row>
     <a-table
       :columns="tableColumns"
       :data-source="dataSource"
       :rowKey="primaryKey"
     >
-      <!-- 如果有需求，在此自定义每个单元格的样式 -->
+      <span slot="time" slot-scope="text">
+        {{ translateTime(text) }}
+      </span>
+      <span slot="body" slot-scope="text">
+        {{ text.length > 28 ? text.substring(0, 28) + "..." : text }}
+      </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="onEdit(record)">Edit</a>
+        <a @click="onView(record)">查看</a>
+        <a-divider type="vertical" />
+        <a @click="onEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
-          <a>Delete</a>
+          <a>删除</a>
         </a-popconfirm>
       </span>
     </a-table>
@@ -29,6 +64,8 @@
 </template>
 
 <script>
+import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     // 在此定义表结构
@@ -42,12 +79,14 @@ export default {
       {
         title: "消息内容",
         dataIndex: "sMessageBody",
-        key: "sMessageBody"
+        key: "sMessageBody",
+        scopedSlots: { customRender: "body" }
       },
       {
         title: "修改时间",
         dataIndex: "time",
         key: "time",
+        scopedSlots: { customRender: "time" },
         width: 180
       },
       {
@@ -59,7 +98,7 @@ export default {
       {
         title: "操作",
         key: "action",
-        width: 120,
+        width: 160,
         scopedSlots: { customRender: "action" }
       }
     ];
@@ -68,42 +107,108 @@ export default {
       primaryKey: "sMessageId",
       tableColumns,
       // 在此编辑测试数据
-      dataSource: [
-        {
-          sMessageId: "10000",
-          sMessageBody: "hello",
-          time: "2020-11-09 20:08:30",
-          adminName: "root"
-        }
-      ],
+      dataSource: [],
       editorForm: {},
-      editingTarget: null
+      editingTarget: null,
+      editingStatus: 0,
+      viewVisible: false,
+      viewTarget: null
     };
   },
+  computed: {
+    ...mapState(["admin"])
+  },
+  created() {
+    this.axios
+      .get("/system-message")
+      .then(res => {
+        console.log(res.data);
+        this.dataSource = res.data.data.systemMessageEntityList;
+      })
+      .catch(err => console.error(err.response.data));
+  },
   methods: {
+    translateTime(timestamp) {
+      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    },
     onDelete(record) {
-      this.dataSource = this.dataSource.filter(
-        item => item[this.primaryKey] != record[this.primaryKey]
-      );
-      this.$message.success(`删除记录${record[this.primaryKey]}成功`, 1);
+      this.axios
+        .delete(`/system-message/${record.sMessageId}`)
+        .then(res => {
+          console.log(res.data);
+          this.dataSource = this.dataSource.filter(
+            item => item[this.primaryKey] != record[this.primaryKey]
+          );
+          this.$message.success(`删除记录${record[this.primaryKey]}成功`, 1);
+        })
+        .catch(err => console.error(err.response.data));
     },
     onEdit(record) {
       this.editingTarget = record;
       this.editorForm = Object.assign({}, record);
+      this.editingStatus = 1;
       this.editorVisible = true;
+    },
+    onConfirm() {
+      this.viewVisible = false;
     },
     onUpdate() {
       // 在此插入需要更新的内容
-      this.editingTarget.sMessageBody = this.editorForm.sMessageBody;
-      this.editingTarget.time = new Date().getTime();
-      // 插入结束
-      this.$message.success(
-        `修改记录${this.editingTarget[this.primaryKey]}成功`,
-        1
-      );
-      this.editorVisible = false;
+      this.editorForm.time = new Date().getTime();
+      if (this.editingStatus == 0) {
+        this.axios
+          .post("/system-message", this.editorForm)
+          .then(res => {
+            console.log(res.data);
+            this.editorForm.sMessageId = res.data.data.sMessageId;
+            this.dataSource.push(this.editorForm);
+            this.$message.success(
+              `创建记录${this.editorForm[this.primaryKey]}成功`,
+              1
+            );
+            this.editorVisible = false;
+          })
+          .catch(err => console.error(err.response.data));
+      } else {
+        this.axios
+          .put(
+            `/system-message/${this.editingTarget.sMessageId}`,
+            this.editorForm
+          )
+          .then(res => {
+            console.log(res.data);
+            this.editingTarget.sMessageBody = this.editorForm.sMessageBody;
+            this.editingTarget.time = this.editorForm.time;
+            this.editingTarget.adminName = this.admin.adminName;
+            this.$message.success(
+              `修改记录${this.editingTarget[this.primaryKey]}成功`,
+              1
+            );
+            this.editorVisible = false;
+          })
+          .catch(err => console.error(err.response.data));
+      }
+    },
+    onView(record) {
+      this.viewTarget = record;
+      this.viewVisible = true;
+    },
+    onCreate() {
+      this.editorForm = {
+        adminName: this.admin.adminName,
+        sMessageBody: "",
+        sMessageId: "",
+        time: ""
+      };
+      this.editingStatus = 0;
+      this.editorVisible = true;
     }
   }
 };
 </script>
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+.action-button {
+  margin: 1rem;
+}
+</style>

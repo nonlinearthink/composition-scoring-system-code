@@ -123,48 +123,20 @@ export default {
       primaryKey: "compositionId",
       tableColumns,
       // 在此编辑测试数据
-      dataSource: [
-        {
-          compositionId: "10000",
-          title: "test",
-          compositionBody:
-            "It is widely acknowledged that unhealthy habits of college students has become an increasingly serious problem. Taking a look around, one can find numerous examples with ease, staying up all night,being addicted to games. Why such a phenomenon emerges?The reason, which is obvious to all, can be listed as follows.Firstly, college life is different from the time during senior high school.Secondly,people always do what others doing, college students are easily form a bad habit if one person have it.It will give rise to a host of severe problems if we leave the situation as it is, first and foremost,the bad habit is harmful to health. In light of the seriousness of the problem, due attention has to be paid to this issue, in the first place,college students should be aware of the harm of the unhealthy habits and develop the realization of cultivation of good habits.With these measures taken,it is reasonable for us to believe that the problem will be solved in the near future.",
-          description:
-            "赶在周五的发布会之前，GTK 开发博客已经抢先宣布了 GTK 4.0 开源工具包的正式到来。虽然没有与 GNOME 保持同步，但这至少可让开发团队在年底前腾出更多时间，为明年春季的 GNOME 40 的发布和移植做好准备。",
-          visibility: 1,
-          releaseTime: "2020-11-09 20:08:30",
-          username: "tuenity",
-          valid: 0
-        },
-        {
-          compositionId: "10001",
-          title: "我是强者",
-          compositionBody:
-            "Different places have different customs .The Spring Festival in My Hometown,a few days before it,many will go out to purchase,New Year's eve that day we'll stick in your own door cowplet,each major market will hang a lantern.In the New Year's eve that night the family get together to eat hot pot,watching the Spring Festival evening party,the next day morning, to eat glutinous rice balls to represent one family together.then,back to ShangFen.",
-          description:
-            "首先是外观方面，GTK 4.0 引入了新的小部件元素，并对现有元素进行了重新制作。同时集成了对媒体播放的支持，GPU 加速改进（Vulkan 渲染器）和针对 macOS 的更好支持。此外还有数据传输方面的改进、大幅修整的着色器、GPU 加速的滚动，易于制作的自定义小部件、Vulkan 之外的 OpenGL 渲染改进，HTML5 Broadway、以及更好的 Windows 支持等。",
-          visibility: 2,
-          releaseTime: "2020-11-09 20:08:30",
-          username: "tuenity",
-          valid: 1
-        },
-        {
-          compositionId: "10002",
-          title: "性感荷官在线发牌",
-          compositionBody:
-            "The bar chart shows the China's growing percentage of computer users in youth from 2% in 1965 to 50% in 2005, simultaneously, the graph of China's percentage of short-sighted persons who use computers in youth sharply went up from 5% to 60% during the same period. We all know that as the improvement of China people's living standards, the computer be used by more and more people, especially in youth.However, when they use a computer, some bad habit would result that short-sighted of eyes.For example, youth like playing computer games for a long time, eyes be forced to expose on the computer radiation, the youth vision will decline because the unhealthy behaviors. As for me, when we play the computer, we need a bright condition.Otherwise, we should have a rest when we use computer for a long time.Furthermore, we could rub the eyes after use computer.",
-          description:
-            "ACM 杰出科学家（Distinguished Member）评选从 2006 年开始，意在表彰至少有 15 年的专业经验、至少具有5年的ACM专业会员资格、并在计算机领域做出了杰出贡献或产生巨大影响的 ACM 会员。ACM 杰出科学家的评选比例不超过 ACM 会员的前 10%。",
-          visibility: 3,
-          releaseTime: "2020-11-09 20:08:30",
-          username: "tuenity",
-          valid: 2
-        }
-      ],
+      dataSource: [],
       rowSelection,
       rowSelected: [],
       viewTarget: null
     };
+  },
+  created() {
+    this.axios
+      .get("/composition/all")
+      .then(res => {
+        console.log(res.data);
+        this.dataSource = res.data.data.compositionList;
+      })
+      .catch(err => console.error(err.response.data));
   },
   methods: {
     translateValid(valid) {

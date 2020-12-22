@@ -18,6 +18,30 @@
         />
       </a-form-model-item>
     </a-modal>
+    <a-modal
+      v-model="viewVisible"
+      title="快速查看"
+      okText="确认"
+      @ok="onConfirm"
+    >
+      <a-descriptions v-if="viewVisible">
+        <a-descriptions-item label="推送ID">
+          {{ viewTarget.articleId }}
+        </a-descriptions-item>
+        <a-descriptions-item label="推送标题" :span="2">
+          {{ viewTarget.articleTitle }}
+        </a-descriptions-item>
+        <a-descriptions-item label="编辑者">
+          {{ viewTarget.adminName }}
+        </a-descriptions-item>
+        <a-descriptions-item label="编辑时间" :span="2">
+          {{ translateTime(viewTarget.time) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="推送内容" :span="3">
+          {{ viewTarget.articleBody }}
+        </a-descriptions-item>
+      </a-descriptions>
+    </a-modal>
     <a-row type="flex">
       <a-col class="action-button">
         <a-button type="primary" @click="onCreate">
@@ -31,32 +55,22 @@
       :rowKey="primaryKey"
     >
       <!-- 如果有需求，在此自定义每个单元格的样式 -->
-      <a slot="articleTitle" slot-scope="text">
-        <a-popover title="推送标题">
-          <template slot="content">
-            {{ text }}
-          </template>
-          <div>{{ text.length > 8 ? text.substring(0, 8) + "..." : text }}</div>
-        </a-popover>
-      </a>
-      <a slot="body" slot-scope="text">
-        <a-popover title="推送内容">
-          <template slot="content">
-            {{ text }}
-          </template>
-          <div>
-            {{ text.length > 28 ? text.substring(0, 28) + "..." : text }}
-          </div>
-        </a-popover>
-      </a>
+      <span slot="articleTitle" slot-scope="text">
+        {{ text.length > 8 ? text.substring(0, 8) + "..." : text }}
+      </span>
+      <span slot="body" slot-scope="text">
+        {{ text.length > 28 ? text.substring(0, 28) + "..." : text }}
+      </span>
       <span slot="time" slot-scope="text">
         {{ translateTime(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="onEdit(record)">Edit</a>
+        <a @click="onView(record)">查看</a>
+        <a-divider type="vertical" />
+        <a @click="onEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
-          <a>Delete</a>
+          <a>删除</a>
         </a-popconfirm>
       </span>
     </a-table>
@@ -65,6 +79,7 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     // 在此定义表结构
@@ -80,7 +95,7 @@ export default {
         dataIndex: "articleTitle",
         key: "articleTitle",
         scopedSlots: { customRender: "articleTitle" },
-        width: 180
+        width: 160
       },
       {
         title: "推送内容",
@@ -104,20 +119,25 @@ export default {
       {
         title: "操作",
         key: "action",
-        width: 120,
+        width: 160,
         scopedSlots: { customRender: "action" }
       }
     ];
     return {
-      editorVisible: false,
       primaryKey: "articleId",
       tableColumns,
       // 在此编辑测试数据
       dataSource: [],
       editorForm: {},
+      editorVisible: false,
       editingTarget: null,
-      editingStatus: 0
+      editingStatus: 0,
+      viewVisible: false,
+      viewTarget: null
     };
+  },
+  computed: {
+    ...mapState(["admin"])
   },
   created() {
     this.axios
@@ -150,9 +170,13 @@ export default {
       this.editingStatus = 1;
       this.editorVisible = true;
     },
+    onView(record) {
+      this.viewTarget = record;
+      this.viewVisible = true;
+    },
     onCreate() {
       this.editorForm = {
-        adminName: "",
+        adminName: this.admin.adminName,
         articleBody: "",
         articleId: "",
         articleTitle: "",
@@ -160,6 +184,9 @@ export default {
       };
       this.editingStatus = 0;
       this.editorVisible = true;
+    },
+    onConfirm() {
+      this.viewVisible = false;
     },
     onUpdate() {
       this.editorForm.time = new Date().getTime();
@@ -185,6 +212,7 @@ export default {
             this.editingTarget.articleTitle = this.editorForm.articleTitle;
             this.editingTarget.articleBody = this.editorForm.articleBody;
             this.editingTarget.time = this.editorForm.time;
+            this.editingTarget.adminName = this.admin.adminName;
             this.$message.success(
               `修改记录${this.editingTarget[this.primaryKey]}成功`,
               1
