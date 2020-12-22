@@ -22,11 +22,11 @@
     delete from composition_report
     where composition_report_id = #{compositionReportId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity" useGeneratedKeys="true" keyProperty="compositionReportId">
     insert into composition_report (composition_report_id, username, composition_id, 
       composition_report_body, time, status)
     values (#{compositionReportId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
-      #{compositionReportBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}), #{status,jdbcType=INTEGER}
+      #{compositionReportBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity">
     insert into composition_report
@@ -74,18 +74,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity">
     update composition_report
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="compositionId != null">
-        composition_id = #{compositionId,jdbcType=INTEGER},
-      </if>
-      <if test="compositionReportBody != null">
-        composition_report_body = #{compositionReportBody,jdbcType=VARCHAR},
-      </if>
-      <if test="time != null">
-        time = #{time,jdbcType=TIMESTAMP},
-      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -101,4 +89,8 @@
       status = #{status,jdbcType=INTEGER}
     where composition_report_id = #{compositionReportId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity" resultMap="BaseResultMap">
+    select *
+    from composition_report
+  </select>
 </mapper>

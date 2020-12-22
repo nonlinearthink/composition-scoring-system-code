@@ -22,6 +22,7 @@ public class CompositionService
     }
     public int addComposition(CompositionEntity compositionEntity)
     {
+        compositionEntity.setValid(0);
         compositionEntityMapper.insert(compositionEntity);
         return compositionEntity.getCompositionId();
     }
@@ -29,7 +30,7 @@ public class CompositionService
     {
         return compositionEntityMapper.selectAllSelective(userEntity);
     }
-    public CompositionEntity selectComposition(Integer compositionId)
+    public CompositionEntity selectCompositionById(Integer compositionId)
     {
         return compositionEntityMapper.selectByPrimaryKey(compositionId);
     }

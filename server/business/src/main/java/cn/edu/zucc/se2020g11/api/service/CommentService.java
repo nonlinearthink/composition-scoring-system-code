@@ -28,8 +28,13 @@ public class CommentService
     {
         return commentEntityMapper.selectAllSelective(compositionId);
     }
+    public CommentEntity selectCommentById(Integer compositionId)
+    {
+        return commentEntityMapper.selectByPrimaryKey(compositionId);
+    }
     public int addComment(CommentEntity commentEntity)
     {
+        commentEntity.setStatus(0);
         commentEntityMapper.insert(commentEntity);
         return commentEntity.getCommentId();
     }
