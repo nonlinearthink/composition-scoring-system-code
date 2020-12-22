@@ -40,9 +40,14 @@ const routes = [
     component: () => import("../views/ReviewComment.vue")
   },
   {
-    path: "/review/report",
-    name: "ReviewReportPage",
-    component: () => import("../views/ReviewReport.vue")
+    path: "/report/composition",
+    name: "ReportCompositionPage",
+    component: () => import("../views/ReportComposition.vue")
+  },
+  {
+    path: "/report/comment",
+    name: "ReportCommentPage",
+    component: () => import("../views/ReportComment.vue")
   },
   {
     path: "/user/defense",
