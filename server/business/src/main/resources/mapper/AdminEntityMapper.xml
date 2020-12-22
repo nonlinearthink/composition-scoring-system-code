@@ -9,7 +9,7 @@
     admin_name, password
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from admin
     where admin_name = #{adminName,jdbcType=VARCHAR}

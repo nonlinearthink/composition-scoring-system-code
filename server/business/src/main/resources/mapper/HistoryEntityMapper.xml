@@ -11,7 +11,7 @@
     history_id, username, composition_id, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from history
     where history_id = #{historyId,jdbcType=INTEGER}
@@ -21,10 +21,10 @@
     where history_id = #{historyId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity" useGeneratedKeys="true" keyProperty="historyId">
-    insert into history (history_id, username, composition_id, 
-      time)
-    values (#{historyId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
-      #{time,jdbcType=TIMESTAMP})
+    insert into history (history_id, username, composition_id,
+                         time)
+    values (#{historyId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER},
+            #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity">
     insert into history
@@ -75,8 +75,8 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity">
     update history
     set username = #{username,jdbcType=VARCHAR},
-      composition_id = #{compositionId,jdbcType=INTEGER},
-      time = #{time,jdbcType=TIMESTAMP}
+        composition_id = #{compositionId,jdbcType=INTEGER},
+        time = #{time,jdbcType=TIMESTAMP}
     where history_id = #{historyId,jdbcType=INTEGER}
   </update>
   <select id="selectHistoryByUser" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity" resultMap="BaseResultMap">

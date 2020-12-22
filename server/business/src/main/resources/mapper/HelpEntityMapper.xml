@@ -12,7 +12,7 @@
     help_id, admin_name, help_title, help_body, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from help
     where help_id = #{helpId,jdbcType=INTEGER}
@@ -22,10 +22,10 @@
     where help_id = #{helpId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" useGeneratedKeys="true" keyProperty="helpId">
-    insert into help (help_id, admin_name, help_title, 
-      help_body, time)
-    values (#{helpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{helpTitle,jdbcType=VARCHAR}, 
-      #{helpBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+    insert into help (help_id, admin_name, help_title,
+                      help_body, time)
+    values (#{helpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{helpTitle,jdbcType=VARCHAR},
+            #{helpBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
     insert into help
@@ -85,9 +85,9 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
     update help
     set admin_name = #{adminName,jdbcType=VARCHAR},
-      help_title = #{helpTitle,jdbcType=VARCHAR},
-      help_body = #{helpBody,jdbcType=VARCHAR},
-      time = #{time,jdbcType=TIMESTAMP}
+        help_title = #{helpTitle,jdbcType=VARCHAR},
+        help_body = #{helpBody,jdbcType=VARCHAR},
+        time = #{time,jdbcType=TIMESTAMP}
     where help_id = #{helpId,jdbcType=INTEGER}
   </update>
   <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" resultMap="BaseResultMap">

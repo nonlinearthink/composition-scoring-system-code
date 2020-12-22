@@ -11,7 +11,7 @@ public class CompositionEntity {
 
     private String compositionBody;
 
-    private int status;
+    private Integer status;
 
     private String title;
 
@@ -21,7 +21,7 @@ public class CompositionEntity {
 
     private Integer score;
 
-    private Boolean valid;
+    private Integer valid;
 
     public Integer getCompositionId() {
         return compositionId;
@@ -55,11 +55,11 @@ public class CompositionEntity {
         this.compositionBody = compositionBody == null ? null : compositionBody.trim();
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -95,11 +95,11 @@ public class CompositionEntity {
         this.score = score;
     }
 
-    public Boolean getValid() {
+    public Integer getValid() {
         return valid;
     }
 
-    public void setValid(Boolean valid) {
+    public void setValid(Integer valid) {
         this.valid = valid;
     }
 }

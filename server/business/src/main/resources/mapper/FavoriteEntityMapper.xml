@@ -11,7 +11,7 @@
     favorite_id, username, composition_id, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from favorite
     where favorite_id = #{favoriteId,jdbcType=INTEGER}
@@ -22,9 +22,9 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" useGeneratedKeys="true" keyProperty="favoriteId">
     insert into favorite (favorite_id, username, composition_id,
-      time)
+                          time)
     values (#{favoriteId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER},
-      #{time,jdbcType=TIMESTAMP})
+            #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     insert into favorite
@@ -75,8 +75,8 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity">
     update favorite
     set username = #{username,jdbcType=VARCHAR},
-      composition_id = #{compositionId,jdbcType=INTEGER},
-      time = #{time,jdbcType=TIMESTAMP}
+        composition_id = #{compositionId,jdbcType=INTEGER},
+        time = #{time,jdbcType=TIMESTAMP}
     where favorite_id = #{favoriteId,jdbcType=INTEGER}
   </update>
   <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FavoriteEntity" resultMap="BaseResultMap">

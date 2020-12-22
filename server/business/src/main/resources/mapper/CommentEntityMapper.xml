@@ -7,13 +7,13 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="comment_body" jdbcType="VARCHAR" property="commentBody" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="valid" jdbcType="BIT" property="valid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    comment_id, composition_id, username, comment_body, time, valid
+    comment_id, composition_id, username, comment_body, time, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from comment
     where comment_id = #{commentId,jdbcType=INTEGER}
@@ -23,12 +23,12 @@
     where comment_id = #{commentId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity" useGeneratedKeys="true" keyProperty="commentId">
-    insert into comment (comment_id, composition_id, username, 
-      comment_body, time, valid
-      )
-    values (#{commentId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
-      #{commentBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{valid,jdbcType=BIT}
-      )
+    insert into comment (comment_id, composition_id, username,
+                         comment_body, time, status
+    )
+    values (#{commentId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+            #{commentBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+           )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
     insert into comment
@@ -48,8 +48,8 @@
       <if test="time != null">
         time,
       </if>
-      <if test="valid != null">
-        valid,
+      <if test="status != null">
+        status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -68,8 +68,8 @@
       <if test="time != null">
         #{time,jdbcType=TIMESTAMP},
       </if>
-      <if test="valid != null">
-        #{valid,jdbcType=BIT},
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -94,10 +94,10 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
     update comment
     set composition_id = #{compositionId,jdbcType=INTEGER},
-      username = #{username,jdbcType=VARCHAR},
-      comment_body = #{commentBody,jdbcType=VARCHAR},
-      time = #{time,jdbcType=TIMESTAMP},
-      valid = #{valid,jdbcType=BIT}
+        username = #{username,jdbcType=VARCHAR},
+        comment_body = #{commentBody,jdbcType=VARCHAR},
+        time = #{time,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=INTEGER}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
   <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity" resultMap="BaseResultMap">
@@ -122,11 +122,11 @@
     select *
     from comment
   </select>
-  <update id="updateByValid" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
+  <update id="updateByStatus" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
     update comment
     <set>
-      <if test="valid != null">
-        valid = #{valid,jdbcType=BIT},
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}

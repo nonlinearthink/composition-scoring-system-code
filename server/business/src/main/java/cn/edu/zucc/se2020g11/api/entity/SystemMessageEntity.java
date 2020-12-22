@@ -35,13 +35,11 @@ public class SystemMessageEntity {
         this.sMessageBody = sMessageBody == null ? null : sMessageBody.trim();
     }
 
-    public Date getTime()
-    {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Date time)
-    {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

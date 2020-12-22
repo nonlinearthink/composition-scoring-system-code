@@ -18,7 +18,7 @@
     visibility, score, valid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from composition
     where composition_id = #{compositionId,jdbcType=INTEGER}
@@ -28,14 +28,14 @@
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" useGeneratedKeys="true" keyProperty="compositionId">
-    insert into composition (composition_id, username, release_time, 
-      composition_body, status, title,
-      description, visibility, score, 
-      valid)
-    values (#{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, 
-      #{compositionBody,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
-      #{description,jdbcType=VARCHAR}, #{visibility,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
-      #{valid,jdbcType=BIT})
+    insert into composition (composition_id, username, release_time,
+                             composition_body, status, title,
+                             description, visibility, score,
+                             valid)
+    values (#{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP},
+            #{compositionBody,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
+            #{description,jdbcType=VARCHAR}, #{visibility,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
+            #{valid,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     insert into composition
@@ -137,14 +137,14 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     update composition
     set username = #{username,jdbcType=VARCHAR},
-      release_time = #{releaseTime,jdbcType=TIMESTAMP},
-      composition_body = #{compositionBody,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      visibility = #{visibility,jdbcType=INTEGER},
-      score = #{score,jdbcType=INTEGER},
-      valid = #{valid,jdbcType=BIT}
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+        composition_body = #{compositionBody,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        title = #{title,jdbcType=VARCHAR},
+        description = #{description,jdbcType=VARCHAR},
+        visibility = #{visibility,jdbcType=INTEGER},
+        score = #{score,jdbcType=INTEGER},
+        valid = #{valid,jdbcType=BIT}
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
   <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" resultMap="BaseResultMap">

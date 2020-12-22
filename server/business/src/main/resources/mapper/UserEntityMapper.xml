@@ -19,7 +19,7 @@
     frozen, defrosting_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from user
     where username = #{username,jdbcType=VARCHAR}
@@ -29,14 +29,14 @@
     where username = #{username,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity">
-    insert into user (username, password, nickname, 
-      email, phone, signature, 
-      avatar_url, is_male, vip_days, 
-      frozen, defrosting_time)
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, 
-      #{avatarUrl,jdbcType=VARCHAR}, #{isMale,jdbcType=BIT}, #{vipDays,jdbcType=INTEGER}, 
-      #{frozen,jdbcType=BIT}, #{defrostingTime,jdbcType=TIMESTAMP})
+    insert into user (username, password, nickname,
+                      email, phone, signature,
+                      avatar_url, is_male, vip_days,
+                      frozen, defrosting_time)
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR},
+            #{avatarUrl,jdbcType=VARCHAR}, #{isMale,jdbcType=BIT}, #{vipDays,jdbcType=INTEGER},
+            #{frozen,jdbcType=BIT}, #{defrostingTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity">
     insert into user
@@ -150,15 +150,15 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity">
     update user
     set password = #{password,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      signature = #{signature,jdbcType=VARCHAR},
-      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
-      is_male = #{isMale,jdbcType=BIT},
-      vip_days = #{vipDays,jdbcType=INTEGER},
-      frozen = #{frozen,jdbcType=BIT},
-      defrosting_time = #{defrostingTime,jdbcType=TIMESTAMP}
+        nickname = #{nickname,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        signature = #{signature,jdbcType=VARCHAR},
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+        is_male = #{isMale,jdbcType=BIT},
+        vip_days = #{vipDays,jdbcType=INTEGER},
+        frozen = #{frozen,jdbcType=BIT},
+        defrosting_time = #{defrostingTime,jdbcType=TIMESTAMP}
     where username = #{username,jdbcType=VARCHAR}
   </update>
 </mapper>

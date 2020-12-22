@@ -19,7 +19,7 @@ public interface CommentEntityMapper {
 
     int updateByPrimaryKey(CommentEntity record);
 
-    int updateByValid(CommentEntity record);
+    int updateByStatus(CommentEntity record);
 
     List<CommentEntity> selectAllSelective(Integer compositionId);
 

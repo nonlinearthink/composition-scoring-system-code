@@ -11,7 +11,7 @@
     support_id, username, composition_id, time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from support
     where support_id = #{supportId,jdbcType=INTEGER}
@@ -21,10 +21,10 @@
     where support_id = #{supportId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" useGeneratedKeys="true" keyProperty="supportId">
-    insert into support (support_id, username, composition_id, 
-      time)
-    values (#{supportId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER}, 
-      #{time,jdbcType=TIMESTAMP})
+    insert into support (support_id, username, composition_id,
+                         time)
+    values (#{supportId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{compositionId,jdbcType=INTEGER},
+            #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
     insert into support
@@ -75,8 +75,8 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity">
     update support
     set username = #{username,jdbcType=VARCHAR},
-      composition_id = #{compositionId,jdbcType=INTEGER},
-      time = #{time,jdbcType=TIMESTAMP}
+        composition_id = #{compositionId,jdbcType=INTEGER},
+        time = #{time,jdbcType=TIMESTAMP}
     where support_id = #{supportId,jdbcType=INTEGER}
   </update>
   <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">

@@ -1,15 +1,12 @@
 package cn.edu.zucc.se2020g11.api.entity;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class FollowEntity {
     private Integer followId;
 
-    @NotNull(message = "username不能为空")
     private String username;
 
-    @NotNull(message = "targetUsername不能为空")
     private String targetUsername;
 
     private Date time;

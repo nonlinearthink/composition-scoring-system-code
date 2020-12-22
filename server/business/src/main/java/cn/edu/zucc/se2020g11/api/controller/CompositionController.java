@@ -169,18 +169,4 @@ public class CompositionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "他人为作文添加举报")
-    @PostMapping("/{compositionId}/report")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
-                    "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "reportEntity", value = "举报", required = true, dataType =
-                    "ReportEntity")
-    })
-    public ResponseEntity<String> addReport(@PathVariable("compositionId") Integer compositionId,
-                                                  @RequestBody ReportEntity reportEntity) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }

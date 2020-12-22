@@ -101,9 +101,9 @@ public class CommentController
             @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
                     "CompositionEntity")
     })
-    public ResponseEntity<ApiResult<Boolean>> updateCommentByValid(@PathVariable("commentId") Integer commentId,
+    public ResponseEntity<ApiResult<Boolean>> updateCommentByStatus(@PathVariable("commentId") Integer commentId,
                                                                        @RequestBody CommentEntity commentEntity, HttpServletRequest request) {
-        commentService.updateCommentByValid(commentEntity, commentId);
+        commentService.updateCommentByStatus(commentEntity, commentId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);

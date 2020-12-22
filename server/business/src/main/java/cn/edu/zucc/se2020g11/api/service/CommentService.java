@@ -44,9 +44,9 @@ public class CommentService
     {
         commentEntityMapper.deleteByCompositionId(compositionId);
     }
-    public void updateCommentByValid(CommentEntity commentEntity, Integer commentId)
+    public void updateCommentByStatus(CommentEntity commentEntity, Integer commentId)
     {
         commentEntity.setCommentId(commentId);
-        commentEntityMapper.updateByValid(commentEntity);
+        commentEntityMapper.updateByStatus(commentEntity);
     }
 }
