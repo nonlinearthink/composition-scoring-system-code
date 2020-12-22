@@ -20,7 +20,11 @@ public class CommentService
     {
         this.commentEntityMapper = commentEntityMapper;
     }
-    public List<CommentEntity> selectAllComments(Integer compositionId)
+    public List<CommentEntity> selectAllComments()
+    {
+        return commentEntityMapper.selectAll();
+    }
+    public List<CommentEntity> selectComment(Integer compositionId)
     {
         return commentEntityMapper.selectAllSelective(compositionId);
     }

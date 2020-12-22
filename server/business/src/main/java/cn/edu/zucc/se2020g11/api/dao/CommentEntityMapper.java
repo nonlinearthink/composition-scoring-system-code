@@ -21,5 +21,7 @@ public interface CommentEntityMapper {
 
     List<CommentEntity> selectAllSelective(Integer compositionId);
 
+    List<CommentEntity> selectAll();
+
     Integer countComment(Integer compositionId);
 }

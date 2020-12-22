@@ -36,10 +36,23 @@ public class CommentController
         this.permissionService = permissionService;
     }
 
+    @LoginRequired(type = UserType.ADMIN)
+    @GetMapping("")
+    @ApiOperation(value = "获取所有评论")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectAllComments() {
+        List<CommentEntity> commentEntityList = commentService.selectAllComments();
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("commentEntityList", commentEntityList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @GetMapping("/{compositionId}")
     @ApiOperation(value = "获取当前作文的所有评论")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectAllComments(@PathVariable("compositionId") Integer compositionId) {
-        List<CommentEntity> commentEntityList = commentService.selectAllComments(compositionId);
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectComment(@PathVariable("compositionId") Integer compositionId) {
+        List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);

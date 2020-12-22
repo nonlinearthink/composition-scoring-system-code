@@ -80,7 +80,7 @@ public class CompositionController {
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId) {
         CompositionCountModel compositionCountModel = compositionService.selectCountByCompositionId(compositionId);
-        List<CommentEntity> commentEntityList = commentService.selectAllComments(compositionId);
+        List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);

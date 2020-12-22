@@ -121,4 +121,8 @@
     from comment
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity" resultMap="BaseResultMap">
+    select *
+    from comment
+  </select>
 </mapper>
