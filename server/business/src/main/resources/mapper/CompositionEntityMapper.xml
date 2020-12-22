@@ -172,6 +172,7 @@
   <select id="selectHot" resultType="cn.edu.zucc.se2020g11.api.model.CompositionCountModel">
     select *
     from composition_count
+    where visibility > 2
   </select>
   <select id="selectCountByCompositionId" resultType="cn.edu.zucc.se2020g11.api.model.CompositionCountModel">
     select *

@@ -20,7 +20,7 @@
     delete from feedback
     where feedback_id = #{feedbackId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity" useGeneratedKeys="true" keyProperty="feedbackId">
     insert into feedback (feedback_id, username, feedback_body, 
       feedback_type)
     values (#{feedbackId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{feedbackBody,jdbcType=VARCHAR}, 
@@ -79,4 +79,8 @@
       feedback_type = #{feedbackType,jdbcType=VARCHAR}
     where feedback_id = #{feedbackId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity" resultMap="BaseResultMap">
+    select *
+    from feedback
+  </select>
 </mapper>
