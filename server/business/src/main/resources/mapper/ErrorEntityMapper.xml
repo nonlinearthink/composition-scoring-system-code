@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.ErrorEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+    <id column="error_id" jdbcType="INTEGER" property="errorId" />
+    <result column="composition_id" jdbcType="INTEGER" property="compositionId" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+    <result column="error_type" jdbcType="VARCHAR" property="errorType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    error_id, composition_id, text, error_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from error
+    where error_id = #{errorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from error
+    where error_id = #{errorId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+    insert into error (error_id, composition_id, text, 
+      error_type)
+    values (#{errorId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 
+      #{errorType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+    insert into error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="errorId != null">
+        error_id,
+      </if>
+      <if test="compositionId != null">
+        composition_id,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="errorType != null">
+        error_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="errorId != null">
+        #{errorId,jdbcType=INTEGER},
+      </if>
+      <if test="compositionId != null">
+        #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="errorType != null">
+        #{errorType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+    update error
+    <set>
+      <if test="compositionId != null">
+        composition_id = #{compositionId,jdbcType=INTEGER},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="errorType != null">
+        error_type = #{errorType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where error_id = #{errorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+    update error
+    set composition_id = #{compositionId,jdbcType=INTEGER},
+      text = #{text,jdbcType=VARCHAR},
+      error_type = #{errorType,jdbcType=VARCHAR}
+    where error_id = #{errorId,jdbcType=INTEGER}
+  </update>
+</mapper>

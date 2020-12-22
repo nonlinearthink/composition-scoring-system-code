@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.FollowEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    <id column="follow_id" jdbcType="INTEGER" property="followId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="target_username" jdbcType="VARCHAR" property="targetUsername" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    follow_id, username, target_username, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from follow
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" useGeneratedKeys="true" keyProperty="followId">
+    insert into follow (follow_id, username, target_username,
+                        time)
+    values (#{followId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{targetUsername,jdbcType=VARCHAR},
+            #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    insert into follow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="followId != null">
+        follow_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="targetUsername != null">
+        target_username,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="followId != null">
+        #{followId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="targetUsername != null">
+        #{targetUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    update follow
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="targetUsername != null">
+        target_username = #{targetUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    update follow
+    set username = #{username,jdbcType=VARCHAR},
+        target_username = #{targetUsername,jdbcType=VARCHAR},
+        time = #{time,jdbcType=TIMESTAMP}
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
+    select *
+    from follow
+    <where>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectAllSelectiveByUser" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
+    select *
+    from follow
+    <where>
+      <if test="targetUsername != null">
+        target_username = #{targetUsername,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+    delete from follow
+    where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
+    select *
+    from follow
+    where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.HelpEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
+    <id column="help_id" jdbcType="INTEGER" property="helpId" />
+    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="help_title" jdbcType="VARCHAR" property="helpTitle" />
+    <result column="help_body" jdbcType="VARCHAR" property="helpBody" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    help_id, admin_name, help_title, help_body, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from help
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from help
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" useGeneratedKeys="true" keyProperty="helpId">
+    insert into help (help_id, admin_name, help_title,
+                      help_body, time)
+    values (#{helpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{helpTitle,jdbcType=VARCHAR},
+            #{helpBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
+    insert into help
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="helpId != null">
+        help_id,
+      </if>
+      <if test="adminName != null">
+        admin_name,
+      </if>
+      <if test="helpTitle != null">
+        help_title,
+      </if>
+      <if test="helpBody != null">
+        help_body,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="helpId != null">
+        #{helpId,jdbcType=INTEGER},
+      </if>
+      <if test="adminName != null">
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="helpTitle != null">
+        #{helpTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="helpBody != null">
+        #{helpBody,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
+    update help
+    <set>
+      <if test="adminName != null">
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="helpTitle != null">
+        help_title = #{helpTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="helpBody != null">
+        help_body = #{helpBody,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
+    update help
+    set admin_name = #{adminName,jdbcType=VARCHAR},
+        help_title = #{helpTitle,jdbcType=VARCHAR},
+        help_body = #{helpBody,jdbcType=VARCHAR},
+        time = #{time,jdbcType=TIMESTAMP}
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" resultMap="BaseResultMap">
+    select *
+    from help
+  </select>
+</mapper>

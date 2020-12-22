@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zucc.se2020g11.api.dao.CommentReportEntityMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+    <id column="comment_report_id" jdbcType="INTEGER" property="commentReportId" />
+    <result column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="comment_report_body" jdbcType="VARCHAR" property="commentReportBody" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_report_id, comment_id, username, comment_report_body, time, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment_report
+    where comment_report_id = #{commentReportId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment_report
+    where comment_report_id = #{commentReportId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+    insert into comment_report (comment_report_id, comment_id, username, 
+      comment_report_body, time, status)
+    values (#{commentReportId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+      #{commentReportBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}), #{status,jdbcType=INTEGER}
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+    insert into comment_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentReportId != null">
+        comment_report_id,
+      </if>
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="commentReportBody != null">
+        comment_report_body,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentReportId != null">
+        #{commentReportId,jdbcType=INTEGER},
+      </if>
+      <if test="commentId != null">
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="commentReportBody != null">
+        #{commentReportBody,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+    update comment_report
+    <set>
+      <if test="commentId != null">
+        comment_id = #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="commentReportBody != null">
+        comment_report_body = #{commentReportBody,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where comment_report_id = #{commentReportId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+    update comment_report
+    set comment_id = #{commentId,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      comment_report_body = #{commentReportBody,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where comment_report_id = #{commentReportId,jdbcType=INTEGER}
+  </update>
+</mapper>
