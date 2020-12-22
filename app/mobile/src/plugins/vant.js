@@ -32,7 +32,9 @@ import {
   Tabs,
   Tag,
   Toast,
-  Uploader
+  Uploader,
+  Collapse,
+  CollapseItem
 } from "vant";
 
 Vue.use(ActionSheet)
@@ -66,4 +68,6 @@ Vue.use(ActionSheet)
   .use(Tag)
   .use(Toast)
   .use(VanImage)
-  .use(Uploader);
+  .use(Uploader)
+  .use(Collapse)
+  .use(CollapseItem);

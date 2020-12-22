@@ -141,12 +141,12 @@ export default {
           {
             icon: "question-o",
             text: "帮助手册",
-            to: ""
+            to: "/help"
           },
           {
             icon: "envelop-o",
             text: "意见反馈",
-            to: ""
+            to: "/feedback"
           },
           {
             icon: "setting-o",

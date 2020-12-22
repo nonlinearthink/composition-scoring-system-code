@@ -105,6 +105,18 @@ const routes = [
     name: "UserSupportPage",
     meta: { index: 5 },
     component: () => import("../views/UserSupport.vue")
+  },
+  {
+    path: "/feedback",
+    name: "FeedbackPage",
+    meta: { index: 5 },
+    component: () => import("../views/Feedback.vue")
+  },
+  {
+    path: "/help",
+    name: "HelpPage",
+    meta: { index: 5 },
+    component: () => import("../views/Help.vue")
   }
 ];
 

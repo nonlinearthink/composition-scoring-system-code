@@ -159,7 +159,7 @@ export default {
       this.rowSelected.forEach(row => {
         row.status = 1;
         this.axios
-          .put(`/comment/valid/${row.compositionId}`, row)
+          .put(`/comment/valid/${row.commentId}`, row)
           .then(res => {
             console.log(res.data);
           })
@@ -171,7 +171,7 @@ export default {
       this.rowSelected.forEach(row => {
         row.status = 2;
         this.axios
-          .put(`/comment/valid/${row.compositionId}`, row)
+          .put(`/comment/valid/${row.commentId}`, row)
           .then(res => {
             console.log(res.data);
           })

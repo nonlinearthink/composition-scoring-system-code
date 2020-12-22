@@ -21,7 +21,22 @@
           {{ item.text }}
         </template>
       </van-cell>
+      <van-cell size="large" center clickable>
+        <van-row type="flex" justify="space-around">
+          <van-col style="color: red; font-size: 1.2rem;" @click="onQuit()">
+            退出账号
+          </van-col>
+        </van-row>
+      </van-cell>
     </van-cell-group>
+    <van-dialog
+      v-model="enableQuitConfirm"
+      title="退出登录"
+      message="是否确认退出账号"
+      show-cancel-button
+      close-on-click-overlay
+      @confirm="onConfirmQuit"
+    />
   </div>
 </template>
 
@@ -47,12 +62,20 @@ export default {
             to: "/setting/about"
           }
         ]
-      }
+      },
+      enableQuitConfirm: false
     };
   },
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    onQuit() {
+      this.enableQuitConfirm = true;
+    },
+    onConfirmQuit() {
+      localStorage.clear();
+      this.$router.replace("/login");
     }
   }
 };
