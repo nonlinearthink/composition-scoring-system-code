@@ -123,6 +123,15 @@ export default {
       })();
     };
   },
+  created() {
+    this.axios
+      .get("/feedback")
+      .then(res => {
+        console.log(res.data);
+        // this.dataSource = res.data.data.pushArticleEntityList;
+      })
+      .catch(err => console.error(err.response.data));
+  },
   methods: {
     translateStatus(status) {
       if (status == 0) {
