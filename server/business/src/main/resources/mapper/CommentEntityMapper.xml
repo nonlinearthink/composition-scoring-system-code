@@ -88,9 +88,6 @@
       <if test="time != null">
         time = #{time,jdbcType=TIMESTAMP},
       </if>
-      <if test="valid != null">
-        valid = #{valid,jdbcType=BIT},
-      </if>
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
@@ -125,4 +122,13 @@
     select *
     from comment
   </select>
+  <update id="updateByValid" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentEntity">
+    update comment
+    <set>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=BIT},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
 </mapper>

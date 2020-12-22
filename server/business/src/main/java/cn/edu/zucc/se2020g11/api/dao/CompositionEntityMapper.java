@@ -19,6 +19,8 @@ public interface CompositionEntityMapper {
 
     int updateByPrimaryKey(CompositionEntity record);
 
+    int updateByValid(CompositionEntity record);
+
     List<CompositionEntity> selectAllSelective(UserEntity record);
 
     List<CompositionEntity> selectFollow(String username);
