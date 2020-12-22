@@ -42,6 +42,11 @@ public class CompositionService
         compositionEntity.setCompositionId(compositionId);
         compositionEntityMapper.updateByPrimaryKeySelective(compositionEntity);
     }
+    public void updateCompositionByValid(CompositionEntity compositionEntity, Integer compositionId)
+    {
+        compositionEntity.setCompositionId(compositionId);
+        compositionEntityMapper.updateByValid(compositionEntity);
+    }
     public CompositionCountModel selectCountByCompositionId(Integer compositionId){
         return compositionEntityMapper.selectCountByCompositionId(compositionId);
     }

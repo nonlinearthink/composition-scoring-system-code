@@ -2,6 +2,8 @@ package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.HelpEntity;
 
+import java.util.List;
+
 public interface HelpEntityMapper {
     int deleteByPrimaryKey(Integer helpId);
 
@@ -10,6 +12,8 @@ public interface HelpEntityMapper {
     int insertSelective(HelpEntity record);
 
     HelpEntity selectByPrimaryKey(Integer helpId);
+
+    List<HelpEntity> selectAll();
 
     int updateByPrimaryKeySelective(HelpEntity record);
 

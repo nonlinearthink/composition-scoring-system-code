@@ -19,6 +19,8 @@ public interface CommentEntityMapper {
 
     int updateByPrimaryKey(CommentEntity record);
 
+    int updateByValid(CommentEntity record);
+
     List<CommentEntity> selectAllSelective(Integer compositionId);
 
     List<CommentEntity> selectAll();

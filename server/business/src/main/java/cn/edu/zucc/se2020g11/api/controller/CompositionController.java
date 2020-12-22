@@ -150,6 +150,25 @@ public class CompositionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @LoginRequired(type = UserType.ADMIN)
+    @ApiOperation(value = "管理员修改作文状态")
+    @PutMapping("/valid/{compositionId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
+                    "CompositionEntity")
+    })
+    public ResponseEntity<ApiResult<Boolean>> updateCompositionByValid(@PathVariable("compositionId") Integer compositionId,
+                                                                @RequestBody CompositionEntity compositionEntity, HttpServletRequest request) {
+        compositionService.updateCompositionByValid(compositionEntity, compositionId);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @LoginRequired(type = UserType.USER)
     @ApiOperation(value = "他人为作文添加举报")
     @PostMapping("/{compositionId}/report")

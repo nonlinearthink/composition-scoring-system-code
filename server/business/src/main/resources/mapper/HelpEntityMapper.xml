@@ -21,7 +21,7 @@
     delete from help
     where help_id = #{helpId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" useGeneratedKeys="true" keyProperty="helpId">
     insert into help (help_id, admin_name, help_title, 
       help_body, time)
     values (#{helpId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{helpTitle,jdbcType=VARCHAR}, 
@@ -90,4 +90,8 @@
       time = #{time,jdbcType=TIMESTAMP}
     where help_id = #{helpId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.HelpEntity" resultMap="BaseResultMap">
+    select *
+    from help
+  </select>
 </mapper>

@@ -131,9 +131,6 @@
       <if test="score != null">
         score = #{score,jdbcType=INTEGER},
       </if>
-      <if test="valid != null">
-        valid = #{valid,jdbcType=BIT},
-      </if>
     </set>
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
@@ -172,10 +169,20 @@
   <select id="selectHot" resultType="cn.edu.zucc.se2020g11.api.model.CompositionCountModel">
     select *
     from composition_count
+    where visibility > 2
   </select>
   <select id="selectCountByCompositionId" resultType="cn.edu.zucc.se2020g11.api.model.CompositionCountModel">
     select *
     from composition_count
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </select>
+  <update id="updateByValid" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
+    update composition
+    <set>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=BIT},
+      </if>
+    </set>
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </update>
 </mapper>
