@@ -176,6 +176,7 @@ export default {
       .get(`/follow/${this.user.username}`)
       .then(res => {
         console.log(res);
+        this.followList = [];
         res.data.data.followList.forEach(follow => {
           this.followList.push({
             username: follow.username,
