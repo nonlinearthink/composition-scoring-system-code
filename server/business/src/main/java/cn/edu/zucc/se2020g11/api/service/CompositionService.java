@@ -29,7 +29,7 @@ public class CompositionService
     {
         return compositionEntityMapper.selectAllSelective(userEntity);
     }
-    public CompositionEntity selectComposition(Integer compositionId)
+    public CompositionEntity selectCompositionById(Integer compositionId)
     {
         return compositionEntityMapper.selectByPrimaryKey(compositionId);
     }

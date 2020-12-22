@@ -22,11 +22,11 @@
     delete from comment_report
     where comment_report_id = #{commentReportId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity" useGeneratedKeys="true" keyProperty="commentReportId">
     insert into comment_report (comment_report_id, comment_id, username, 
       comment_report_body, time, status)
     values (#{commentReportId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
-      #{commentReportBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}), #{status,jdbcType=INTEGER}
+      #{commentReportBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
     insert into comment_report
@@ -74,18 +74,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
     update comment_report
     <set>
-      <if test="commentId != null">
-        comment_id = #{commentId,jdbcType=INTEGER},
-      </if>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="commentReportBody != null">
-        comment_report_body = #{commentReportBody,jdbcType=VARCHAR},
-      </if>
-      <if test="time != null">
-        time = #{time,jdbcType=TIMESTAMP},
-      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -93,7 +81,7 @@
     where comment_report_id = #{commentReportId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity">
-    update comment_report
+    update `comment_report`
     set comment_id = #{commentId,jdbcType=INTEGER},
       username = #{username,jdbcType=VARCHAR},
       comment_report_body = #{commentReportBody,jdbcType=VARCHAR},
@@ -101,4 +89,8 @@
       status = #{status,jdbcType=INTEGER}
     where comment_report_id = #{commentReportId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.CommentReportEntity" resultMap="BaseResultMap">
+    select *
+    from comment_report
+  </select>
 </mapper>
