@@ -13,11 +13,28 @@
       <van-row class="release-time">
         {{ translateTime(composition.releaseTime) }}
       </van-row>
-      <!-- <van-image
-      fit="cover"
-      class="preview-image"
-      :src="require('../assets/images/default-background.jpeg')"
-    /> -->
+      <van-row class="user">
+        <van-col>
+          <van-image
+            width="3.8rem"
+            height="3.8rem"
+            fit="cover"
+            :src="
+              composition.avatarUrl == null
+                ? defaultAvatar
+                : composition.avatarUrl
+            "
+            class="avatar"
+          />
+        </van-col>
+        <van-col>
+          <van-row class="nickname">{{ composition.nickname }}</van-row>
+          <van-row>
+            <van-tag color="#444" plain class="button">私信</van-tag>
+            <van-tag color="red" plain class="button">关注</van-tag>
+          </van-row>
+        </van-col>
+      </van-row>
       <van-divider
         :style="{
           color: '#1989fa',
@@ -56,7 +73,7 @@
             height="2rem"
             fit="cover"
             round
-            :src="defaultAvatar"
+            :src="comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl"
           />
         </van-col>
         <van-col class="info">
@@ -85,12 +102,14 @@
             <van-col class="action-button">
               <van-row>
                 <van-icon name="star-o" size="1.2rem" />
+                {{ formatCount(composition.favoriteCount) }}
               </van-row>
               <van-row>收藏</van-row>
             </van-col>
             <van-col class="action-button">
               <van-row>
                 <van-icon name="good-job-o" size="1.2rem" />
+                {{ formatCount(composition.supportCount) }}
               </van-row>
               <van-row>点赞</van-row>
             </van-col>
@@ -120,7 +139,9 @@
               height="2rem"
               fit="cover"
               round
-              :src="defaultAvatar"
+              :src="
+                comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl
+              "
             />
           </van-col>
           <van-col class="info">
@@ -134,28 +155,30 @@
           </van-col>
         </van-row>
       </div>
-      <div class="writing-bar">
-        <van-row class="editor-wrapper">
-          <van-field
-            v-model="editingComment"
-            type="textarea"
-            placeholder="输入作文"
-            :border="false"
-            autosize
-            class="editor"
-          />
-        </van-row>
-        <van-row type="flex" justify="end">
-          <van-button
-            small
-            plain
-            :disabled="editingComment == ''"
-            :style="{ marginRight: '1rem' }"
-            @click="onAddComment"
-          >
-            发送
-          </van-button>
-        </van-row>
+      <div class="writing-bar-placeholder">
+        <div ref="writingBar" class="writing-bar">
+          <van-row class="editor-wrapper">
+            <van-field
+              v-model="editingComment"
+              type="textarea"
+              placeholder="输入作文"
+              :border="false"
+              autosize
+              class="editor"
+            />
+          </van-row>
+          <van-row type="flex" justify="end">
+            <van-button
+              small
+              plain
+              :disabled="editingComment == ''"
+              :style="{ marginRight: '1rem' }"
+              @click="onAddComment"
+            >
+              发送
+            </van-button>
+          </van-row>
+        </div>
       </div>
     </van-popup>
   </div>
@@ -175,13 +198,18 @@ export default {
       defaultAvatar: require("../assets/images/avatar.svg")
     };
   },
-  computed: { ...mapState(["user"]) },
+  computed: {
+    ...mapState(["user"]),
+    writingBarHeight() {
+      return this.$refs.writingBar.clientHeight;
+    }
+  },
   created() {
     this.axios
       .get(`/composition/${this.$route.query.compositionId}`)
       .then(res => {
         console.log(res);
-        this.composition = res.data.data.compositionEntity;
+        this.composition = res.data.data.compositionCountModel;
         this.commentList = res.data.data.commentEntityList;
       })
       .catch(err => console.error(err.response.data));
@@ -189,6 +217,15 @@ export default {
   methods: {
     translateTime(timestamp) {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    },
+    formatCount(num) {
+      if (num >= 10000) {
+        return `${Math.floor(num / 10000)}w`;
+      } else if (num >= 1000) {
+        return `${Math.floor(num / 1000)}k`;
+      } else {
+        return num;
+      }
     },
     onRouteBack() {
       this.$router.go(-1);
@@ -233,6 +270,22 @@ export default {
     color: $color-fade;
     font-size: $text-small;
     margin: $blank-size/2 0;
+  }
+  .user {
+    .avatar {
+      margin-right: $blank-size * 0.8;
+    }
+    .nickname {
+      color: #575757;
+      font-weight: 500;
+      margin-bottom: $blank-size/4;
+      font-size: $text-normal * 1.1;
+    }
+    .button {
+      padding: $blank-size/2 $blank-size;
+      margin-right: $blank-size;
+      border-radius: $blank-size/3;
+    }
   }
 }
 .comment {
