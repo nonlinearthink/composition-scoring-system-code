@@ -22,6 +22,7 @@ public class CompositionService
     }
     public int addComposition(CompositionEntity compositionEntity)
     {
+        compositionEntity.setValid(0);
         compositionEntityMapper.insert(compositionEntity);
         return compositionEntity.getCompositionId();
     }

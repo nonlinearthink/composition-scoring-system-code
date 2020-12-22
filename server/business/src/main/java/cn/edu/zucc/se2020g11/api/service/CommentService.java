@@ -34,6 +34,7 @@ public class CommentService
     }
     public int addComment(CommentEntity commentEntity)
     {
+        commentEntity.setStatus(0);
         commentEntityMapper.insert(commentEntity);
         return commentEntity.getCommentId();
     }

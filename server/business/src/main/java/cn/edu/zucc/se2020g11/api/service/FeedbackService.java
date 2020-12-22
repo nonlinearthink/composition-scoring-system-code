@@ -19,6 +19,7 @@ public class FeedbackService
     }
     public int addFeedback(FeedbackEntity feedbackEntity)
     {
+        feedbackEntity.setStatus(0);
         feedbackEntityMapper.insert(feedbackEntity);
         return feedbackEntity.getFeedbackId();
     }
