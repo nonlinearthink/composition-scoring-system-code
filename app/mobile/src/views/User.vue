@@ -43,6 +43,7 @@
           v-for="(item, index) in layout.toolCardItem"
           :key="index"
           :span="24 / layout.toolCardItem.length"
+          @click="onRouteChange(item.to)"
         >
           <van-row>
             <div class="icon-wrapper">
@@ -124,17 +125,20 @@ export default {
           {
             icon: "star-o",
             text: "我的收藏",
-            color: "#02a7f0"
+            color: "#02a7f0",
+            to: "/favorite"
           },
           {
             icon: "todo-list-o",
             text: "浏览记录",
-            color: "blue"
+            color: "blue",
+            to: "/history"
           },
           {
             icon: "good-job-o",
             text: "我赞过的",
-            color: "red"
+            color: "red",
+            to: "/support"
           }
         ],
         settingGroupItem: [
@@ -184,7 +188,7 @@ export default {
       .then(res => {
         console.log(res.data);
         this.statistic.composition = res.data.data.compositionList.filter(
-          item => item.status == 3
+          item => item.status == 4
         ).length;
       })
       .catch(err => {
@@ -204,6 +208,9 @@ export default {
       } else {
         this.$router.push({ path: "/user/follow", query: { tab: 0 } });
       }
+    },
+    onRouteChange(to) {
+      this.$router.push(to);
     }
   }
 };

@@ -26,6 +26,7 @@ axios.interceptors.response.use(
   error => {
     switch (error.response.data["code"]) {
       // token 错误跳转到登录界面
+      case 13:
       case 14:
         localStorage.clear();
         router.replace("/login");

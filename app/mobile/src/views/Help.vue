@@ -9,9 +9,13 @@
       @click-left="onRouteBack"
     />
     <van-collapse v-model="activeNames" accordion>
-      <van-collapse-item title="标题1" name="1">内容</van-collapse-item>
-      <van-collapse-item title="标题2" name="2">内容</van-collapse-item>
-      <van-collapse-item title="标题3" name="3">内容</van-collapse-item>
+      <van-collapse-item
+        v-for="item in helpList"
+        :key="item.helpId"
+        :title="item.helpTitle"
+      >
+        {{ item.helpBody }}
+      </van-collapse-item>
     </van-collapse>
   </div>
 </template>
@@ -20,8 +24,18 @@
 export default {
   data() {
     return {
-      activeNames: "1"
+      activeNames: "1",
+      helpList: []
     };
+  },
+  created() {
+    this.axios
+      .get(`/help`)
+      .then(res => {
+        console.log(res.data);
+        this.helpList = res.data.data.helpEntityList;
+      })
+      .catch(err => console.error(err.response.data));
   },
   methods: {
     onRouteBack() {

@@ -117,6 +117,30 @@ const routes = [
     name: "HelpPage",
     meta: { index: 5 },
     component: () => import("../views/Help.vue")
+  },
+  {
+    path: "/favorite",
+    name: "FavoritePage",
+    meta: { index: 5 },
+    component: () => import("../views/Favorite.vue")
+  },
+  {
+    path: "/history",
+    name: "HistoryPage",
+    meta: { index: 5 },
+    component: () => import("../views/History.vue")
+  },
+  {
+    path: "/support",
+    name: "SupportPage",
+    meta: { index: 5 },
+    component: () => import("../views/Support.vue")
+  },
+  {
+    path: "/report",
+    name: "ReportPage",
+    meta: { index: 3 },
+    component: () => import("../views/Report.vue")
   }
 ];
 

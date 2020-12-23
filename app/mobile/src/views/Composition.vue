@@ -81,9 +81,14 @@
             <van-col class="username">{{ comment.username }}</van-col>
             <van-col class="time">
               {{ timeIntervalString(comment.time) }}
+              <div class="a-text" @click="onClickCommentReport(comment)">
+                举报
+              </div>
             </van-col>
           </van-row>
-          <van-row>{{ comment.commentBody }}</van-row>
+          <van-row type="flex" justify="space-between">
+            <van-col>{{ comment.commentBody }}</van-col>
+          </van-row>
         </van-col>
       </van-row>
       <van-row type="flex" justify="center">
@@ -99,19 +104,27 @@
         </van-col>
         <van-col class="other-button">
           <van-row type="flex" justify="center">
-            <van-col class="action-button">
+            <van-col class="action-button" @click="onClickFavorite">
               <van-row>
                 <van-icon name="star-o" size="1.2rem" />
                 {{ formatCount(composition.favoriteCount) }}
               </van-row>
               <van-row>收藏</van-row>
             </van-col>
-            <van-col class="action-button">
+            <van-col class="action-button" @click="onClickSupport">
               <van-row>
                 <van-icon name="good-job-o" size="1.2rem" />
                 {{ formatCount(composition.supportCount) }}
               </van-row>
               <van-row>点赞</van-row>
+            </van-col>
+            <van-col class="action-button" @click="onClickCompositionReport">
+              <van-row>
+                <van-icon name="warn-o" size="1.2rem" />
+              </van-row>
+              <van-row>
+                举报
+              </van-row>
             </van-col>
           </van-row>
         </van-col>
@@ -208,9 +221,13 @@ export default {
     this.axios
       .get(`/composition/${this.$route.query.compositionId}`)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         this.composition = res.data.data.compositionCountModel;
         this.commentList = res.data.data.commentEntityList;
+        this.axios
+          .post(`/history/${this.$route.query.compositionId}`)
+          .then(res => console.log(res.data))
+          .catch(err => console.error(err.response.data));
       })
       .catch(err => console.error(err.response.data));
   },
@@ -251,6 +268,38 @@ export default {
         .catch(err => {
           console.error(err.response.data);
         });
+    },
+    onClickFavorite() {
+      this.axios
+        .post(`/favorite/${this.composition.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition.favoriteCount += 1;
+          this.$toast("收藏成功");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onClickSupport() {
+      this.axios
+        .post(`/support/${this.composition.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition.supportCount += 1;
+          this.$toast("点赞成功");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onClickCompositionReport() {
+      this.$router.push({
+        path: "/report",
+        query: { compositionId: this.composition.compositionId, type: 0 }
+      });
+    },
+    onClickCommentReport(comment) {
+      this.$router.push({
+        path: "/report",
+        query: { commentId: comment.commentId, type: 1 }
+      });
     },
     ...dateUtils
   }
