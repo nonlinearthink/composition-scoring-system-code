@@ -3,10 +3,13 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CommentReportEntity;
 import cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity;
+import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.ReportModel;
 import cn.edu.zucc.se2020g11.api.service.CommentService;
 import cn.edu.zucc.se2020g11.api.service.CompositionService;
 import cn.edu.zucc.se2020g11.api.service.ReportService;
+import cn.edu.zucc.se2020g11.api.service.UserService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -33,12 +36,39 @@ public class ReportController
     private ReportService reportService;
     private CompositionService compositionService;
     private CommentService commentService;
+    private UserService userService;
 
     @Autowired(required = false)
-    public ReportController(ReportService reportService, CompositionService compositionService, CommentService commentService) {
+    public ReportController(ReportService reportService, CompositionService compositionService, CommentService commentService, UserService userService) {
         this.reportService = reportService;
         this.compositionService = compositionService;
         this.commentService = commentService;
+        this.userService = userService;
+    }
+
+    @LoginRequired(type = UserType.ADMIN)
+    @ApiOperation(value = "获取违规信息")
+    @GetMapping("")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectAllReports() {
+        List<ReportModel> reportModelList = reportService.selectAllReports();
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("reportModelList", reportModelList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @LoginRequired(type = UserType.ADMIN)
+    @ApiOperation(value = "管理员冻结或解冻用户账号")
+    @PutMapping("/{username}")
+    public ResponseEntity<ApiResult<Boolean>> freezeUser(@PathVariable("username") String username, @RequestBody UserEntity userEntity) {
+        userEntity.setUsername(username);
+        userEntity.setFrozen(userEntity.getFrozen());
+        userService.updateUser(username, userEntity);
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("修改成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.USER)

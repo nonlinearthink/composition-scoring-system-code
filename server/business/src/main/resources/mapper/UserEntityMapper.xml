@@ -135,15 +135,6 @@
       <if test="isMale != null">
         is_male = #{isMale,jdbcType=BIT},
       </if>
-      <if test="vipDays != null">
-        vip_days = #{vipDays,jdbcType=INTEGER},
-      </if>
-      <if test="frozen != null">
-        frozen = #{frozen,jdbcType=BIT},
-      </if>
-      <if test="defrostingTime != null">
-        defrosting_time = #{defrostingTime,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where username = #{username,jdbcType=VARCHAR}
   </update>
@@ -159,6 +150,21 @@
         vip_days = #{vipDays,jdbcType=INTEGER},
         frozen = #{frozen,jdbcType=BIT},
         defrosting_time = #{defrostingTime,jdbcType=TIMESTAMP}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+  <update id="updateUser" parameterType="cn.edu.zucc.se2020g11.api.entity.UserEntity">
+    update user
+    <set>
+      <if test="vipDays != null">
+        vip_days = #{vipDays,jdbcType=INTEGER},
+      </if>
+      <if test="frozen != null">
+        frozen = #{frozen,jdbcType=BIT},
+      </if>
+      <if test="defrostingTime != null">
+        defrosting_time = #{defrostingTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
     where username = #{username,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.dao.CommentReportEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.CompositionReportEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CommentReportEntity;
 import cn.edu.zucc.se2020g11.api.entity.CompositionReportEntity;
+import cn.edu.zucc.se2020g11.api.model.ReportModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,10 @@ public class ReportService
         commentReportEntity.setStatus(0);
         commentReportEntityMapper.insert(commentReportEntity);
         return commentReportEntity.getCommentReportId();
+    }
+    public List<ReportModel> selectAllReports()
+    {
+        return compositionReportEntityMapper.selectAllReports();
     }
     public List<CompositionReportEntity> selectAllCompositionReports()
     {
