@@ -3,6 +3,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.HistoryEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.HistoryModel;
 import cn.edu.zucc.se2020g11.api.service.HistoryService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -37,13 +38,13 @@ public class HistoryController
 
     @LoginRequired(type = UserType.USER)
     @GetMapping("")
-    @ApiOperation(value = "获取所有历史记录")
+    @ApiOperation(value = "获取当前用户所有历史记录")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectHistoryByUser(HttpServletRequest request) {
-        List<HistoryEntity> historyEntityList = historyService.selectHistoryByUser((String)request.getAttribute("username"));
+        List<HistoryModel> historyModelList = historyService.selectHistoryByUser((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("historyEntityList", historyEntityList);
+        data.put("historyModelList", historyModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
