@@ -93,4 +93,8 @@
     select *
     from composition_report
   </select>
+  <select id="selectAllReports" resultType="cn.edu.zucc.se2020g11.api.model.ReportModel">
+    select *
+    from report_count
+  </select>
 </mapper>

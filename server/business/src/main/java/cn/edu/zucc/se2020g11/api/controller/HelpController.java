@@ -45,7 +45,7 @@ public class HelpController
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("添加成功");
         Map<String, Object> data = new HashMap<>(1);
-        data.put("feedbackId", id);
+        data.put("helpId", id);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

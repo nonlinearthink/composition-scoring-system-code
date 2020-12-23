@@ -113,4 +113,17 @@ public class UserService {
         userEntityMapper.updateByPrimaryKeySelective(userEntity);
     }
 
+    /**
+     * 更改密码服务
+     *
+     * @param userEntity 用户信息修改模型
+     * @throws BaseException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(String username, UserEntity userEntity) throws BaseException {
+        // 修改信息
+        userEntity.setUsername(username);
+        userEntityMapper.updateUser(userEntity);
+    }
+
 }
