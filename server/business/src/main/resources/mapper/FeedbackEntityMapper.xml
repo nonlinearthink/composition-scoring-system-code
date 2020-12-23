@@ -6,6 +6,8 @@
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="feedback_body" jdbcType="VARCHAR" property="feedbackBody" />
     <result column="feedback_type" jdbcType="VARCHAR" property="feedbackType" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     feedback_id, username, feedback_body, feedback_type
@@ -22,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity" useGeneratedKeys="true" keyProperty="feedbackId">
     insert into feedback (feedback_id, username, feedback_body,
-                          feedback_type)
+                          feedback_type, time, status)
     values (#{feedbackId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{feedbackBody,jdbcType=VARCHAR},
-            #{feedbackType,jdbcType=VARCHAR})
+            #{feedbackType,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity">
     insert into feedback
@@ -41,6 +43,12 @@
       <if test="feedbackType != null">
         feedback_type,
       </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="feedbackId != null">
@@ -55,19 +63,22 @@
       <if test="feedbackType != null">
         #{feedbackType,jdbcType=VARCHAR},
       </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity">
     update feedback
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
       </if>
-      <if test="feedbackBody != null">
-        feedback_body = #{feedbackBody,jdbcType=VARCHAR},
-      </if>
-      <if test="feedbackType != null">
-        feedback_type = #{feedbackType,jdbcType=VARCHAR},
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
     </set>
     where feedback_id = #{feedbackId,jdbcType=INTEGER}
@@ -76,7 +87,9 @@
     update feedback
     set username = #{username,jdbcType=VARCHAR},
         feedback_body = #{feedbackBody,jdbcType=VARCHAR},
-        feedback_type = #{feedbackType,jdbcType=VARCHAR}
+        feedback_type = #{feedbackType,jdbcType=VARCHAR},
+        time = #{time,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=INTEGER}
     where feedback_id = #{feedbackId,jdbcType=INTEGER}
   </update>
   <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.FeedbackEntity" resultMap="BaseResultMap">
