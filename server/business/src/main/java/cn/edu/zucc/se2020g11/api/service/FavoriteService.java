@@ -6,6 +6,7 @@ import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.FavoriteEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FavoriteEntity;
+import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,14 @@ public class FavoriteService
             compositionEntityList.add(compositionEntityMapper.selectByPrimaryKey(f.getCompositionId()));
         }
         return compositionEntityList;
+    }
+    public Boolean findFavorite(String username, Integer compositionId)
+    {
+        FavoriteEntity favoriteEntity = new FavoriteEntity();
+        favoriteEntity.setUsername(username);
+        favoriteEntity.setCompositionId(compositionId);
+        List<FavoriteEntity> favoriteEntityList = favoriteEntityMapper.selectByUsername(favoriteEntity);
+        return favoriteEntityList.size() > 0;
     }
     public void deleteFavorite(FavoriteEntity favoriteEntity)
     {

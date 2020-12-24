@@ -34,15 +34,17 @@ public class CompositionController {
     private CommentService commentService;
     private PermissionService permissionService;
     private UserService userService;
+    private FollowService followService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, UserService userService) {
+    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, UserService userService, FollowService followService) {
         this.compositionService = compositionService;
         this.supportService = supportService;
         this.favoriteService = favoriteService;
         this.commentService = commentService;
         this.permissionService = permissionService;
         this.userService = userService;
+        this.followService = followService;
     }
 
     @LoginRequired(type = UserType.ADMIN)
@@ -78,14 +80,20 @@ public class CompositionController {
     @GetMapping("/{compositionId}")
     @ApiOperation(value = "获取单篇作文信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId) {
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         CompositionCountModel compositionCountModel = compositionService.selectCountByCompositionId(compositionId);
         List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
+        Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), compositionService.selectCountByCompositionId(compositionId).getNickname());
+        Boolean isSupport = supportService.findSupport((String)request.getAttribute("username"), compositionId);
+        Boolean isFavorite = favoriteService.findFavorite((String)request.getAttribute("username"), compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
         data.put("compositionCountModel", compositionCountModel);
         data.put("commentEntityList", commentEntityList);
+        data.put("isFollow", isFollow);
+        data.put("isSupport", isSupport);
+        data.put("isFavorite", isFavorite);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

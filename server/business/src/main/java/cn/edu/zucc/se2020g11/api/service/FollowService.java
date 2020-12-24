@@ -6,6 +6,7 @@ import cn.edu.zucc.se2020g11.api.dao.FollowEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
 import cn.edu.zucc.se2020g11.api.model.FollowModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,14 @@ public class FollowService
             userEntityList.add(userEntityMapper.selectByPrimaryKey(f.getUsername()));
         }
         return userEntityList;
+    }
+    public Boolean findFollow(String username, String targetUsername)
+    {
+        FollowEntity followEntity = new FollowEntity();
+        followEntity.setUsername(username);
+        followEntity.setTargetUsername(targetUsername);
+        List<FollowEntity> followEntityList = followEntityMapper.selectByUsername(followEntity);
+        return followEntityList.size() > 0;
     }
     public List<FollowModel> getFollowInfo(List<UserEntity>  userEntityList)
     {
