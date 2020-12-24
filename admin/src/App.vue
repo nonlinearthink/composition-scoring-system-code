@@ -69,8 +69,8 @@
             <a-col class="header-action-bar-item">
               <a-icon type="user" /> {{ admin.adminName }}
             </a-col>
-            <a-col class="header-action-bar-item">
-              <a-icon type="poweroff" @click="onLogout" />
+            <a-col class="header-action-bar-item" @click="onLogout">
+              <a-icon type="poweroff" />
             </a-col>
           </a-row>
         </a-layout-header>

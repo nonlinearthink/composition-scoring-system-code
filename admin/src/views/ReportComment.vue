@@ -1,5 +1,5 @@
 <template>
-  <div id="review-composition-page">
+  <div id="review-comment-page">
     <a-modal
       v-model="viewVisiable"
       title="快速查看"
@@ -7,35 +7,18 @@
       @ok="onConfirm"
     >
       <!-- 在此插入编辑用的表单 -->
-      <a-descriptions v-if="viewModel == 1">
-        <a-descriptions-item label="标题" :span="2">
-          {{ viewTarget.title }}
+      <a-descriptions v-if="viewVisiable">
+        <a-descriptions-item label="举报ID">
+          {{ viewTarget.commentReportId }}
         </a-descriptions-item>
-        <a-descriptions-item label="发布者">
+        <a-descriptions-item label="举报时间" :span="2">
+          {{ translateTime(viewTarget.time) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="被举报用户" :span="3">
           {{ viewTarget.username }}
         </a-descriptions-item>
-        <a-descriptions-item label="可见性">
-          {{ translateVisibility(viewTarget.visibility) }}
-        </a-descriptions-item>
-        <a-descriptions-item label="更新时间" :span="2">
-          {{ viewTarget.releaseTime }}
-        </a-descriptions-item>
-        <a-descriptions-item label="内容" :span="3">
-          {{ viewTarget.compositionBody }}
-        </a-descriptions-item>
-        <a-descriptions-item label="描述" :span="3">
-          {{ viewTarget.description }}
-        </a-descriptions-item>
-      </a-descriptions>
-      <a-descriptions v-if="viewModel == 2">
-        <a-descriptions-item label="发布者">
-          {{ viewTarget.username }}
-        </a-descriptions-item>
-        <a-descriptions-item label="发布时间" :span="2">
-          {{ viewTarget.time }}
-        </a-descriptions-item>
-        <a-descriptions-item label="内容" :span="3">
-          {{ viewTarget.commentBody }}
+        <a-descriptions-item label="举报理由" :span="3">
+          {{ viewTarget.commentReportBody }}
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -46,7 +29,7 @@
           :disabled="rowSelected.length == 0"
           @click="onSetValid"
         >
-          标记为通过
+          标记为忽略
         </a-button>
       </a-col>
       <a-col class="action-button">
@@ -66,8 +49,8 @@
       :row-selection="rowSelection"
     >
       <!-- 如果有需求，在此自定义每个单元格的样式 -->
-      <span slot="report" slot-scope="text, record">
-        <a @click="onQuickView(record)">{{ text }}</a>
+      <span slot="report" slot-scope="text">
+        {{ text.length > 28 ? text.substring(0, 28) + "..." : text }}
       </span>
       <span
         slot="status"
@@ -76,52 +59,61 @@
           color: text == 0 ? '#000' : text == 1 ? '#1890ff' : '#f5222d'
         }"
       >
-        {{ translateValid(text) }}
+        {{ translateStatus(text) }}
+      </span>
+      <span slot="time" slot-scope="text">
+        {{ translateTime(text) }}
+      </span>
+      <span slot="action" slot-scope="text, record">
+        <a @click="onQuickView(record)">查看</a>
       </span>
     </a-table>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     // 在此定义表结构
     const tableColumns = [
       {
         title: "ID",
-        dataIndex: "reportId",
-        key: "reportId",
+        dataIndex: "commentReportId",
+        key: "commentReportId",
         width: 80
-      },
-      {
-        title: "内容类型",
-        dataIndex: "type",
-        key: "type",
-        scopedSlots: { customRender: "report" },
-        width: 100
       },
       {
         title: "被举报用户",
         dataIndex: "username",
         key: "username",
-        width: 200
+        width: 150
       },
       {
         title: "举报理由",
-        dataIndex: "reportBody",
-        key: "reportBody"
+        dataIndex: "commentReportBody",
+        key: "commentReportBody",
+        scopedSlots: { customRender: "report" }
       },
       {
         title: "举报时间",
         dataIndex: "time",
-        key: "time"
+        key: "time",
+        scopedSlots: { customRender: "time" },
+        width: 180
       },
       {
         title: "状态",
-        dataIndex: "valid",
-        key: "valid",
+        dataIndex: "status",
+        key: "status",
         scopedSlots: { customRender: "status" },
-        width: 100
+        width: 80
+      },
+      {
+        title: "操作",
+        key: "action",
+        width: 80,
+        scopedSlots: { customRender: "action" }
       }
     ];
     const rowSelection = {
@@ -131,84 +123,64 @@ export default {
     };
     return {
       viewVisiable: false,
-      viewModel: 0,
-      primaryKey: "reportId",
+      viewTarget: null,
+      primaryKey: "commentReportId",
       tableColumns,
       // 在此编辑测试数据
-      dataSource: [
-        {
-          reportId: "10001",
-          type: "评论",
-          commentBody: "哈哈哈，你是真的菜！",
-          time: "2020-11-09 20:08:30",
-          username: "tuenity",
-          reportBody: "嘲笑和玩弄弱者",
-          valid: 0
-        },
-        {
-          reportId: "10002",
-          type: "作文",
-          title: "性感荷官在线发牌",
-          compositionBody:
-            "The bar chart shows the China's growing percentage of computer users in youth from 2% in 1965 to 50% in 2005, simultaneously, the graph of China's percentage of short-sighted persons who use computers in youth sharply went up from 5% to 60% during the same period. We all know that as the improvement of China people's living standards, the computer be used by more and more people, especially in youth.However, when they use a computer, some bad habit would result that short-sighted of eyes.For example, youth like playing computer games for a long time, eyes be forced to expose on the computer radiation, the youth vision will decline because the unhealthy behaviors. As for me, when we play the computer, we need a bright condition.Otherwise, we should have a rest when we use computer for a long time.Furthermore, we could rub the eyes after use computer.",
-          description:
-            "ACM 杰出科学家（Distinguished Member）评选从 2006 年开始，意在表彰至少有 15 年的专业经验、至少具有5年的ACM专业会员资格、并在计算机领域做出了杰出贡献或产生巨大影响的 ACM 会员。ACM 杰出科学家的评选比例不超过 ACM 会员的前 10%。",
-          visibility: 3,
-          time: "2020-11-09 20:08:30",
-          username: "tuenity",
-          reportBody: "涉及黄色信息",
-          valid: 0
-        }
-      ],
+      dataSource: [],
       rowSelection,
-      rowSelected: [],
-      viewTarget: null
+      rowSelected: []
     };
   },
+  created() {
+    this.axios
+      .get(`/report/comment`)
+      .then(res => {
+        console.log(res.data);
+        this.dataSource = res.data.data.commentReportEntityList;
+      })
+      .catch(err => console.error(err.response.data));
+  },
   methods: {
-    translateValid(valid) {
-      if (valid == 0) {
+    translateTime(timestamp) {
+      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    },
+    translateStatus(status) {
+      if (status == 0) {
         return "待审核";
-      } else if (valid == 1) {
-        return "通过";
-      } else if (valid == 2) {
+      } else if (status == 1) {
+        return "忽略";
+      } else if (status == 2) {
         return "违规";
       }
     },
-    translateVisibility(value) {
-      let visibilityList = [
-        { value: 1, name: "私密" },
-        { value: 2, name: "仅粉丝可见" },
-        { value: 3, name: "公开" }
-      ];
-      if (value) {
-        let visibility = visibilityList.find(
-          visibility => visibility.value == value
-        );
-        return visibility.name;
-      }
-      return this.visibilityList[0].name;
-    },
     onSetValid() {
       this.rowSelected.forEach(row => {
-        row.valid = 1;
+        row.status = 1;
+        this.axios
+          .put(`/report/comment/status/${row.commentReportId}`, row)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => console.error(err.response.data));
       });
       this.$message.success(`更新记录状态`, 1);
     },
     onSetInvalid() {
       this.rowSelected.forEach(row => {
-        row.valid = 2;
+        row.status = 2;
+        this.axios
+          .put(`/report/comment/status/${row.commentReportId}`, row)
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => console.error(err.response.data));
       });
       this.$message.success(`更新记录状态`, 1);
     },
     onQuickView(record) {
       this.viewVisiable = true;
       this.viewTarget = record;
-      if (record.type == "作文") {
-        this.viewModel = 1;
-      } else {
-        this.viewModel = 2;
-      }
     },
     onConfirm() {
       this.viewVisiable = false;
