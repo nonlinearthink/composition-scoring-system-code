@@ -1,4 +1,5 @@
 import abc
+from time import sleep
 from util.redis.connect import RedisUtil
 
 
@@ -26,29 +27,23 @@ class RedisMessageQueue:
     使用Redis实现的消息队列
     """
 
-    def __init__(self):
-        """初始化函数"""
-        # 获取Redis连接
-        self.conn = RedisUtil.get_connection()
-        # 设置订阅主题
-        self.title = None
+    @abc.abstractmethod
+    def listen(self, handler: RedisMessageQueueHandler):
+        """监听消息队列
 
-    def __init__(self, title: str):
-        """含参数的初始化函数
+        根据订阅监听对应的消息队列
 
         Args:
-            title (str): 订阅主题
+            handler (RedisMessageQueueHandler): 消息处理器
         """
+        pass
+
+
+
+class RedisListClient(RedisMessageQueue):
+    def __init__(self, key):
         self.conn = RedisUtil.get_connection()
-        self.title = title
-
-    def subscribe(self, title: str):
-        """设置订阅
-
-        Args:
-            title (str): 订阅主题
-        """
-        self.title = title
+        self.key = key
 
     def listen(self, handler: RedisMessageQueueHandler):
         """监听消息队列
@@ -64,11 +59,52 @@ class RedisMessageQueue:
             # 把获取的值传给消息处理器
             handler.do_handle(bytes.decode(value, encoding='utf-8'))
 
+    def push(self, value: str):
+        self.conn.rpush(self.key, value)
+
+
+class RedisSubClient(RedisMessageQueue):
+    """Redis消息队列
+
+    使用Redis实现的消息队列
+    """
+
+    def __init__(self, title):
+        """含参数的初始化函数
+
+        Args:
+            title (str): 订阅主题
+        """
+        self.conn = RedisUtil.get_connection()
+        self.client = self.conn.pubsub()
+        self.client.subscribe(title)
+
+    def listen(self, handler: RedisMessageQueueHandler):
+        """监听消息队列
+
+        根据订阅监听对应的消息队列
+
+        Args:
+            handler (RedisMessageQueueHandler): 消息处理器
+        """
+        for message in self.client.listen():
+            handler.do_handle(message)
+
+
+class RedisPubClient:
+    def __init__(self, title):
+        """含参数的初始化函数
+
+        Args:
+            title (str): 订阅主题
+        """
+        self.conn = RedisUtil.get_connection()
+        self.title = title
+
     def publish(self, message: str):
         """发布消息
 
         Args:
             message (str): 消息
         """
-        # 添加到消息队列尾
-        self.conn.rpush(self.title, message)
+        self.conn.publish(self.title, message)

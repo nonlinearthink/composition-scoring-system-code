@@ -6,15 +6,16 @@ import time
 
 class Myhandler(ru.RedisMessageQueueHandler):
     """实现抽象类"""
+
     def do_handle(self, message):
         print(message)
         # 模拟模型预测
         time.sleep(10)
         # 创建发送返回结果的消息队列
-        publish_queue = ru.RedisMessageQueue()
-        publish_queue.subscribe("message2")
+        publish_queue = ru.RedisMessageQueue("message")
+        # publish_queue.subscribe()
         # 返回结果
-        publish_queue.publish(message+" 已处理")
+        publish_queue.publish(str(message)+" 已处理")
 
 
 def main():
@@ -26,8 +27,8 @@ def main():
         # 设置程序运行时配置
         runtime.RuntimeConfigurator.set("redis", config['redis'])
     # 创建模型预测任务消息队列
-    task_mq = ru.RedisMessageQueue()
-    task_mq.subscribe("message1")
+    task_mq = ru.RedisMessageQueue("test")
+    # task_mq.subscribe()
     # 监听消息队列
     task_mq.listen(Myhandler())
 
