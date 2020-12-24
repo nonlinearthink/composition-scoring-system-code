@@ -5,8 +5,10 @@ import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.SupportEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
+import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
+import com.sun.mail.imap.protocol.INTERNALDATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,14 @@ public class SupportService
             compositionEntityList.add(compositionEntityMapper.selectByPrimaryKey(s.getCompositionId()));
         }
         return compositionEntityList;
+    }
+    public Boolean findSupport(String username, Integer compositionId)
+    {
+        SupportEntity supportEntity = new SupportEntity();
+        supportEntity.setUsername(username);
+        supportEntity.setCompositionId(compositionId);
+        List<SupportEntity> supportEntityList = supportEntityMapper.selectByUsername(supportEntity);
+        return supportEntityList.size() > 0;
     }
     public void deleteSupport(SupportEntity supportEntity)
     {
