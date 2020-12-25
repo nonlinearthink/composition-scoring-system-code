@@ -58,6 +58,7 @@ public class UserService {
         // 密码加密存储
         String passwordEncrypted = oneWayEncryption(user.getPassword());
         user.setPassword(passwordEncrypted);
+        user.setFrozen(false);
         // 初始化用户昵称
         if (user.getNickname() == null) {
             user.setNickname(user.getUsername());

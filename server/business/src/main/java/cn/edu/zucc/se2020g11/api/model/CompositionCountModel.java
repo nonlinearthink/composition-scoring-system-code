@@ -20,6 +20,9 @@ public class CompositionCountModel
     @NotNull(message = "compositionId不能为空")
     private Integer compositionId;
 
+    @NotNull(message = "username不能为空")
+    private String username;
+
     @NotNull(message = "nickname不能为空")
     private String nickname;
 

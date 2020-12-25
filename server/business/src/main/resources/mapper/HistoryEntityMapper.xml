@@ -88,4 +88,9 @@
       </if>
     </where>
   </select>
+  <select id="countHistory" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from history
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>

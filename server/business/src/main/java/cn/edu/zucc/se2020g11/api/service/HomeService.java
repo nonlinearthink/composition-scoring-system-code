@@ -19,9 +19,10 @@ public class HomeService
     private final SupportEntityMapper supportEntityMapper;
     private final CommentEntityMapper commentEntityMapper;
     private final UserEntityMapper userEntityMapper;
+    private final HistoryEntityMapper historyEntityMapper;
 
     @Autowired(required = false)
-    public HomeService(PushArticleEntityMapper pushArticleEntityMapper, CompositionEntityMapper compositionEntityMapper, FollowEntityMapper followEntityMapper, SupportEntityMapper supportEntityMapper, CommentEntityMapper commentEntityMapper, UserEntityMapper userEntityMapper)
+    public HomeService(PushArticleEntityMapper pushArticleEntityMapper, CompositionEntityMapper compositionEntityMapper, FollowEntityMapper followEntityMapper, SupportEntityMapper supportEntityMapper, CommentEntityMapper commentEntityMapper, UserEntityMapper userEntityMapper, HistoryEntityMapper historyEntityMapper)
     {
         this.pushArticleEntityMapper = pushArticleEntityMapper;
         this.compositionEntityMapper = compositionEntityMapper;
@@ -29,6 +30,7 @@ public class HomeService
         this.supportEntityMapper = supportEntityMapper;
         this.commentEntityMapper = commentEntityMapper;
         this.userEntityMapper = userEntityMapper;
+        this.historyEntityMapper = historyEntityMapper;
     }
     public List<ArticleModel> selectAllArticles()
     {
@@ -80,7 +82,7 @@ public class HomeService
             newCardModel.setTitle(c.getTitle());
             newCardModel.setCompositionBody(c.getCompositionBody());
             newCardModel.setReleaseTime(c.getReleaseTime());
-            newCardModel.setHistoryCount(supportEntityMapper.countSupport(c.getCompositionId()));
+            newCardModel.setHistoryCount(historyEntityMapper.countHistory(c.getCompositionId()));
             newCardModel.setCommentCount(commentEntityMapper.countComment(c.getCompositionId()));
             newCardModelList.add(newCardModel);
         }

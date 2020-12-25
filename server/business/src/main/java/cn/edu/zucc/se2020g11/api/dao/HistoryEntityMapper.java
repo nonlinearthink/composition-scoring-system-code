@@ -18,4 +18,6 @@ public interface HistoryEntityMapper {
     int updateByPrimaryKey(HistoryEntity record);
 
     List<HistoryEntity> selectHistoryByUser(String username);
+
+    Integer countHistory(Integer compositionId);
 }
