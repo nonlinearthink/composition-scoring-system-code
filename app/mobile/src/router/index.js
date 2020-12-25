@@ -107,6 +107,12 @@ const routes = [
     component: () => import("../views/UserSupport.vue")
   },
   {
+    path: "/user/home",
+    name: "UserHomePage",
+    meta: { index: 5 },
+    component: () => import("../views/UserHome.vue")
+  },
+  {
     path: "/feedback",
     name: "FeedbackPage",
     meta: { index: 5 },
@@ -141,6 +147,12 @@ const routes = [
     name: "ReportPage",
     meta: { index: 3 },
     component: () => import("../views/Report.vue")
+  },
+  {
+    path: "/system/message",
+    name: "SystemMessagePage",
+    meta: { index: 4 },
+    component: () => import("../views/SystemMessage.vue")
   }
 ];
 

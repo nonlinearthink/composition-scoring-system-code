@@ -86,7 +86,7 @@ export default {
     isUpdated() {
       if (
         this.composition.title == this.publish.title &&
-        this.composition.compositionBody == this.publish.compositionBody &&
+        this.composition.description == this.publish.description &&
         this.composition.visibility == this.publish.visibility
       ) {
         return false;

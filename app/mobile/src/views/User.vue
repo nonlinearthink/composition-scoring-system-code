@@ -2,7 +2,7 @@
   <div id="user-page">
     <div class="user-card">
       <div class="user-info">
-        <div class="user-info-avatar">
+        <div class="user-info-avatar" @click="onRouteChange('/user/home')">
           <van-image
             width="4rem"
             height="4rem"
@@ -56,7 +56,7 @@
         </van-col>
       </van-row>
       <template #extra>
-        <van-cell is-link size="large" center>
+        <van-cell is-link size="large" center @click="onBlock">
           <template #icon>
             <van-icon name="vip-card-o" class="piduoduo-setting-icon" />
           </template>
@@ -211,6 +211,9 @@ export default {
     },
     onRouteChange(to) {
       this.$router.push(to);
+    },
+    onBlock() {
+      this.$toast("待开放");
     }
   }
 };

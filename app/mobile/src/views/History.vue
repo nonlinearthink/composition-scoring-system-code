@@ -44,7 +44,7 @@ export default {
       .get(`/history`)
       .then(res => {
         console.log(res.data);
-        this.compositions = res.data.data.historyEntityList;
+        this.compositions = res.data.data.historyModelList;
       })
       .catch(err => console.error(err.response.data));
   },

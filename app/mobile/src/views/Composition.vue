@@ -31,6 +31,7 @@
                   : composition.avatarUrl
               "
               class="avatar"
+              @click="onRouteChange('/user/home')"
             />
           </van-col>
           <van-col>
@@ -38,7 +39,7 @@
             <van-row>
               <van-tag color="#1989fa" plain class="button">私信</van-tag>
               <van-tag
-                v-if="!isFollow"
+                v-if="!isFollow && user.username != composition.username"
                 color="red"
                 plain
                 class="button"
@@ -47,7 +48,7 @@
                 关注
               </van-tag>
               <van-tag
-                v-else
+                v-else-if="user.username != composition.username"
                 color="#444"
                 plain
                 class="button"
@@ -310,6 +311,9 @@ export default {
     },
     onRouteBack() {
       this.$router.go(-1);
+    },
+    onRouteChange(to) {
+      this.$router.push(to);
     },
     onShowComment() {
       this.showComment = true;
