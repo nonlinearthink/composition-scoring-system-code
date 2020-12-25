@@ -1,16 +1,16 @@
 import abc
-from time import sleep
+import functools
 from util.redis.connect import RedisUtil
 
 
 class RedisMessageQueueHandler:
     """Redis消息队列处理器
 
-    用于操作Redis消息队列的返回值，需要实现抽象函数
+    抽象类，用于操作Redis消息队列的返回值
     """
 
     @abc.abstractmethod
-    def do_handle(self, message: str):
+    def on_listen(self, message: str):
         """处理消息函数
 
         抽象函数，对消息队列的单条返回值进行操作
@@ -18,34 +18,15 @@ class RedisMessageQueueHandler:
         Args:
             message (str): 消息，Redis消息队列的返回值
         """
-        pass
+        raise NotImplementedError
 
 
-class RedisMessageQueue:
-    """Redis消息队列
-
-    使用Redis实现的消息队列
-    """
-
-    @abc.abstractmethod
-    def listen(self, handler: RedisMessageQueueHandler):
-        """监听消息队列
-
-        根据订阅监听对应的消息队列
-
-        Args:
-            handler (RedisMessageQueueHandler): 消息处理器
-        """
-        pass
-
-
-
-class RedisListClient(RedisMessageQueue):
-    def __init__(self, key):
+class RedisListClient:
+    def __init__(self, key: str):
         self.conn = RedisUtil.get_connection()
         self.key = key
 
-    def listen(self, handler: RedisMessageQueueHandler):
+    def listen(topic: str):
         """监听消息队列
 
         根据订阅监听对应的消息队列
@@ -53,33 +34,44 @@ class RedisListClient(RedisMessageQueue):
         Args:
             handler (RedisMessageQueueHandler): 消息处理器
         """
-        while True:
-            # 堵塞监听消息队列头
-            (key, value) = self.conn.blpop(self.title)
-            # 把获取的值传给消息处理器
-            handler.do_handle(bytes.decode(value, encoding='utf-8'))
+        # 获取连接（闭包实现）
+        conn = RedisUtil.get_connection()
+
+        def setup(handler: RedisMessageQueueHandler.on_listen):
+
+            @functools.wraps(handler)
+            def event_loop(self):
+                while True:
+                    # 堵塞监听消息队列头
+                    (key, value) = conn.blpop(topic)
+                    # 解码
+                    message = bytes.decode(value, encoding='utf-8')
+                    # 把获取的值传给消息处理器
+                    handler(self, message)
+            return event_loop
+        return setup
 
     def push(self, value: str):
         self.conn.rpush(self.key, value)
 
 
-class RedisSubClient(RedisMessageQueue):
+class RedisPubSubClient:
     """Redis消息队列
 
     使用Redis实现的消息队列
     """
 
-    def __init__(self, title):
+    def __init__(self, topic: str):
         """含参数的初始化函数
 
         Args:
             title (str): 订阅主题
         """
         self.conn = RedisUtil.get_connection()
-        self.client = self.conn.pubsub()
-        self.client.subscribe(title)
+        self.topic = topic
 
-    def listen(self, handler: RedisMessageQueueHandler):
+    @staticmethod
+    def listen(topic: str):
         """监听消息队列
 
         根据订阅监听对应的消息队列
@@ -87,19 +79,20 @@ class RedisSubClient(RedisMessageQueue):
         Args:
             handler (RedisMessageQueueHandler): 消息处理器
         """
-        for message in self.client.listen():
-            handler.do_handle(message)
+        conn = RedisUtil.get_connection()
+        client = conn.pubsub()
+        client.subscribe(topic)
 
+        def setup(handler: RedisMessageQueueHandler.on_listen):
 
-class RedisPubClient:
-    def __init__(self, title):
-        """含参数的初始化函数
-
-        Args:
-            title (str): 订阅主题
-        """
-        self.conn = RedisUtil.get_connection()
-        self.title = title
+            @functools.wraps(handler)
+            def event_loop(self):
+                # 堵塞监听
+                for message in client.listen():
+                    # 传递给消息处理器
+                    handler(self, message)
+            return event_loop
+        return setup
 
     def publish(self, message: str):
         """发布消息
@@ -107,4 +100,4 @@ class RedisPubClient:
         Args:
             message (str): 消息
         """
-        self.conn.publish(self.title, message)
+        self.conn.publish(self.topic, message)

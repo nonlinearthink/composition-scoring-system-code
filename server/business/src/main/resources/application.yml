@@ -103,3 +103,7 @@ jasypt:
 jwt:
   http-header: Authorization
   private-key-length: 16
+subscribe:
+  task-publisher: scoring_task
+  result-receiver: scoring_result
+  result-notify: scoring_finished

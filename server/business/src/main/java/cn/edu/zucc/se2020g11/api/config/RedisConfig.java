@@ -1,5 +1,7 @@
 package cn.edu.zucc.se2020g11.api.config;
 
+import cn.edu.zucc.se2020g11.api.config.property.RedisSubscribeProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,9 @@ import java.io.Serializable;
  */
 @Configuration
 public class RedisConfig {
+    @Value("${subscribe.result-notify}")
+    private String resultNotify;
+
     @Bean
     RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
@@ -50,8 +55,8 @@ public class RedisConfig {
 
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        //订阅了一个叫chat 的通道
-        container.addMessageListener(listenerAdapter, new PatternTopic("message"));
+        //订阅了一个通道
+        container.addMessageListener(listenerAdapter, new PatternTopic(resultNotify));
         //这个container 可以添加多个 messageListener
         return container;
     }

@@ -1,5 +1,5 @@
 import redis
-import runtime
+import yaml
 
 
 class RedisUtil(object):
@@ -23,9 +23,12 @@ class RedisUtil(object):
     @staticmethod
     def on_connection():
         """创建Redis连接"""
-        # 获取运行时Redis配置
-        config = runtime.RuntimeConfigurator.load().get("redis")
-        # 创建连接池
-        RedisUtil.pool = redis.ConnectionPool(
-            host=config["host"], port=config["port"], password=config["password"], max_connections=config["pool"]["max-active"]
-        )
+        # 加载配置文件
+        with open("application.yml", encoding='utf-8') as config_file:
+            # 解析配置文件
+            config = yaml.load(config_file, Loader=yaml.FullLoader)
+            # 创建连接池
+            RedisUtil.pool = redis.ConnectionPool(
+                host=config["redis"]["host"], port=config["redis"]["port"], password=config[
+                    "redis"]["password"], max_connections=config["redis"]["pool"]["max-active"]
+            )

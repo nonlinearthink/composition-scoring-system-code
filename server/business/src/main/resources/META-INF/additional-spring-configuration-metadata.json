@@ -9,6 +9,22 @@
       "name": "jwt.http-header",
       "type": "java.lang.String",
       "description": "携带在 HTTP 协议中的哪个头部字段."
+    },
+    {
+      "name": "subscribe.result-receiver",
+      "type": "java.lang.String",
+      "description": "Redis评分结果接收订阅(List实现)."
+    },
+    {
+      "name": "subscribe.result-notify",
+      "type": "java.lang.String",
+      "description": "Redis评分结果通知(pubsub实现)."
+    },
+    ,
+    {
+      "name": "subscribe.task-publisher",
+      "type": "java.lang.String",
+      "description": "Redis评分任务发布订阅(List实现)."
     }
   ]
 }
