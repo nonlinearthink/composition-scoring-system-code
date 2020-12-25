@@ -20,7 +20,7 @@ public class SystemMessageService
     public int addSystemMessage(SystemMessageEntity systemMessageEntity)
     {
         systemMessageEntityMapper.insert(systemMessageEntity);
-        return systemMessageEntity.getsMessageId();
+        return systemMessageEntity.getSMessageId();
     }
     public List<SystemMessageEntity> selectAllSystemMessages()
     {
@@ -32,7 +32,7 @@ public class SystemMessageService
     }
     public void updateSystemMessage(SystemMessageEntity systemMessageEntity, Integer sMessageId)
     {
-        systemMessageEntity.setsMessageId(sMessageId);
+        systemMessageEntity.setSMessageId(sMessageId);
         systemMessageEntityMapper.updateByPrimaryKeySelective(systemMessageEntity);
     }
 }

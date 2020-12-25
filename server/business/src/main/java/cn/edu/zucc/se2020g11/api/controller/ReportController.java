@@ -65,6 +65,7 @@ public class ReportController
     public ResponseEntity<ApiResult<Boolean>> freezeUser(@PathVariable("username") String username, @RequestBody UserEntity userEntity) {
         userEntity.setUsername(username);
         userEntity.setFrozen(userEntity.getFrozen());
+        userEntity.setDefrostingTime(userEntity.getDefrostingTime());
         userService.updateUser(username, userEntity);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
