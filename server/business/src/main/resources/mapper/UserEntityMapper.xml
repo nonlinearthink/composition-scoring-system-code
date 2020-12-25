@@ -167,4 +167,10 @@
     </set>
     where username = #{username,jdbcType=VARCHAR}
   </update>
+  <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
 </mapper>
