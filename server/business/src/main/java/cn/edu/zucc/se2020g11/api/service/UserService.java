@@ -88,7 +88,6 @@ public class UserService {
                 user.setFrozen(false);
                 userEntityMapper.updateUser(user);
             }
-
         }
         return user;
     }
