@@ -23,6 +23,11 @@ class RedisMessageQueueHandler:
 
 class RedisListClient:
     def __init__(self, key: str):
+        """含参数的初始化函数
+
+        Args:
+            topic (str): 订阅主题
+        """
         self.conn = RedisUtil.get_connection()
         self.key = key
 
@@ -32,15 +37,31 @@ class RedisListClient:
         根据订阅监听对应的消息队列
 
         Args:
-            handler (RedisMessageQueueHandler): 消息处理器
+            topic (str): 订阅主题
+
+        Returns:
+            监听启动函数
         """
         # 获取连接（闭包实现）
         conn = RedisUtil.get_connection()
 
         def setup(handler: RedisMessageQueueHandler.on_listen):
+            """启动监听
 
+            内部函数，用于接收处理过程函数
+            
+            Args:
+                handler (RedisMessageQueueHandler.on_listen): 消息处理器
+            
+            Returns:
+                消息循环函数
+            """
             @functools.wraps(handler)
             def event_loop(self):
+                """消息循环
+
+                内部函数，用于进行消息循环
+                """
                 while True:
                     # 堵塞监听消息队列头
                     (key, value) = conn.blpop(topic)
@@ -56,16 +77,16 @@ class RedisListClient:
 
 
 class RedisPubSubClient:
-    """Redis消息队列
+    """Redis PubSub 客户端
 
-    使用Redis实现的消息队列
+    Redis PubSub 的 消息队列实现
     """
 
     def __init__(self, topic: str):
         """含参数的初始化函数
 
         Args:
-            title (str): 订阅主题
+            topic (str): 订阅主题
         """
         self.conn = RedisUtil.get_connection()
         self.topic = topic
@@ -77,16 +98,35 @@ class RedisPubSubClient:
         根据订阅监听对应的消息队列
 
         Args:
-            handler (RedisMessageQueueHandler): 消息处理器
+            topic (str): 订阅主题
+
+        Returns:
+            监听启动函数
         """
+        # 获取连接
         conn = RedisUtil.get_connection()
+        # 使用pubsub
         client = conn.pubsub()
+        # 设置订阅
         client.subscribe(topic)
 
         def setup(handler: RedisMessageQueueHandler.on_listen):
+            """启动监听
 
+            内部函数，用于接收处理过程函数
+            
+            Args:
+                handler (RedisMessageQueueHandler.on_listen): 消息处理器
+            
+            Returns:
+                消息循环函数
+            """
             @functools.wraps(handler)
             def event_loop(self):
+                """消息循环
+
+                内部函数，用于进行消息循环
+                """
                 # 堵塞监听
                 for message in client.listen():
                     # 传递给消息处理器

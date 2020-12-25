@@ -20,7 +20,6 @@
       "type": "java.lang.String",
       "description": "Redis评分结果通知(pubsub实现)."
     },
-    ,
     {
       "name": "subscribe.task-publisher",
       "type": "java.lang.String",
