@@ -40,4 +40,7 @@ public class FollowCardModel
 
     @NotNull(message = "commentCount不能为空")
     private Integer commentCount;
+
+    @NotNull(message = "score不能为空")
+    private Integer score;
 }

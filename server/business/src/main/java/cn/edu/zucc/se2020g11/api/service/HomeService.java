@@ -62,6 +62,7 @@ public class HomeService
                 followCardModel.setReleaseTime(c.getReleaseTime());
                 followCardModel.setSupportCount(supportEntityMapper.countSupport(c.getCompositionId()));
                 followCardModel.setCommentCount(commentEntityMapper.countComment(c.getCompositionId()));
+                followCardModel.setScore(c.getScore());
                 followCardModelList.add(followCardModel);
             }
         }
