@@ -97,7 +97,11 @@ public enum ErrorDictionary {
     /**
      * 没有收藏记录
      */
-    NO_FAVORITE(HttpStatus.FORBIDDEN, 32, "没有收藏记录");
+    NO_FAVORITE(HttpStatus.FORBIDDEN, 32, "没有收藏记录"),
+    /**
+     * 账号已被冻结
+     */
+    FROZEN_USER(HttpStatus.FORBIDDEN, 33, "账号已被冻结");
 
     @Getter
     @Setter
