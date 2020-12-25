@@ -50,11 +50,6 @@ const routes = [
     component: () => import("../views/ReportComment.vue")
   },
   {
-    path: "/user/defense",
-    name: "UserDefensePage",
-    component: () => import("../views/UserDefense.vue")
-  },
-  {
     path: "/user/infraction",
     name: "UserInfractionPage",
     component: () => import("../views/UserInfraction.vue")

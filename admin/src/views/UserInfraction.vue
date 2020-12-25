@@ -83,20 +83,18 @@ export default {
       primaryKey: "username",
       tableColumns,
       // 在此编辑测试数据
-      dataSource: [
-        {
-          username: "tuenity's small account",
-          count: 3,
-          frozen: false
-        },
-        {
-          username: "tuenity",
-          count: 10,
-          frozen: true
-        }
-      ],
+      dataSource: [],
       editingTarget: null
     };
+  },
+  created() {
+    this.axios
+      .get(`/report`)
+      .then(res => {
+        console.log(res.data);
+        this.dataSource = res.data.data.reportModelList;
+      })
+      .catch(err => console.error(err.response.data));
   },
   methods: {
     translateStatus(frozen) {
@@ -111,7 +109,13 @@ export default {
     },
     onUnfreeze(record) {
       record.frozen = false;
-      this.$message.success(`账号${record.username}被解冻`, 1);
+      this.axios
+        .put(`/report/${record.username}`, record)
+        .then(res => {
+          console.log(res.data);
+          this.$message.success(`账号${record.username}被解冻`, 1);
+        })
+        .catch(err => console.error(err.response.data));
     },
     onChange(value) {
       this.editingTarget.defrostingTime = value.valueOf();
@@ -125,14 +129,20 @@ export default {
         this.$message.error("解冻日期必须在未来");
         return;
       }
-      this.$message.success(
-        `账号${this.editingTarget.username}被冻结至${moment(
-          this.editingTarget.defrostingTime
-        ).format("YYYY-MM-DD")}`,
-        1
-      );
       this.editingTarget.frozen = true;
-      this.editorVisible = false;
+      this.axios
+        .put(`/report/${this.editingTarget.username}`, this.editingTarget)
+        .then(res => {
+          console.log(res.data);
+          this.$message.success(
+            `账号${this.editingTarget.username}被冻结至${moment(
+              this.editingTarget.defrostingTime
+            ).format("YYYY-MM-DD")}`,
+            1
+          );
+          this.editorVisible = false;
+        })
+        .catch(err => console.error(err.response.data));
     }
   }
 };

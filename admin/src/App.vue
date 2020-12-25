@@ -44,20 +44,15 @@
             <a-menu-item key="4-2">
               <router-link to="/report/comment">评论举报</router-link>
             </a-menu-item>
+            <a-menu-item key="4-3">
+              <router-link to="/user/infraction">封号处理</router-link>
+            </a-menu-item>
           </a-sub-menu>
-          <a-sub-menu key="5" title="用户管理">
+          <a-sub-menu key="5" title="产品管理">
             <a-menu-item key="5-1">
-              <router-link to="/user/defense">封号申诉</router-link>
-            </a-menu-item>
-            <a-menu-item key="5-2">
-              <router-link to="/user/infraction">违规处理</router-link>
-            </a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="6" title="产品管理">
-            <a-menu-item key="6-1">
               <router-link to="/feedback">用户反馈</router-link>
             </a-menu-item>
-            <a-menu-item key="6-2">
+            <a-menu-item key="5-2">
               <router-link to="/help">帮助手册</router-link>
             </a-menu-item>
           </a-sub-menu>

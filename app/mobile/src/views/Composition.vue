@@ -8,141 +8,85 @@
       left-arrow
       @click-left="onRouteBack"
     />
-    <div class="composition-info">
-      <van-row class="title">{{ composition.title }}</van-row>
-      <van-row class="release-time">
-        {{ translateTime(composition.releaseTime) }}
-      </van-row>
-      <van-row class="user">
-        <van-col>
-          <van-image
-            width="3.8rem"
-            height="3.8rem"
-            fit="cover"
-            :src="
-              composition.avatarUrl == null
-                ? defaultAvatar
-                : composition.avatarUrl
-            "
-            class="avatar"
-          />
-        </van-col>
-        <van-col>
-          <van-row class="nickname">{{ composition.nickname }}</van-row>
-          <van-row>
-            <van-tag color="#444" plain class="button">私信</van-tag>
-            <van-tag color="red" plain class="button">关注</van-tag>
-          </van-row>
-        </van-col>
-      </van-row>
-      <van-divider
-        :style="{
-          color: '#1989fa',
-          borderColor: '#1989fa',
-          padding: '0 16px',
-          fontSize: '1.2rem'
-        }"
-      >
-        正文
-      </van-divider>
-      <van-row>{{ composition.compositionBody }}</van-row>
-      <van-divider
-        :style="{
-          color: '#1989fa',
-          borderColor: '#1989fa',
-          padding: '0 16px',
-          fontSize: '1.2rem'
-        }"
-      >
-        说明
-      </van-divider>
-      <van-row>{{ composition.description }}</van-row>
-    </div>
-    <div class="comment">
-      <van-badge :content="commentList.length">
-        评论列表
-      </van-badge>
-      <van-row
-        v-for="comment in commentList.slice(0, 3)"
-        :key="comment.commentId"
-        class="comment-item"
-      >
-        <van-col class="avatar">
-          <van-image
-            width="2rem"
-            height="2rem"
-            fit="cover"
-            round
-            :src="comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl"
-          />
-        </van-col>
-        <van-col class="info">
-          <van-row type="flex" justify="space-between">
-            <van-col class="username">{{ comment.username }}</van-col>
-            <van-col class="time">
-              {{ timeIntervalString(comment.time) }}
-              <div class="a-text" @click="onClickCommentReport(comment)">
-                举报
-              </div>
-            </van-col>
-          </van-row>
-          <van-row type="flex" justify="space-between">
-            <van-col>{{ comment.commentBody }}</van-col>
-          </van-row>
-        </van-col>
-      </van-row>
-      <van-row type="flex" justify="center">
-        <van-button small color="red" @click="onShowComment">
-          查看更多
-        </van-button>
-      </van-row>
-    </div>
-    <div class="action-bar-placeholder">
-      <van-row class="action-bar">
-        <van-col class="comment-button" @click="onShowComment">
-          <van-icon name="edit" />写评论
-        </van-col>
-        <van-col class="other-button">
-          <van-row type="flex" justify="center">
-            <van-col class="action-button" @click="onClickFavorite">
-              <van-row>
-                <van-icon name="star-o" size="1.2rem" />
-                {{ formatCount(composition.favoriteCount) }}
-              </van-row>
-              <van-row>收藏</van-row>
-            </van-col>
-            <van-col class="action-button" @click="onClickSupport">
-              <van-row>
-                <van-icon name="good-job-o" size="1.2rem" />
-                {{ formatCount(composition.supportCount) }}
-              </van-row>
-              <van-row>点赞</van-row>
-            </van-col>
-            <van-col class="action-button" @click="onClickCompositionReport">
-              <van-row>
-                <van-icon name="warn-o" size="1.2rem" />
-              </van-row>
-              <van-row>
-                举报
-              </van-row>
-            </van-col>
-          </van-row>
-        </van-col>
-      </van-row>
-    </div>
-    <van-popup
-      v-model="showComment"
-      position="bottom"
-      round
-      closeable
-      close-icon-position="top-left"
-      safe-area-inset-bottom
-      class="popup"
-    >
-      <div class="title">{{ `全部${commentList.length}条评论` }}</div>
+    <van-loading
+      v-if="!composition"
+      color="#1989fa"
+      style="text-align: center;"
+    />
+    <div v-else>
+      <div class="composition-info">
+        <van-row class="title">{{ composition.title }}</van-row>
+        <van-row class="release-time">
+          {{ translateTime(composition.releaseTime) }}
+        </van-row>
+        <van-row class="user">
+          <van-col>
+            <van-image
+              width="3.8rem"
+              height="3.8rem"
+              fit="cover"
+              :src="
+                composition.avatarUrl == null
+                  ? defaultAvatar
+                  : composition.avatarUrl
+              "
+              class="avatar"
+            />
+          </van-col>
+          <van-col>
+            <van-row class="nickname">{{ composition.nickname }}</van-row>
+            <van-row>
+              <van-tag color="#1989fa" plain class="button">私信</van-tag>
+              <van-tag
+                v-if="!isFollow"
+                color="red"
+                plain
+                class="button"
+                @click="onClickFollow"
+              >
+                关注
+              </van-tag>
+              <van-tag
+                v-else
+                color="#444"
+                plain
+                class="button"
+                @click="onDiscardFollow"
+              >
+                已关注
+              </van-tag>
+            </van-row>
+          </van-col>
+        </van-row>
+        <van-divider
+          :style="{
+            color: '#1989fa',
+            borderColor: '#1989fa',
+            padding: '0 16px',
+            fontSize: '1.2rem'
+          }"
+        >
+          正文
+        </van-divider>
+        <van-row>{{ composition.compositionBody }}</van-row>
+        <van-divider
+          :style="{
+            color: '#1989fa',
+            borderColor: '#1989fa',
+            padding: '0 16px',
+            fontSize: '1.2rem'
+          }"
+        >
+          说明
+        </van-divider>
+        <van-row>{{ composition.description }}</van-row>
+      </div>
       <div class="comment">
+        <van-badge :content="commentList.length">
+          评论列表
+        </van-badge>
         <van-row
-          v-for="comment in commentList"
+          v-for="comment in commentList.slice(0, 3)"
           :key="comment.commentId"
           class="comment-item"
         >
@@ -162,38 +106,152 @@
               <van-col class="username">{{ comment.username }}</van-col>
               <van-col class="time">
                 {{ timeIntervalString(comment.time) }}
+                <div class="a-text" @click="onClickCommentReport(comment)">
+                  举报
+                </div>
               </van-col>
             </van-row>
-            <van-row>{{ comment.commentBody }}</van-row>
+            <van-row type="flex" justify="space-between">
+              <van-col>{{ comment.commentBody }}</van-col>
+            </van-row>
+          </van-col>
+        </van-row>
+        <van-row type="flex" justify="center">
+          <van-button small color="red" @click="onShowComment">
+            查看更多
+          </van-button>
+        </van-row>
+      </div>
+      <div class="action-bar-placeholder">
+        <van-row class="action-bar">
+          <van-col class="comment-button" @click="onShowComment">
+            <van-icon name="edit" />写评论
+          </van-col>
+          <van-col class="other-button">
+            <van-row type="flex" justify="center">
+              <van-col
+                v-if="!isFavorite"
+                class="action-button"
+                @click="onClickFavorite"
+              >
+                <van-row>
+                  <van-icon name="star-o" size="1.2rem" />
+                  {{ formatCount(composition.favoriteCount) }}
+                </van-row>
+                <van-row>收藏</van-row>
+              </van-col>
+              <van-col
+                v-else
+                class="action-button"
+                style="color: red;"
+                @click="onDiscardFavorite"
+              >
+                <van-row>
+                  <van-icon name="star-o" size="1.2rem" />
+                  {{ formatCount(composition.favoriteCount) }}
+                </van-row>
+                <van-row>收藏</van-row>
+              </van-col>
+              <van-col
+                v-if="!isSupport"
+                class="action-button"
+                @click="onClickSupport"
+              >
+                <van-row>
+                  <van-icon name="good-job-o" size="1.2rem" />
+                  {{ formatCount(composition.supportCount) }}
+                </van-row>
+                <van-row>点赞</van-row>
+              </van-col>
+              <van-col
+                v-else
+                class="action-button"
+                style="color: red;"
+                @click="onDiscardSupport"
+              >
+                <van-row>
+                  <van-icon name="good-job-o" size="1.2rem" />
+                  {{ formatCount(composition.supportCount) }}
+                </van-row>
+                <van-row>点赞</van-row>
+              </van-col>
+              <van-col class="action-button" @click="onClickCompositionReport">
+                <van-row>
+                  <van-icon name="warn-o" size="1.2rem" />
+                </van-row>
+                <van-row>
+                  举报
+                </van-row>
+              </van-col>
+            </van-row>
           </van-col>
         </van-row>
       </div>
-      <div class="writing-bar-placeholder">
-        <div ref="writingBar" class="writing-bar">
-          <van-row class="editor-wrapper">
-            <van-field
-              v-model="editingComment"
-              type="textarea"
-              placeholder="输入作文"
-              :border="false"
-              autosize
-              class="editor"
-            />
-          </van-row>
-          <van-row type="flex" justify="end">
-            <van-button
-              small
-              plain
-              :disabled="editingComment == ''"
-              :style="{ marginRight: '1rem' }"
-              @click="onAddComment"
-            >
-              发送
-            </van-button>
+      <van-popup
+        v-model="showComment"
+        position="bottom"
+        round
+        closeable
+        close-icon-position="top-left"
+        safe-area-inset-bottom
+        class="popup"
+      >
+        <div class="title">{{ `全部${commentList.length}条评论` }}</div>
+        <div class="comment">
+          <van-row
+            v-for="comment in commentList"
+            :key="comment.commentId"
+            class="comment-item"
+          >
+            <van-col class="avatar">
+              <van-image
+                width="2rem"
+                height="2rem"
+                fit="cover"
+                round
+                :src="
+                  comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl
+                "
+              />
+            </van-col>
+            <van-col class="info">
+              <van-row type="flex" justify="space-between">
+                <van-col class="username">{{ comment.username }}</van-col>
+                <van-col class="time">
+                  {{ timeIntervalString(comment.time) }}
+                </van-col>
+              </van-row>
+              <van-row>{{ comment.commentBody }}</van-row>
+            </van-col>
           </van-row>
         </div>
-      </div>
-    </van-popup>
+        <div class="writing-bar-placeholder">
+          <div ref="writingBar" class="writing-bar">
+            <van-row class="editor-wrapper">
+              <van-field
+                v-model="editingComment"
+                type="textarea"
+                placeholder="输入作文"
+                :border="false"
+                autosize
+                class="editor"
+              />
+            </van-row>
+            <van-row type="flex" justify="end">
+              <van-button
+                small
+                plain
+                :disabled="editingComment == ''"
+                :style="{ marginRight: '1rem' }"
+                @click="onAddComment"
+              >
+                发送
+              </van-button>
+            </van-row>
+          </div>
+        </div>
+      </van-popup>
+    </div>
   </div>
 </template>
 
@@ -206,9 +264,12 @@ export default {
     return {
       editingComment: "",
       showComment: false,
-      composition: {},
+      composition: null,
       commentList: [],
-      defaultAvatar: require("../assets/images/avatar.svg")
+      defaultAvatar: require("../assets/images/avatar.svg"),
+      isFavorite: false,
+      isFollow: false,
+      isSupport: false
     };
   },
   computed: {
@@ -224,6 +285,9 @@ export default {
         console.log(res.data);
         this.composition = res.data.data.compositionCountModel;
         this.commentList = res.data.data.commentEntityList;
+        this.isSupport = res.data.data.isSupport;
+        this.isFavorite = res.data.data.isFavorite;
+        this.isFollow = res.data.data.isFollow;
         this.axios
           .post(`/history/${this.$route.query.compositionId}`)
           .then(res => console.log(res.data))
@@ -275,6 +339,7 @@ export default {
         .then(res => {
           console.log(res.data);
           this.composition.favoriteCount += 1;
+          this.isFavorite = true;
           this.$toast("收藏成功");
         })
         .catch(err => console.error(err.response.data));
@@ -285,7 +350,50 @@ export default {
         .then(res => {
           console.log(res.data);
           this.composition.supportCount += 1;
+          this.isSupport = true;
           this.$toast("点赞成功");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onClickFollow() {
+      this.axios
+        .post(`/follow/${this.composition.username}`)
+        .then(res => {
+          console.log(res.data);
+          this.isFollow = true;
+          this.$toast("关注成功");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onDiscardFavorite() {
+      this.axios
+        .delete(`/favorite/${this.composition.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition.favoriteCount -= 1;
+          this.isFavorite = false;
+          this.$toast("取消收藏");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onDiscardSupport() {
+      this.axios
+        .delete(`/support/${this.composition.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition.supportCount -= 1;
+          this.isSupport = false;
+          this.$toast("取消点赞");
+        })
+        .catch(err => console.error(err.response.data));
+    },
+    onDiscardFollow() {
+      this.axios
+        .delete(`/follow/${this.composition.username}`)
+        .then(res => {
+          console.log(res.data);
+          this.isFollow = false;
+          this.$toast("取消关注");
         })
         .catch(err => console.error(err.response.data));
     },
