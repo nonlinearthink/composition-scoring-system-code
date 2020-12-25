@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
+import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -32,11 +33,13 @@ public class VerifyCodeService {
      * redis 字符串
      */
     private final StringRedisTemplate stringRedisTemplate;
+    private final UserEntityMapper userEntityMapper;
 
     @Autowired
-    public VerifyCodeService(StringRedisTemplate stringRedisTemplate) {
+    public VerifyCodeService(StringRedisTemplate stringRedisTemplate, UserEntityMapper userEntityMapper) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
+        this.userEntityMapper = userEntityMapper;
     }
 
     /**
@@ -48,6 +51,8 @@ public class VerifyCodeService {
     private void throttle(String email) throws BaseException {
         if (stringRedisTemplate.opsForValue().get(prefix + email) != null) {
             throw new BaseException(ErrorDictionary.REQUEST_TOO_FREQUENTLY, LogCategory.BUSINESS);
+        } else if(userEntityMapper.selectByEmail(email) != null) {
+            throw new BaseException(ErrorDictionary.EMAIL_CONFLICTS, LogCategory.BUSINESS);
         }
         logger.info("允许请求验证码");
     }
