@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 推送文章模型
+ * 作文统计模型
  *
  * @author nonlinearthink
  */
