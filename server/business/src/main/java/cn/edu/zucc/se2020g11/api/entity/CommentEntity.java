@@ -1,7 +1,15 @@
 package cn.edu.zucc.se2020g11.api.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
+/**
+ * @author Tuenity
+ */
+@Getter
+@Setter
 public class CommentEntity {
     private Integer commentId;
 
@@ -14,52 +22,4 @@ public class CommentEntity {
     private Date time;
 
     private Integer status;
-
-    public Integer getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
-    }
-
-    public Integer getCompositionId() {
-        return compositionId;
-    }
-
-    public void setCompositionId(Integer compositionId) {
-        this.compositionId = compositionId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
-
-    public String getCommentBody() {
-        return commentBody;
-    }
-
-    public void setCommentBody(String commentBody) {
-        this.commentBody = commentBody == null ? null : commentBody.trim();
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }
