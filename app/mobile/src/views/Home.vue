@@ -82,6 +82,8 @@
               :username="item.nickname"
               :update-time="item.releaseTime"
               :score="item.score"
+              :support="item.supportCount"
+              :comment="item.commentCount"
               @click="onEnterComposition(item)"
             />
           </div>

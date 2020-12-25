@@ -67,7 +67,10 @@ export default {
               });
               this.$router.push("/");
             })
-            .catch(err => console.error(err.response.data));
+            .catch(err => {
+              console.error(err.response.data);
+              this.$message.error(err.response.data.msg, 1);
+            });
         }
       });
     },
