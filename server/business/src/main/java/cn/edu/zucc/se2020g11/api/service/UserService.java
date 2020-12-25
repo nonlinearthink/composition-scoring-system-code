@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * @author nonlinearthink
  */
@@ -78,6 +81,15 @@ public class UserService {
         } else if (!user.getPassword().equals(oneWayEncryption(loginForm.getPassword()))) {
             throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
         }
+        if(user.getFrozen()){
+            if(new Date().before(user.getDefrostingTime())){
+                throw new BaseException(ErrorDictionary.FROZEN_USER, LogCategory.BUSINESS);
+            } else {
+                user.setFrozen(false);
+                userEntityMapper.updateUser(user);
+            }
+
+        }
         return user;
     }
 
@@ -93,8 +105,9 @@ public class UserService {
         UserEntity user = userEntityMapper.selectByPrimaryKey(username);
         if (user == null) {
             throw new BaseException(ErrorDictionary.USERNAME_NOT_EXIST, LogCategory.BUSINESS);
-        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword())))
+        } else if (!user.getPassword().equals(oneWayEncryption(passwordChangeModel.getOldPassword()))) {
             throw new BaseException(ErrorDictionary.INCORRECT_PASSWORD, LogCategory.BUSINESS);
+        }
         // 修改密码
         user.setPassword(oneWayEncryption(passwordChangeModel.getNewPassword()));
         userEntityMapper.updateByPrimaryKey(user);
