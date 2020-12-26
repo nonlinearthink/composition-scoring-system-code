@@ -22,6 +22,12 @@
           round
           :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
           style="padding-right: 1rem;"
+          @click="
+            onRouteChange({
+              path: '/user/home',
+              query: { user: item.username }
+            })
+          "
         />
       </van-col>
       <van-col>
@@ -68,6 +74,9 @@ export default {
     },
     onRouteBack() {
       this.$router.go(-1);
+    },
+    onRouteChange(to) {
+      this.$router.push(to);
     },
     ...mapMutations(["setRouteAnchor"])
   }

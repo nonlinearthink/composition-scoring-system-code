@@ -25,6 +25,12 @@
           :follow="item.follow"
           :avatar="item.avatarUrl"
           @follow="onChangeFollow(item)"
+          @click-avatar="
+            onRouteChange({
+              path: '/user/home',
+              query: { user: item.username }
+            })
+          "
         />
       </van-tab>
       <van-tab title="粉丝">
@@ -100,6 +106,9 @@ export default {
   methods: {
     onRouteBack() {
       this.$router.go(-1);
+    },
+    onRouteChange(to) {
+      this.$router.push(to);
     },
     onChangeFollow(item) {
       item.follow = !item.follow;

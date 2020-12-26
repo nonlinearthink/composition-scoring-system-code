@@ -31,7 +31,12 @@
                   : composition.avatarUrl
               "
               class="avatar"
-              @click="onRouteChange('/user/home')"
+              @click="
+                onRouteChange({
+                  path: '/user/home',
+                  query: { user: composition.username }
+                })
+              "
             />
           </van-col>
           <van-col>
@@ -99,6 +104,12 @@
               round
               :src="
                 comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl
+              "
+              @click="
+                onRouteChange({
+                  path: '/user/home',
+                  query: { user: comment.username }
+                })
               "
             />
           </van-col>
@@ -213,6 +224,12 @@
                 :src="
                   comment.avatarUrl == null ? defaultAvatar : comment.avatarUrl
                 "
+                @click="
+                  onRouteChange({
+                    path: '/user/home',
+                    query: { user: comment.username }
+                  })
+                "
               />
             </van-col>
             <van-col class="info">
@@ -232,7 +249,7 @@
               <van-field
                 v-model="editingComment"
                 type="textarea"
-                placeholder="输入作文"
+                placeholder="输入评论"
                 :border="false"
                 autosize
                 class="editor"

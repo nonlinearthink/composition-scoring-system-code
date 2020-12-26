@@ -19,7 +19,7 @@
       >
         <template #label>
           <div v-if="item.name == 'email'">
-            {{ user.email }}
+            {{ safeEmail }}
           </div>
         </template>
         <template #title>
@@ -52,7 +52,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
+    safeEmail() {
+      let str = this.user.email.split("@");
+      return (
+        str[0].substring(0, 3) +
+        "*****" +
+        str[1].substring(str[1].length - 4, str[0].length)
+      );
+    }
   },
   methods: {
     goBack() {
