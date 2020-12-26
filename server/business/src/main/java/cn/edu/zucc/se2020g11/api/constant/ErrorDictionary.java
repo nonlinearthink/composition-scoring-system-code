@@ -105,7 +105,11 @@ public enum ErrorDictionary {
     /**
      * 邮箱已注册
      */
-    EMAIL_CONFLICTS(HttpStatus.FORBIDDEN, 34, "邮箱已注册");
+    EMAIL_CONFLICTS(HttpStatus.FORBIDDEN, 34, "邮箱已注册"),
+    /**
+     * 绑定邮箱错误
+     */
+    EMAIL_ERROR(HttpStatus.FORBIDDEN, 35, "绑定邮箱错误");
 
     @Getter
     @Setter

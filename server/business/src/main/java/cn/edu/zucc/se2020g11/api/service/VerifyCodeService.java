@@ -33,13 +33,11 @@ public class VerifyCodeService {
      * redis 字符串
      */
     private final StringRedisTemplate stringRedisTemplate;
-    private final UserEntityMapper userEntityMapper;
 
     @Autowired
-    public VerifyCodeService(StringRedisTemplate stringRedisTemplate, UserEntityMapper userEntityMapper) {
+    public VerifyCodeService(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
-        this.userEntityMapper = userEntityMapper;
     }
 
     /**
@@ -51,8 +49,6 @@ public class VerifyCodeService {
     private void throttle(String email) throws BaseException {
         if (stringRedisTemplate.opsForValue().get(prefix + email) != null) {
             throw new BaseException(ErrorDictionary.REQUEST_TOO_FREQUENTLY, LogCategory.BUSINESS);
-        } else if(userEntityMapper.selectByEmail(email) != null) {
-            throw new BaseException(ErrorDictionary.EMAIL_CONFLICTS, LogCategory.BUSINESS);
         }
         logger.info("允许请求验证码");
     }

@@ -4,11 +4,8 @@ import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
-import cn.edu.zucc.se2020g11.api.model.LoginForm;
-import cn.edu.zucc.se2020g11.api.model.PasswordChangeModel;
-import cn.edu.zucc.se2020g11.api.model.SignupForm;
+import cn.edu.zucc.se2020g11.api.model.*;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
-import org.apache.catalina.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -49,9 +45,11 @@ public class UserService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void signup(SignupForm signupForm) throws BaseException {
-        // 过滤已注册的用户
+        // 过滤已注册的用户和邮箱
         if (userEntityMapper.selectByPrimaryKey(signupForm.getUsername()) != null) {
             throw new BaseException(ErrorDictionary.USERNAME_CONFLICTS, LogCategory.BUSINESS);
+        } else if(userEntityMapper.selectByEmail(signupForm.getEmail()) != null) {
+            throw new BaseException(ErrorDictionary.EMAIL_CONFLICTS, LogCategory.BUSINESS);
         }
         // DTO 转换成 Entity
         UserEntity user = signupForm.makeUserEntity();
@@ -139,4 +137,42 @@ public class UserService {
         userEntityMapper.updateUser(userEntity);
     }
 
+    /**
+     * 换绑邮箱服务
+     *
+     * @param passwordForgetModel 忘记密码模型
+     * @throws BaseException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void forgetPassword(PasswordForgetModel passwordForgetModel) throws BaseException {
+        // 验证用户绑定的邮箱
+        if(userEntityMapper.selectByUsernameAndEmail(passwordForgetModel.getUsername(), passwordForgetModel.getEmail()) == null) {
+            throw new BaseException(ErrorDictionary.EMAIL_ERROR, LogCategory.BUSINESS);
+        }
+        // DTO 转换成 Entity
+        UserEntity user = passwordForgetModel.makeUserEntity();
+        // 密码加密存储
+        String passwordEncrypted = oneWayEncryption(user.getPassword());
+        user.setPassword(passwordEncrypted);
+        // 换绑邮箱
+        userEntityMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 换绑邮箱服务
+     *
+     * @param emailChangeForm 邮箱换绑模型
+     * @throws BaseException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void changeEmail(EmailChangeForm emailChangeForm) throws BaseException {
+        // 过滤已注册的邮箱
+        if(userEntityMapper.selectByEmail(emailChangeForm.getEmail()) != null) {
+            throw new BaseException(ErrorDictionary.EMAIL_CONFLICTS, LogCategory.BUSINESS);
+        }
+        // DTO 转换成 Entity
+        UserEntity user = emailChangeForm.makeUserEntity();
+        // 换绑邮箱
+        userEntityMapper.updateByPrimaryKeySelective(user);
+    }
 }

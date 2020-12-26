@@ -80,7 +80,6 @@ public class SystemMessageController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "获取系统消息")
     @GetMapping("")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllSystemMessages() {

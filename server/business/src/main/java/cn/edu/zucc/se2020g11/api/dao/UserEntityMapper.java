@@ -13,6 +13,8 @@ public interface UserEntityMapper {
 
     UserEntity selectByEmail(String email);
 
+    UserEntity selectByUsernameAndEmail(String username, String email);
+
     int updateByPrimaryKeySelective(UserEntity record);
 
     int updateByPrimaryKey(UserEntity record);
