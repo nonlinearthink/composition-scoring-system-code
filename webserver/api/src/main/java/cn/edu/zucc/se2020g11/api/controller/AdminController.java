@@ -3,9 +3,11 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.AdminEntity;
+import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 import cn.edu.zucc.se2020g11.api.model.AdminLoginForm;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.*;
+import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -15,12 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +56,19 @@ public class AdminController
         data.put("admin", admin);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @LoginRequired(type = UserType.ADMIN)
+    @GetMapping("/count")
+    @ApiOperation(value = "获取首页数据")
+    public ResponseEntity<ApiResult<Map<String, Object>>> countData() {
+        Map<String, Object> dataCount = adminService.countData();
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("dataCount", dataCount);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

@@ -22,6 +22,9 @@ public class ZoneModel
     @NotNull(message = "nickname不能为空")
     private String nickname;
 
+    @NotNull(message = "isMale不能为空")
+    private Boolean isMale;
+
     @NotNull(message = "signature不能为空")
     private String signature;
 

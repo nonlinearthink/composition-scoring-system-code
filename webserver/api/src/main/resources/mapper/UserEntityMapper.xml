@@ -179,4 +179,8 @@
     from user
     where username = #{username,jdbcType=VARCHAR} and email = #{email,jdbcType=VARCHAR}
   </select>
+  <select id="selectSum" resultType="java.lang.Integer">
+    select count(*)
+    from user
+  </select>
 </mapper>

@@ -190,4 +190,8 @@
     from composition
     where username = #{username,jdbcType=VARCHAR} and visibility = 3
   </select>
+  <select id="selectSum" resultType="java.lang.Integer">
+    select count(*)
+    from composition
+  </select>
 </mapper>
