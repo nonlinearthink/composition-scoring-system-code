@@ -83,7 +83,7 @@ public class CompositionController {
     public ResponseEntity<ApiResult<Map<String, Object>>> selectComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         CompositionCountModel compositionCountModel = compositionService.selectCountByCompositionId(compositionId);
         List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
-        Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), compositionService.selectCountByCompositionId(compositionId).getNickname());
+        Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), compositionService.selectCountByCompositionId(compositionId).getUsername());
         Boolean isSupport = supportService.findSupport((String)request.getAttribute("username"), compositionId);
         Boolean isFavorite = favoriteService.findFavorite((String)request.getAttribute("username"), compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();

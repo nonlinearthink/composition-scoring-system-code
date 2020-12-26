@@ -185,4 +185,9 @@
     </set>
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from composition
+    where username = #{username,jdbcType=VARCHAR} and visibility = 3
+  </select>
 </mapper>

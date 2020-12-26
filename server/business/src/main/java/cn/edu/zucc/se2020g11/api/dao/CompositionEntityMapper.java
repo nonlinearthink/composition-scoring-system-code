@@ -15,6 +15,8 @@ public interface CompositionEntityMapper {
 
     CompositionEntity selectByPrimaryKey(Integer compositionId);
 
+    List<CompositionEntity> selectByUsername(String username);
+
     int updateByPrimaryKeySelective(CompositionEntity record);
 
     int updateByPrimaryKey(CompositionEntity record);

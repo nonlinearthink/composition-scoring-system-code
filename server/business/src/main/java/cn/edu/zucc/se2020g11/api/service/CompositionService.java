@@ -30,6 +30,10 @@ public class CompositionService
     {
         return compositionEntityMapper.selectAllSelective(userEntity);
     }
+    public List<CompositionEntity> selectZoneCompositions(String username)
+    {
+        return compositionEntityMapper.selectByUsername(username);
+    }
     public CompositionEntity selectCompositionById(Integer compositionId)
     {
         return compositionEntityMapper.selectByPrimaryKey(compositionId);
