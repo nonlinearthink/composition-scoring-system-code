@@ -1,5 +1,5 @@
 <template>
-  <div id="setting-user-page">
+  <div id="setting-password-page">
     <van-nav-bar
       title="修改密码"
       fixed
@@ -104,12 +104,6 @@ export default {
   .cell-value {
     margin-right: $blank-size/2;
   }
-}
-#mars-icon {
-  color: #1989fa;
-}
-#venus-icon {
-  color: #ee0a24;
 }
 .action-button {
   color: white;

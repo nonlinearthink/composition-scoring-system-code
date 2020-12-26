@@ -65,6 +65,18 @@ const routes = [
     component: () => import("../views/SettingPassword.vue")
   },
   {
+    path: "/setting/security/email",
+    name: "SettingEmailPage",
+    meta: { index: 7 },
+    component: () => import("../views/SettingEmail.vue")
+  },
+  {
+    path: "/setting/security/new-email",
+    name: "SettingNewEmailPage",
+    meta: { index: 8 },
+    component: () => import("../views/SettingNewEmail.vue")
+  },
+  {
     path: "/setting/about",
     name: "SettingAboutPage",
     meta: { index: 6 },
@@ -101,10 +113,10 @@ const routes = [
     component: () => import("../views/Article.vue")
   },
   {
-    path: "/user/support",
-    name: "UserSupportPage",
+    path: "/comment",
+    name: "CommentPage",
     meta: { index: 5 },
-    component: () => import("../views/UserSupport.vue")
+    component: () => import("../views/Comment.vue")
   },
   {
     path: "/user/home",
@@ -153,6 +165,18 @@ const routes = [
     name: "SystemMessagePage",
     meta: { index: 4 },
     component: () => import("../views/SystemMessage.vue")
+  },
+  {
+    path: "/message/support",
+    name: "SupportMessagePage",
+    meta: { index: 4 },
+    component: () => import("../views/SupportMessage.vue")
+  },
+  {
+    path: "/forget-password",
+    name: "ForgetPasswordPage",
+    meta: { index: 6 },
+    component: () => import("../views/ForgetPassword.vue")
   }
 ];
 

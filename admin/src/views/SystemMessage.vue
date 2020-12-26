@@ -4,7 +4,7 @@
       <!-- 在此插入编辑用的表单 -->
       <a-form-model-item label="消息内容">
         <a-textarea
-          v-model="editorForm.sMessageBody"
+          v-model="editorForm.smessageBody"
           placeholder="请输入消息内容"
           allowClear
           autoSize
@@ -19,7 +19,7 @@
     >
       <a-descriptions v-if="viewVisible" :column="4">
         <a-descriptions-item label="系统消息ID">
-          {{ viewTarget.sMessageId }}
+          {{ viewTarget.smessageId }}
         </a-descriptions-item>
         <a-descriptions-item label="编辑者">
           {{ viewTarget.adminName }}
@@ -28,7 +28,7 @@
           {{ translateTime(viewTarget.time) }}
         </a-descriptions-item>
         <a-descriptions-item label="系统消息" :span="4">
-          {{ viewTarget.sMessageBody }}
+          {{ viewTarget.smessageBody }}
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -72,14 +72,14 @@ export default {
     const tableColumns = [
       {
         title: "ID",
-        dataIndex: "sMessageId",
-        key: "sMessageId",
+        dataIndex: "smessageId",
+        key: "smessageId",
         width: 80
       },
       {
         title: "消息内容",
-        dataIndex: "sMessageBody",
-        key: "sMessageBody",
+        dataIndex: "smessageBody",
+        key: "smessageBody",
         scopedSlots: { customRender: "body" }
       },
       {
@@ -104,7 +104,7 @@ export default {
     ];
     return {
       editorVisible: false,
-      primaryKey: "sMessageId",
+      primaryKey: "smessageId",
       tableColumns,
       // 在此编辑测试数据
       dataSource: [],
@@ -133,7 +133,7 @@ export default {
     },
     onDelete(record) {
       this.axios
-        .delete(`/system-message/${record.sMessageId}`)
+        .delete(`/system-message/${record.smessageId}`)
         .then(res => {
           console.log(res.data);
           this.dataSource = this.dataSource.filter(
@@ -160,7 +160,7 @@ export default {
           .post("/system-message", this.editorForm)
           .then(res => {
             console.log(res.data);
-            this.editorForm.sMessageId = res.data.data.sMessageId;
+            this.editorForm.smessageId = res.data.data.sMessageId;
             this.dataSource.push(this.editorForm);
             this.$message.success(
               `创建记录${this.editorForm[this.primaryKey]}成功`,
@@ -172,12 +172,12 @@ export default {
       } else {
         this.axios
           .put(
-            `/system-message/${this.editingTarget.sMessageId}`,
+            `/system-message/${this.editingTarget.smessageId}`,
             this.editorForm
           )
           .then(res => {
             console.log(res.data);
-            this.editingTarget.sMessageBody = this.editorForm.sMessageBody;
+            this.editingTarget.smessageBody = this.editorForm.smessageBody;
             this.editingTarget.time = this.editorForm.time;
             this.editingTarget.adminName = this.admin.adminName;
             this.$message.success(
@@ -196,8 +196,8 @@ export default {
     onCreate() {
       this.editorForm = {
         adminName: this.admin.adminName,
-        sMessageBody: "",
-        sMessageId: "",
+        smessageBody: "",
+        smessageId: "",
         time: ""
       };
       this.editingStatus = 0;

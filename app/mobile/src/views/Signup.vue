@@ -45,7 +45,7 @@
       </van-field>
       <van-checkbox v-model="layout.userAgreement.agree" class="agreement">
         同意《
-        <div class="a-text">
+        <div class="a-text" @click.stop="showAgreementPopup">
           {{ layout.userAgreement.aText }}
         </div>
         》
@@ -67,6 +67,20 @@
         />
       </div>
     </van-form>
+    <van-popup
+      v-model="showAgreement"
+      style="width: 100vw; height: 95vh"
+      position="bottom"
+      round
+    >
+      <iframe
+        name="userAgreement"
+        width="100%"
+        height="100%"
+        src="user-agreement.html"
+        frameborder="0"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -182,12 +196,16 @@ export default {
           loading: false,
           loadingText: "跳转到登录..."
         }
-      }
+      },
+      showAgreement: false
     };
   },
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    showAgreementPopup() {
+      this.showAgreement = true;
     },
     onSubmit() {
       // 开启加载动效

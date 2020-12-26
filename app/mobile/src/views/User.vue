@@ -2,7 +2,15 @@
   <div id="user-page">
     <div class="user-card">
       <div class="user-info">
-        <div class="user-info-avatar" @click="onRouteChange('/user/home')">
+        <div
+          class="user-info-avatar"
+          @click="
+            onRouteChange({
+              path: '/user/home',
+              query: { user: user.username }
+            })
+          "
+        >
           <van-image
             width="4rem"
             height="4rem"

@@ -11,6 +11,7 @@
               round
               :src="avatar ? avatar : defaultAvatar"
               class="avatar"
+              @click="onClickAvatar"
             />
           </van-col>
           <van-col span="19">
@@ -67,6 +68,9 @@ export default {
   methods: {
     onClick() {
       this.$emit("follow");
+    },
+    onClickAvatar() {
+      this.$emit("click-avatar");
     }
   }
 };

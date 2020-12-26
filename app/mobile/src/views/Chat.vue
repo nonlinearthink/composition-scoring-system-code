@@ -8,6 +8,7 @@
           :key="item.name"
           :span="24 / layout.toolbarItem.length"
           class="toolbar-item"
+          @click="onRouteChange(item.to)"
         >
           <van-row class="toolbar-item-icon">
             <van-icon :name="item.icon" />
@@ -59,22 +60,26 @@ export default {
           {
             name: "comment",
             text: "回复我的",
-            icon: "comment-o"
+            icon: "comment-o",
+            to: "comment"
           },
           {
             id: "fan",
             text: "新的粉丝",
-            icon: "like-o"
+            icon: "like-o",
+            to: "/user/follow"
           },
           {
             id: "support",
             text: "收到的赞",
-            icon: "good-job-o"
+            icon: "good-job-o",
+            to: "/message/support"
           },
           {
             id: "systemMessage",
             text: "系统通知",
-            icon: "volume-o"
+            icon: "volume-o",
+            to: "/system/message"
           }
         ],
         messageListItem: [
@@ -108,6 +113,15 @@ export default {
         diffText = `${date.getMonth() + 1}月${date.getDate()}日`;
       }
       return diffText;
+    },
+    onRouteChange(to) {
+      if (to) {
+        if (to == "/user/follow") {
+          this.$router.push({ path: "/user/follow", query: { tab: 1 } });
+        } else {
+          this.$router.push(to);
+        }
+      }
     }
   }
 };
