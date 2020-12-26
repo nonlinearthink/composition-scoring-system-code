@@ -18,16 +18,18 @@ public class EmailChangeForm
     @NotNull(message = "username不能为空")
     private String username;
 
-    @NotNull(message = "email不能为空")
-    private String email;
+    private String oldEmail;
 
-    @NotNull(message = "verifyCode不能为空")
-    private String verifyCode;
+    private String newEmail;
+
+    private String oldVerifyCode;
+
+    private String newVerifyCode;
 
     public UserEntity makeUserEntity() {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(username);
-        userEntity.setEmail(email);
+        userEntity.setEmail(newEmail);
         return userEntity;
     }
 }

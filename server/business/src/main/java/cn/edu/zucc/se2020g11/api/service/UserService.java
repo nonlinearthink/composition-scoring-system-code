@@ -167,7 +167,7 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public void changeEmail(EmailChangeForm emailChangeForm) throws BaseException {
         // 过滤已注册的邮箱
-        if(userEntityMapper.selectByEmail(emailChangeForm.getEmail()) != null) {
+        if(userEntityMapper.selectByEmail(emailChangeForm.getNewEmail()) != null) {
             throw new BaseException(ErrorDictionary.EMAIL_CONFLICTS, LogCategory.BUSINESS);
         }
         // DTO 转换成 Entity

@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/verify-code")
-    @ApiOperation(value = "获取验证码")
+    @ApiOperation(value = "获取注册验证码")
     @ApiImplicitParam(paramType = "query", name = "email", value = "邮箱", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Boolean>> getVerifyCode(@RequestParam("email") String email) {
         // 获取验证码
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/mail/verify-code")
-    @ApiOperation(value = "获取验证码")
+    @ApiOperation(value = "获取换绑验证码")
     @ApiImplicitParam(paramType = "query", name = "email", value = "邮箱", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Boolean>> getMailVerifyCode(@RequestParam("email") String email) {
         // 获取验证码
@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/password/verify-code")
-    @ApiOperation(value = "获取验证码")
+    @ApiOperation(value = "获取忘记密码验证码")
     @ApiImplicitParam(paramType = "query", name = "email", value = "邮箱", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Boolean>> getPasswordVerifyCode(@RequestParam("email") String email) {
         // 获取验证码
@@ -179,12 +179,24 @@ public class UserController {
     }
 
     @LoginRequired(type = UserType.USER)
+    @PostMapping("/email")
+    @ApiOperation(value = "换绑邮箱-验证旧邮箱")
+    @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
+    public ResponseEntity<ApiResult<Boolean>> verifyEmail(@RequestBody @Validated EmailChangeForm emailChangeForm) {
+        // 过滤验证码错误的操作
+        verifyCodeService.validateCode(emailChangeForm.getOldEmail(), emailChangeForm.getOldVerifyCode());
+        ApiResult<Boolean> result = new ApiResult<>();
+        result.setMsg("验证成功");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @LoginRequired(type = UserType.USER)
     @PutMapping("/email")
-    @ApiOperation(value = "换绑邮箱")
+    @ApiOperation(value = "换绑邮箱-验证新邮箱")
     @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Boolean>> changeEmail(@RequestBody @Validated EmailChangeForm emailChangeForm) {
         // 过滤验证码错误的用户
-        verifyCodeService.validateCode(emailChangeForm.getEmail(), emailChangeForm.getVerifyCode());
+        verifyCodeService.validateCode(emailChangeForm.getNewEmail(), emailChangeForm.getNewVerifyCode());
         // 注册
         userService.changeEmail(emailChangeForm);
         ApiResult<Boolean> result = new ApiResult<>();
