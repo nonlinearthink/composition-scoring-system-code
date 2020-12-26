@@ -41,7 +41,13 @@
       <van-col span="12" class="a-text" @click="onChangeRoute('/signup')">
         注册新用户
       </van-col>
-      <van-col span="12" class="a-text">忘记密码</van-col>
+      <van-col
+        span="12"
+        class="a-text"
+        @click="onChangeRoute('/forget-password')"
+      >
+        忘记密码
+      </van-col>
     </van-row>
   </div>
 </template>

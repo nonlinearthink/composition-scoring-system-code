@@ -39,7 +39,8 @@ export default {
         settingGroupItem: [
           {
             text: "更改注册邮箱",
-            name: "email"
+            name: "email",
+            to: "/setting/security/email"
           },
           {
             text: "更改密码",
