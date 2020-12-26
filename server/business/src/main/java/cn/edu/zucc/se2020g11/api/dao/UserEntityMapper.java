@@ -20,4 +20,6 @@ public interface UserEntityMapper {
     int updateByPrimaryKey(UserEntity record);
 
     int updateUser(UserEntity record);
+
+    int selectSum();
 }

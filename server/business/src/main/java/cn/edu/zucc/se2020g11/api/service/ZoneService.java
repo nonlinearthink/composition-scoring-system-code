@@ -24,6 +24,7 @@ public class ZoneService
         ZoneModel zoneModel = new ZoneModel();
         zoneModel.setUsername(userEntity.getUsername());
         zoneModel.setNickname(userEntity.getNickname());
+        zoneModel.setIsMale(userEntity.getIsMale());
         zoneModel.setSignature(userEntity.getSignature());
         zoneModel.setAvatarUrl(userEntity.getAvatarUrl());
 

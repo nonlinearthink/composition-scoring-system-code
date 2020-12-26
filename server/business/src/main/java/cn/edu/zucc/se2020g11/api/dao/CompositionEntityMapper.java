@@ -32,4 +32,6 @@ public interface CompositionEntityMapper {
     List<CompositionCountModel> selectHot();
 
     CompositionCountModel selectCountByCompositionId(Integer compositionId);
+
+    int selectSum();
 }
