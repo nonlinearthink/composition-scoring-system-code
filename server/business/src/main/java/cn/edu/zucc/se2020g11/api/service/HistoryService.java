@@ -39,9 +39,10 @@ public class HistoryService
         List<HistoryModel> historyModelList = new ArrayList<>();
         for(HistoryEntity h : historyEntityList){
             HistoryModel historyModel = new HistoryModel();
+            CompositionEntity compositionEntity = compositionEntityMapper.selectByPrimaryKey(h.getCompositionId());
             historyModel.setNickname(userEntityMapper.selectByPrimaryKey(username).getNickname());
-            historyModel.setTitle(compositionEntityMapper.selectByPrimaryKey(h.getCompositionId()).getTitle());
-            historyModel.setCompositionBody(compositionEntityMapper.selectByPrimaryKey(h.getCompositionId()).getCompositionBody());
+            historyModel.setTitle(compositionEntity.getTitle());
+            historyModel.setCompositionBody(compositionEntity.getCompositionBody());
             historyModel.setTime(h.getTime());
             historyModelList.add(historyModel);
         }

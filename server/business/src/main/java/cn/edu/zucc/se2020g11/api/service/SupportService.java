@@ -7,6 +7,7 @@ import cn.edu.zucc.se2020g11.api.dao.SupportEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
+import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import com.sun.mail.imap.protocol.INTERNALDATE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class SupportService
     public List<SupportEntity> selectAllSupports(String username)
     {
         return supportEntityMapper.selectAllSelective(username);
+    }
+    public List<SupportViewModel> selectSupportView(String targetUsername)
+    {
+        return supportEntityMapper.selectSupportView(targetUsername);
     }
     public List<CompositionEntity> findSupportedComposition(List<SupportEntity> supportEntityList)
     {

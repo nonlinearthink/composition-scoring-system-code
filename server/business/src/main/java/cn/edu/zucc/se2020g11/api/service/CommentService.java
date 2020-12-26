@@ -4,6 +4,8 @@ import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CommentEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
+import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
+import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,10 @@ public class CommentService
     public CommentEntity selectCommentById(Integer compositionId)
     {
         return commentEntityMapper.selectByPrimaryKey(compositionId);
+    }
+    public List<CommentViewModel> selectCommentView(String targetUsername)
+    {
+        return commentEntityMapper.selectCommentView(targetUsername);
     }
     public int addComment(CommentEntity commentEntity)
     {

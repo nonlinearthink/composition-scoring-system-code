@@ -1,6 +1,7 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
+import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface CommentEntityMapper {
     List<CommentEntity> selectAll();
 
     Integer countComment(Integer compositionId);
+
+    List<CommentViewModel> selectCommentView(String targetUsername);
 }

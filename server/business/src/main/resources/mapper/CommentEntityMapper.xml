@@ -131,4 +131,9 @@
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+  <select id="selectCommentView" resultType="cn.edu.zucc.se2020g11.api.model.CommentViewModel">
+    select *
+    from comment_view
+    where target_username = #{targetUsername,jdbcType=INTEGER}
+  </select>
 </mapper>

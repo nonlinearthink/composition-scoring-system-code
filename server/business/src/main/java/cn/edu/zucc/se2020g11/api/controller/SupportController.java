@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.service.SupportService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -43,6 +44,19 @@ public class SupportController
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
         data.put("compositionList", compositionEntityList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @LoginRequired(type = UserType.USER)
+    @GetMapping("/all")
+    @ApiOperation(value = "获取收到的赞")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectSupportView(HttpServletRequest request) {
+        List<SupportViewModel> supportViewModelList = supportService.selectSupportView((String)request.getAttribute("username"));
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("supportViewModelList", supportViewModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

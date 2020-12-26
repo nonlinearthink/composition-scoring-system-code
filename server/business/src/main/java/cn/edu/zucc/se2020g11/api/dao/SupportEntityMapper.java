@@ -1,6 +1,7 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
+import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface SupportEntityMapper {
     List<SupportEntity> selectByUsername(SupportEntity record);
 
     Integer countSupport(Integer compositionId);
+
+    List<SupportViewModel> selectSupportView(String targetUsername);
 }

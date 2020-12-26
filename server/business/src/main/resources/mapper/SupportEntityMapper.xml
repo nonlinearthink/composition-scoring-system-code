@@ -106,4 +106,9 @@
     from support
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </select>
+  <select id="selectSupportView" resultType="cn.edu.zucc.se2020g11.api.model.SupportViewModel">
+    select *
+    from support_view
+    where target_username = #{targetUsername,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
+import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
 import cn.edu.zucc.se2020g11.api.service.CommentService;
 import cn.edu.zucc.se2020g11.api.service.PermissionService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
@@ -48,6 +49,19 @@ public class CommentController
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
         data.put("commentEntityList", commentEntityList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @LoginRequired(type = UserType.USER)
+    @GetMapping("/all")
+    @ApiOperation(value = "获取评论我的")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectCommentView(HttpServletRequest request) {
+        List<CommentViewModel> commentViewModelList = commentService.selectCommentView((String)request.getAttribute("username"));
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("commentViewModelList", commentViewModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
