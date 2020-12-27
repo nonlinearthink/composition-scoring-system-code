@@ -74,7 +74,7 @@
         >
           正文
         </van-divider>
-        <van-row>{{ composition.compositionBody }}</van-row>
+        <van-row>{{ showText(composition.compositionBody) }}</van-row>
         <van-divider
           :style="{
             color: '#1989fa',
@@ -316,6 +316,11 @@ export default {
   methods: {
     translateTime(timestamp) {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+    },
+    showText(str) {
+      let temp = [];
+      str.split("\n").forEach(item => temp.push(`<p>${item.trim()}</p>`));
+      return temp.join("<br />");
     },
     formatCount(num) {
       if (num >= 10000) {

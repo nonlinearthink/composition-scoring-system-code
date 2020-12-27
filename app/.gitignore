@@ -29,3 +29,4 @@ plugins
 !src/plugins
 www
 
+coverage
