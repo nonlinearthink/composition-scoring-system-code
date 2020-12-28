@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-v-html -->
   <div id="composition-page">
     <van-nav-bar
       title="浏览"
@@ -74,7 +75,25 @@
         >
           正文
         </van-divider>
-        <van-row v-html="showText(composition.compositionBody)"></van-row>
+        <van-row>
+          <van-tag
+            color="#1989fa"
+            plain
+            style="margin-right: 1rem;"
+            @click="showMode = 0"
+          >
+            原文
+          </van-tag>
+          <van-tag color="red" plain @click="showMode = 1">纠错后</van-tag>
+        </van-row>
+        <van-row
+          v-if="showMode == 0"
+          v-html="renderText(composition.compositionBody)"
+        />
+        <van-row
+          v-if="showMode == 1"
+          v-html="renderRightText(composition.compositionBody)"
+        />
         <van-divider
           :style="{
             color: '#1989fa',
@@ -287,7 +306,9 @@ export default {
       defaultAvatar: require("../assets/images/avatar.svg"),
       isFavorite: false,
       isFollow: false,
-      isSupport: false
+      isSupport: false,
+      showMode: 0,
+      testData: []
     };
   },
   computed: {
@@ -307,6 +328,13 @@ export default {
         this.isFavorite = res.data.data.isFavorite;
         this.isFollow = res.data.data.isFollow;
         this.axios
+          .get(`/error/${this.$route.query.compositionId}`)
+          .then(res => {
+            console.log(res.data);
+            this.testData = res.data.data.JSONArray;
+          })
+          .catch(err => console.error(err.response.data));
+        this.axios
           .post(`/history/${this.$route.query.compositionId}`)
           .then(res => console.log(res.data))
           .catch(err => console.error(err.response.data));
@@ -317,10 +345,57 @@ export default {
     translateTime(timestamp) {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
     },
-    showText(str) {
-      let temp = [];
-      str.split("\n").forEach(item => temp.push(`<p>${item.trim()}</p>`));
-      return temp.join("");
+    renderText(origin) {
+      // 文本分词
+      let paragraphList = origin.split("\n");
+      let result = "";
+      for (let i = 0; i < paragraphList.length; i++) {
+        result += "<p>" + paragraphList[i] + "</p>";
+      }
+      return result;
+    },
+    mergeSentence(splitedText) {
+      // 合并预测结果，注意标点符号和普通单词的区别
+      let mergedText = splitedText.reduce((total, item) => {
+        return item.charAt(item.length - 1).match(/[,.!?]/) == null
+          ? total + " " + item
+          : total + item;
+      });
+      // 处理最后一个单词或标点后无空格的问题
+      mergedText += " ";
+      // 首字母替换成大写
+      return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
+    },
+    renderRightText(origin) {
+      // 对数组执行深拷贝
+      let correctResult = JSON.parse(JSON.stringify(this.testData));
+      // 对数组进行排序
+      correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
+      //   // 文章分段
+      let paragraphList = origin.split("\n");
+      let currentSentence = 0;
+      let result = "";
+      for (let paraId = 0; paraId < paragraphList.length; paraId++) {
+        let sentenceList = paragraphList[paraId]
+          .split(".")
+          .map(sentence => `${sentence}.`.trim());
+        let paragraph = "";
+        for (let senId = 0; senId < sentenceList.length; senId++) {
+          if (
+            correctResult.length > 0 &&
+            currentSentence == correctResult[0].sen_id
+          ) {
+            paragraph +=
+              "<span>" + this.mergeSentence(correctResult[0].pred) + "</span>";
+            correctResult.splice(0, 1);
+          } else {
+            paragraph += sentenceList[senId];
+          }
+          currentSentence++;
+        }
+        result += "<p>" + paragraph + "</p>";
+      }
+      return result;
     },
     formatCount(num) {
       if (num >= 10000) {
