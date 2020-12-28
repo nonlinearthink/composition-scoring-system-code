@@ -27,7 +27,7 @@ import java.util.Map;
 @Api(value = "SystemMessageController")
 public class SystemMessageController
 {
-    private SystemMessageService systemMessageService;
+    private final SystemMessageService systemMessageService;
 
     @Autowired(required = false)
     public SystemMessageController(SystemMessageService systemMessageService) {

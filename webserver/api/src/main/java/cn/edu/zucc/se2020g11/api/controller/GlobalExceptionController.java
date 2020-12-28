@@ -90,8 +90,7 @@ public class GlobalExceptionController {
      * @return 统一错误信息返回格式
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResult<Object>> methodArgumentNotValidExceptionHandler(HttpServletRequest request,
-                                                                                    MethodArgumentNotValidException exception) {
+    public ResponseEntity<ApiResult<Object>> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         ErrorDictionary errorMsg = ErrorDictionary.INVALID_PARAMETER;
         ApiResult<Object> result = new ApiResult<>();
         result.setCode(errorMsg.getCode());

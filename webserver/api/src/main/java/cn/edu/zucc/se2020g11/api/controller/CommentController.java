@@ -2,7 +2,6 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
 import cn.edu.zucc.se2020g11.api.service.CommentService;
@@ -31,8 +30,8 @@ import java.util.Map;
 @Api(value = "CommentController")
 public class CommentController
 {
-    private CommentService commentService;
-    private PermissionService permissionService;
+    private final CommentService commentService;
+    private final PermissionService permissionService;
 
     @Autowired(required = false)
     public CommentController(CommentService commentService, PermissionService permissionService){
@@ -116,7 +115,7 @@ public class CommentController
                     "CompositionEntity")
     })
     public ResponseEntity<ApiResult<Boolean>> updateCommentByStatus(@PathVariable("commentId") Integer commentId,
-                                                                       @RequestBody CommentEntity commentEntity, HttpServletRequest request) {
+                                                                       @RequestBody CommentEntity commentEntity) {
         commentService.updateCommentByStatus(commentEntity, commentId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");

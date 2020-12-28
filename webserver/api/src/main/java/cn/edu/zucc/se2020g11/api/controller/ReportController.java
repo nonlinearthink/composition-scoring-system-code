@@ -33,10 +33,10 @@ import java.util.Map;
 @Api(value = "ReportController")
 public class ReportController
 {
-    private ReportService reportService;
-    private CompositionService compositionService;
-    private CommentService commentService;
-    private UserService userService;
+    private final ReportService reportService;
+    private final CompositionService compositionService;
+    private final CommentService commentService;
+    private final UserService userService;
 
     @Autowired(required = false)
     public ReportController(ReportService reportService, CompositionService compositionService, CommentService commentService, UserService userService) {
@@ -116,7 +116,7 @@ public class ReportController
                     "PushArticle")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateCompositionReport(@PathVariable("compositionReportId") Integer compositionReportId,
-                                                              @RequestBody CompositionReportEntity compositionReportEntity, HttpServletRequest request) {
+                                                              @RequestBody CompositionReportEntity compositionReportEntity) {
         reportService.updateCompositionReport(compositionReportEntity, compositionReportId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
@@ -133,7 +133,7 @@ public class ReportController
                     "PushArticle")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateCommentReport(@PathVariable("commentReportId") Integer commentReportId,
-                                                              @RequestBody CommentReportEntity commentReportEntity, HttpServletRequest request) {
+                                                              @RequestBody CommentReportEntity commentReportEntity) {
         reportService.updateCommentReport(commentReportEntity, commentReportId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");

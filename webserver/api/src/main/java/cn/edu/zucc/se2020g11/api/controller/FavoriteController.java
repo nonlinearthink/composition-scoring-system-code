@@ -26,7 +26,7 @@ import java.util.Map;
 @Api(value = "FavoriteController")
 public class FavoriteController
 {
-    private FavoriteService favoriteService;
+    private final FavoriteService favoriteService;
 
     @Autowired(required = false)
     public FavoriteController(FavoriteService favoriteService) {

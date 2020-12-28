@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * @author Tuenity
+ */
 @RestController
 @RequestMapping("/test")
 public class TestController {

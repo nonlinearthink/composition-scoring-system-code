@@ -27,7 +27,7 @@ import java.util.Map;
 @Api(value = "FeedbackController")
 public class FeedbackController
 {
-    private FeedbackService feedbackService;
+    private final FeedbackService feedbackService;
 
     @Autowired(required = false)
     public FeedbackController(FeedbackService feedbackService) {
@@ -60,7 +60,7 @@ public class FeedbackController
                     "PushArticle")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateFeedback(@PathVariable("feedbackId") Integer feedbackId,
-                                                                   @RequestBody FeedbackEntity feedbackEntity, HttpServletRequest request) {
+                                                                   @RequestBody FeedbackEntity feedbackEntity) {
         feedbackService.updateFeedback(feedbackEntity, feedbackId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");

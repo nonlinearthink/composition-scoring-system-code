@@ -2,13 +2,10 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
-import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
 import cn.edu.zucc.se2020g11.api.model.ZoneModel;
 import cn.edu.zucc.se2020g11.api.service.CompositionService;
 import cn.edu.zucc.se2020g11.api.service.FollowService;
-import cn.edu.zucc.se2020g11.api.service.HomeService;
 import cn.edu.zucc.se2020g11.api.service.ZoneService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -34,9 +31,9 @@ import java.util.Map;
 @Api(value = "CommentController")
 public class ZoneController
 {
-    private ZoneService zoneService;
-    private FollowService followService;
-    private CompositionService compositionService;
+    private final ZoneService zoneService;
+    private final FollowService followService;
+    private final CompositionService compositionService;
 
     @Autowired(required = false)
     public ZoneController(ZoneService zoneService, FollowService followService, CompositionService compositionService){

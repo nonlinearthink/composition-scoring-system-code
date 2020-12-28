@@ -26,7 +26,7 @@ import java.util.Map;
 @Api(value = "HomeController")
 public class HomeController
 {
-    private HomeService homeService;
+    private final HomeService homeService;
 
     @Autowired(required = false)
     public HomeController(HomeService homeService) {

@@ -27,7 +27,7 @@ import java.util.Map;
 @Api(value = "HelpController")
 public class HelpController
 {
-    private HelpService helpService;
+    private final HelpService helpService;
 
     @Autowired(required = false)
     public HelpController(HelpService helpService) {
@@ -59,7 +59,7 @@ public class HelpController
             @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
                     "Integer")
     })
-    public ResponseEntity<ApiResult<Boolean>> deleteHelp(@PathVariable("helpId") Integer helpId, HttpServletRequest request) {
+    public ResponseEntity<ApiResult<Boolean>> deleteHelp(@PathVariable("helpId") Integer helpId) {
         helpService.deleteHelp(helpId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
@@ -76,8 +76,7 @@ public class HelpController
             @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
                     "PushArticle")
     })
-    public  ResponseEntity<ApiResult<Boolean>> updateHelp(@PathVariable("helpId") Integer helpId,
-                                                              @RequestBody HelpEntity helpEntity, HttpServletRequest request) {
+    public  ResponseEntity<ApiResult<Boolean>> updateHelp(@PathVariable("helpId") Integer helpId, @RequestBody HelpEntity helpEntity) {
         helpService.updateHelp(helpEntity, helpId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");

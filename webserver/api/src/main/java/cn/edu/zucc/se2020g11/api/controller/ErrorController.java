@@ -1,11 +1,8 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
-import cn.edu.zucc.se2020g11.api.constant.UserType;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.ErrorEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.*;
-import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -27,7 +27,7 @@ import java.util.Map;
 @Api(value = "SupportController")
 public class SupportController
 {
-    private SupportService supportService;
+    private final SupportService supportService;
 
     @Autowired(required = false)
     public SupportController(SupportService supportService) {

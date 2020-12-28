@@ -19,6 +19,9 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Tuenity
+ */
 @RestController
 @RequestMapping("/api/img")
 @Api(value = "ImgController")

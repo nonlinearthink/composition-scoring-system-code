@@ -28,22 +28,20 @@ import java.util.Map;
 @Api(value = "CompositionController")
 public class CompositionController {
 
-    private CompositionService compositionService;
-    private SupportService supportService;
-    private FavoriteService favoriteService;
-    private CommentService commentService;
-    private PermissionService permissionService;
-    private UserService userService;
-    private FollowService followService;
+    private final CompositionService compositionService;
+    private final SupportService supportService;
+    private final FavoriteService favoriteService;
+    private final CommentService commentService;
+    private final PermissionService permissionService;
+    private final FollowService followService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, UserService userService, FollowService followService) {
+    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, FollowService followService) {
         this.compositionService = compositionService;
         this.supportService = supportService;
         this.favoriteService = favoriteService;
         this.commentService = commentService;
         this.permissionService = permissionService;
-        this.userService = userService;
         this.followService = followService;
     }
 
@@ -170,7 +168,7 @@ public class CompositionController {
                     "CompositionEntity")
     })
     public ResponseEntity<ApiResult<Boolean>> updateCompositionByValid(@PathVariable("compositionId") Integer compositionId,
-                                                                @RequestBody CompositionEntity compositionEntity, HttpServletRequest request) {
+                                                                @RequestBody CompositionEntity compositionEntity) {
         compositionService.updateCompositionByValid(compositionEntity, compositionId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");

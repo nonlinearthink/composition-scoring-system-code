@@ -3,7 +3,6 @@ package cn.edu.zucc.se2020g11.api.controller;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.entity.AdminEntity;
-import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 import cn.edu.zucc.se2020g11.api.model.AdminLoginForm;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.*;
@@ -20,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

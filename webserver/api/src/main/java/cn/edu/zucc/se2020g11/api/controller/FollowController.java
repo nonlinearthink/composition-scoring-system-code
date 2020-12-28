@@ -30,7 +30,7 @@ import java.util.Map;
 @Api(value = "FollowController")
 public class FollowController
 {
-    private FollowService followService;
+    private final FollowService followService;
 
     @Autowired(required = false)
     public FollowController(FollowService followService) {

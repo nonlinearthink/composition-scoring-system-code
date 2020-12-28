@@ -70,7 +70,6 @@ public class AdminService
         data.put("userCount", userEntityMapper.selectSum());
         data.put("compositionCount", compositionEntityMapper.selectSum());
 
-
         return data;
     }
 }

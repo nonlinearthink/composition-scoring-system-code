@@ -1,7 +1,6 @@
 package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.PushArticleEntity;
 import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.*;
@@ -29,7 +28,7 @@ import java.util.Map;
 public class ArticleController
 {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
     @Autowired(required = false)
     public ArticleController(ArticleService articleService) {
@@ -57,7 +56,7 @@ public class ArticleController
     @DeleteMapping("/{articleId}")
     @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
             "Integer")
-    public ResponseEntity<ApiResult<Boolean>> deleteArticle(@PathVariable("articleId") Integer articleId, HttpServletRequest request) {
+    public ResponseEntity<ApiResult<Boolean>> deleteArticle(@PathVariable("articleId") Integer articleId) {
         articleService.deleteArticle(articleId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
