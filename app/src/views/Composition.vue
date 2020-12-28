@@ -74,7 +74,7 @@
         >
           正文
         </van-divider>
-        <van-row>{{ showText(composition.compositionBody) }}</van-row>
+        <van-row v-html="showText(composition.compositionBody)"></van-row>
         <van-divider
           :style="{
             color: '#1989fa',
@@ -320,7 +320,7 @@ export default {
     showText(str) {
       let temp = [];
       str.split("\n").forEach(item => temp.push(`<p>${item.trim()}</p>`));
-      return temp.join("<br />");
+      return temp.join("");
     },
     formatCount(num) {
       if (num >= 10000) {
