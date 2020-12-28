@@ -20,7 +20,7 @@
     delete from error
     where error_id = #{errorId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity">
+  <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.ErrorEntity" useGeneratedKeys="true" keyProperty="errorId">
     insert into error (error_id, composition_id, text, 
       error_type)
     values (#{errorId,jdbcType=INTEGER}, #{compositionId,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, 
@@ -79,4 +79,10 @@
       error_type = #{errorType,jdbcType=VARCHAR}
     where error_id = #{errorId,jdbcType=INTEGER}
   </update>
+  <select id="selectByCompositionId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from error
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </select>
 </mapper>

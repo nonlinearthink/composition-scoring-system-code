@@ -11,6 +11,8 @@ public interface ErrorEntityMapper {
 
     ErrorEntity selectByPrimaryKey(Integer errorId);
 
+    ErrorEntity selectByCompositionId(Integer compositionId);
+
     int updateByPrimaryKeySelective(ErrorEntity record);
 
     int updateByPrimaryKey(ErrorEntity record);
