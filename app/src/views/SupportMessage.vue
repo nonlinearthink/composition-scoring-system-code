@@ -6,11 +6,13 @@
       safe-area-inset-top
       left-arrow
       :border="false"
-      title="点赞"
+      title="收到的赞"
       @click-left="onRouteBack"
     />
+    <van-loading v-if="loading" color="#1989fa" style="text-align: center;" />
     <van-row
       v-for="item in supportList"
+      v-else
       :key="item.supportId"
       class="support-card"
     >
@@ -45,22 +47,31 @@
 
 <script>
 import moment from "moment";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
       supportList: null,
-      defaultAvatar: require("../assets/images/avatar.svg")
+      defaultAvatar: require("../assets/images/avatar.svg"),
+      loading: true
     };
   },
+  computed: {
+    ...mapState(["isLogin"])
+  },
   created() {
-    this.axios
-      .get(`/support/all`)
-      .then(res => {
-        console.log(res.data);
-        this.supportList = res.data.data.supportViewModelList;
-      })
-      .catch(err => console.error(err.response.data));
+    if (this.isLogin) {
+      this.axios
+        .get(`/support/all`)
+        .then(res => {
+          console.log(res.data);
+          this.supportList = res.data.data.supportViewModelList;
+        })
+        .catch(err => console.error(err.response.data));
+    } else {
+      this.loading = false;
+      this.$toast("此功能仅支持登录用户");
+    }
   },
   methods: {
     translateTime(timestamp) {

@@ -111,7 +111,7 @@ export default {
           this.$store.commit("login");
           this.$store.commit("updateToken", res.data.data.token);
           this.$store.commit("updateUser", res.data.data.user);
-          console.log(this.$store.state);
+          this.$toast("登录成功");
           // 界面跳转
           this.$router.push("/");
           console.log(res.data);

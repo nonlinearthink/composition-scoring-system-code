@@ -61,7 +61,7 @@ export default {
             name: "comment",
             text: "回复我的",
             icon: "comment-o",
-            to: "comment"
+            to: "/comment"
           },
           {
             id: "fan",
@@ -96,6 +96,7 @@ export default {
       }
     };
   },
+
   methods: {
     showTime(timestamp) {
       let diff = new Date().getTime() - timestamp;

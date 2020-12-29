@@ -173,35 +173,37 @@ export default {
     ...mapState(["user", "token", "isLogin"])
   },
   created() {
-    this.axios
-      .get(`/follow/${this.user.username}`)
-      .then(res => {
-        console.log(res.data);
-        this.statistic.follow = res.data.data.followList.length;
-      })
-      .catch(err => {
-        console.error(err.response.data);
-      });
-    this.axios
-      .get(`/follow/${this.user.username}/follower`)
-      .then(res => {
-        console.log(res.data);
-        this.statistic.fan = res.data.data.followList.length;
-      })
-      .catch(err => {
-        console.error(err.response.data);
-      });
-    this.axios
-      .get("composition")
-      .then(res => {
-        console.log(res.data);
-        this.statistic.composition = res.data.data.compositionList.filter(
-          item => item.status == 4
-        ).length;
-      })
-      .catch(err => {
-        console.error(err.response.data);
-      });
+    if (this.isLogin) {
+      this.axios
+        .get(`/follow/${this.user.username}`)
+        .then(res => {
+          console.log(res.data);
+          this.statistic.follow = res.data.data.followList.length;
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+      this.axios
+        .get(`/follow/${this.user.username}/follower`)
+        .then(res => {
+          console.log(res.data);
+          this.statistic.fan = res.data.data.followList.length;
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+      this.axios
+        .get("composition")
+        .then(res => {
+          console.log(res.data);
+          this.statistic.composition = res.data.data.compositionList.filter(
+            item => item.status == 4
+          ).length;
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+    }
   },
   methods: {
     goLogin() {

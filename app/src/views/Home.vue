@@ -47,7 +47,7 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="关注">
+        <van-tab v-if="user" title="关注">
           <van-loading
             v-if="!followList || !followCompositions"
             color="#1989fa"
@@ -174,19 +174,21 @@ export default {
       this.active = this.routeAnchor;
       this.setRouteAnchor(-1);
     }
-    this.axios
-      .get(`/follow/${this.user.username}`)
-      .then(res => {
-        console.log(res);
-        this.followList = [];
-        res.data.data.followList.forEach(follow => {
-          this.followList.push({
-            username: follow.username,
-            avatarUrl: null
+    if (this.user) {
+      this.axios
+        .get(`/follow/${this.user.username}`)
+        .then(res => {
+          console.log(res);
+          this.followList = [];
+          res.data.data.followList.forEach(follow => {
+            this.followList.push({
+              username: follow.username,
+              avatarUrl: null
+            });
           });
-        });
-      })
-      .catch(err => console.error(err.response.data));
+        })
+        .catch(err => console.error(err.response.data));
+    }
     this.axios
       .get("/home/follow")
       .then(res => {

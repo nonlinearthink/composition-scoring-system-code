@@ -9,8 +9,10 @@
       title="评论"
       @click-left="onRouteBack"
     />
+    <van-loading v-if="loading" color="#1989fa" style="text-align: center;" />
     <van-row
       v-for="item in commentList"
+      v-else
       :key="item.commentId"
       class="comment-card"
     >
@@ -46,23 +48,34 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       commentList: null,
-      defaultAvatar: require("../assets/images/avatar.svg")
+      defaultAvatar: require("../assets/images/avatar.svg"),
+      loading: true
     };
   },
+  computed: {
+    ...mapState(["isLogin"])
+  },
   created() {
-    this.axios
-      .get("/comment/all")
-      .then(res => {
-        console.log(res.data);
-        this.commentList = res.data.data.commentViewModelList;
-      })
-      .catch(err => {
-        console.error(err.response.data);
-      });
+    if (this.isLogin) {
+      this.axios
+        .get("/comment/all")
+        .then(res => {
+          console.log(res.data);
+          this.loading = false;
+          this.commentList = res.data.data.commentViewModelList;
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+    } else {
+      this.loading = false;
+      this.$toast("此功能仅支持登录用户");
+    }
   },
   methods: {
     onRouteBack() {

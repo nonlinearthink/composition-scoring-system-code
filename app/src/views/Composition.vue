@@ -312,7 +312,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "isLogin"]),
     writingBarHeight() {
       return this.$refs.writingBar.clientHeight;
     }
@@ -334,10 +334,12 @@ export default {
             this.testData = res.data.data.JSONArray;
           })
           .catch(err => console.error(err.response.data));
-        this.axios
-          .post(`/history/${this.$route.query.compositionId}`)
-          .then(res => console.log(res.data))
-          .catch(err => console.error(err.response.data));
+        if (this.isLogin) {
+          this.axios
+            .post(`/history/${this.$route.query.compositionId}`)
+            .then(res => console.log(res.data))
+            .catch(err => console.error(err.response.data));
+        }
       })
       .catch(err => console.error(err.response.data));
   },

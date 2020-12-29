@@ -8,11 +8,7 @@
       left-arrow
       @click-left="onRouteBack"
     />
-    <van-loading
-      v-if="!compositions"
-      color="#1989fa"
-      style="text-align: center;"
-    />
+    <van-loading v-if="loading" color="#1989fa" style="text-align: center;" />
     <div v-else>
       <div
         v-for="item in compositions"
@@ -33,20 +29,31 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      compositions: null
+      compositions: null,
+      loading: true
     };
   },
+  computed: {
+    ...mapState(["isLogin"])
+  },
   created() {
-    this.axios
-      .get(`/support`)
-      .then(res => {
-        console.log(res.data);
-        this.compositions = res.data.data.compositionList;
-      })
-      .catch(err => console.error(err.response.data));
+    if (this.isLogin) {
+      this.axios
+        .get(`/support`)
+        .then(res => {
+          console.log(res.data);
+          this.compositions = res.data.data.compositionList;
+          this.loading = false;
+        })
+        .catch(err => console.error(err.response.data));
+    } else {
+      this.loading = false;
+      this.$toast("此功能仅支持登录用户");
+    }
   },
   methods: {
     onRouteBack() {

@@ -82,6 +82,17 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isLogin = false;
+      state.user = null;
+      state.compositions = [];
+      state.token = "";
+      state.editing = {
+        type: "cache",
+        cache: null,
+        draft: null,
+        publish: null
+      };
+      state.routeAnchor = -1;
+      state.view = { article: null };
     }
   },
   actions: {},

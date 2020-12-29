@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     const actions = [
@@ -58,6 +59,9 @@ export default {
       selectType: actions[0]
     };
   },
+  computed: {
+    ...mapState(["isLogin"])
+  },
   methods: {
     onRouteBack() {
       this.$router.go(-1);
@@ -74,6 +78,14 @@ export default {
     },
     onSubmit() {
       this.feedback.feedbackType = this.selectType.value;
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
+      if (this.feedback.feedbackBody.trim() == "") {
+        this.$toast("请输入内容");
+        return;
+      }
       this.axios
         .post(`/feedback`, this.feedback)
         .then(res => {

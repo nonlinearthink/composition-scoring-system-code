@@ -172,7 +172,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["compositions", "user", "routeAnchor"])
+    ...mapState(["compositions", "user", "routeAnchor", "isLogin"])
   },
   watch: {
     activeTab() {
@@ -248,35 +248,40 @@ export default {
      * @param {Function} onFail 加载失败回调函数
      */
     onLoad(onSuccess = null, onFail = null) {
-      // 开启加载动效
-      this.layout.loading = true;
-      // 请求数据
-      this.axios
-        .get("composition")
-        .then(res => {
-          console.log(res.data);
-          // 清空本地缓存
-          this.$store.commit("clearCompositions");
-          // 后端数据同步到本地缓存
-          res.data.data.compositionList.forEach(composition => {
-            this.$store.commit("addComposition", new Composition(composition));
+      if (this.isLogin) {
+        // 开启加载动效
+        this.layout.loading = true;
+        // 请求数据
+        this.axios
+          .get("composition")
+          .then(res => {
+            console.log(res.data);
+            // 清空本地缓存
+            this.$store.commit("clearCompositions");
+            // 后端数据同步到本地缓存
+            res.data.data.compositionList.forEach(composition => {
+              this.$store.commit(
+                "addComposition",
+                new Composition(composition)
+              );
+            });
+            // 关闭加载动效
+            this.layout.loading = false;
+            // 成功回调
+            if (typeof onSuccess == "function") {
+              onSuccess();
+            }
+          })
+          .catch(err => {
+            console.error(err.response);
+            // 关闭加载动效
+            this.layout.loading = false;
+            // 失败回调
+            if (typeof onFail == "function") {
+              onFail();
+            }
           });
-          // 关闭加载动效
-          this.layout.loading = false;
-          // 成功回调
-          if (typeof onSuccess == "function") {
-            onSuccess();
-          }
-        })
-        .catch(err => {
-          console.error(err.response);
-          // 关闭加载动效
-          this.layout.loading = false;
-          // 失败回调
-          if (typeof onFail == "function") {
-            onFail();
-          }
-        });
+      }
     },
     /**
      * @description 刷新
