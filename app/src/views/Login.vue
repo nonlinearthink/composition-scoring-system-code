@@ -38,11 +38,14 @@
       </div>
     </van-form>
     <van-row class="options">
-      <van-col span="12" class="a-text" @click="onChangeRoute('/signup')">
+      <van-col span="8" class="a-text" @click="onChangeRoute('/signup')">
         注册新用户
       </van-col>
+      <van-col span="8" class="a-text" @click="onChangeRoute('/')">
+        游客登录
+      </van-col>
       <van-col
-        span="12"
+        span="8"
         class="a-text"
         @click="onChangeRoute('/forget-password')"
       >

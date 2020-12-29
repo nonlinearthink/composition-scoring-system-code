@@ -6,6 +6,7 @@
       background="#02a7f0"
       shape="round"
       class="search-bar"
+      @click="$toast.fail('此功能暂不支持')"
     />
     <v-touch
       @swipeleft="onSwipeLeft($event)"
@@ -251,6 +252,9 @@ export default {
   width: 100vw;
   padding-right: 2rem;
   padding-left: 2rem;
+  // 兼容iOS顶部安全区域适配
+  padding-top: calc(#{$blank-size} + constant(safe-area-inset-top));
+  padding-top: calc(#{$blank-size} + env(safe-area-inset-top));
 }
 .follow-list {
   overflow-x: auto;
