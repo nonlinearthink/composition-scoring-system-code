@@ -1,36 +1,42 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Author: Lou
+
 import os
 import subprocess
 import time
 import json
 
+from sentence_fluency.load_and_prediction import model_pred
 from word_correction.compare_ori_pred import compare_word
 from word_richness.judge_richness import pos_tag_score
 from essay_length import length_scoring
-# from util.redis import RedisMessageQueueHandler, RedisListClient, RedisPubSubClient
+from util.redis import RedisMessageQueueHandler, RedisListClient, RedisPubSubClient
 
-import compare_ori_pred, generate_cat_source
+import compare_ori_pred
+import generate_cat_source
 
 
 class Application(object):  # RedisMessageQueueHandler
 
     def __init__(self):
         super(Application, self).__init__()
-        # self.notify = RedisPubSubClient("scoring_finished")
-        # self.feedback = RedisListClient("scoring_result")
+        self.notify = RedisPubSubClient("scoring_finished")
+        self.feedback = RedisListClient("scoring_result")
 
-    # @RedisListClient.listen("scoring_task")
-    def on_listen(self):  # message
+    @RedisListClient.listen("scoring_task")
+    def on_listen(self, message):
         """
         docstring
         """
         # print(message)
-        # message = json.loads(message)
+        message = json.loads(message)
         # print(type(message))
-
+        # print(type(message["compositionId"]))
         # model prediction
-        id = "01"
+        id = message["compositionId"]
         # context = "He had little to eat and a large house to live in.\nHe had no sooner arrived when he fell ill.\nIf you go this way, and you will soon see the hospital.\nWhat a beautiful weather we are having today!\nPlease give my best regard to your parents.\nI have got good marks in all my subject."
-        context = "Last year my father lost his job. At that time my parents felt a bit sad. I encouraged my father and said I was old enough and could do something to help. In order to help my parents, I took a part time job on weekends in the KFC near my home.Luckily, it didn't take long time for my father to find a new job in a company. With the money I earned through working I bought a pair of new shoes for my father to celebrate the good news. My parents were deeply moved."
+        context = message["compositionBody"]
         # context = "I funck your mother! but shet didn't love it ,saafsa"
 
         # tokenize and chunking...
@@ -54,14 +60,19 @@ class Application(object):  # RedisMessageQueueHandler
         child = subprocess.Popen(cmd, shell=True)
         child.wait()  # Block subprocess
         # compare original sentence with target sentence which can be used for client displaying
-        compare_result_grammar, grammar_score = compare_ori_pred.main(id, sen_lis)
+        compare_result_grammar, grammar_score = compare_ori_pred.main(
+            id, sen_lis)
         print("grammar score:", grammar_score)
         # TODO: write the grammar correction informaton into database
         print("grammar correction end!")
 
         # auto essay scoring
         print("\n===PART3===\nauto essay scoring begin...")
-
+        param = {"model_path": "./sentence_fluency/checkpoints/k=6_essaytype=1_best.h5",
+                 "emb_path": "./sentence_fluency/data/glove.6B.300d.txt", "inputs": processed_context}
+        sentence_fluency_score = model_pred(**param)
+        print("sentence fluency score:", sentence_fluency_score)
+        # TODO: write the sentence fluency score into database
         print("auto essay scoring end!")
 
         # essay length scoring
@@ -79,11 +90,19 @@ class Application(object):  # RedisMessageQueueHandler
         print("richness score:", richness_score)
         print("judge the richness of words end!")
 
-        # time.sleep(10)
-        # # 返回结果
-        # self.feedback.push(json.dumps({"message": message, "status": "已处理"}))
+        self.feedback.push(json.dumps(
+            {
+                "compositionId": id,
+                "compareResultWord": compare_result_word,
+                "compareResultGrammar": compare_result_grammar,
+                "wordScore": word_score,
+                "grammarScore": grammar_score,
+                "sentenceFluencyScore": sentence_fluency_score,
+                "lengthScore": length_score,
+                "richnessScore": richness_score
+            }))
         # # 发布完成通知
-        # self.notify.publish("ok")
+        self.notify.publish("ok")
 
 
 def main():
