@@ -40,9 +40,10 @@ public class CompositionController {
     private final PermissionService permissionService;
     private final FollowService followService;
     private final ErrorService errorService;
+    private final HistoryService historyService;
 
     @Autowired(required = false)
-    public CompositionController(RedisMessageMqService messageMqService, CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, FollowService followService, ErrorService errorService) {
+    public CompositionController(RedisMessageMqService messageMqService, CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, FollowService followService, ErrorService errorService, HistoryService historyService) {
         this.messageMqService = messageMqService;
         this.compositionService = compositionService;
         this.supportService = supportService;
@@ -51,6 +52,7 @@ public class CompositionController {
         this.permissionService = permissionService;
         this.followService = followService;
         this.errorService = errorService;
+        this.historyService = historyService;
     }
 
     @LoginRequired(type = UserType.ADMIN)
@@ -160,6 +162,7 @@ public class CompositionController {
         favoriteService.deleteFavoriteByCompositionId(compositionId);
         commentService.deleteCommentByCompositionId(compositionId);
         errorService.deleteErrorByCompositionId(compositionId);
+        historyService.deleteHistoryByCompositionId(compositionId);
         compositionService.deleteComposition(compositionId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");

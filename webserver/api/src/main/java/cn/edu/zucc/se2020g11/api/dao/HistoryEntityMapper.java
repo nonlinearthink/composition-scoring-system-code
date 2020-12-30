@@ -7,6 +7,8 @@ import java.util.List;
 public interface HistoryEntityMapper {
     int deleteByPrimaryKey(Integer historyId);
 
+    int deleteByCompositionId(Integer historyId);
+
     int insert(HistoryEntity record);
 
     int insertSelective(HistoryEntity record);

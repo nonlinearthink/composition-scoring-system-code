@@ -93,4 +93,8 @@
     from history
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.HistoryEntity">
+    delete from history
+    where composition_id = #{compositionId,jdbcType=INTEGER}
+  </delete>
 </mapper>

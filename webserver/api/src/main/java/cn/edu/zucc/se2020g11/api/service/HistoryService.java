@@ -48,5 +48,8 @@ public class HistoryService
         }
         return  historyModelList;
     }
-
+    public void deleteHistoryByCompositionId(Integer compositionId)
+    {
+        historyEntityMapper.deleteByCompositionId(compositionId);
+    }
 }
