@@ -3,7 +3,7 @@
 
 import os
 import json
-from CorrectWords import correct_text_generic
+from word_correction.CorrectWords import correct_text_generic
 
 # special token
 UNK = "-unk-"

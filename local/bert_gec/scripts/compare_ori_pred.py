@@ -98,6 +98,8 @@ def main(id: str, sen_lis: list):
     all_cnt = 0
 
     # here, the assumption is the original sentence number is equal to target one
+    print(trg)
+    print(sen_lis)
     assert len(trg) == len(sen_lis)
 
     for i, sen_pred in enumerate(trg):

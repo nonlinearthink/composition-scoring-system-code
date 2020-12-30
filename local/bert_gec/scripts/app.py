@@ -28,7 +28,7 @@ class Application(object):  # RedisMessageQueueHandler
         # print(type(message))
 
         # model prediction
-        id = "02"
+        id = "01"
         # context = "He had little to eat and a large house to live in.\nHe had no sooner arrived when he fell ill.\nIf you go this way, and you will soon see the hospital.\nWhat a beautiful weather we are having today!\nPlease give my best regard to your parents.\nI have got good marks in all my subject."
         context = "Last year my father lost his job. At that time my parents felt a bit sad. I encouraged my father and said I was old enough and could do something to help. In order to help my parents, I took a part time job on weekends in the KFC near my home.Luckily, it didn't take long time for my father to find a new job in a company. With the money I earned through working I bought a pair of new shoes for my father to celebrate the good news. My parents were deeply moved."
         # context = "I funck your mother! but shet didn't love it ,saafsa"

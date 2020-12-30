@@ -217,7 +217,7 @@ def create_parser(subparsers=None):
     #     help="File with BPE codes (created by learn_bpe.py).")
     parser.add_argument(
         '--codes', '-c', type=argparse.FileType('r'), metavar='PATH',
-        default="/home/wyt/lrz/GEC/bert-gec/gec-pseudodata/bpe/bpe_code.trg.dict_bpe8000",
+        default="../gec-pseudodata/bpe/bpe_code.trg.dict_bpe8000",
         help="File with BPE codes (created by learn_bpe.py).")  # TODO: change this path
     parser.add_argument(
         '--merges', '-m', type=int, default=-1,
