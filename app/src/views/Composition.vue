@@ -43,9 +43,17 @@
           <van-col>
             <van-row class="nickname">{{ composition.nickname }}</van-row>
             <van-row>
-              <van-tag color="#1989fa" plain class="button">私信</van-tag>
               <van-tag
-                v-if="!isFollow && user.username != composition.username"
+                color="#1989fa"
+                plain
+                class="button"
+                @click="$toast('待开放')"
+                >私信</van-tag
+              >
+              <van-tag
+                v-if="
+                  !user || (!isFollow && user.username != composition.username)
+                "
                 color="red"
                 plain
                 class="button"
@@ -54,7 +62,7 @@
                 关注
               </van-tag>
               <van-tag
-                v-else-if="user.username != composition.username"
+                v-else-if="user && user.username != composition.username"
                 color="#444"
                 plain
                 class="button"
@@ -329,34 +337,57 @@ export default {
     }
   },
   created() {
-    this.axios
-      .get(`/composition/${this.$route.query.compositionId}`)
-      .then(res => {
-        console.log(res.data);
-        this.composition = res.data.data.compositionCountModel;
-        this.commentList = res.data.data.commentEntityList;
-        this.isSupport = res.data.data.isSupport;
-        this.isFavorite = res.data.data.isFavorite;
-        this.isFollow = res.data.data.isFollow;
-        this.axios
-          .get(`/error/${this.$route.query.compositionId}`)
-          .then(res => {
-            console.log(res.data);
-            this.testData = res.data.data.JSONArray;
-            this.grammerErrorModel = this.parseGrammerError(
-              this.composition.compositionBody,
-              res.data.data.JSONArray
-            );
-          })
-          .catch(err => console.error(err.response.data));
-        if (this.isLogin) {
+    if (this.isLogin) {
+      this.axios
+        .get(`/composition/${this.$route.query.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition = res.data.data.compositionCountModel;
+          this.commentList = res.data.data.commentEntityList;
+          this.isSupport = res.data.data.isSupport;
+          this.isFavorite = res.data.data.isFavorite;
+          this.isFollow = res.data.data.isFollow;
           this.axios
-            .post(`/history/${this.$route.query.compositionId}`)
-            .then(res => console.log(res.data))
+            .get(`/error/${this.$route.query.compositionId}`)
+            .then(res => {
+              console.log(res.data);
+              this.testData = res.data.data.JSONArray;
+              this.grammerErrorModel = this.parseGrammerError(
+                this.composition.compositionBody,
+                res.data.data.JSONArray
+              );
+            })
             .catch(err => console.error(err.response.data));
-        }
-      })
-      .catch(err => console.error(err.response.data));
+        })
+        .catch(err => console.error(err.response.data));
+      this.axios
+        .post(`/history/${this.$route.query.compositionId}`)
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err.response.data));
+    } else {
+      this.axios
+        .get(`/composition/tourist/${this.$route.query.compositionId}`)
+        .then(res => {
+          console.log(res.data);
+          this.composition = res.data.data.compositionCountModel;
+          this.commentList = res.data.data.commentEntityList;
+          this.isSupport = false;
+          this.isFavorite = false;
+          this.isFollow = false;
+          this.axios
+            .get(`/error/${this.$route.query.compositionId}`)
+            .then(res => {
+              console.log(res.data);
+              this.testData = res.data.data.JSONArray;
+              this.grammerErrorModel = this.parseGrammerError(
+                this.composition.compositionBody,
+                res.data.data.JSONArray
+              );
+            })
+            .catch(err => console.error(err.response.data));
+        })
+        .catch(err => console.error(err.response.data));
+    }
   },
   methods: {
     translateTime(timestamp) {
@@ -463,6 +494,10 @@ export default {
       this.showComment = true;
     },
     onAddComment() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       let comment = {
         commentBody: this.editingComment
       };
@@ -482,6 +517,10 @@ export default {
         });
     },
     onClickFavorite() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .post(`/favorite/${this.composition.compositionId}`)
         .then(res => {
@@ -493,6 +532,10 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onClickSupport() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .post(`/support/${this.composition.compositionId}`)
         .then(res => {
@@ -504,6 +547,10 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onClickFollow() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .post(`/follow/${this.composition.username}`)
         .then(res => {
@@ -514,6 +561,10 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onDiscardFavorite() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .delete(`/favorite/${this.composition.compositionId}`)
         .then(res => {
@@ -525,6 +576,10 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onDiscardSupport() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .delete(`/support/${this.composition.compositionId}`)
         .then(res => {
@@ -536,6 +591,10 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onDiscardFollow() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.axios
         .delete(`/follow/${this.composition.username}`)
         .then(res => {
@@ -546,12 +605,20 @@ export default {
         .catch(err => console.error(err.response.data));
     },
     onClickCompositionReport() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.$router.push({
         path: "/report",
         query: { compositionId: this.composition.compositionId, type: 0 }
       });
     },
     onClickCommentReport(comment) {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.$router.push({
         path: "/report",
         query: { commentId: comment.commentId, type: 1 }

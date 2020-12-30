@@ -216,6 +216,7 @@ export default {
       .then(res => {
         console.log(res);
         this.freshCompositions = res.data.data.newCardModelList;
+        this.freshCompositions.sort((a, b) => b.releaseTime - a.releaseTime);
       })
       .catch(err => console.error(err.response.data));
   },
