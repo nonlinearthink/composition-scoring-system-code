@@ -244,3 +244,8 @@ dmypy.json
 cache_file
 *.pt
 *.bin
+*.h5
+*.tsv
+*.zip
+*.xlsx
+glove.6B.300d.txt
