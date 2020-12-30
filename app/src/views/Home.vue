@@ -175,7 +175,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user", "routeAnchor"])
+    ...mapState(["user", "routeAnchor", "isLogin"])
   },
   created() {
     if (this.routeAnchor != -1) {
@@ -237,6 +237,11 @@ export default {
       this.$router.push(to);
     },
     onSwipeRight() {
+      let maxActive = this.isLogin ? 3 : 2;
+      if (this.active == 0) {
+        this.active = maxActive;
+        return;
+      }
       if (this.active <= 3) {
         this.active -= 1;
       }
