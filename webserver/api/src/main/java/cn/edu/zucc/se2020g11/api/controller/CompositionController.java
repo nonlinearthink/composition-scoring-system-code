@@ -115,7 +115,7 @@ public class CompositionController {
         compositionEntity.setUsername((String)request.getAttribute("username"));
         int id = compositionService.addComposition(compositionEntity);
         Map<String, Object> body = new HashMap<>(1);
-        body.put("compositionId", compositionEntity.getCompositionId());
+        body.put("compositionId", compositionEntity.getCompositionId().toString());
         body.put("compositionBody", compositionEntity.getCompositionBody());
         if(compositionEntity.getStatus()==2){
             messageMqService.push(taskPublisher, (Serializable) body);
@@ -164,7 +164,7 @@ public class CompositionController {
         permissionService.validateComposition((String)request.getAttribute("username"), compositionId);
         compositionService.updateComposition(compositionEntity, compositionId);
         Map<String, Object> body = new HashMap<>(1);
-        body.put("compositionId", compositionEntity.getCompositionId());
+        body.put("compositionId", compositionEntity.getCompositionId().toString());
         body.put("compositionBody", compositionEntity.getCompositionBody());
         if(compositionEntity.getStatus()==2){
             messageMqService.push(taskPublisher, (Serializable) body);

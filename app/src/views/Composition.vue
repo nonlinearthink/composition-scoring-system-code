@@ -110,6 +110,7 @@
           }"
         >
           <van-icon name="chat-o" />
+          <span style="font-size: 1rem; margin-left: 0.25rem;">说明</span>
         </div>
         <van-row>{{ composition.description }}</van-row>
       </div>
