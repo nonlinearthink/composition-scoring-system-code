@@ -52,12 +52,4 @@ cordova run android
 
 找到 `platforms/批多多.xcodeproj`，使用 xcode 打开。
 
-
-
-### 自定义配置
-
-详情见 [Configuration Reference](https://cli.vuejs.org/config/)。
-
-## 浏览器兼容性
-
-
+你需要一个Apple ID。
