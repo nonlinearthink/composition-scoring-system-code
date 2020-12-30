@@ -43,6 +43,12 @@
           :follow="item.follow"
           :avatar="item.avatarUrl"
           @follow="onChangeFollow(item)"
+          @click-avatar="
+            onRouteChange({
+              path: '/user/home',
+              query: { user: item.username }
+            })
+          "
         />
       </van-tab>
     </van-tabs>
