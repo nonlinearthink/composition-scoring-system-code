@@ -105,7 +105,7 @@
     from comment
     <where>
       <if test="compositionId != null">
-        composition_id = #{compositionId,jdbcType=INTEGER}
+        composition_id = #{compositionId,jdbcType=INTEGER} and status = 0
       </if>
     </where>
   </select>
