@@ -32,7 +32,7 @@ public class FollowService
     {
         if(followEntity.getUsername().equals(followEntity.getTargetUsername())){
             throw new BaseException(ErrorDictionary.FOLLOW_ERROR, LogCategory.BUSINESS);
-        } else if(followEntityMapper.selectByUsername(followEntity).size() > 0){
+        } else if(followEntityMapper.selectByUsernameAndTargetUsername(followEntity).size() > 0){
             throw new BaseException(ErrorDictionary.REPEAT_FOLLOW, LogCategory.BUSINESS);
         }
         followEntityMapper.insert(followEntity);
@@ -67,7 +67,7 @@ public class FollowService
         FollowEntity followEntity = new FollowEntity();
         followEntity.setUsername(username);
         followEntity.setTargetUsername(targetUsername);
-        List<FollowEntity> followEntityList = followEntityMapper.selectByUsername(followEntity);
+        List<FollowEntity> followEntityList = followEntityMapper.selectByUsernameAndTargetUsername(followEntity);
         return followEntityList.size() > 0;
     }
     public List<FollowModel> getFollowInfo(List<UserEntity>  userEntityList)
@@ -85,7 +85,7 @@ public class FollowService
     }
     public void deleteFollow(FollowEntity followEntity)
     {
-        int num = followEntityMapper.deleteByUsername(followEntity);
+        int num = followEntityMapper.deleteByUsernameAndTargetUsername(followEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_FOLLOW, LogCategory.BUSINESS);
         }

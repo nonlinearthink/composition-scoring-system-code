@@ -2,9 +2,11 @@ package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface SupportEntityMapper {
     int deleteByPrimaryKey(Integer supportId);
 
@@ -24,7 +26,7 @@ public interface SupportEntityMapper {
 
     List<SupportEntity> selectAllSelective(String username);
 
-    List<SupportEntity> selectByUsername(SupportEntity record);
+    List<SupportEntity> selectByUsernameAndCompositionId(SupportEntity record);
 
     Integer countSupport(Integer compositionId);
 

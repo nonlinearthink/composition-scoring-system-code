@@ -5,11 +5,9 @@ import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.SupportEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
-import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
-import com.sun.mail.imap.protocol.INTERNALDATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +29,7 @@ public class SupportService
     }
     public int addSupport(SupportEntity supportEntity)
     {
-        if(supportEntityMapper.selectByUsername(supportEntity).size() > 0){
+        if(supportEntityMapper.selectByUsernameAndCompositionId(supportEntity).size() > 0){
             throw new BaseException(ErrorDictionary.REPEAT_SUPPORT, LogCategory.BUSINESS);
         }
         supportEntityMapper.insert(supportEntity);
@@ -58,7 +56,7 @@ public class SupportService
         SupportEntity supportEntity = new SupportEntity();
         supportEntity.setUsername(username);
         supportEntity.setCompositionId(compositionId);
-        List<SupportEntity> supportEntityList = supportEntityMapper.selectByUsername(supportEntity);
+        List<SupportEntity> supportEntityList = supportEntityMapper.selectByUsernameAndCompositionId(supportEntity);
         return supportEntityList.size() > 0;
     }
     public void deleteSupport(SupportEntity supportEntity)
