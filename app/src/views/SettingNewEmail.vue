@@ -20,7 +20,13 @@
         label="邮箱"
         placeholder="请填写新邮箱"
         name="email"
-        :rules="[{ required: true, message: '必须填写新邮箱' }]"
+        :rules="[
+          { required: true, message: '必须填写新邮箱' },
+          {
+            pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)+$/,
+            message: '非法邮箱'
+          }
+        ]"
       />
       <van-field
         v-model="form.verifyCode"

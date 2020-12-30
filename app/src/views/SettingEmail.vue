@@ -14,7 +14,13 @@
         <van-field
           v-model="verifyCode"
           placeholder="请填写验证码"
-          :rules="[{ required: true, message: '必须填写验证码' }]"
+          :rules="[
+            { required: true, message: '必须填写验证码' },
+            {
+              pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+@[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)+$/,
+              message: '非法邮箱'
+            }
+          ]"
           class="input"
         >
           <template #right-icon>
