@@ -54,15 +54,16 @@ public class FavoriteService
         List<FavoriteEntity> favoriteEntityList = favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity);
         return favoriteEntityList.size() > 0;
     }
-    public void deleteFavorite(FavoriteEntity favoriteEntity)
+    public int deleteFavorite(FavoriteEntity favoriteEntity)
     {
         int num = favoriteEntityMapper.deleteByUsernameAndCompositionId(favoriteEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_FAVORITE, LogCategory.BUSINESS);
         }
+        return num;
     }
-    public void deleteFavoriteByCompositionId(Integer compositionId)
+    public int deleteFavoriteByCompositionId(Integer compositionId)
     {
-        favoriteEntityMapper.deleteByCompositionId(compositionId);
+        return favoriteEntityMapper.deleteByCompositionId(compositionId);
     }
 }

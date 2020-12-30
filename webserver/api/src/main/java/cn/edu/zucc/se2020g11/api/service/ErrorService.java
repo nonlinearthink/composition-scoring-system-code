@@ -25,8 +25,8 @@ public class ErrorService
     {
         return errorEntityMapper.selectByCompositionId(compositionId);
     }
-    public void deleteErrorByCompositionId(Integer compositionId)
+    public int deleteErrorByCompositionId(Integer compositionId)
     {
-        errorEntityMapper.deleteByCompositionId(compositionId);
+        return errorEntityMapper.deleteByCompositionId(compositionId);
     }
 }

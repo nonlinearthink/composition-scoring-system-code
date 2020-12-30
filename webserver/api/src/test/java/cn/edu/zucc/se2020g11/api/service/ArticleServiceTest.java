@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,16 +38,26 @@ class ArticleServiceTest
     {
         List<PushArticleEntity> articleEntityList =  articleService.selectAllArticles();
 
-        assertThat(articleEntityList.size()).isGreaterThan(0);
+        assertThat(articleEntityList).isNotEmpty()
+            .hasOnlyElementsOfType(PushArticleEntity.class);
     }
 
     @Test
     void deleteArticle()
     {
+        int num = articleService.deleteArticle(1);
+
+        assertThat(num).isGreaterThan(0);
     }
 
     @Test
     void updateArticle()
     {
+        PushArticleEntity pushArticleEntity = new PushArticleEntity();
+        pushArticleEntity.setArticleTitle("test-title");
+        pushArticleEntity.setArticleBody("test-body");
+
+        int num = articleService.updateArticle(pushArticleEntity, 1);
+        assertThat(num).isGreaterThan(0);
     }
 }

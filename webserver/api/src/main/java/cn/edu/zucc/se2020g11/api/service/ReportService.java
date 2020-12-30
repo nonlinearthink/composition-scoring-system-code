@@ -49,14 +49,14 @@ public class ReportService
     {
         return commentReportEntityMapper.selectAll();
     }
-    public void updateCompositionReport(CompositionReportEntity compositionReportEntity, Integer compositionReportId)
+    public int updateCompositionReport(CompositionReportEntity compositionReportEntity, Integer compositionReportId)
     {
         compositionReportEntity.setCompositionReportId(compositionReportId);
-        compositionReportEntityMapper.updateByPrimaryKeySelective(compositionReportEntity);
+        return compositionReportEntityMapper.updateByPrimaryKeySelective(compositionReportEntity);
     }
-    public void updateCommentReport(CommentReportEntity commentReportEntity, Integer commentReportId)
+    public int updateCommentReport(CommentReportEntity commentReportEntity, Integer commentReportId)
     {
         commentReportEntity.setCommentReportId(commentReportId);
-        commentReportEntityMapper.updateByPrimaryKeySelective(commentReportEntity);
+        return commentReportEntityMapper.updateByPrimaryKeySelective(commentReportEntity);
     }
 }

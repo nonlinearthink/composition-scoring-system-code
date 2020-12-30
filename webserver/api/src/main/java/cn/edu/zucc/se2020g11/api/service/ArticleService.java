@@ -26,13 +26,13 @@ public class ArticleService
     {
         return pushArticleEntityMapper.selectAll();
     }
-    public void deleteArticle(Integer articleId)
+    public int deleteArticle(Integer articleId)
     {
-        pushArticleEntityMapper.deleteByPrimaryKey(articleId);
+        return pushArticleEntityMapper.deleteByPrimaryKey(articleId);
     }
-    public void updateArticle(PushArticleEntity pushArticleEntity, Integer articleId)
+    public int updateArticle(PushArticleEntity pushArticleEntity, Integer articleId)
     {
         pushArticleEntity.setArticleId(articleId);
-        pushArticleEntityMapper.updateByPrimaryKeySelective(pushArticleEntity);
+        return pushArticleEntityMapper.updateByPrimaryKeySelective(pushArticleEntity);
     }
 }

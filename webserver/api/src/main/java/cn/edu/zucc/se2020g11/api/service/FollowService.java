@@ -70,7 +70,7 @@ public class FollowService
         List<FollowEntity> followEntityList = followEntityMapper.selectByUsernameAndTargetUsername(followEntity);
         return followEntityList.size() > 0;
     }
-    public List<FollowModel> getFollowInfo(List<UserEntity>  userEntityList)
+    public List<FollowModel> getFollowInfo(List<UserEntity> userEntityList)
     {
         List<FollowModel>  followModelList = new ArrayList<>();
         for (UserEntity u : userEntityList) {
@@ -83,11 +83,12 @@ public class FollowService
         }
         return followModelList;
     }
-    public void deleteFollow(FollowEntity followEntity)
+    public int deleteFollow(FollowEntity followEntity)
     {
         int num = followEntityMapper.deleteByUsernameAndTargetUsername(followEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_FOLLOW, LogCategory.BUSINESS);
         }
+        return num;
     }
 }
