@@ -102,6 +102,21 @@ public class CompositionController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping("/tourist/{compositionId}")
+    @ApiOperation(value = "游客获取单篇作文信息")
+    @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectCompositionByTourist(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
+        CompositionCountModel compositionCountModel = compositionService.selectCountByCompositionId(compositionId);
+        List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("compositionCountModel", compositionCountModel);
+        data.put("commentEntityList", commentEntityList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @LoginRequired(type = UserType.USER)
     @PostMapping("")
     @ApiOperation(value = "用户添加作文")
