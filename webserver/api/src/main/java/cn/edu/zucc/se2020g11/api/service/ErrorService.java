@@ -17,7 +17,6 @@ public class ErrorService
     }
     public int addError(ErrorEntity errorEntity)
     {
-        errorEntity.setErrorType("0");
         errorEntityMapper.insertSelective(errorEntity);
         return errorEntity.getCompositionId();
     }

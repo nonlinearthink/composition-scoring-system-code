@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
  * @author nonlinearthink
  */
 @Component
-public class MessageReceiver {
+public class  MessageReceiver {
     @Value("${subscribe.result-receiver}")
     private String resultReceiver;
 
@@ -41,22 +41,42 @@ public class MessageReceiver {
 
         //取出返回数据
         JSONObject jsonObject = JSONObject.parseObject(msg);
-        int compositionId = jsonObject.getInteger("composition_id");
-        String text = jsonObject.getString("compare_result");
+        int compositionId = jsonObject.getInteger("compositionId");
+        String compareResultWord = jsonObject.getString("compareResultWord");
+        String compareResultGrammar = jsonObject.getString("compareResultGrammar");
+        Double wordScore = jsonObject.getDouble("wordScore")*100;
+        Double grammarScore = jsonObject.getDouble("grammarScore")*100;
+        Double sentenceFluencyScore = jsonObject.getDouble("sentenceFluencyScore")*100;
+        Double lengthScore = jsonObject.getDouble("lengthScore")*100;
+        Double richnessScore = jsonObject.getDouble("richnessScore")*100;
 
-        //更新作文状态
-        CompositionEntity compositionEntity = compositionService.selectCompositionById(compositionId);
-        compositionEntity.setStatus(3);
+        //获取作文评分
+        CompositionEntity compositionEntity = new CompositionEntity();
+        compositionEntity.setCompositionId(compositionId);
+        compositionEntity.setWordScore(wordScore);
+        compositionEntity.setGrammarScore(grammarScore);
+        compositionEntity.setSentenceFluencyScore(sentenceFluencyScore);
+        compositionEntity.setLengthScore(lengthScore);
+        compositionEntity.setRichnessScore(richnessScore);
+        compositionEntity.setScore((int)(wordScore + grammarScore + sentenceFluencyScore + lengthScore + richnessScore) / 5);
         compositionService.updateComposition(compositionEntity, compositionId);
 
-        //语法错误
+        //单词错误
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setCompositionId(compositionId);
-        errorEntity.setText(text);
+        errorEntity.setText(compareResultWord);
+        errorEntity.setErrorType("0");
         errorService.addError(errorEntity);
 
-        String context = jsonObject.getString("processed_context");
-        System.out.println(context);
+        //语法错误
+        errorEntity.setText(compareResultGrammar);
+        errorEntity.setErrorType("1");
+        errorService.addError(errorEntity);
+
+        //更新作文状态
+        compositionEntity = compositionService.selectCompositionById(compositionId);
+        compositionEntity.setStatus(3);
+        compositionService.updateComposition(compositionEntity, compositionId);
     }
 
 }

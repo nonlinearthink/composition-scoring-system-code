@@ -12,10 +12,15 @@
     <result column="visibility" jdbcType="INTEGER" property="visibility" />
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="valid" jdbcType="BIT" property="valid" />
+    <result column="word_score" jdbcType="DOUBLE" property="wordScore" />
+    <result column="grammar_score" jdbcType="DOUBLE" property="grammarScore" />
+    <result column="sentence_fluency_score" jdbcType="DOUBLE" property="sentenceFluencyScore" />
+    <result column="length_score" jdbcType="DOUBLE" property="lengthScore" />
+    <result column="richness_score" jdbcType="DOUBLE" property="richnessScore" />
   </resultMap>
   <sql id="Base_Column_List">
     composition_id, username, release_time, composition_body, status, title, description,
-    visibility, score, valid
+    visibility, score, valid, word_score, grammar_score, sentence_fluency_score, length_score, richness_score
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -31,11 +36,12 @@
     insert into composition (composition_id, username, release_time,
                              composition_body, status, title,
                              description, visibility, score,
-                             valid)
+                             valid, word_score, grammar_score, sentence_fluency_score, length_score, richness_score)
     values (#{compositionId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP},
             #{compositionBody,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
             #{description,jdbcType=VARCHAR}, #{visibility,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
-            #{valid,jdbcType=BIT})
+            #{valid,jdbcType=BIT}, #{wordScore,jdbcType=DOUBLE}, #{grammarScore,jdbcType=DOUBLE},
+            #{sentenceFluencyScore,jdbcType=DOUBLE}, #{lengthScore,jdbcType=DOUBLE}, #{richnessScore,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
     insert into composition
@@ -70,6 +76,21 @@
       <if test="valid != null">
         valid,
       </if>
+      <if test="wordScore != null">
+        word_score,
+      </if>
+      <if test="grammarScore != null">
+        grammar_score,
+      </if>
+      <if test="sentenceFluencyScore != null">
+        sentence_fluency_score,
+      </if>
+      <if test="lengthScore != null">
+        length_score,
+      </if>
+      <if test="richnessScore != null">
+        richness_score,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="compositionId != null">
@@ -102,6 +123,21 @@
       <if test="valid != null">
         #{valid,jdbcType=BIT},
       </if>
+      <if test="wordScore != null">
+        #{wordScore,jdbcType=DOUBLE},
+      </if>
+      <if test="grammarScore != null">
+        #{grammarScore,jdbcType=DOUBLE},
+      </if>
+      <if test="sentenceFluencyScore != null">
+        #{sentenceFluencyScore,jdbcType=DOUBLE},
+      </if>
+      <if test="lengthScore != null">
+        #{lengthScore,jdbcType=DOUBLE},
+      </if>
+      <if test="richnessScore != null">
+        #{richnessScore,jdbcType=DOUBLE},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity">
@@ -131,6 +167,24 @@
       <if test="score != null">
         score = #{score,jdbcType=INTEGER},
       </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=BIT},
+      </if>
+      <if test="wordScore != null">
+        word_score = #{wordScore,jdbcType=DOUBLE},
+      </if>
+      <if test="grammarScore != null">
+        grammar_score = #{grammarScore,jdbcType=DOUBLE},
+      </if>
+      <if test="sentenceFluencyScore != null">
+        sentence_fluency_score = #{sentenceFluencyScore,jdbcType=DOUBLE},
+      </if>
+      <if test="lengthScore != null">
+        length_score = #{lengthScore,jdbcType=DOUBLE},
+      </if>
+      <if test="richnessScore != null">
+        richness_score = #{richnessScore,jdbcType=DOUBLE},
+      </if>
     </set>
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
@@ -144,7 +198,12 @@
         description = #{description,jdbcType=VARCHAR},
         visibility = #{visibility,jdbcType=INTEGER},
         score = #{score,jdbcType=INTEGER},
-        valid = #{valid,jdbcType=BIT}
+        valid = #{valid,jdbcType=BIT},
+        word_score = #{wordScore,jdbcType=DOUBLE},
+        grammar_score = #{grammarScore,jdbcType=DOUBLE},
+        sentence_fluency_score = #{sentenceFluencyScore,jdbcType=DOUBLE},
+        length_score = #{lengthScore,jdbcType=DOUBLE},
+        richness_score = #{richnessScore,jdbcType=DOUBLE}
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </update>
   <select id="selectAllSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.CompositionEntity" resultMap="BaseResultMap">

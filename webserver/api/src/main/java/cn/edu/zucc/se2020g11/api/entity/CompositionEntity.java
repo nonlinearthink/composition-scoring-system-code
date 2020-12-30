@@ -30,4 +30,14 @@ public class CompositionEntity {
     private Integer score;
 
     private Integer valid;
+
+    private Double wordScore;
+
+    private Double grammarScore;
+
+    private Double sentenceFluencyScore;
+
+    private Double lengthScore;
+
+    private Double richnessScore;
 }

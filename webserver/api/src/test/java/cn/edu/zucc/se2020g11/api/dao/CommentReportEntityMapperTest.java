@@ -1,5 +1,6 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
+import cn.edu.zucc.se2020g11.api.entity.CommentReportEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,6 @@ class CommentReportEntityMapperTest
     void selectAll()
     {
         assertThat(commentReportEntityMapper.selectAll()).isNotEmpty()
-                .hasOnlyElementsOfType(CommentReportEntityMapper.class);
+                .hasOnlyElementsOfType(CommentReportEntity.class);
     }
 }
