@@ -232,28 +232,46 @@ function renderRightText(origin) {
   let correctResult = JSON.parse(JSON.stringify(testData));
   // 对数组进行排序
   correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
-  //   // 文章分段
+  // 文章分段
   let paragraphList = origin.split("\n");
   let currentSentence = 0;
-  let result = "";
+  let result = [];
   for (let paraId = 0; paraId < paragraphList.length; paraId++) {
+    let splitTokens = paragraphList[paraId].match(/[.?!]/g);
     let sentenceList = paragraphList[paraId]
-      .split(".")
-      .map(sentence => `${sentence}.`.trim());
-    let paragraph = "";
-    for (let senId = 0; senId < sentenceList.length; senId++) {
-      if (currentSentence == correctResult[0].sen_id) {
-        paragraph +=
-          "<span style='red'>" +
-          mergeSentence(correctResult[0].pred) +
-          "</span>";
+      .split(/[.?!]/)
+      .map(
+        (sentence, index) => `${sentence}${splitTokens[index]}`.trim() + " "
+      );
+    let paragraph = [];
+    for (let senId = 0; senId < sentenceList.length - 1; senId++) {
+      if (
+        correctResult.length > 0 &&
+        currentSentence == correctResult[0].sen_id
+      ) {
+        let advice = mergeSentence(correctResult[0].pred);
+        if (advice != sentenceList[senId]) {
+          paragraph.push({
+            senId: currentSentence,
+            origin: sentenceList[senId],
+            error: true,
+            advice: mergeSentence(correctResult[0].pred)
+          });
+        } else {
+          paragraph.push({
+            senId: currentSentence,
+            origin: sentenceList[senId]
+          });
+        }
+        correctResult.splice(0, 1);
       } else {
-        paragraph += sentenceList[senId];
+        paragraph.push({ senId: currentSentence, origin: sentenceList[senId] });
       }
       currentSentence++;
     }
-    result += "<p>" + paragraph + "</p>";
+    result.push({ paraId, paragraph });
   }
+  // console.log(result);
   return result;
 }
 

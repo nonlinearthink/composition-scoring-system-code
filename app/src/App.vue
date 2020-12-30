@@ -46,8 +46,7 @@ export default {
             name: "chat",
             route: "/chat",
             icon: "chat-o",
-            text: "消息",
-            note: "3"
+            text: "消息"
           },
           { name: "user", route: "/user", icon: "user-circle-o", text: "我的" }
         ]
