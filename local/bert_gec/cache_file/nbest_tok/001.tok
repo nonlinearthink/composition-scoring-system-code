@@ -1,0 +1,62 @@
+Namespace(beam=5, bert_first=True, bert_gates=[1, 1, 1, 1, 1, 1], bert_model_name='bert-base-uncased', bert_output_layer=-1, bert_ratio=1.0, buffer_size=1024, change_ratio=False, cpu=True, criterion='cross_entropy', data='../bert-fuse', dataset_impl='cached', decoder_no_bert=False, diverse_beam_groups=-1, diverse_beam_strength=0.5, encoder_bert_dropout=False, encoder_bert_dropout_ratio=0.25, encoder_bert_mixup=False, encoder_ratio=1.0, finetune_bert=False, force_anneal=None, fp16=False, fp16_init_scale=128, fp16_scale_tolerance=0.0, fp16_scale_window=None, gen_subset='test', input='-', lazy_load=False, left_pad_source='True', left_pad_target='False', lenpen=1, log_format='simple', log_interval=1000, lr_scheduler='fixed', lr_shrink=0.1, mask_cls_sep=False, match_source_len=False, max_len_a=0, max_len_b=200, max_sentences=32, max_source_positions=1024, max_target_positions=1024, max_tokens=None, memory_efficient_fp16=False, min_len=1, min_loss_scale=0.0001, model_overrides='{}', momentum=0.99, nbest=5, no_beamable_mm=False, no_early_stop=False, no_progress_bar=True, no_repeat_ngram_size=0, num_shards=1, num_workers=0, optimizer='nag', path='../bert-fuse/checkpoint_best.pt', prefix_size=0, print_alignment=False, quiet=False, raw_text=False, remove_bpe='@@ ', replace_unk=None, required_batch_size_multiple=8, results_path=None, sacrebleu=False, sampling=False, sampling_topk=-1, score_reference=False, seed=1, shard_id=0, skip_invalid_size_inputs_valid_test=False, source_lang='src', target_lang='trg', task='translation', tbmf_wrapper=False, temperature=1.0, tensorboard_logdir='', threshold_loss_scale=None, unkpen=0, unnormalized=False, upsample_primary=1, user_dir=None, warmup_from_nmt=False, warmup_nmt_file='checkpoint_nmt.pt', warmup_updates=0, weight_decay=0.0)
+| [src] dictionary: 8294 types
+| [trg] dictionary: 8269 types
+| loading model(s) from ../bert-fuse/checkpoint_best.pt
+bert_gates [True, True, True, True, True, True]
+| Sentence buffer size: 1024
+| Type the input sentence and press return:
+S-0	He had little to eat and a large house to live in.
+H-0	-0.0947190672159195	He had little to eat and a large house to live in .
+P-0	-0.0956 -0.1087 -0.0773 -0.1069 -0.0250 -0.1194 -0.1036 -0.0960 -0.0668 -0.1122 -0.0853 -0.1237 -0.1033 -0.1023
+H-0	-0.45463842153549194	He has little to eat and a large house to live in .
+P-0	-0.0956 -5.1202 -0.0926 -0.1069 -0.0244 -0.1288 -0.1010 -0.0965 -0.0696 -0.1123 -0.0879 -0.1234 -0.1036 -0.1021
+H-0	-0.4829196333885193	He had little to eat and a big house to live in .
+P-0	-0.0956 -0.1087 -0.0773 -0.1069 -0.0250 -0.1194 -0.1036 -5.5349 -0.0600 -0.1126 -0.0874 -0.1236 -0.1035 -0.1023
+H-0	-0.5063797235488892	He had little to eat and a larger house to live in .
+P-0	-0.0956 -0.1087 -0.0773 -0.1069 -0.0250 -0.1194 -0.1036 -5.8637 -0.0600 -0.1129 -0.0867 -0.1238 -0.1034 -0.1022
+H-0	-0.5090242624282837	He had little to eat and a large home to live in .
+P-0	-0.0956 -0.1087 -0.0773 -0.1069 -0.0250 -0.1194 -0.1036 -0.0960 -5.8652 -0.1125 -0.0859 -0.1239 -0.1039 -0.1024
+S-1	He had no sooner arrived when he fell ill.
+H-1	-0.18806657195091248	He had no sooner arrived when he fell ill .
+P-1	-0.0898 -0.0947 -0.3739 -0.0806 -0.0605 -0.7403 -0.1052 -0.2237 -0.0964 -0.1015 -0.1020
+H-1	-0.2541610598564148	He had no sooner arrived than he fell ill .
+P-1	-0.0898 -0.0947 -0.3739 -0.0806 -0.0605 -1.3001 -0.1107 -0.3829 -0.1032 -0.0977 -0.1017
+H-1	-0.32017090916633606	He had not arrived sooner when he fell ill .
+P-1	-0.0898 -0.0947 -1.9389 -0.3582 -0.1600 -0.2133 -0.1057 -0.2700 -0.0901 -0.0991 -0.1021
+H-1	-0.39307090640068054	He had no sooner arrived when he felt ill .
+P-1	-0.0898 -0.0947 -0.3739 -0.0806 -0.0605 -0.7403 -0.1052 -2.2800 -0.2948 -0.1020 -0.1019
+H-1	-0.3978501260280609	He had no sooner arrived than he felt ill .
+P-1	-0.0898 -0.0947 -0.3739 -0.0806 -0.0605 -1.3001 -0.1107 -1.5690 -0.4953 -0.1002 -0.1015
+S-2	If you go this way, and you will soon see the hospital.
+H-2	-0.1946486085653305	If you go this way , and you will soon see the hospital .
+P-2	-0.1054 -0.1230 -0.0882 -0.1347 -0.1020 -0.1259 -0.1235 -0.1212 -0.5510 -0.0696 -0.1081 -0.4347 -0.2464 -0.4840 -0.1020
+H-2	-0.2541291415691376	If you go this way , and you will soon see the hospital ,
+P-2	-0.1054 -0.1230 -0.0882 -0.1347 -0.1020 -0.1259 -0.1235 -0.1212 -0.5510 -0.0696 -0.1081 -0.4347 -0.2464 -1.3685 -0.1096
+H-2	-0.2915666401386261	If you go this way , and you soon see the hospital .
+P-2	-0.1054 -0.1230 -0.0882 -0.1347 -0.1020 -0.1259 -0.1235 -0.1212 -1.5964 -0.1810 -0.3788 -0.2388 -0.6612 -0.1018
+H-2	-0.29392433166503906	If you go this way , and you will soon see a hospital .
+P-2	-0.1054 -0.1230 -0.0882 -0.1347 -0.1020 -0.1259 -0.1235 -0.1212 -0.5510 -0.0696 -0.1081 -1.7438 -0.3997 -0.5110 -0.1017
+H-2	-0.3197415769100189	If you go this way , and you soon see the hospital ,
+P-2	-0.1054 -0.1230 -0.0882 -0.1347 -0.1020 -0.1259 -0.1235 -0.1212 -1.5964 -0.1810 -0.3788 -0.2388 -1.0436 -0.1139
+S-3	What a beautiful weather we are having today!
+H-3	-0.2394142746925354	What beautiful weather we are having today !
+P-3	-0.1266 -0.0929 -0.0609 -0.5144 -0.4614 -0.1473 -0.5423 -0.0995 -0.1095
+H-3	-0.3495504558086395	What beautiful weather do we have today !
+P-3	-0.1266 -0.0929 -0.0609 -1.6043 -0.1001 -0.0872 -0.4201 -0.5448 -0.1091
+H-3	-0.3549693822860718	What beautiful weather we have today !
+P-3	-0.1266 -0.0929 -0.0609 -0.5144 -1.5172 -0.3061 -0.1135 -0.1083
+H-3	-0.4389183223247528	What beautiful weather do we have today ?
+P-3	-0.1266 -0.0929 -0.0609 -1.6043 -0.1001 -0.0872 -0.4201 -1.3488 -0.1094
+H-3	-0.4513779878616333	What beautiful weather are we having today !
+P-3	-0.1266 -0.0929 -0.0609 -2.3888 -0.0930 -0.1769 -0.4423 -0.5709 -0.1103
+S-4	Please give my best regard to your parents.
+H-4	-0.15612316131591797	Please give my best regards to your parents .
+P-4	-0.0386 -0.0698 -0.1313 -0.1541 -0.7011 -0.1072 -0.0916 -0.0320 -0.1322 -0.1033
+H-4	-0.17091789841651917	Please give my best regard to your parents .
+P-4	-0.0386 -0.0698 -0.1313 -0.1541 -0.8223 -0.1336 -0.0902 -0.0332 -0.1330 -0.1031
+H-4	-0.46748465299606323	Please give your best regards to your parents .
+P-4	-0.0386 -0.0698 -3.2439 -0.1609 -0.6948 -0.1116 -0.0823 -0.0342 -0.1354 -0.1033
+H-4	-0.48394957184791565	Please give your best regard to your parents .
+P-4	-0.0386 -0.0698 -3.2439 -0.1609 -0.8321 -0.1405 -0.0780 -0.0361 -0.1365 -0.1031
+H-4	-0.5274960994720459	Please give my best regard for your parents .
+P-4	-0.0386 -0.0698 -0.1313 -0.1541 -0.8223 -3.7007 -0.0910 -0.0330 -0.1310 -0.1032
