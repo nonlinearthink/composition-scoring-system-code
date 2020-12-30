@@ -2,48 +2,57 @@
 
 这是一个基于 vue+cordova 的跨平台解决方案。
 
-## 项目启动
+## 快速开始
 
-### 安装依赖
+### 准备工作
+
+*需要提前安装 npm 和 cordova 命令行*
 
 ```shell
+# 安装依赖
 npm install
+# 添加编译平台
+cordova add ios
+cordova add android
 ```
 
-### 格式化代码
+### 编译Vue、打包成Android和iOS应用
 
 ```shell
-npm run lint
+npm run build-app
 ```
 
-### 在开发中调试(支持热重载)
+### 在网页中调试
 
 ```shell
 npm run serve
 ```
 
-### 编译 Vue 代码成 H5 代码
+### 在模拟器中调试
 
 ```shell
-npm run build
+cordova run ios
+cordova run android
 ```
 
-### 打包 H5
+> Android 需要先开启模拟器，再运行 `cordova run android`。iOS 可以直接运行，系统会帮你自动打开模拟器。
 
-*需要安装cordova命令行*
+> iOS 如何指定模拟器？
+> 默认情况下，cordova 运行你 xcode 指定的默认模拟器，如果你想要自定义，可以使用 xcode 来运行。
 
-```shell
-cordova build android
-cordova build ios
-```
+### 真机调试
 
-### 编译打包一步到位
+#### Android
 
-*需要安装cordova命令行*
+找到 `platforms/android/app/build/outputs/apk/debug/app-debug.apk`。
 
-```shell
-npm run build-app
-```
+安装到你的安卓设备即可。
+
+#### iOS
+
+找到 `platforms/批多多.xcodeproj`，使用 xcode 打开。
+
+
 
 ### 自定义配置
 

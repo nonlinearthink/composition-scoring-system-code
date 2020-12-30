@@ -1,0 +1,6 @@
+redis:
+  host: 47.98.219.27
+  port: 6379
+  password: 123456
+  pool:
+    max-active: 10
