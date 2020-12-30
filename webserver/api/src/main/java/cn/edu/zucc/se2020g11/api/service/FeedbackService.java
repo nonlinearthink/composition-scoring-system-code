@@ -27,9 +27,9 @@ public class FeedbackService
     {
         return feedbackEntityMapper.selectAll();
     }
-    public void updateFeedback(FeedbackEntity feedbackEntity, Integer feedbackId)
+    public int updateFeedback(FeedbackEntity feedbackEntity, Integer feedbackId)
     {
         feedbackEntity.setFeedbackId(feedbackId);
-        feedbackEntityMapper.updateByPrimaryKeySelective(feedbackEntity);
+        return feedbackEntityMapper.updateByPrimaryKeySelective(feedbackEntity);
     }
 }

@@ -59,16 +59,17 @@ public class SupportService
         List<SupportEntity> supportEntityList = supportEntityMapper.selectByUsernameAndCompositionId(supportEntity);
         return supportEntityList.size() > 0;
     }
-    public void deleteSupport(SupportEntity supportEntity)
+    public int deleteSupport(SupportEntity supportEntity)
     {
         int num = supportEntityMapper.deleteByUsernameAndCompositionId(supportEntity);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_SUPPORT, LogCategory.BUSINESS);
         }
+        return num;
     }
-    public void deleteSupportByCompositionId(Integer compositionId)
+    public int deleteSupportByCompositionId(Integer compositionId)
     {
-        supportEntityMapper.deleteByCompositionId(compositionId);
+        return supportEntityMapper.deleteByCompositionId(compositionId);
     }
 
 }

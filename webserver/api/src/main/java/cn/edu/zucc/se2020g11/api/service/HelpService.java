@@ -22,17 +22,17 @@ public class HelpService
         helpEntityMapper.insert(helpEntity);
         return helpEntity.getHelpId();
     }
-    public void deleteHelp(Integer helpId)
+    public int deleteHelp(Integer helpId)
     {
-        helpEntityMapper.deleteByPrimaryKey(helpId);
+        return helpEntityMapper.deleteByPrimaryKey(helpId);
     }
     public List<HelpEntity> selectAllHelps()
     {
         return helpEntityMapper.selectAll();
     }
-    public void updateHelp(HelpEntity helpEntity, Integer helpId)
+    public int updateHelp(HelpEntity helpEntity, Integer helpId)
     {
         helpEntity.setHelpId(helpId);
-        helpEntityMapper.updateByPrimaryKeySelective(helpEntity);
+        return helpEntityMapper.updateByPrimaryKeySelective(helpEntity);
     }
 }

@@ -26,13 +26,13 @@ public class SystemMessageService
     {
         return systemMessageEntityMapper.selectAll();
     }
-    public void deleteSystemMessage(Integer sMessageId)
+    public int deleteSystemMessage(Integer sMessageId)
     {
-        systemMessageEntityMapper.deleteByPrimaryKey(sMessageId);
+        return systemMessageEntityMapper.deleteByPrimaryKey(sMessageId);
     }
-    public void updateSystemMessage(SystemMessageEntity systemMessageEntity, Integer sMessageId)
+    public int updateSystemMessage(SystemMessageEntity systemMessageEntity, Integer sMessageId)
     {
         systemMessageEntity.setSMessageId(sMessageId);
-        systemMessageEntityMapper.updateByPrimaryKeySelective(systemMessageEntity);
+        return systemMessageEntityMapper.updateByPrimaryKeySelective(systemMessageEntity);
     }
 }

@@ -38,19 +38,19 @@ public class CompositionService
     {
         return compositionEntityMapper.selectByPrimaryKey(compositionId);
     }
-    public void deleteComposition(Integer compositionId)
+    public int deleteComposition(Integer compositionId)
     {
-        compositionEntityMapper.deleteByPrimaryKey(compositionId);
+        return compositionEntityMapper.deleteByPrimaryKey(compositionId);
     }
-    public void updateComposition(CompositionEntity compositionEntity, Integer compositionId)
+    public int updateComposition(CompositionEntity compositionEntity, Integer compositionId)
     {
         compositionEntity.setCompositionId(compositionId);
-        compositionEntityMapper.updateByPrimaryKeySelective(compositionEntity);
+        return compositionEntityMapper.updateByPrimaryKeySelective(compositionEntity);
     }
-    public void updateCompositionByValid(CompositionEntity compositionEntity, Integer compositionId)
+    public int updateCompositionByValid(CompositionEntity compositionEntity, Integer compositionId)
     {
         compositionEntity.setCompositionId(compositionId);
-        compositionEntityMapper.updateByValid(compositionEntity);
+        return compositionEntityMapper.updateByValid(compositionEntity);
     }
     public CompositionCountModel selectCountByCompositionId(Integer compositionId){
         return compositionEntityMapper.selectCountByCompositionId(compositionId);

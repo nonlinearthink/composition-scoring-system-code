@@ -30,9 +30,9 @@ public class CommentService
     {
         return commentEntityMapper.selectAllSelective(compositionId);
     }
-    public CommentEntity selectCommentById(Integer compositionId)
+    public CommentEntity selectCommentById(Integer commentId)
     {
-        return commentEntityMapper.selectByPrimaryKey(compositionId);
+        return commentEntityMapper.selectByPrimaryKey(commentId);
     }
     public List<CommentViewModel> selectCommentView(String targetUsername)
     {
@@ -44,20 +44,21 @@ public class CommentService
         commentEntityMapper.insert(commentEntity);
         return commentEntity.getCommentId();
     }
-    public void deleteComment(Integer commentId)
+    public int deleteComment(Integer commentId)
     {
         int num = commentEntityMapper.deleteByPrimaryKey(commentId);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_SUPPORT, LogCategory.BUSINESS);
         }
+        return num;
     }
-    public void deleteCommentByCompositionId(Integer compositionId)
+    public int deleteCommentByCompositionId(Integer compositionId)
     {
-        commentEntityMapper.deleteByCompositionId(compositionId);
+        return commentEntityMapper.deleteByCompositionId(compositionId);
     }
-    public void updateCommentByStatus(CommentEntity commentEntity, Integer commentId)
+    public int updateCommentByStatus(CommentEntity commentEntity, Integer commentId)
     {
         commentEntity.setCommentId(commentId);
-        commentEntityMapper.updateByStatus(commentEntity);
+        return commentEntityMapper.updateByStatus(commentEntity);
     }
 }
