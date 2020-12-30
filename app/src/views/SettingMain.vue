@@ -21,9 +21,9 @@
           {{ item.text }}
         </template>
       </van-cell>
-      <van-cell size="large" center clickable>
+      <van-cell v-if="isLogin" size="large" center clickable @click="onQuit()">
         <van-row type="flex" justify="space-around">
-          <van-col style="color: red; font-size: 1.2rem;" @click="onQuit()">
+          <van-col style="color: red; font-size: 1.2rem;">
             退出账号
           </van-col>
         </van-row>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -66,6 +67,9 @@ export default {
       enableQuitConfirm: false
     };
   },
+  computed: {
+    ...mapState(["isLogin"])
+  },
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -74,8 +78,21 @@ export default {
       this.enableQuitConfirm = true;
     },
     onConfirmQuit() {
-      localStorage.clear();
-      this.$router.replace("/login");
+      this.logout();
+      this.$router.replace("/");
+    },
+    ...mapMutations(["logout"])
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log(to);
+    if (
+      !this.isLogin &&
+      (to.path == "/setting/user" || to.path == "/setting/security")
+    ) {
+      this.$toast("请先登录");
+      next(false);
+    } else {
+      next();
     }
   }
 };

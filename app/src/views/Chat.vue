@@ -18,6 +18,7 @@
       </van-row>
     </div>
     <van-cell-group title="消息列表" class="message-list">
+      <div style="text-align: center; color: red;">暂不支持使用</div>
       <van-row
         v-for="item in layout.messageListItem"
         :key="item.id"
@@ -61,7 +62,7 @@ export default {
             name: "comment",
             text: "回复我的",
             icon: "comment-o",
-            to: "comment"
+            to: "/comment"
           },
           {
             id: "fan",
@@ -83,19 +84,20 @@ export default {
           }
         ],
         messageListItem: [
-          {
-            id: 0,
-            userNickame: "王天宇",
-            lastMessage: {
-              content: "你个冒牌货，我才是真正的天龙人啊啊啊啊啊啊啊啊",
-              sendTime: 1607857612000
-            },
-            avatarUrl: null
-          }
+          // {
+          //   id: 0,
+          //   userNickame: "王天宇",
+          //   lastMessage: {
+          //     content: "你个冒牌货，我才是真正的天龙人啊啊啊啊啊啊啊啊",
+          //     sendTime: 1607857612000
+          //   },
+          //   avatarUrl: null
+          // }
         ]
       }
     };
   },
+
   methods: {
     showTime(timestamp) {
       let diff = new Date().getTime() - timestamp;

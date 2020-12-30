@@ -217,6 +217,7 @@ export default {
         .then(res => {
           // 界面跳转
           this.$router.push("/login");
+          this.$toast("注册成功");
           console.log(res.data);
         })
         .catch(err => {

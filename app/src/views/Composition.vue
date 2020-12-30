@@ -65,45 +65,52 @@
             </van-row>
           </van-col>
         </van-row>
-        <van-divider
+        <van-tabs
+          v-model="displayMode"
+          type="card"
+          swipeable
+          color="#02a7f0"
+          :style="{ marginTop: '2rem', marginRight: '0' }"
+        >
+          <van-tab title="原文">
+            <van-row v-html="renderText(composition.compositionBody)"></van-row>
+          </van-tab>
+          <van-tab title="语法建议">
+            <div v-for="paragraph in grammerErrorModel" :key="paragraph.paraId">
+              <div
+                v-for="sentence in paragraph.paragraph.filter(
+                  item => item.error
+                )"
+                :key="sentence.senId"
+                :style="{ margin: '0.5rem 0' }"
+              >
+                原文:
+                <span v-if="sentence.error" @click.stop="changeDisplaySentence">
+                  {{ sentence.origin }}
+                </span>
+                <br />
+                修改建议:
+                <span
+                  v-if="sentence.error"
+                  style="color: orange;"
+                  @click.stop="changeDisplaySentence"
+                >
+                  {{ sentence.advice }}
+                </span>
+              </div>
+            </div>
+          </van-tab>
+        </van-tabs>
+        <div
           :style="{
             color: '#1989fa',
             borderColor: '#1989fa',
-            padding: '0 16px',
-            fontSize: '1.2rem'
+            padding: '0.5rem 0',
+            fontSize: '1.5rem'
           }"
         >
-          正文
-        </van-divider>
-        <van-row>
-          <van-tag
-            color="#1989fa"
-            plain
-            style="margin-right: 1rem;"
-            @click="showMode = 0"
-          >
-            原文
-          </van-tag>
-          <van-tag color="red" plain @click="showMode = 1">纠错后</van-tag>
-        </van-row>
-        <van-row
-          v-if="showMode == 0"
-          v-html="renderText(composition.compositionBody)"
-        />
-        <van-row
-          v-if="showMode == 1"
-          v-html="renderRightText(composition.compositionBody)"
-        />
-        <van-divider
-          :style="{
-            color: '#1989fa',
-            borderColor: '#1989fa',
-            padding: '0 16px',
-            fontSize: '1.2rem'
-          }"
-        >
-          说明
-        </van-divider>
+          <van-icon name="chat-o" />
+        </div>
         <van-row>{{ composition.description }}</van-row>
       </div>
       <div class="comment">
@@ -308,11 +315,14 @@ export default {
       isFollow: false,
       isSupport: false,
       showMode: 0,
-      testData: []
+      testData: [],
+      grammerErrorModel: null,
+      spellErrorModel: null,
+      displayMode: 0
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user", "isLogin"]),
     writingBarHeight() {
       return this.$refs.writingBar.clientHeight;
     }
@@ -332,12 +342,18 @@ export default {
           .then(res => {
             console.log(res.data);
             this.testData = res.data.data.JSONArray;
+            this.grammerErrorModel = this.parseGrammerError(
+              this.composition.compositionBody,
+              res.data.data.JSONArray
+            );
           })
           .catch(err => console.error(err.response.data));
-        this.axios
-          .post(`/history/${this.$route.query.compositionId}`)
-          .then(res => console.log(res.data))
-          .catch(err => console.error(err.response.data));
+        if (this.isLogin) {
+          this.axios
+            .post(`/history/${this.$route.query.compositionId}`)
+            .then(res => console.log(res.data))
+            .catch(err => console.error(err.response.data));
+        }
       })
       .catch(err => console.error(err.response.data));
   },
@@ -366,35 +382,65 @@ export default {
       // 首字母替换成大写
       return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
     },
-    renderRightText(origin) {
+    parseGrammerError(text, errorInfo) {
       // 对数组执行深拷贝
-      let correctResult = JSON.parse(JSON.stringify(this.testData));
+      let correctResult = JSON.parse(JSON.stringify(errorInfo));
       // 对数组进行排序
       correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
-      //   // 文章分段
-      let paragraphList = origin.split("\n");
-      let currentSentence = 0;
-      let result = "";
+      // 文章分段
+      let paragraphList = text.split("\n");
+      let currentSentence = 0; // 记录句子ID
+      let result = []; // 存放结果
       for (let paraId = 0; paraId < paragraphList.length; paraId++) {
+        // 匹配分隔符
+        let splitTokens = paragraphList[paraId].match(/[.?!]/g);
+        // 按分隔符分句和格式化
         let sentenceList = paragraphList[paraId]
-          .split(".")
-          .map(sentence => `${sentence}.`.trim());
-        let paragraph = "";
-        for (let senId = 0; senId < sentenceList.length; senId++) {
+          .split(/[.?!]/)
+          .map(
+            (sentence, index) => `${sentence}${splitTokens[index]}`.trim() + " "
+          );
+        let paragraph = []; // 存放段落
+        for (let senId = 0; senId < sentenceList.length - 1; senId++) {
+          // 如果句子ID和纠错句子ID匹配上，则进入处理
           if (
             correctResult.length > 0 &&
             currentSentence == correctResult[0].sen_id
           ) {
-            paragraph +=
-              "<span>" + this.mergeSentence(correctResult[0].pred) + "</span>";
+            // 合并句子
+            let advice = this.mergeSentence(correctResult[0].pred);
+            // 判断是否相同
+            if (advice != sentenceList[senId]) {
+              // 不同则添加错误信息
+              paragraph.push({
+                senId: currentSentence,
+                origin: sentenceList[senId],
+                error: true,
+                advice
+              });
+            } else {
+              // 相同则直接记录
+              paragraph.push({
+                senId: currentSentence,
+                origin: sentenceList[senId]
+              });
+            }
+            // 删除一条纠错记录
             correctResult.splice(0, 1);
           } else {
-            paragraph += sentenceList[senId];
+            // 直接记录
+            paragraph.push({
+              senId: currentSentence,
+              origin: sentenceList[senId]
+            });
           }
+          // 更新当前的句子ID
           currentSentence++;
         }
-        result += "<p>" + paragraph + "</p>";
+        // 添加段落
+        result.push({ paraId, paragraph });
       }
+      // 返回结果
       return result;
     },
     formatCount(num) {

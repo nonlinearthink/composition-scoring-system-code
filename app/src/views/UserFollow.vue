@@ -69,39 +69,41 @@ export default {
     followList() {
       return this.originList.filter(item => item.follow);
     },
-    ...mapState(["user"])
+    ...mapState(["user", "isLogin"])
   },
   created() {
     this.activeTab = Number(this.$route.query.tab);
-    this.axios
-      .get(`/follow/${this.user.username}`)
-      .then(res => {
-        console.log(res.data);
-        res.data.data.followList.forEach(follow => {
-          this.originList.push({ ...follow, follow: true, fans: false });
-        });
-        this.axios
-          .get(`/follow/${this.user.username}/follower`)
-          .then(res => {
-            console.log(res.data);
-            res.data.data.followList.forEach(fan => {
-              let index = this.originList.findIndex(
-                follow => follow.username == fan.username
-              );
-              if (index >= 0) {
-                this.originList[index].fans = true;
-              } else {
-                this.originList.push({ ...fan, follow: false, fans: true });
-              }
-            });
-          })
-          .catch(err => {
-            console.error(err.response.data);
+    if (this.isLogin) {
+      this.axios
+        .get(`/follow/${this.user.username}`)
+        .then(res => {
+          console.log(res.data);
+          res.data.data.followList.forEach(follow => {
+            this.originList.push({ ...follow, follow: true, fans: false });
           });
-      })
-      .catch(err => {
-        console.error(err.response.data);
-      });
+          this.axios
+            .get(`/follow/${this.user.username}/follower`)
+            .then(res => {
+              console.log(res.data);
+              res.data.data.followList.forEach(fan => {
+                let index = this.originList.findIndex(
+                  follow => follow.username == fan.username
+                );
+                if (index >= 0) {
+                  this.originList[index].fans = true;
+                } else {
+                  this.originList.push({ ...fan, follow: false, fans: true });
+                }
+              });
+            })
+            .catch(err => {
+              console.error(err.response.data);
+            });
+        })
+        .catch(err => {
+          console.error(err.response.data);
+        });
+    }
   },
   methods: {
     onRouteBack() {

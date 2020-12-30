@@ -6,6 +6,7 @@
       background="#02a7f0"
       shape="round"
       class="search-bar"
+      @click="$toast.fail('此功能暂不支持')"
     />
     <v-touch
       @swipeleft="onSwipeLeft($event)"
@@ -47,7 +48,7 @@
             </div>
           </div>
         </van-tab>
-        <van-tab title="关注">
+        <van-tab v-if="user" title="关注">
           <van-loading
             v-if="!followList || !followCompositions"
             color="#1989fa"
@@ -174,19 +175,21 @@ export default {
       this.active = this.routeAnchor;
       this.setRouteAnchor(-1);
     }
-    this.axios
-      .get(`/follow/${this.user.username}`)
-      .then(res => {
-        console.log(res);
-        this.followList = [];
-        res.data.data.followList.forEach(follow => {
-          this.followList.push({
-            username: follow.username,
-            avatarUrl: null
+    if (this.user) {
+      this.axios
+        .get(`/follow/${this.user.username}`)
+        .then(res => {
+          console.log(res);
+          this.followList = [];
+          res.data.data.followList.forEach(follow => {
+            this.followList.push({
+              username: follow.username,
+              avatarUrl: null
+            });
           });
-        });
-      })
-      .catch(err => console.error(err.response.data));
+        })
+        .catch(err => console.error(err.response.data));
+    }
     this.axios
       .get("/home/follow")
       .then(res => {
@@ -249,6 +252,9 @@ export default {
   width: 100vw;
   padding-right: 2rem;
   padding-left: 2rem;
+  // 兼容iOS顶部安全区域适配
+  padding-top: calc(#{$blank-size} + constant(safe-area-inset-top));
+  padding-top: calc(#{$blank-size} + env(safe-area-inset-top));
 }
 .follow-list {
   overflow-x: auto;
