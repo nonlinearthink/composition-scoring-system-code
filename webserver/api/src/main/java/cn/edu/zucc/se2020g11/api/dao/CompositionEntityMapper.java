@@ -3,9 +3,11 @@ package cn.edu.zucc.se2020g11.api.dao;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.CompositionCountModel;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface CompositionEntityMapper {
     int deleteByPrimaryKey(Integer compositionId);
 

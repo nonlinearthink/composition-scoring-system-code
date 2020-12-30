@@ -97,11 +97,11 @@
       </if>
     </where>
   </select>
-  <delete id="deleteByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
+  <delete id="deleteByUsernameAndTargetUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity">
     delete from follow
     where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}
   </delete>
-  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
+  <select id="selectByUsernameAndTargetUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.FollowEntity" resultMap="BaseResultMap">
     select *
     from follow
     where username = #{username,jdbcType=VARCHAR} and target_username = #{targetUsername,jdbcType=VARCHAR}

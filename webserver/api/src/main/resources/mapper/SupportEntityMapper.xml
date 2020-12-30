@@ -92,7 +92,7 @@
     delete from support
     where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
-  <select id="selectByUsername" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">
+  <select id="selectByUsernameAndCompositionId" parameterType="cn.edu.zucc.se2020g11.api.entity.SupportEntity" resultMap="BaseResultMap">
     select *
     from support
     where username = #{username,jdbcType=VARCHAR} and composition_id = #{compositionId,jdbcType=INTEGER}

@@ -28,7 +28,7 @@ public class FavoriteService
     }
     public int addFavorite(FavoriteEntity favoriteEntity)
     {
-        if(favoriteEntityMapper.selectByUsername(favoriteEntity).size() > 0){
+        if(favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity).size() > 0){
             throw new BaseException(ErrorDictionary.REPEAT_FAVORITE, LogCategory.BUSINESS);
         }
         favoriteEntityMapper.insert(favoriteEntity);
@@ -51,7 +51,7 @@ public class FavoriteService
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         favoriteEntity.setUsername(username);
         favoriteEntity.setCompositionId(compositionId);
-        List<FavoriteEntity> favoriteEntityList = favoriteEntityMapper.selectByUsername(favoriteEntity);
+        List<FavoriteEntity> favoriteEntityList = favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity);
         return favoriteEntityList.size() > 0;
     }
     public void deleteFavorite(FavoriteEntity favoriteEntity)

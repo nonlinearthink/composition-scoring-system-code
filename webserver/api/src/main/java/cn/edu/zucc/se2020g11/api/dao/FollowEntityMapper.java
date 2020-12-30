@@ -1,13 +1,15 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface FollowEntityMapper {
     int deleteByPrimaryKey(Integer followId);
 
-    int deleteByUsername(FollowEntity record);
+    int deleteByUsernameAndTargetUsername(FollowEntity record);
 
     int insert(FollowEntity record);
 
@@ -23,5 +25,5 @@ public interface FollowEntityMapper {
 
     List<FollowEntity> selectAllSelectiveByUser(FollowEntity record);
 
-    List<FollowEntity> selectByUsername(FollowEntity record);
+    List<FollowEntity> selectByUsernameAndTargetUsername(FollowEntity record);
 }
