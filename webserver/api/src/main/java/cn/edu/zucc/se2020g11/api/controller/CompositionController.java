@@ -11,11 +11,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,9 @@ import java.util.Map;
 @Api(value = "CompositionController")
 public class CompositionController {
 
+    @Value("${subscribe.task-publisher}")
+    private String taskPublisher;
+    RedisMessageMqService messageMqService;
     private final CompositionService compositionService;
     private final SupportService supportService;
     private final FavoriteService favoriteService;
@@ -36,7 +41,8 @@ public class CompositionController {
     private final FollowService followService;
 
     @Autowired(required = false)
-    public CompositionController(CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, FollowService followService) {
+    public CompositionController(RedisMessageMqService messageMqService, CompositionService compositionService, SupportService supportService, FavoriteService favoriteService, CommentService commentService, PermissionService permissionService, FollowService followService) {
+        this.messageMqService = messageMqService;
         this.compositionService = compositionService;
         this.supportService = supportService;
         this.favoriteService = favoriteService;
@@ -108,6 +114,12 @@ public class CompositionController {
     public ResponseEntity<ApiResult<Map<String, Object>>> addComposition(@RequestBody CompositionEntity compositionEntity, HttpServletRequest request) {
         compositionEntity.setUsername((String)request.getAttribute("username"));
         int id = compositionService.addComposition(compositionEntity);
+        Map<String, Object> body = new HashMap<>(1);
+        body.put("compositionId", compositionEntity.getCompositionId());
+        body.put("compositionBody", compositionEntity.getCompositionBody());
+        if(compositionEntity.getStatus()==2){
+            messageMqService.push(taskPublisher, (Serializable) body);
+        }
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("添加成功");
         Map<String, Object> data = new HashMap<>(1);
@@ -151,6 +163,12 @@ public class CompositionController {
                                                           @RequestBody CompositionEntity compositionEntity, HttpServletRequest request) {
         permissionService.validateComposition((String)request.getAttribute("username"), compositionId);
         compositionService.updateComposition(compositionEntity, compositionId);
+        Map<String, Object> body = new HashMap<>(1);
+        body.put("compositionId", compositionEntity.getCompositionId());
+        body.put("compositionBody", compositionEntity.getCompositionBody());
+        if(compositionEntity.getStatus()==2){
+            messageMqService.push(taskPublisher, (Serializable) body);
+        }
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);

@@ -1,7 +1,9 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UserEntityMapper {
     int deleteByPrimaryKey(String username);
 
