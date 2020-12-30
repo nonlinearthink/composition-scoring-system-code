@@ -43,6 +43,12 @@
           :follow="item.follow"
           :avatar="item.avatarUrl"
           @follow="onChangeFollow(item)"
+          @click-avatar="
+            onRouteChange({
+              path: '/user/home',
+              query: { user: item.username }
+            })
+          "
         />
       </van-tab>
     </van-tabs>
@@ -119,6 +125,7 @@ export default {
           .post(`/follow/${item.username}`)
           .then(res => {
             console.log(res.data);
+            this.$toast("添加关注");
           })
           .catch(err => {
             console.error(err.response.data);
@@ -128,6 +135,7 @@ export default {
           .delete(`/follow/${item.username}`)
           .then(res => {
             console.log(res.data);
+            this.$toast("取消关注");
           })
           .catch(err => {
             console.error(err.response.data);

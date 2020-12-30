@@ -9,6 +9,7 @@
       @click="$toast.fail('此功能暂不支持')"
     />
     <v-touch
+      :swipe-options="{ direction: 'horizontal' }"
       @swipeleft="onSwipeLeft($event)"
       @swiperight="onSwipeRight($event)"
     >
@@ -68,6 +69,12 @@
                     fit="cover"
                     round
                     :src="item.avatarUrl ? item.avatarUrl : defaultAvatar"
+                    @click="
+                      onRouteChange({
+                        path: '/user/home',
+                        query: { user: item.username }
+                      })
+                    "
                   />
                 </van-row>
                 <van-row class="follow-list-username">
@@ -216,18 +223,22 @@ export default {
       .then(res => {
         console.log(res);
         this.freshCompositions = res.data.data.newCardModelList;
+        this.freshCompositions.sort((a, b) => b.releaseTime - a.releaseTime);
       })
       .catch(err => console.error(err.response.data));
   },
   methods: {
     onSwipeLeft() {
-      if (this.active > 0) {
-        this.active -= 1;
+      if (this.active >= 0) {
+        this.active += 1;
       }
+    },
+    onRouteChange(to) {
+      this.$router.push(to);
     },
     onSwipeRight() {
       if (this.active <= 3) {
-        this.active += 1;
+        this.active -= 1;
       }
     },
     onEnterComposition(composition) {

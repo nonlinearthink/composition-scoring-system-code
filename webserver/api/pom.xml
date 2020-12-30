@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.edu.zucc.se2020g11</groupId>
     <artifactId>api.business</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>piduoduo-api-business</name>
     <description>Demo project for Spring Boot</description>
 
@@ -187,13 +187,13 @@
                 <configuration>
                     <mainClass>cn.edu.zucc.se2020g11.api.ApiServerApplication</mainClass>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
             <!-- Mybatis Generator Maven 插件 -->
 <!--            <plugin>-->

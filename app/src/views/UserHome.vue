@@ -150,6 +150,12 @@ export default {
     },
     showSignature(text) {
       return text ? text : "这位天龙人很懒，什么都没写呢";
+    },
+    onEnterComposition(item) {
+      this.$router.push({
+        path: "/composition",
+        query: { compositionId: item.compositionId }
+      });
     }
   }
 };

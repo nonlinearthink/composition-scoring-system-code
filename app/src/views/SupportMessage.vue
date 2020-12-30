@@ -66,6 +66,7 @@ export default {
         .then(res => {
           console.log(res.data);
           this.supportList = res.data.data.supportViewModelList;
+          this.loading = false;
         })
         .catch(err => console.error(err.response.data));
     } else {
