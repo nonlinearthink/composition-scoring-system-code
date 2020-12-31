@@ -41,6 +41,24 @@ public class CompositionCountModel
     @NotNull(message = "releaseTime不能为空")
     private Date releaseTime;
 
+    @NotNull(message = "score不能为空")
+    private Double score;
+
+    @NotNull(message = "wordScore不能为空")
+    private Double wordScore;
+
+    @NotNull(message = "wordScore不能为空")
+    private Double grammarScore;
+
+    @NotNull(message = "wordScore不能为空")
+    private Double sentenceFluencyScore;
+
+    @NotNull(message = "wordScore不能为空")
+    private Double lengthScore;
+
+    @NotNull(message = "wordScore不能为空")
+    private Double richnessScore;
+
     @NotNull(message = "favoriteCount不能为空")
     private Integer favoriteCount;
 
