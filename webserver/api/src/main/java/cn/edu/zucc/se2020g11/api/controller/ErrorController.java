@@ -36,11 +36,11 @@ public class ErrorController
         this.errorService = errorService;
     }
 
-    @GetMapping("/{compositionId}")
+    @GetMapping("/{compositionId}/{errorType}")
     @ApiOperation(value = "获取作文批改信息")
     @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectError(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
-        ErrorEntity errorEntity = errorService.selectError(compositionId);
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectError(@PathVariable("compositionId") Integer compositionId, @PathVariable("errorType") String errorType) {
+        ErrorEntity errorEntity = errorService.selectError(compositionId, errorType);
         JSONArray jsonArray = JSONObject.parseArray(errorEntity.getText());
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");

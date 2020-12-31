@@ -20,9 +20,9 @@ public class ErrorService
         errorEntityMapper.insertSelective(errorEntity);
         return errorEntity.getCompositionId();
     }
-    public ErrorEntity selectError(Integer compositionId)
+    public ErrorEntity selectError(Integer compositionId, String errorType)
     {
-        return errorEntityMapper.selectByCompositionId(compositionId);
+        return errorEntityMapper.selectByCompositionIdAndErrorType(compositionId, errorType);
     }
     public int deleteErrorByCompositionId(Integer compositionId)
     {

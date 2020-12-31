@@ -22,7 +22,7 @@ class ErrorEntityMapperTest
     @Test
     void selectByCompositionId()
     {
-        assertThat(errorEntityMapper.selectByCompositionId(1)).isInstanceOf(ErrorEntity.class);
+        assertThat(errorEntityMapper.selectByCompositionIdAndErrorType(1, "0")).isInstanceOf(ErrorEntity.class);
     }
 
     @Test

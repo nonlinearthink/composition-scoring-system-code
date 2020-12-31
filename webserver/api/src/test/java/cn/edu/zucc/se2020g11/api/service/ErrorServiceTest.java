@@ -34,7 +34,7 @@ class ErrorServiceTest
     @Test
     void selectError()
     {
-        ErrorEntity errorEntity = errorService.selectError(1);
+        ErrorEntity errorEntity = errorService.selectError(1, "1");
 
         assertThat(errorEntity).isInstanceOf(ErrorEntity.class);
     }
