@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class HistoryService
@@ -36,15 +38,18 @@ public class HistoryService
     public List<HistoryModel> selectHistoryByUser(String username)
     {
         List<HistoryEntity> historyEntityList = historyEntityMapper.selectHistoryByUser(username);
+        HashSet<Integer> cache = new HashSet<>();
         List<HistoryModel> historyModelList = new ArrayList<>();
-        for(HistoryEntity h : historyEntityList){
-            HistoryModel historyModel = new HistoryModel();
-            CompositionEntity compositionEntity = compositionEntityMapper.selectByPrimaryKey(h.getCompositionId());
-            historyModel.setNickname(userEntityMapper.selectByPrimaryKey(username).getNickname());
-            historyModel.setTitle(compositionEntity.getTitle());
-            historyModel.setCompositionBody(compositionEntity.getCompositionBody());
-            historyModel.setTime(h.getTime());
-            historyModelList.add(historyModel);
+        for(HistoryEntity h :historyEntityList){
+            if(cache.add(h.getCompositionId())){
+                HistoryModel historyModel = new HistoryModel();
+                CompositionEntity compositionEntity = compositionEntityMapper.selectByPrimaryKey(h.getCompositionId());
+                historyModel.setNickname(userEntityMapper.selectByPrimaryKey(username).getNickname());
+                historyModel.setTitle(compositionEntity.getTitle());
+                historyModel.setCompositionBody(compositionEntity.getCompositionBody());
+                historyModel.setTime(h.getTime());
+                historyModelList.add(historyModel);
+            }
         }
         return  historyModelList;
     }
