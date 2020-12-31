@@ -43,7 +43,11 @@
               <van-image
                 fit="cover"
                 class="preview-image"
-                :src="require('../assets/images/default-background.jpeg')"
+                :src="
+                  require(`../assets/images/background/background-${(item.articleId %
+                    10) +
+                    1}.png`)
+                "
                 radius="0.5rem"
               />
             </div>

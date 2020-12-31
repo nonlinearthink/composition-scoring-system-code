@@ -1,6 +1,13 @@
 <template>
   <div id="login-page">
-    <van-nav-bar title="登录" fixed placeholder safe-area-inset-top />
+    <van-nav-bar
+      title="登录"
+      fixed
+      placeholder
+      safe-area-inset-top
+      left-arrow
+      @click-left="$router.go(-1)"
+    />
     <app-logo class="logo-t" />
     <van-form @submit="onSubmit">
       <van-field
@@ -38,14 +45,11 @@
       </div>
     </van-form>
     <van-row class="options">
-      <van-col span="8" class="a-text" @click="onChangeRoute('/signup')">
+      <van-col span="12" class="a-text" @click="onChangeRoute('/signup')">
         注册新用户
       </van-col>
-      <van-col span="8" class="a-text" @click="onChangeRoute('/')">
-        游客登录
-      </van-col>
       <van-col
-        span="8"
+        span="12"
         class="a-text"
         @click="onChangeRoute('/forget-password')"
       >

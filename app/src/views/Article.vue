@@ -11,7 +11,11 @@
     <van-image
       fit="cover"
       class="preview-image"
-      :src="require('../assets/images/default-background.jpeg')"
+      :src="
+        require(`../assets/images/background/background-${(article.articleId %
+          10) +
+          1}.png`)
+      "
     />
     <div class="content">
       <van-row class="title">

@@ -209,7 +209,6 @@
                   <van-icon name="star-o" size="1.2rem" />
                   {{ formatCount(composition.favoriteCount) }}
                 </van-row>
-                <van-row>收藏</van-row>
               </van-col>
               <van-col
                 v-else
@@ -221,7 +220,6 @@
                   <van-icon name="star-o" size="1.2rem" />
                   {{ formatCount(composition.favoriteCount) }}
                 </van-row>
-                <van-row>收藏</van-row>
               </van-col>
               <van-col
                 v-if="!isSupport"
@@ -232,7 +230,6 @@
                   <van-icon name="good-job-o" size="1.2rem" />
                   {{ formatCount(composition.supportCount) }}
                 </van-row>
-                <van-row>点赞</van-row>
               </van-col>
               <van-col
                 v-else
@@ -244,14 +241,10 @@
                   <van-icon name="good-job-o" size="1.2rem" />
                   {{ formatCount(composition.supportCount) }}
                 </van-row>
-                <van-row>点赞</van-row>
               </van-col>
               <van-col class="action-button" @click="onClickCompositionReport">
                 <van-row>
                   <van-icon name="warn-o" size="1.2rem" />
-                </van-row>
-                <van-row>
-                  举报
                 </van-row>
               </van-col>
             </van-row>
