@@ -7,7 +7,7 @@
       placeholder
       safe-area-inset-top
       left-arrow
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
     <van-loading
       v-if="!composition"
@@ -18,7 +18,7 @@
       <div class="composition-info">
         <van-row class="title">{{ composition.title }}</van-row>
         <van-row class="release-time">
-          {{ translateTime(composition.releaseTime) }}
+          {{ formatTime(composition.releaseTime) }}
         </van-row>
         <van-row class="user">
           <van-col>
@@ -78,7 +78,7 @@
           type="card"
           swipeable
           color="#02a7f0"
-          :style="{ marginTop: '2rem', marginRight: '0' }"
+          :style="{ marginTop: '2rem' }"
         >
           <van-tab title="原文" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
@@ -94,16 +94,12 @@
                 :style="{ margin: '0.5rem 0' }"
               >
                 原文:
-                <span v-if="sentence.error" @click.stop="changeDisplaySentence">
+                <span v-if="sentence.error">
                   {{ sentence.origin }}
                 </span>
                 <br />
                 修改建议:
-                <span
-                  v-if="sentence.error"
-                  style="color: orange;"
-                  @click.stop="changeDisplaySentence"
-                >
+                <span v-if="sentence.error" style="color: orange;">
                   {{ sentence.advice }}
                 </span>
               </div>
@@ -119,37 +115,36 @@
                 :style="{ margin: '0.5rem 0' }"
               >
                 原文:
-                <span v-if="sentence.error" @click.stop="changeDisplaySentence">
+                <span v-if="sentence.error">
                   {{ sentence.origin }}
                 </span>
                 <br />
                 修改建议:
-                <span
-                  v-if="sentence.error"
-                  style="color: orange;"
-                  @click.stop="changeDisplaySentence"
-                >
+                <span v-if="sentence.error" style="color: orange;">
                   {{ sentence.advice }}
                 </span>
               </div>
             </div>
           </van-tab>
           <van-tab title="评分" style="padding: 0 1rem;">
-            <v-chart :options="radar"></v-chart>
+            <v-chart :options="radar" />
+            <van-row
+              style="font-size: 1.2rem; color: #888;"
+              type="flex"
+              justify="center"
+            >
+              总分:
+              <span style="color: orange; margin-left: 0.25rem;">
+                {{ composition.score }}
+              </span>
+            </van-row>
+          </van-tab>
+          <van-tab title="说明" style="padding: 0 1rem;">
+            <van-row :style="{ paddingTop: '1rem' }">
+              {{ composition.description }}
+            </van-row>
           </van-tab>
         </van-tabs>
-        <div
-          :style="{
-            color: '#1989fa',
-            borderColor: '#1989fa',
-            padding: '0.5rem 0',
-            fontSize: '1.5rem'
-          }"
-        >
-          <van-icon name="chat-o" />
-          <span style="font-size: 1rem; margin-left: 0.25rem;">说明</span>
-        </div>
-        <van-row>{{ composition.description }}</van-row>
       </div>
       <div class="comment">
         <van-badge :content="commentList.length">
@@ -338,8 +333,8 @@
 </template>
 
 <script>
-import moment from "moment";
 import dateUtils from "../assets/js/common/dateUtils";
+import errorUtils from "../assets/js/common/errorUtils";
 import { mapState } from "vuex";
 import ECharts from "vue-echarts";
 import "echarts/lib/chart/radar";
@@ -542,9 +537,6 @@ export default {
     }
   },
   methods: {
-    translateTime(timestamp) {
-      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
-    },
     renderText(origin) {
       // 文本分词
       let paragraphList = origin.split("\n");
@@ -554,146 +546,8 @@ export default {
       }
       return result;
     },
-    mergeGrammer(splitedText) {
-      // 合并预测结果，注意标点符号和普通单词的区别
-      let mergedText = splitedText.reduce((total, item) => {
-        return item.charAt(item.length - 1).match(/[,.!?]/) == null
-          ? total + " " + item
-          : total + item;
-      });
-      // 处理最后一个单词或标点后无空格的问题
-      mergedText += " ";
-      // 首字母替换成大写
-      return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
-    },
-    parseGrammerError(text, errorInfo) {
-      // 对数组执行深拷贝
-      let correctResult = JSON.parse(JSON.stringify(errorInfo));
-      // 对数组进行排序
-      correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
-      // 文章分段
-      let paragraphList = text.split("\n");
-      let currentSentence = 0; // 记录句子ID
-      let result = []; // 存放结果
-      for (let paraId = 0; paraId < paragraphList.length; paraId++) {
-        // 匹配分隔符
-        let splitTokens = paragraphList[paraId].match(/[.?!]/g);
-        // 按分隔符分句和格式化
-        let sentenceList = paragraphList[paraId]
-          .split(/[.?!]/)
-          .map(
-            (sentence, index) => `${sentence}${splitTokens[index]}`.trim() + " "
-          );
-        let paragraph = []; // 存放段落
-        for (let senId = 0; senId < sentenceList.length - 1; senId++) {
-          // 如果句子ID和纠错句子ID匹配上，则进入处理
-          if (
-            correctResult.length > 0 &&
-            currentSentence == correctResult[0].sen_id
-          ) {
-            // 合并句子
-            let advice = this.mergeGrammer(correctResult[0].pred);
-            // 判断是否相同
-            if (advice != sentenceList[senId]) {
-              // 不同则添加错误信息
-              paragraph.push({
-                senId: currentSentence,
-                origin: sentenceList[senId],
-                error: true,
-                advice
-              });
-            } else {
-              // 相同则直接记录
-              paragraph.push({
-                senId: currentSentence,
-                origin: sentenceList[senId]
-              });
-            }
-            // 删除一条纠错记录
-            correctResult.splice(0, 1);
-          } else {
-            // 直接记录
-            paragraph.push({
-              senId: currentSentence,
-              origin: sentenceList[senId]
-            });
-          }
-          // 更新当前的句子ID
-          currentSentence++;
-        }
-        // 添加段落
-        result.push({ paraId, paragraph });
-      }
-      // 返回结果
-      return result;
-    },
-    mergeWord(splitedText) {
-      // 合并预测结果，注意标点符号和普通单词的区别
-
-      let mergedText = splitedText.join(" ");
-      console.log(mergedText);
-      // 处理最后一个单词或标点后无空格的问题
-      mergedText += " ";
-      // 首字母替换成大写
-      return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
-    },
-    parseWordError(text, errorInfo) {
-      // 对数组执行深拷贝
-      let correctResult = JSON.parse(JSON.stringify(errorInfo));
-      // 对数组进行排序
-      correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
-      // 文章分段
-      let paragraphList = text.split("\n");
-      let currentSentence = 0; // 记录句子ID
-      let result = []; // 存放结果
-      for (let paraId = 0; paraId < paragraphList.length; paraId++) {
-        // 按分隔符分句和格式化
-        let sentenceList = paragraphList[paraId]
-          .split(/[.?!]/)
-          .map(sentence => `${sentence}`.trim() + " ");
-        let paragraph = []; // 存放段落
-        for (let senId = 0; senId < sentenceList.length - 1; senId++) {
-          // 如果句子ID和纠错句子ID匹配上，则进入处理
-          if (
-            correctResult.length > 0 &&
-            currentSentence == correctResult[0].sen_id
-          ) {
-            // 合并句子
-            let advice = this.mergeWord(correctResult[0].pred);
-            // 判断是否相同
-            if (advice != sentenceList[senId]) {
-              // 不同则添加错误信息
-              paragraph.push({
-                senId: currentSentence,
-                origin: sentenceList[senId],
-                error: true,
-                advice
-              });
-            } else {
-              // 相同则直接记录
-              paragraph.push({
-                senId: currentSentence,
-                origin: sentenceList[senId]
-              });
-            }
-            // 删除一条纠错记录
-            correctResult.splice(0, 1);
-          } else {
-            // 直接记录
-            paragraph.push({
-              senId: currentSentence,
-              origin: sentenceList[senId]
-            });
-          }
-          // 更新当前的句子ID
-          currentSentence++;
-        }
-        // 添加段落
-        result.push({ paraId, paragraph });
-      }
-      // 返回结果
-      return result;
-    },
+    ...errorUtils,
+    ...dateUtils,
     formatCount(num) {
       if (num >= 10000) {
         return `${Math.floor(num / 10000)}w`;
@@ -702,9 +556,6 @@ export default {
       } else {
         return num;
       }
-    },
-    onRouteBack() {
-      this.$router.go(-1);
     },
     onRouteChange(to) {
       this.$router.push(to);
@@ -963,7 +814,7 @@ export default {
   }
 }
 .echarts {
-  width: calc(100vw - 2rem);
+  width: calc(100vw - 4rem);
   height: 50vh;
 }
 </style>
