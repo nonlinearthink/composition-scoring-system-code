@@ -6,7 +6,7 @@
       placeholder
       safe-area-inset-top
       left-arrow
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
     <van-image
       fit="cover"
@@ -17,7 +17,7 @@
       <van-row class="title">
         {{ article.articleTitle }}
       </van-row>
-      <van-row class="time">{{ translateTime(article.time) }}</van-row>
+      <van-row class="time">{{ formatTime(article.time) }}</van-row>
       <van-row class="body">{{ article.articleBody }}</van-row>
     </div>
   </div>
@@ -25,26 +25,16 @@
 
 <script>
 import { mapState } from "vuex";
-import moment from "moment";
+import dateUtils from "../assets/js/common/dateUtils";
 export default {
   data() {
-    return {
-      title: "ksakjsa sdsd s  ds ds s fds   sd s",
-      time: "sdsdsdsd",
-      body:
-        "sdssd s ds d sd sd s ds d s d  sd s ds d  sd sd sd s d sd  d fr gf d s asf s sd a  f sdds"
-    };
+    return {};
   },
   computed: {
     ...mapState({ article: state => state.view.article })
   },
   methods: {
-    translateTime(timestamp) {
-      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
-    },
-    onRouteBack() {
-      this.$router.go(-1);
-    }
+    ...dateUtils
   }
 };
 </script>

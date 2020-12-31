@@ -45,11 +45,36 @@
           autosize
         />
       </van-cell-group>
-      <van-cell-group title="评价结果">
+      <van-cell-group title="评价报告">
         <van-tabs v-model="displayMode" swipeable color="#02a7f0">
           <van-tab title="原文" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
             <van-row v-html="renderText(composition.compositionBody)"></van-row>
+          </van-tab>
+          <van-tab title="拼写建议" style="padding: 0 1rem;">
+            <div v-for="paragraph in wordErrorModel" :key="paragraph.paraId">
+              <div
+                v-for="sentence in paragraph.paragraph.filter(
+                  item => item.error
+                )"
+                :key="sentence.senId"
+                :style="{ margin: '0.5rem 0' }"
+              >
+                原文:
+                <span v-if="sentence.error" @click.stop="changeDisplaySentence">
+                  {{ sentence.origin }}
+                </span>
+                <br />
+                修改建议:
+                <span
+                  v-if="sentence.error"
+                  style="color: orange;"
+                  @click.stop="changeDisplaySentence"
+                >
+                  {{ sentence.advice }}
+                </span>
+              </div>
+            </div>
           </van-tab>
           <van-tab title="语法建议" style="padding: 0 1rem;">
             <div v-for="paragraph in grammerErrorModel" :key="paragraph.paraId">
@@ -76,6 +101,9 @@
               </div>
             </div>
           </van-tab>
+          <van-tab title="评分" style="padding: 0 1rem;">
+            <v-chart :options="radar"></v-chart>
+          </van-tab>
         </van-tabs>
       </van-cell-group>
     </div>
@@ -99,7 +127,13 @@
 
 <script>
 import { mapState } from "vuex";
+import ECharts from "vue-echarts";
+import "echarts/lib/chart/radar";
+import "echarts/lib/component/radar";
 export default {
+  components: {
+    "v-chart": ECharts
+  },
   data() {
     return {
       isSelectVisibility: false,
@@ -113,7 +147,10 @@ export default {
       ],
       composition: null,
       testData: [],
-      grammerErrorModel: null
+      grammerErrorModel: null,
+      wordErrorModel: null,
+      displayMode: 0,
+      radar: null
     };
   },
   computed: {
@@ -133,16 +170,82 @@ export default {
     // 加载需要发布的文章
     this.composition = Object.assign({}, this.publish);
     this.axios
-      .get(`/error/${this.composition.compositionId}`)
+      .get(`/error/${this.composition.compositionId}/0`)
       .then(res => {
         console.log(res.data);
-        this.testData = res.data.data.JSONArray;
+        this.wordErrorModel = this.parseWordError(
+          this.composition.compositionBody,
+          res.data.data.JSONArray
+        );
+      })
+      .catch(err => {
+        console.error(err.response.data);
+        this.$toast("拼写错误数据不完整");
+      });
+    this.axios
+      .get(`/error/${this.composition.compositionId}/1`)
+      .then(res => {
+        console.log(res.data);
         this.grammerErrorModel = this.parseGrammerError(
           this.composition.compositionBody,
           res.data.data.JSONArray
         );
       })
-      .catch(err => console.error(err.response.data));
+      .catch(err => {
+        console.error(err.response.data);
+        this.$toast("语法错误数据不完整");
+      });
+    this.axios
+      .get(`/composition/${this.composition.compositionId}`)
+      .then(res => {
+        console.log(res.data);
+        let data = res.data.data.compositionCountModel;
+        this.radar = {
+          title: {
+            text: "评分细节"
+          },
+          legend: {
+            left: "center",
+            data: ["score"]
+          },
+          radar: {
+            indicator: [
+              { text: "拼写", max: 100 },
+              { text: "语法", max: 100 },
+              { text: "流畅度", max: 100 },
+              { text: "长度", max: 100 },
+              { text: "丰富度", max: 100 }
+            ],
+            radius: 80,
+            center: ["50%", "50%"]
+          },
+          tooltip: {
+            trigger: "axis"
+          },
+          series: [
+            {
+              type: "radar",
+              areaStyle: {},
+              data: [
+                {
+                  value: [
+                    data.wordScore,
+                    data.grammarScore,
+                    data.sentenceFluencyScore,
+                    data.lengthScore,
+                    data.richnessScore
+                  ],
+                  name: "score"
+                }
+              ]
+            }
+          ],
+          animationDuration: 1000
+        };
+      })
+      .catch(err => {
+        console.error(err.response.data);
+      });
   },
   methods: {
     /**
@@ -227,7 +330,7 @@ export default {
       }
       return result;
     },
-    mergeSentence(splitedText) {
+    mergeGrammer(splitedText) {
       // 合并预测结果，注意标点符号和普通单词的区别
       let mergedText = splitedText.reduce((total, item) => {
         return item.charAt(item.length - 1).match(/[,.!?]/) == null
@@ -265,7 +368,74 @@ export default {
             currentSentence == correctResult[0].sen_id
           ) {
             // 合并句子
-            let advice = this.mergeSentence(correctResult[0].pred);
+            let advice = this.mergeGrammer(correctResult[0].pred);
+            // 判断是否相同
+            if (advice != sentenceList[senId]) {
+              // 不同则添加错误信息
+              paragraph.push({
+                senId: currentSentence,
+                origin: sentenceList[senId],
+                error: true,
+                advice
+              });
+            } else {
+              // 相同则直接记录
+              paragraph.push({
+                senId: currentSentence,
+                origin: sentenceList[senId]
+              });
+            }
+            // 删除一条纠错记录
+            correctResult.splice(0, 1);
+          } else {
+            // 直接记录
+            paragraph.push({
+              senId: currentSentence,
+              origin: sentenceList[senId]
+            });
+          }
+          // 更新当前的句子ID
+          currentSentence++;
+        }
+        // 添加段落
+        result.push({ paraId, paragraph });
+      }
+      // 返回结果
+      return result;
+    },
+    mergeWord(splitedText) {
+      // 合并预测结果，注意标点符号和普通单词的区别
+
+      let mergedText = splitedText.join(" ");
+      console.log(mergedText);
+      // 处理最后一个单词或标点后无空格的问题
+      mergedText += " ";
+      // 首字母替换成大写
+      return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
+    },
+    parseWordError(text, errorInfo) {
+      // 对数组执行深拷贝
+      let correctResult = JSON.parse(JSON.stringify(errorInfo));
+      // 对数组进行排序
+      correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
+      // 文章分段
+      let paragraphList = text.split("\n");
+      let currentSentence = 0; // 记录句子ID
+      let result = []; // 存放结果
+      for (let paraId = 0; paraId < paragraphList.length; paraId++) {
+        // 按分隔符分句和格式化
+        let sentenceList = paragraphList[paraId]
+          .split(/[.?!]/)
+          .map(sentence => `${sentence}`.trim() + " ");
+        let paragraph = []; // 存放段落
+        for (let senId = 0; senId < sentenceList.length - 1; senId++) {
+          // 如果句子ID和纠错句子ID匹配上，则进入处理
+          if (
+            correctResult.length > 0 &&
+            currentSentence == correctResult[0].sen_id
+          ) {
+            // 合并句子
+            let advice = this.mergeWord(correctResult[0].pred);
             // 判断是否相同
             if (advice != sentenceList[senId]) {
               // 不同则添加错误信息
@@ -326,5 +496,9 @@ export default {
     font-size: $text-normal;
     margin-left: $blank-size/4;
   }
+}
+.echarts {
+  width: calc(100vw - 2rem);
+  height: 50vh;
 }
 </style>

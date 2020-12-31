@@ -163,7 +163,7 @@ export default {
         statusColor: ["#07c160", "#ee0a24", "#1989fa", "#ff976a"], // 状态标签颜色
         visibilityColor: ["#969799", "#646566", "#323233"] // 可见性标签颜色
       },
-      totalScore: 10, // 总分
+      totalScore: 100, // 总分
       visibilityList: [
         { value: 1, name: "私密" },
         { value: 2, name: "仅粉丝可见" },

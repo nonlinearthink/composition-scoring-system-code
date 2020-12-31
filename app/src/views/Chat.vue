@@ -8,7 +8,7 @@
           :key="item.name"
           :span="24 / layout.toolbarItem.length"
           class="toolbar-item"
-          @click="onRouteChange(item.to)"
+          @click="$router.push(item.to)"
         >
           <van-row class="toolbar-item-icon">
             <van-icon :name="item.icon" />
@@ -44,7 +44,7 @@
           </van-row>
         </van-col>
         <van-col :span="5" class="message-list-item-date">
-          {{ showTime(item.lastMessage.sendTime) }}
+          {{ timeIntervalString(item.lastMessage.sendTime) }}
         </van-col>
       </van-row>
     </van-cell-group>
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import dateUtils from "../assets/js/common/dateUtils";
 export default {
   data() {
     return {
@@ -68,7 +69,7 @@ export default {
             id: "fan",
             text: "新的粉丝",
             icon: "like-o",
-            to: "/user/follow"
+            to: { path: "/user/follow", query: { tab: 1 } }
           },
           {
             id: "support",
@@ -83,48 +84,13 @@ export default {
             to: "/system/message"
           }
         ],
-        messageListItem: [
-          // {
-          //   id: 0,
-          //   userNickame: "王天宇",
-          //   lastMessage: {
-          //     content: "你个冒牌货，我才是真正的天龙人啊啊啊啊啊啊啊啊",
-          //     sendTime: 1607857612000
-          //   },
-          //   avatarUrl: null
-          // }
-        ]
+        messageListItem: []
       }
     };
   },
 
   methods: {
-    showTime(timestamp) {
-      let diff = new Date().getTime() - timestamp;
-      let diffText = "";
-      if (diff <= 60 * 1000) {
-        diffText = "刚刚";
-      } else if (diff <= 60 * 60 * 1000) {
-        diffText = `${Math.floor(diff / 60000)}分钟前`;
-      } else if (diff <= 24 * 60 * 60 * 1000) {
-        diffText = `${Math.floor(diff / 3600000)}小时前`;
-      } else if (diff <= 7 * 24 * 60 * 60 * 1000) {
-        diffText = `${Math.floor(diff / 86400000)}天前`;
-      } else {
-        let date = new Date(timestamp);
-        diffText = `${date.getMonth() + 1}月${date.getDate()}日`;
-      }
-      return diffText;
-    },
-    onRouteChange(to) {
-      if (to) {
-        if (to == "/user/follow") {
-          this.$router.push({ path: "/user/follow", query: { tab: 1 } });
-        } else {
-          this.$router.push(to);
-        }
-      }
-    }
+    ...dateUtils
   }
 };
 </script>

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 /**
  * 计算时间间隔的返回字符串
  *
@@ -22,4 +24,14 @@ function timeIntervalString(timestamp) {
   return diffText;
 }
 
-export default { timeIntervalString };
+/**
+ * 格式化时间戳
+ *
+ * @param {Long} timestamp 时间戳
+ * @return 字符串
+ */
+function formatTime(timestamp) {
+  return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+}
+
+export default { timeIntervalString, formatTime };

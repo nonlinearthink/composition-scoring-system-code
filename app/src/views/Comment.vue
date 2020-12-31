@@ -7,48 +7,60 @@
       left-arrow
       :border="false"
       title="评论"
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
-    <van-loading v-if="loading" color="#1989fa" style="text-align: center;" />
-    <van-row
-      v-for="item in commentList"
-      v-else
-      :key="item.commentId"
-      class="comment-card"
+    <van-pull-refresh
+      v-model="loading"
+      success-text="刷新成功"
+      @refresh="onRefresh"
     >
-      <van-col>
-        <van-image
-          width="3rem"
-          height="3rem"
-          fit="cover"
-          round
-          :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
-          style="padding-right: 1rem;"
-          @click="
-            onRouteChange({
-              path: '/user/home',
-              query: { user: item.username }
-            })
-          "
-        />
-      </van-col>
-      <van-col class="other">
-        <van-row>
-          {{ item.nickname }}<span class="fade-text">评论了你的作文</span>
-        </van-row>
-        <van-row>{{ item.commentBody }}</van-row>
-        <van-row class="card" @click="onEnterComposition(item)">
-          {{ item.title }}
-        </van-row>
-        <van-row class="time">{{ translateTime(item.time) }}</van-row>
-      </van-col>
-    </van-row>
+      <van-row
+        v-for="item in commentList"
+        :key="item.commentId"
+        class="comment-card"
+      >
+        <van-col>
+          <van-image
+            width="3rem"
+            height="3rem"
+            fit="cover"
+            round
+            :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
+            style="padding-right: 1rem;"
+            @click="
+              $router.push({
+                path: '/user/home',
+                query: { user: item.username }
+              })
+            "
+          />
+        </van-col>
+        <van-col class="other">
+          <van-row>
+            {{ item.nickname }}<span class="fade-text">评论了你的作文</span>
+          </van-row>
+          <van-row>{{ item.commentBody }}</van-row>
+          <van-row
+            class="card"
+            @click="
+              $router.push({
+                path: '/composition',
+                query: { compositionId: item.compositionId }
+              })
+            "
+          >
+            {{ item.title }}
+          </van-row>
+          <van-row class="time">{{ formatTime(item.time) }}</van-row>
+        </van-col>
+      </van-row>
+    </van-pull-refresh>
   </div>
 </template>
 
 <script>
-import moment from "moment";
 import { mapState } from "vuex";
+import dateUtils from "../assets/js/common/dateUtils";
 export default {
   data() {
     return {
@@ -61,37 +73,30 @@ export default {
     ...mapState(["isLogin"])
   },
   created() {
-    if (this.isLogin) {
-      this.axios
-        .get("/comment/all")
-        .then(res => {
-          console.log(res.data);
-          this.loading = false;
-          this.commentList = res.data.data.commentViewModelList;
-        })
-        .catch(err => {
-          console.error(err.response.data);
-        });
-    } else {
-      this.loading = false;
-      this.$toast("此功能仅支持登录用户");
-    }
+    this.loadData();
   },
   methods: {
-    onRouteBack() {
-      this.$router.go(-1);
+    ...dateUtils,
+    loadData() {
+      if (this.isLogin) {
+        this.axios
+          .get("/comment/all")
+          .then(res => {
+            console.log(res.data);
+            this.loading = false;
+            this.commentList = res.data.data.commentViewModelList;
+          })
+          .catch(err => {
+            console.error(err.response.data);
+          });
+      } else {
+        this.loading = false;
+        this.$toast("此功能仅支持登录用户");
+      }
     },
-    onRouteChange(to) {
-      this.$router.push(to);
-    },
-    translateTime(timestamp) {
-      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
-    },
-    onEnterComposition(item) {
-      this.$router.push({
-        path: "/composition",
-        query: { compositionId: item.compositionId }
-      });
+    onRefresh() {
+      this.loading = true;
+      this.loadData();
     }
   }
 };

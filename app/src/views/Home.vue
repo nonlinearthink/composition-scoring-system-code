@@ -156,11 +156,6 @@ export default {
     return {
       searchString: "",
       active: 0,
-      testData: {
-        title: "good day",
-        body:
-          "everything is ok, ,s ,ds,d,sd, ,, ,s,d,sd,s,d ,sd,s,dsdh sdgaudash gdauydgh agasid asdguadu aduadasdad adgfad adauaa ajag aa agay asyaugaa a  yagaaa ausag a asdas sa ds s afd   a s fsd  sd ds fsd fs fs fdsf s "
-      },
       defaultAvatar: require("../assets/images/avatar.svg"),
       followList: null,
       followCompositions: null,
@@ -196,14 +191,14 @@ export default {
           });
         })
         .catch(err => console.error(err.response.data));
+      this.axios
+        .get("/home/follow")
+        .then(res => {
+          console.log(res);
+          this.followCompositions = res.data.data.followCardModelList;
+        })
+        .catch(err => console.error(err.response.data));
     }
-    this.axios
-      .get("/home/follow")
-      .then(res => {
-        console.log(res);
-        this.followCompositions = res.data.data.followCardModelList;
-      })
-      .catch(err => console.error(err.response.data));
     this.axios
       .get("/home/article")
       .then(res => {
