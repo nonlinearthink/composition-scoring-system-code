@@ -151,7 +151,7 @@ export default {
             icon: "phone-o",
             rules: [
               {
-                pattern: /^1[34578]\d{9}$|^$/,
+                pattern: /^1[345789]\d{9}$|^$/,
                 message: "非法手机号"
               }
             ]

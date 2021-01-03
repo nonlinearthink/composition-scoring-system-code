@@ -103,6 +103,16 @@
           </van-tab>
           <van-tab title="评分" style="padding: 0 1rem;">
             <v-chart :options="radar"></v-chart>
+            <van-row
+              style="font-size: 1.2rem; color: #888;"
+              type="flex"
+              justify="center"
+            >
+              总分:
+              <span style="color: orange; margin-left: 0.25rem;">
+                {{ composition.score }}
+              </span>
+            </van-row>
           </van-tab>
         </van-tabs>
       </van-cell-group>
