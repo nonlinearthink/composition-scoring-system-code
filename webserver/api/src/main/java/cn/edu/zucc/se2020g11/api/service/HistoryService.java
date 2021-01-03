@@ -45,8 +45,10 @@ public class HistoryService
             if(cache.add(h.getCompositionId())){
                 HistoryModel historyModel = new HistoryModel();
                 CompositionEntity compositionEntity = compositionEntityMapper.selectByPrimaryKey(h.getCompositionId());
+                historyModel.setHistoryId(h.getHistoryId());
                 historyModel.setNickname(userEntityMapper.selectByPrimaryKey(username).getNickname());
                 historyModel.setTitle(compositionEntity.getTitle());
+                historyModel.setCompositionId(compositionEntity.getCompositionId());
                 historyModel.setCompositionBody(compositionEntity.getCompositionBody());
                 historyModel.setTime(h.getTime());
                 historyModelList.add(historyModel);
