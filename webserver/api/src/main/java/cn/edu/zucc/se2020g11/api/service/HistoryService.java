@@ -38,6 +38,7 @@ public class HistoryService
     public List<HistoryModel> selectHistoryByUser(String username)
     {
         List<HistoryEntity> historyEntityList = historyEntityMapper.selectHistoryByUser(username);
+        historyEntityList.sort(((o1, o2) -> (int) (o2.getTime().getTime()-o1.getTime().getTime())));
         HashSet<Integer> cache = new HashSet<>();
         List<HistoryModel> historyModelList = new ArrayList<>();
         for(HistoryEntity h :historyEntityList){

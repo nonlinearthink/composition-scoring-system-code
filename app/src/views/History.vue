@@ -68,6 +68,7 @@ export default {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
     },
     onEnterComposition(composition) {
+      console.log(composition);
       this.$router.push({
         path: "/composition",
         query: { compositionId: composition.compositionId }
