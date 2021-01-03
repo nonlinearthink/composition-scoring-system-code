@@ -17,11 +17,17 @@ import java.util.Date;
 @ApiModel
 public class HistoryModel
 {
+    @NotNull(message = "historyId不能为空")
+    private Integer historyId;
+
     @NotNull(message = "nickname不能为空")
     private String nickname;
 
     @NotNull(message = "title不能为空")
     private String title;
+
+    @NotNull(message = "compositionId不能为空")
+    private Integer compositionId;
 
     @NotNull(message = "compositionBody不能为空")
     private String compositionBody;
