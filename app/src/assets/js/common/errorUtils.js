@@ -69,6 +69,7 @@ function parseGrammerError(text, errorInfo) {
     result.push({ paraId, paragraph });
   }
   // 返回结果
+  console.log(result);
   return result;
 }
 function mergeWord(splitedText) {
@@ -134,7 +135,10 @@ function parseWordError(text, errorInfo) {
     result.push({ paraId, paragraph });
   }
   // 返回结果
+  console.log(result);
   return result;
 }
+
+// parseWordError();
 
 export default { parseGrammerError, parseWordError };
