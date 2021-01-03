@@ -61,7 +61,7 @@ public class VerifyCodeService {
      */
     public String getVerifyCode(String email) {
         throttle(email);
-        String verifyCode = RandomStringUtils.random(6, true, true);
+        String verifyCode = RandomStringUtils.random(6, false, true);
         logger.info("生成验证码 " + verifyCode);
         return verifyCode;
     }

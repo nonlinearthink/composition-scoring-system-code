@@ -63,7 +63,7 @@ public class UserController {
         // 异步操作，缓存验证码
         verifyCodeService.cacheVerifyCode(email, verifyCode);
         // 发送邮件
-        mailService.sendSimpleMail(email, "批多多注册认证服务", "注册验证码:" + verifyCode + "(区分大小写)");
+        mailService.sendSimpleMail(email, "批多多注册认证服务", "注册验证码: " + verifyCode);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("请求成功");
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -78,7 +78,7 @@ public class UserController {
         // 异步操作，缓存验证码
         verifyCodeService.cacheVerifyCode(email, verifyCode);
         // 发送邮件
-        mailService.sendSimpleMail(email, "批多多换绑邮箱认证服务", "换绑验证码:" + verifyCode + "(区分大小写)");
+        mailService.sendSimpleMail(email, "批多多换绑邮箱认证服务", "换绑验证码: " + verifyCode);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("请求成功");
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -93,7 +93,7 @@ public class UserController {
         // 异步操作，缓存验证码
         verifyCodeService.cacheVerifyCode(email, verifyCode);
         // 发送邮件
-        mailService.sendSimpleMail(email, "批多多忘记密码认证服务", "验证码:" + verifyCode + "(区分大小写)");
+        mailService.sendSimpleMail(email, "批多多忘记密码认证服务", "验证码: " + verifyCode);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("请求成功");
         return ResponseEntity.status(HttpStatus.OK).build();
