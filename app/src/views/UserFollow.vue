@@ -6,7 +6,7 @@
       placeholder
       safe-area-inset-top
       :border="false"
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
     <van-tabs
       v-model="activeTab"
@@ -15,40 +15,52 @@
       title-active-color="white"
     >
       <van-tab title="关注">
-        <user-list-item
-          v-for="item in followList"
-          :key="item.username"
-          name="0"
-          :nickname="item.nickname"
-          :signature="item.signature"
-          :follow="item.follow"
-          :avatar="item.avatarUrl"
-          @follow="onChangeFollow(item)"
-          @click-avatar="
-            onRouteChange({
-              path: '/user/home',
-              query: { user: item.username }
-            })
-          "
-        />
+        <van-pull-refresh
+          v-model="loading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+        >
+          <user-list-item
+            v-for="item in followList"
+            :key="item.username"
+            name="0"
+            :nickname="item.nickname"
+            :signature="item.signature"
+            :follow="item.follow"
+            :avatar="item.avatarUrl"
+            @follow="onChangeFollow(item)"
+            @click-avatar="
+              $router.push({
+                path: '/user/home',
+                query: { user: item.username }
+              })
+            "
+          />
+        </van-pull-refresh>
       </van-tab>
       <van-tab title="粉丝">
-        <user-list-item
-          v-for="item in fansList"
-          :key="item.username"
-          name="1"
-          :nickname="item.nickname"
-          :signature="item.signature"
-          :follow="item.follow"
-          :avatar="item.avatarUrl"
-          @follow="onChangeFollow(item)"
-          @click-avatar="
-            onRouteChange({
-              path: '/user/home',
-              query: { user: item.username }
-            })
-          "
-        />
+        <van-pull-refresh
+          v-model="loading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+        >
+          <user-list-item
+            v-for="item in fansList"
+            :key="item.username"
+            name="1"
+            :nickname="item.nickname"
+            :signature="item.signature"
+            :follow="item.follow"
+            :avatar="item.avatarUrl"
+            @follow="onChangeFollow(item)"
+            @click-avatar="
+              $router.push({
+                path: '/user/home',
+                query: { user: item.username }
+              })
+            "
+          />
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
   </div>
@@ -64,7 +76,8 @@ export default {
   data() {
     return {
       activeTab: 0,
-      originList: []
+      originList: [],
+      loading: false
     };
   },
   computed: {
@@ -78,45 +91,9 @@ export default {
   },
   created() {
     this.activeTab = Number(this.$route.query.tab);
-    if (this.isLogin) {
-      this.axios
-        .get(`/follow/${this.user.username}`)
-        .then(res => {
-          console.log(res.data);
-          res.data.data.followList.forEach(follow => {
-            this.originList.push({ ...follow, follow: true, fans: false });
-          });
-          this.axios
-            .get(`/follow/${this.user.username}/follower`)
-            .then(res => {
-              console.log(res.data);
-              res.data.data.followList.forEach(fan => {
-                let index = this.originList.findIndex(
-                  follow => follow.username == fan.username
-                );
-                if (index >= 0) {
-                  this.originList[index].fans = true;
-                } else {
-                  this.originList.push({ ...fan, follow: false, fans: true });
-                }
-              });
-            })
-            .catch(err => {
-              console.error(err.response.data);
-            });
-        })
-        .catch(err => {
-          console.error(err.response.data);
-        });
-    }
+    this.onLoad();
   },
   methods: {
-    onRouteBack() {
-      this.$router.go(-1);
-    },
-    onRouteChange(to) {
-      this.$router.push(to);
-    },
     onChangeFollow(item) {
       item.follow = !item.follow;
       if (item.follow) {
@@ -140,6 +117,45 @@ export default {
             console.error(err.response.data);
           });
       }
+    },
+    onLoad() {
+      if (this.isLogin) {
+        this.loading = true;
+        this.originList = [];
+        this.axios
+          .get(`/follow/${this.user.username}`)
+          .then(res => {
+            console.log(res.data);
+            res.data.data.followList.forEach(follow => {
+              this.originList.push({ ...follow, follow: true, fans: false });
+            });
+            this.axios
+              .get(`/follow/${this.user.username}/follower`)
+              .then(res => {
+                console.log(res.data);
+                res.data.data.followList.forEach(fan => {
+                  let index = this.originList.findIndex(
+                    follow => follow.username == fan.username
+                  );
+                  if (index >= 0) {
+                    this.originList[index].fans = true;
+                  } else {
+                    this.originList.push({ ...fan, follow: false, fans: true });
+                  }
+                });
+                this.loading = false;
+              })
+              .catch(err => {
+                console.error(err.response.data);
+              });
+          })
+          .catch(err => {
+            console.error(err.response.data);
+          });
+      }
+    },
+    onRefresh() {
+      this.onLoad();
     }
   }
 };

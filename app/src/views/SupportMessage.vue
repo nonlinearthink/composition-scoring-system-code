@@ -6,90 +6,97 @@
       left-arrow
       :border="false"
       title="收到的赞"
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
-    <van-loading v-if="loading" color="#1989fa" style="text-align: center;" />
-    <van-row
-      v-for="item in supportList"
-      v-else
-      :key="item.supportId"
-      class="support-card"
+    <van-pull-refresh
+      v-model="loading"
+      :success-text="first ? '请求成功' : '刷新成功'"
+      @refresh="onRefresh"
     >
-      <van-col>
-        <van-image
-          width="3rem"
-          height="3rem"
-          fit="cover"
-          round
-          :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
-          style="padding-right: 1rem;"
-          @click="
-            onRouteChange({
-              path: '/user/home',
-              query: { user: item.username }
-            })
-          "
-        />
-      </van-col>
-      <van-col>
-        <van-row>
-          {{ item.nickname }}<span class="fade-text">点赞了你的作文</span>
-        </van-row>
-        <van-row class="card" @click="onEnterComposition(item)">
-          {{ item.title }}
-        </van-row>
-        <van-row class="time">{{ translateTime(item.time) }}</van-row>
-      </van-col>
-    </van-row>
+      <van-row
+        v-for="item in supportList"
+        :key="item.supportId"
+        class="support-card"
+        type="flex"
+      >
+        <van-col :style="{ flex: 0 }">
+          <van-image
+            width="3rem"
+            height="3rem"
+            fit="cover"
+            round
+            :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
+            style="padding-right: 1rem;"
+            @click="
+              $router.push({
+                path: '/user/home',
+                query: { user: item.username }
+              })
+            "
+          />
+        </van-col>
+        <van-col :style="{ flex: 1 }">
+          <van-row>
+            <span :style="{ fontWeight: '600' }">{{ item.nickname }}</span>
+            <span class="fade-text">点赞了你的作文</span>
+          </van-row>
+          <van-row class="card" @click="onEnterComposition(item)">
+            <font-awesome-icon icon="link" color="#92c8e0" />
+            {{ item.title }}
+          </van-row>
+          <van-row class="time">{{ formatTime(item.time) }}</van-row>
+        </van-col>
+      </van-row>
+    </van-pull-refresh>
   </div>
 </template>
 
 <script>
-import moment from "moment";
 import { mapMutations, mapState } from "vuex";
+import dateUtils from "../assets/js/common/dateUtils";
 export default {
   data() {
     return {
       supportList: null,
       defaultAvatar: require("../assets/images/avatar.svg"),
-      loading: true
+      loading: true,
+      first: true
     };
   },
   computed: {
-    ...mapState(["isLogin"])
+    ...mapState(["isLogin", "user"])
   },
   created() {
-    if (this.isLogin) {
-      this.axios
-        .get(`/support/all`)
-        .then(res => {
-          console.log(res.data);
-          this.supportList = res.data.data.supportViewModelList;
-          this.loading = false;
-        })
-        .catch(err => console.error(err.response.data));
-    } else {
-      this.loading = false;
-      this.$toast("此功能仅支持登录用户");
-    }
+    this.onRefresh();
   },
   methods: {
-    translateTime(timestamp) {
-      return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
-    },
     onEnterComposition(item) {
       this.$router.push({
         path: "/composition",
         query: { compositionId: item.compositionId }
       });
     },
-    onRouteBack() {
-      this.$router.go(-1);
+    onRefresh() {
+      this.first = false;
+      if (this.isLogin) {
+        this.loading = true;
+        this.axios
+          .get(`/support/all`)
+          .then(res => {
+            console.log(res.data);
+            this.supportList = res.data.data.supportViewModelList
+              .sort((a, b) => b.time - a.time)
+              .filter(item => item.username != this.user.username);
+            this.loading = false;
+          })
+          .catch(err => console.error(err.response.data));
+      } else {
+        this.loading = false;
+        this.$toast("此功能仅支持登录用户");
+      }
     },
-    onRouteChange(to) {
-      this.$router.push(to);
-    },
-    ...mapMutations(["setRouteAnchor"])
+    ...mapMutations(["setRouteAnchor"]),
+    ...dateUtils
   }
 };
 </script>
@@ -97,19 +104,20 @@ export default {
 <style lang="scss" scoped>
 .support-card {
   background: white;
-  margin-bottom: $blank-size;
+  border-bottom: 1px #e7e7e7 solid;
   padding: $blank-size;
   .fade-text {
     color: $color-fade;
-    margin-left: $blank-size;
+    margin-left: $blank-size/2;
+    font-size: 0.8rem;
   }
   .time {
     font-size: $text-small;
     color: $color-fade;
   }
   .card {
-    background: #dce5ec;
-    padding: $blank-size;
+    background: #f4f4f4;
+    padding: $blank-size/2;
     margin: $blank-size/2 0;
     border-radius: $blank-size/2;
   }

@@ -15,6 +15,10 @@ function parseGrammerError(text, errorInfo) {
   let correctResult = JSON.parse(JSON.stringify(errorInfo));
   // 对数组进行排序
   correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
+  text = text
+    .replace("？", "?")
+    .replace("。", ".")
+    .replace("！", "!");
   // 文章分段
   let paragraphList = text.split("\n");
   let currentSentence = 0; // 记录句子ID
@@ -85,6 +89,10 @@ function parseWordError(text, errorInfo) {
   let correctResult = JSON.parse(JSON.stringify(errorInfo));
   // 对数组进行排序
   correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
+  text = text
+    .replace("？", "?")
+    .replace("。", ".")
+    .replace("！", "!");
   // 文章分段
   let paragraphList = text.split("\n");
   let currentSentence = 0; // 记录句子ID
