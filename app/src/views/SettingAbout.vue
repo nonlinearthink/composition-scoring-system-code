@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     appVersion() {
-      return "1.1.3-alpha";
+      return "1.2.0-alpha";
     }
   },
   methods: {
