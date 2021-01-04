@@ -20,19 +20,19 @@ public class SystemMessageService
     public int addSystemMessage(SystemMessageEntity systemMessageEntity)
     {
         systemMessageEntityMapper.insert(systemMessageEntity);
-        return systemMessageEntity.getSMessageId();
+        return systemMessageEntity.getSystemMessageId();
     }
     public List<SystemMessageEntity> selectAllSystemMessages()
     {
         return systemMessageEntityMapper.selectAll();
     }
-    public int deleteSystemMessage(Integer sMessageId)
+    public int deleteSystemMessage(Integer systemMessageId)
     {
-        return systemMessageEntityMapper.deleteByPrimaryKey(sMessageId);
+        return systemMessageEntityMapper.deleteByPrimaryKey(systemMessageId);
     }
-    public int updateSystemMessage(SystemMessageEntity systemMessageEntity, Integer sMessageId)
+    public int updateSystemMessage(SystemMessageEntity systemMessageEntity, Integer systemMessageId)
     {
-        systemMessageEntity.setSMessageId(sMessageId);
+        systemMessageEntity.setSystemMessageId(systemMessageId);
         return systemMessageEntityMapper.updateByPrimaryKeySelective(systemMessageEntity);
     }
 }

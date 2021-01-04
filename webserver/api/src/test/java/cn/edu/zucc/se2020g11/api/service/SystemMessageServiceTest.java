@@ -26,7 +26,7 @@ class SystemMessageServiceTest
     {
         SystemMessageEntity systemMessageEntity = new SystemMessageEntity();
         systemMessageEntity.setAdminName("admin");
-        systemMessageEntity.setSMessageBody("test");
+        systemMessageEntity.setSystemMessageBody("test");
 
         int num = systemMessageService.addSystemMessage(systemMessageEntity);
         assertThat(num).isGreaterThan(0);
@@ -54,7 +54,7 @@ class SystemMessageServiceTest
     {
         SystemMessageEntity systemMessageEntity = new SystemMessageEntity();
         systemMessageEntity.setAdminName("admin");
-        systemMessageEntity.setSMessageBody("test");
+        systemMessageEntity.setSystemMessageBody("test");
 
         int num = systemMessageService.updateSystemMessage(systemMessageEntity, 6);
         assertThat(num).isGreaterThan(0);

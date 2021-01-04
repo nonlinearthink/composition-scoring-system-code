@@ -11,11 +11,11 @@ import java.util.Date;
 @Getter
 @Setter
 public class SystemMessageEntity {
-    private Integer sMessageId;
+    private Integer systemMessageId;
 
     private String adminName;
 
-    private String sMessageBody;
+    private String systemMessageBody;
 
     private Date time;
 }
