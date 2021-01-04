@@ -3,7 +3,6 @@
     <!-- 顶部导航栏 -->
     <van-nav-bar
       title="写作"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

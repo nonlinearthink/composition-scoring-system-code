@@ -3,7 +3,6 @@
     <van-nav-bar
       title="关注和粉丝"
       left-arrow
-      fixed
       placeholder
       safe-area-inset-top
       :border="false"

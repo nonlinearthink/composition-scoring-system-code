@@ -1,7 +1,6 @@
 <template>
   <div>
     <van-nav-bar
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

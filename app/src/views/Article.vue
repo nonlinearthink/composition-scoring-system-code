@@ -2,7 +2,6 @@
   <div id="article-page">
     <van-nav-bar
       title="浏览推送"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

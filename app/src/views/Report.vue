@@ -2,7 +2,6 @@
   <div id="report-page">
     <van-nav-bar
       title="举报"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

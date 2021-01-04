@@ -2,7 +2,6 @@
   <div class="signup-page">
     <van-nav-bar
       title="注册"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

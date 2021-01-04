@@ -1,13 +1,7 @@
 <template>
   <div id="writing-manager-page">
     <!-- 顶部导航栏 -->
-    <van-nav-bar
-      title="作文"
-      fixed
-      placeholder
-      safe-area-inset-top
-      :border="false"
-    >
+    <van-nav-bar title="作文" placeholder safe-area-inset-top :border="false">
       <template #right>
         <van-icon
           name="plus"
@@ -27,104 +21,101 @@
     >
       <!-- 单个tab的主体内容 -->
       <van-tab v-for="tab in layout.tabs" :key="tab.state" :title="tab.title">
-        <div class="main-container">
-          <!-- 翻转卡片列表 -->
-          <rotate-card
-            v-for="item in layout.compositions"
-            :key="item.compositionId"
-            class="composition-card"
-          >
-            <!-- 卡片正面 -->
-            <div class="front-side" @click="onEnterEditing(item)">
-              <!-- 标题 -->
-              <van-row v-if="item.title" class="title">
-                <van-col>
-                  {{ item.title }}
-                </van-col>
-              </van-row>
-              <van-row>
-                <!-- 更新时间 -->
-                <van-col class="update-time">
-                  {{ timeIntervalString(item.releaseTime) }}
-                </van-col>
-                <!-- 状态码标签 -->
-                <van-col class="piduoduo-tag first-tag">
-                  <van-tag plain :color="layout.statusColor[item.status - 1]">
-                    {{ translateStatus(item.status) }}
-                  </van-tag>
-                </van-col>
-                <!-- 可见性标签 -->
-                <van-col class="piduoduo-tag">
-                  <van-tag
-                    v-show="item.visibility"
-                    plain
-                    :color="layout.visibilityColor[item.visibility - 1]"
-                  >
-                    {{ translateVisibility(item.visibility) }}
-                  </van-tag>
-                </van-col>
-              </van-row>
-              <!-- 正文(作文)概述 -->
-              <van-row class="brief">{{ item.compositionBody }} </van-row>
-              <van-row type="flex" justify="space-between" class="tool-bar">
-                <!-- 评分 -->
-                <van-col>
-                  <div v-show="item.score">
-                    {{ item.score }}/{{ totalScore }}
-                  </div>
-                </van-col>
-                <!-- 删除按键 -->
-                <van-col v-if="item.status != 2" class="action-button-icon">
-                  <van-icon name="delete" @click.stop="onDelete(item)" />
-                </van-col>
-              </van-row>
-            </div>
-            <!-- 反面 -->
-            <template #reverse>
-              <div class="back-side">
-                <van-row class="row">
-                  <van-col span="8">亮点内容</van-col>
-                  <van-col span="8">
-                    亮点词:
-                    <span class="highlight">
-                      {{ 0 + "个" }}
-                    </span>
-                  </van-col>
-                  <van-col span="8">
-                    亮点句:
-                    <span class="highlight">
-                      {{ 0 + "个" }}
-                    </span>
+        <van-pull-refresh v-model="loading" @refresh="onRefresh">
+          <div class="main-container">
+            <!-- 翻转卡片列表 -->
+            <rotate-card
+              v-for="item in layout.compositions"
+              :key="item.compositionId"
+              class="composition-card"
+            >
+              <!-- 卡片正面 -->
+              <div class="front-side" @click="onEnterEditing(item)">
+                <!-- 标题 -->
+                <van-row v-if="item.title" class="title">
+                  <van-col>
+                    {{ item.title }}
                   </van-col>
                 </van-row>
-                <van-row class="row">
-                  <van-col span="8">错误内容</van-col>
-                  <van-col span="8">
-                    拼写错误:
-                    <span class="error">{{ 0 + "个" }}</span>
+                <van-row>
+                  <!-- 更新时间 -->
+                  <van-col class="update-time">
+                    {{ timeIntervalString(item.releaseTime) }}
                   </van-col>
-                  <van-col span="8">
-                    语法错误:
-                    <span class="error">
-                      {{ 0 + "个" }}
-                    </span>
+                  <!-- 状态码标签 -->
+                  <van-col class="piduoduo-tag first-tag">
+                    <van-tag plain :color="layout.statusColor[item.status - 1]">
+                      {{ translateStatus(item.status) }}
+                    </van-tag>
+                  </van-col>
+                  <!-- 可见性标签 -->
+                  <van-col class="piduoduo-tag">
+                    <van-tag
+                      v-show="item.visibility"
+                      plain
+                      :color="layout.visibilityColor[item.visibility - 1]"
+                    >
+                      {{ translateVisibility(item.visibility) }}
+                    </van-tag>
                   </van-col>
                 </van-row>
-                <van-row class="row">
-                  <van-col span="8">高频错误</van-col>
-                  <van-col span="16"></van-col>
+                <!-- 正文(作文)概述 -->
+                <van-row class="brief">{{ item.compositionBody }} </van-row>
+                <van-row type="flex" justify="space-between" class="tool-bar">
+                  <!-- 评分 -->
+                  <van-col>
+                    <div v-show="item.score">
+                      {{ item.score }}/{{ totalScore }}
+                    </div>
+                  </van-col>
+                  <!-- 删除按键 -->
+                  <van-col v-if="item.status != 2" class="action-button-icon">
+                    <van-icon name="delete" @click.stop="onDelete(item)" />
+                  </van-col>
                 </van-row>
               </div>
-            </template>
-          </rotate-card>
-        </div>
+              <!-- 反面 -->
+              <template #reverse>
+                <div class="back-side">
+                  <van-row class="row">
+                    <van-col span="8">亮点内容</van-col>
+                    <van-col span="8">
+                      亮点词:
+                      <span class="highlight">
+                        {{ 0 + "个" }}
+                      </span>
+                    </van-col>
+                    <van-col span="8">
+                      亮点句:
+                      <span class="highlight">
+                        {{ 0 + "个" }}
+                      </span>
+                    </van-col>
+                  </van-row>
+                  <van-row class="row">
+                    <van-col span="8">错误内容</van-col>
+                    <van-col span="8">
+                      拼写错误:
+                      <span class="error">{{ 0 + "个" }}</span>
+                    </van-col>
+                    <van-col span="8">
+                      语法错误:
+                      <span class="error">
+                        {{ 0 + "个" }}
+                      </span>
+                    </van-col>
+                  </van-row>
+                  <van-row class="row">
+                    <van-col span="8">高频错误</van-col>
+                    <van-col span="16"></van-col>
+                  </van-row>
+                </div>
+              </template>
+            </rotate-card>
+          </div>
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
-    <van-pull-refresh
-      v-model="layout.loading"
-      success-text="刷新成功"
-      @refresh="onRefresh"
-    />
     <van-dialog
       v-model="enableDeleteConfirm"
       title="删除确认"
@@ -151,8 +142,8 @@ export default {
       activeTab: "", // 当前选中的tab
       enableDeleteConfirm: false, // 打开删除确认
       deleteCache: null, // 需要删除的数据的暂存
+      loading: false, // 是否处于加载中
       layout: {
-        loading: false, // 是否处于加载中
         // tab
         tabs: [
           { title: "草稿", state: 1 },
@@ -188,8 +179,12 @@ export default {
       this.activeTab = this.routeAnchor;
       this.$store.commit("setRouteAnchor", -1);
     }
+    this.loading = true;
     // 加载数据
-    this.onLoad();
+    this.onLoad(
+      () => (this.loading = false),
+      () => (this.loading = false)
+    );
   },
   methods: {
     ...dateUtils,
@@ -265,8 +260,6 @@ export default {
                 new Composition(composition)
               );
             });
-            // 关闭加载动效
-            this.layout.loading = false;
             // 成功回调
             if (typeof onSuccess == "function") {
               onSuccess();
@@ -274,8 +267,6 @@ export default {
           })
           .catch(err => {
             console.error(err.response);
-            // 关闭加载动效
-            this.layout.loading = false;
             // 失败回调
             if (typeof onFail == "function") {
               onFail();
@@ -287,10 +278,16 @@ export default {
      * @description 刷新
      */
     onRefresh() {
-      this.layout.loading = true;
+      this.loading = true;
       this.onLoad(
-        () => this.$toast("刷新成功"),
-        () => this.$toast.fail("请检查网络")
+        () => {
+          this.loading = false;
+          this.$toast("刷新成功");
+        },
+        () => {
+          this.loading = false;
+          this.$toast.fail("请检查网络");
+        }
       );
     },
     /**
@@ -356,6 +353,7 @@ export default {
 }
 .action-button-icon {
   backface-visibility: hidden;
+  padding: 0.25rem 1rem;
 }
 .composition-card {
   @include margin-vertical($blank-size);

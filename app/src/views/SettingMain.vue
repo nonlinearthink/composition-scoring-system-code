@@ -2,7 +2,6 @@
   <div id="setting-main-page">
     <van-nav-bar
       title="设置"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

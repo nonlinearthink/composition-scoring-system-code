@@ -1,7 +1,6 @@
 <template>
   <div class="forget-password-page">
     <van-nav-bar
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

@@ -2,7 +2,6 @@
   <div id="setting-email-page">
     <van-nav-bar
       title="修改邮箱"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

@@ -2,7 +2,6 @@
   <div id="history-page">
     <van-nav-bar
       title="浏览历史"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

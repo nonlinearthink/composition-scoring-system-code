@@ -2,7 +2,6 @@
   <div id="login-page">
     <van-nav-bar
       title="登录"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

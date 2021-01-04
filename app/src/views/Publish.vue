@@ -3,7 +3,6 @@
     <!-- 顶部导航栏 -->
     <van-nav-bar
       title="编辑发布信息"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top
@@ -29,6 +28,9 @@
           class="composition-title"
         >
           <template #extra>
+            <div :style="{ fontSize: '1rem', marginLeft: '0.5rem' }">
+              设置可见性:
+            </div>
             <div class="composition-visibility" @click="enableSelectVisibility">
               {{ translate(composition.visibility) }}
             </div>
@@ -46,7 +48,13 @@
         />
       </van-cell-group>
       <van-cell-group title="评价报告">
-        <van-tabs v-model="displayMode" swipeable color="#02a7f0">
+        <van-tabs
+          v-model="displayMode"
+          :ellipsis="false"
+          swipeable
+          animated
+          color="#02a7f0"
+        >
           <van-tab title="原文" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
             <van-row v-html="renderText(composition.compositionBody)"></van-row>
@@ -348,7 +356,7 @@ export default {
   font-size: $text-large;
 }
 .composition-visibility {
-  margin-left: $blank-size;
+  margin-left: $text-normal / 4;
   color: $color-primary;
   font-size: $text-normal;
 }
