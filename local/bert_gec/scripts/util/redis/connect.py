@@ -18,7 +18,7 @@ class RedisUtil(object):
         if RedisUtil.pool is None:
             RedisUtil.on_connection()
         # 返回Redis连接
-        return redis.Redis(connection_pool=RedisUtil.pool)
+        return redis.Redis(connection_pool=RedisUtil.pool, health_check_interval=30)
 
     @staticmethod
     def on_connection():

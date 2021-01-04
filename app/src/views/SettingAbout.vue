@@ -2,7 +2,6 @@
   <div id="setting-user-about">
     <van-nav-bar
       title="设置"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top
@@ -72,7 +71,7 @@ export default {
   },
   computed: {
     appVersion() {
-      return "1.1.2-alpha";
+      return "1.1.3-alpha";
     }
   },
   methods: {

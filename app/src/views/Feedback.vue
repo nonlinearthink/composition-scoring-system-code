@@ -2,7 +2,6 @@
   <div id="feedback-page">
     <van-nav-bar
       title="反馈"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

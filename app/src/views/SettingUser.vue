@@ -2,7 +2,6 @@
   <div id="setting-user-page">
     <van-nav-bar
       title="编辑个人资料"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

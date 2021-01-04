@@ -3,7 +3,6 @@
   <div id="composition-page">
     <van-nav-bar
       title="浏览"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow
@@ -75,10 +74,11 @@
         </van-row>
         <van-tabs
           v-model="displayMode"
-          type="card"
+          :ellipsis="false"
+          animated
           swipeable
           color="#02a7f0"
-          :style="{ marginTop: '2rem' }"
+          :style="{ marginTop: '1rem' }"
         >
           <van-tab title="原文" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->

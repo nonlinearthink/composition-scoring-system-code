@@ -1,6 +1,6 @@
 <template>
   <div id="chat-page">
-    <van-nav-bar title="消息" fixed placeholder safe-area-inset-top />
+    <van-nav-bar title="消息" placeholder safe-area-inset-top />
     <div class="toolbar">
       <van-row type="flex" justify="space-between">
         <van-col

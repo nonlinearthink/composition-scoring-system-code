@@ -2,7 +2,6 @@
   <div id="favorite-page">
     <van-nav-bar
       title="点赞记录"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow

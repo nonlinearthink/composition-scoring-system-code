@@ -2,7 +2,6 @@
   <div id="setting-password-page">
     <van-nav-bar
       title="修改密码"
-      fixed
       placeholder
       left-arrow
       safe-area-inset-top

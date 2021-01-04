@@ -2,7 +2,6 @@
   <div id="help-page">
     <van-nav-bar
       title="帮助手册"
-      fixed
       placeholder
       safe-area-inset-top
       left-arrow
