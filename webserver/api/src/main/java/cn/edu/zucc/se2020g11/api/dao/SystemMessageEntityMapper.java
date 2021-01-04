@@ -7,13 +7,13 @@ import java.util.List;
 
 @Component
 public interface SystemMessageEntityMapper {
-    int deleteByPrimaryKey(Integer sMessageId);
+    int deleteByPrimaryKey(Integer systemMessageId);
 
     int insert(SystemMessageEntity record);
 
     int insertSelective(SystemMessageEntity record);
 
-    SystemMessageEntity selectByPrimaryKey(Integer sMessageId);
+    SystemMessageEntity selectByPrimaryKey(Integer systemMessageId);
 
     List<SystemMessageEntity> selectAll();
 

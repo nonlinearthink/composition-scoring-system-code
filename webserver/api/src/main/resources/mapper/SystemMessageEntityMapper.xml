@@ -23,7 +23,7 @@
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity" useGeneratedKeys="true" keyProperty="systemMessageId">
     insert into system_message (system_message_id, admin_name, system_message_body, time
     )
-    values (#{systemMessageId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{sMessageBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+    values (#{systemMessageId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{systemMessageBody,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
            )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.SystemMessageEntity">
