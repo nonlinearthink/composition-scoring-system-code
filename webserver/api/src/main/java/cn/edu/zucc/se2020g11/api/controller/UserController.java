@@ -131,7 +131,7 @@ public class UserController {
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/session")
     @ApiOperation(value = "用户登出")
-    @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType = "String")
     public ResponseEntity<ApiResult<Boolean>> logout(HttpServletRequest request) {
         jwtService.clearTokenCache((String)request.getAttribute("username"));
         ApiResult<Boolean> result = new ApiResult<>();
@@ -142,8 +142,12 @@ public class UserController {
     @LoginRequired(type = UserType.USER)
     @PutMapping("/account/password")
     @ApiOperation(value = "修改用户密码信息")
-    @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
-                    "PasswordChangeModel")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
+                    "PasswordChangeModel"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> updateUserPassword(@RequestBody @Validated PasswordChangeModel passwordChangeModel, HttpServletRequest request) {
         // 修改密码
         userService.updateUserPassword((String)request.getAttribute("username"), passwordChangeModel);
@@ -155,8 +159,12 @@ public class UserController {
     @LoginRequired(type = UserType.USER)
     @PutMapping("/account/details")
     @ApiOperation(value = "修改用户信息")
-    @ApiImplicitParam(paramType = "body", name = "userEntity", value = "用户实体", required = true, dataType =
-            "UserEntity")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "userEntity", value = "用户实体", required = true, dataType =
+                    "UserEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> updateUserDetail(@RequestBody @Validated UserEntity userEntity, HttpServletRequest request) {
         // 修改用户信息
         userService.updateUserDetail((String)request.getAttribute("username"), userEntity);
@@ -167,7 +175,8 @@ public class UserController {
 
     @PutMapping("/password")
     @ApiOperation(value = "忘记密码")
-    @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "body", name = "passwordChangeModel", value = "密码修改模型", required = true, dataType =
+            "PasswordChangeModel")
     public ResponseEntity<ApiResult<Boolean>> forgetPassword(@RequestBody @Validated PasswordForgetModel passwordForgetModel) {
         // 过滤验证码错误的用户
         verifyCodeService.validateCode(passwordForgetModel.getEmail(), passwordForgetModel.getVerifyCode());
@@ -181,7 +190,8 @@ public class UserController {
     @LoginRequired(type = UserType.USER)
     @PostMapping("/email")
     @ApiOperation(value = "换绑邮箱-验证旧邮箱")
-    @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "body", name = "emailChangeForm", value = "邮箱修改模型", required = true, dataType =
+            "EmailChangeForm")
     public ResponseEntity<ApiResult<Boolean>> verifyEmail(@RequestBody @Validated EmailChangeForm emailChangeForm) {
         // 过滤验证码错误的操作
         verifyCodeService.validateCode(emailChangeForm.getOldEmail(), emailChangeForm.getOldVerifyCode());
@@ -193,7 +203,8 @@ public class UserController {
     @LoginRequired(type = UserType.USER)
     @PutMapping("/email")
     @ApiOperation(value = "换绑邮箱-验证新邮箱")
-    @ApiImplicitParam(paramType = "query", name = "follower", value = "跟随者", required = true, dataType = "String")
+    @ApiImplicitParam(paramType = "body", name = "emailChangeForm", value = "邮箱修改模型", required = true, dataType =
+            "EmailChangeForm")
     public ResponseEntity<ApiResult<Boolean>> changeEmail(@RequestBody @Validated EmailChangeForm emailChangeForm) {
         // 过滤验证码错误的用户
         verifyCodeService.validateCode(emailChangeForm.getNewEmail(), emailChangeForm.getNewVerifyCode());
