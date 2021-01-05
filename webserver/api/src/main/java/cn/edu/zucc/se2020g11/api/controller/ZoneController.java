@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/zone")
-@Api(value = "CommentController")
+@Api(value = "ZoneController")
 public class ZoneController
 {
     private final ZoneService zoneService;
@@ -45,6 +45,12 @@ public class ZoneController
     @LoginRequired(type = UserType.USER)
     @GetMapping("/{username}")
     @ApiOperation(value = "获取空间信息")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "path", name = "username", value = "空间用户名", required = true, dataType =
+                "String"),
+        @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> selectZone(@PathVariable("username") String username, HttpServletRequest request) {
         Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), username);
         ZoneModel zoneModel = zoneService.selectZone(username);
