@@ -22,12 +22,11 @@
         sticky
       >
         <van-tab title="推荐">
-          <van-loading
-            v-if="!articleList"
-            color="#1989fa"
-            style="text-align: center;"
-          />
-          <div v-else>
+          <van-pull-refresh
+            v-model="loadingArticle"
+            success-text="加载成功"
+            @refresh="onRefresh"
+          >
             <div
               v-for="item in articleList"
               :key="item.articleId"
@@ -51,15 +50,14 @@
                 radius="0.5rem"
               />
             </div>
-          </div>
+          </van-pull-refresh>
         </van-tab>
         <van-tab v-if="user" title="关注">
-          <van-loading
-            v-if="!followList || !followCompositions"
-            color="#1989fa"
-            style="text-align: center;"
-          />
-          <div v-else>
+          <van-pull-refresh
+            v-model="loadingFollow"
+            success-text="加载成功"
+            @refresh="onRefresh"
+          >
             <div class="follow-list">
               <div
                 v-for="item in followList"
@@ -98,15 +96,14 @@
               :comment="item.commentCount"
               @click="onEnterComposition(item)"
             />
-          </div>
+          </van-pull-refresh>
         </van-tab>
         <van-tab title="热榜">
-          <van-loading
-            v-if="!hotCompositions"
-            color="#1989fa"
-            style="text-align: center;"
-          />
-          <div v-else>
+          <van-pull-refresh
+            v-model="loadingHot"
+            success-text="加载成功"
+            @refresh="onRefresh"
+          >
             <piduoduo-hot-card
               v-for="(item, index) in hotCompositions"
               :key="item.compositionId"
@@ -117,15 +114,14 @@
               :rank="index + 1"
               @click="onEnterComposition(item)"
             />
-          </div>
+          </van-pull-refresh>
         </van-tab>
         <van-tab title="新鲜">
-          <van-loading
-            v-if="!freshCompositions"
-            color="#1989fa"
-            style="text-align: center;"
-          />
-          <div v-else>
+          <van-pull-refresh
+            v-model="loadingNew"
+            success-text="加载成功"
+            @refresh="onRefresh"
+          >
             <piduoduo-fresh-card
               v-for="item in freshCompositions"
               :key="item.compositionId"
@@ -136,7 +132,7 @@
               :comment="item.commentCount"
               @click="onEnterComposition(item)"
             />
-          </div>
+          </van-pull-refresh>
         </van-tab>
       </van-tabs>
     </v-touch>
@@ -170,7 +166,11 @@ export default {
         follow: [],
         top: [],
         fresh: []
-      }
+      },
+      loadingArticle: true,
+      loadingFollow: true,
+      loadingHot: true,
+      loadingNew: true
     };
   },
   computed: {
@@ -181,50 +181,7 @@ export default {
       this.active = this.routeAnchor;
       this.setRouteAnchor(-1);
     }
-    if (this.user) {
-      this.axios
-        .get(`/follow/${this.user.username}`)
-        .then(res => {
-          console.log(res);
-          this.followList = [];
-          res.data.data.followList.forEach(follow => {
-            this.followList.push({
-              username: follow.username,
-              avatarUrl: null
-            });
-          });
-        })
-        .catch(err => console.error(err.response.data));
-      this.axios
-        .get("/home/follow")
-        .then(res => {
-          console.log(res);
-          this.followCompositions = res.data.data.followCardModelList;
-        })
-        .catch(err => console.error(err.response.data));
-    }
-    this.axios
-      .get("/home/article")
-      .then(res => {
-        console.log(res);
-        this.articleList = res.data.data.articleModelList;
-      })
-      .catch(err => console.error(err.response.data));
-    this.axios
-      .get("/home/hot")
-      .then(res => {
-        console.log(res);
-        this.hotCompositions = res.data.data.hotCardModelList;
-      })
-      .catch(err => console.error(err.response.data));
-    this.axios
-      .get("/home/new")
-      .then(res => {
-        console.log(res);
-        this.freshCompositions = res.data.data.newCardModelList;
-        this.freshCompositions.sort((a, b) => b.releaseTime - a.releaseTime);
-      })
-      .catch(err => console.error(err.response.data));
+    this.onRefresh();
   },
   methods: {
     onSwipeLeft() {
@@ -256,6 +213,64 @@ export default {
     onEnterArticle(article) {
       this.viewArticle(article);
       this.$router.push("/article");
+    },
+    onRefresh() {
+      this.loadingArticle = true;
+      this.loadingFollow = true;
+      this.loadingHot = true;
+      this.loadingNew = true;
+      if (this.user) {
+        this.axios
+          .get(`/follow/${this.user.username}`)
+          .then(res => {
+            console.log(res);
+            this.followList = [];
+            res.data.data.followList.forEach(follow => {
+              this.followList.push({
+                username: follow.username,
+                avatarUrl: null
+              });
+            });
+            this.axios
+              .get("/home/follow")
+              .then(res => {
+                console.log(res);
+                this.followCompositions = res.data.data.followCardModelList.sort(
+                  (a, b) => b.releaseTime - a.releaseTime
+                );
+                this.loadingFollow = false;
+              })
+              .catch(err => console.error(err.response.data));
+          })
+          .catch(err => console.error(err.response.data));
+      }
+      this.axios
+        .get("/home/article")
+        .then(res => {
+          console.log(res);
+          this.articleList = res.data.data.articleModelList.sort(
+            (a, b) => b.articleId - a.articleId
+          );
+          this.loadingArticle = false;
+        })
+        .catch(err => console.error(err.response.data));
+      this.axios
+        .get("/home/hot")
+        .then(res => {
+          console.log(res);
+          this.hotCompositions = res.data.data.hotCardModelList;
+          this.loadingHot = false;
+        })
+        .catch(err => console.error(err.response.data));
+      this.axios
+        .get("/home/new")
+        .then(res => {
+          console.log(res);
+          this.freshCompositions = res.data.data.newCardModelList;
+          this.freshCompositions.sort((a, b) => b.releaseTime - a.releaseTime);
+          this.loadingNew = false;
+        })
+        .catch(err => console.error(err.response.data));
     },
     ...mapMutations(["setRouteAnchor", "viewArticle"])
   }

@@ -17,9 +17,22 @@
         </van-col>
       </van-row>
     </div>
-    <van-cell-group title="消息列表" class="message-list">
-      <div style="text-align: center; color: red;">暂不支持使用</div>
-      <van-row
+    <van-cell-group
+      title="消息列表"
+      class="message-list"
+      :style="{ textAlign: 'center', padding: '10vh 0' }"
+    >
+      <van-row type="flex" align="center" justify="center">
+        <van-image
+          fit="cover"
+          :src="require(`../assets/images/wait.svg`)"
+          :style="{ height: '2rem', width: '2rem' }"
+        />
+        <span :style="{ color: '#707070', marginBottom: '-2px' }">
+          暂不支持使用
+        </span>
+      </van-row>
+      <!-- <van-row
         v-for="item in layout.messageListItem"
         :key="item.id"
         type="flex"
@@ -46,7 +59,7 @@
         <van-col :span="5" class="message-list-item-date">
           {{ timeIntervalString(item.lastMessage.sendTime) }}
         </van-col>
-      </van-row>
+      </van-row> -->
     </van-cell-group>
   </div>
 </template>
@@ -112,6 +125,7 @@ export default {
 }
 .message-list {
   @include padding-vertical($blank-size/2);
+  height: 100%;
   .message-list-item-main {
     @include padding-horizontal($blank-size/2);
     .message-list-item-title {

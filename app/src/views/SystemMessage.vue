@@ -6,18 +6,24 @@
       left-arrow
       :border="false"
       title="系统消息"
-      @click-left="onRouteBack"
+      @click-left="$router.go(-1)"
     />
-    <div
-      v-for="item in systemMessages"
-      :key="item.smessageId"
-      class="system-message-card"
+    <van-pull-refresh
+      v-model="loading"
+      :success-text="first ? '请求成功' : '刷新成功'"
+      @refresh="onRefresh"
     >
-      <van-row>{{ item.smessageBody }}</van-row>
-      <van-row type="flex" justify="end" class="time">
-        {{ translateTime(item.time) }}
-      </van-row>
-    </div>
+      <div
+        v-for="item in systemMessages"
+        :key="item.systemMessageId"
+        class="system-message-card"
+      >
+        <van-row>{{ item.systemMessageBody }}</van-row>
+        <van-row type="flex" justify="end" class="time">
+          {{ translateTime(item.time) }}
+        </van-row>
+      </div>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -26,21 +32,26 @@ import moment from "moment";
 export default {
   data() {
     return {
-      systemMessages: null
+      systemMessages: null,
+      loading: false,
+      first: true
     };
   },
   created() {
-    this.axios
-      .get(`/system-message`)
-      .then(res => {
-        console.log(res.data);
-        this.systemMessages = res.data.data.systemMessageEntityList;
-      })
-      .catch(err => console.error(err.response.data));
+    this.onRefresh();
   },
   methods: {
-    onRouteBack() {
-      this.$router.go(-1);
+    onRefresh() {
+      this.first = false;
+      this.loading = true;
+      this.axios
+        .get(`/system-message`)
+        .then(res => {
+          console.log(res.data);
+          this.systemMessages = res.data.data.systemMessageEntityList;
+          this.loading = false;
+        })
+        .catch(err => console.error(err.response.data));
     },
     translateTime(timestamp) {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
