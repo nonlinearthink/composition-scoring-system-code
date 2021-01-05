@@ -4,7 +4,7 @@
       <!-- 在此插入编辑用的表单 -->
       <a-form-model-item label="消息内容">
         <a-textarea
-          v-model="editorForm.smessageBody"
+          v-model="editorForm.systemMessageBody"
           placeholder="请输入消息内容"
           allowClear
           autoSize
@@ -19,7 +19,7 @@
     >
       <a-descriptions v-if="viewVisible" :column="4">
         <a-descriptions-item label="系统消息ID">
-          {{ viewTarget.smessageId }}
+          {{ viewTarget.systemMessageId }}
         </a-descriptions-item>
         <a-descriptions-item label="编辑者">
           {{ viewTarget.adminName }}
@@ -28,7 +28,7 @@
           {{ translateTime(viewTarget.time) }}
         </a-descriptions-item>
         <a-descriptions-item label="系统消息" :span="4">
-          {{ viewTarget.smessageBody }}
+          {{ viewTarget.systemMessageBody }}
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -72,14 +72,14 @@ export default {
     const tableColumns = [
       {
         title: "ID",
-        dataIndex: "smessageId",
-        key: "smessageId",
+        dataIndex: "systemMessageId",
+        key: "systemMessageId",
         width: 80
       },
       {
         title: "消息内容",
-        dataIndex: "smessageBody",
-        key: "smessageBody",
+        dataIndex: "systemMessageBody",
+        key: "systemMessageBody",
         scopedSlots: { customRender: "body" }
       },
       {
@@ -104,7 +104,7 @@ export default {
     ];
     return {
       editorVisible: false,
-      primaryKey: "smessageId",
+      primaryKey: "systemMessageId",
       tableColumns,
       // 在此编辑测试数据
       dataSource: [],
