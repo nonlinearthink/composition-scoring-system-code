@@ -286,6 +286,14 @@ export default {
         })();
       }
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.showAgreement) {
+      this.showAgreement = false;
+      next(false);
+      return;
+    }
+    next();
   }
 };
 </script>
