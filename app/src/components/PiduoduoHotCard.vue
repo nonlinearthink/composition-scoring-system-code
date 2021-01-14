@@ -6,7 +6,7 @@
         class="rankmark"
         :style="{ color: rankColor[rank - 1] }"
       >
-        <van-icon v-if="rank <= 3" name="medal-o" size="1.5rem" class="icon" />
+        <font-awesome-icon v-if="rank <= 3" icon="award" class="icon" />
         <div :class="rank <= 3 ? 'rank' : 'rank-only'">
           {{ rank }}
         </div>
@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      rankColor: ["red", "orange", "green", "#646566"]
+      rankColor: ["#FF5252", "#FF9800", "#FFC107", "#646566"]
     };
   }
 };
@@ -60,6 +60,7 @@ export default {
   background: white;
   padding: $blank-size;
   padding-left: $blank-size/2;
+  margin: 1px;
   .rankmark {
     padding-right: $blank-size/2;
     margin-top: $blank-size/4;

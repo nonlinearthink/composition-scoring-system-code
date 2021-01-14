@@ -574,6 +574,7 @@ export default {
           comment.time = new Date().getTime();
           this.commentList.push(comment);
           this.$toast("添加评论成功");
+          this.editingComment = "";
         })
         .catch(err => {
           console.error(err.response.data);

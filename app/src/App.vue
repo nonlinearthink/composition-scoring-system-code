@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -53,6 +54,9 @@ export default {
       },
       transitionName: ""
     };
+  },
+  computed: {
+    ...mapState(["appVersion"])
   },
   watch: {
     $route: function(to, from) {

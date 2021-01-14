@@ -25,7 +25,8 @@ export default new Vuex.Store({
     routeAnchor: -1,
     view: {
       article: null
-    }
+    },
+    appVersion: "1.2.0-alpha"
   },
   mutations: {
     viewArticle(state, article) {

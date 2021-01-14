@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -71,9 +72,7 @@ export default {
     };
   },
   computed: {
-    appVersion() {
-      return "1.2.0-alpha";
-    }
+    ...mapState(["appVersion"])
   },
   methods: {
     goBack() {
