@@ -34,6 +34,7 @@
       style="width: 100vw; height: 95vh"
       position="bottom"
       round
+      close-on-popstate
     >
       <iframe
         name="userAgreement"
@@ -81,6 +82,14 @@ export default {
     showAgreementPopup(item) {
       if (item.name == "agreement") this.showAgreement = true;
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.showAgreement) {
+      this.showAgreement = false;
+      next(false);
+      return;
+    }
+    next();
   }
 };
 </script>

@@ -63,7 +63,6 @@ export default {
       } else {
         this.tabbar.enable = false;
       }
-
       // 设置转场动画
       if (to.meta.index > from.meta.index) {
         this.transitionName = "slide-left";
@@ -71,12 +70,6 @@ export default {
         this.transitionName = "slide-right";
       }
     }
-  },
-  beforeCreate() {
-    // localStorage.clear();
-    // if (!localStorage.getItem("isLogin")) {
-    //   this.$router.push("/login");
-    // }
   }
 };
 </script>

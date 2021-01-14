@@ -35,6 +35,8 @@ axios.interceptors.response.use(
       case 13:
       case 14:
         localStorage.clear();
+        store.state.isLogin = false;
+        store.state.user = undefined;
         router.replace("/login");
         break;
     }

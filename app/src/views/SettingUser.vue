@@ -13,7 +13,7 @@
     </van-nav-bar>
     <van-form>
       <van-field
-        v-model="form.username"
+        v-model="form.nickname"
         label="昵称"
         placeholder="请填写昵称"
         :rules="[{ required: true, message: '昵称不能为空' }]"
@@ -67,7 +67,7 @@ export default {
       enableSubmit: false,
       routePassport: false,
       form: {
-        username: "",
+        nickname: "",
         isMale: null,
         signature: null,
         phone: null

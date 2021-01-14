@@ -21,7 +21,9 @@
         {{ article.articleTitle }}
       </van-row>
       <van-row class="time">{{ formatTime(article.time) }}</van-row>
-      <van-row class="body">{{ article.articleBody }}</van-row>
+      <van-row class="body">
+        {{ article.articleBody }}
+      </van-row>
     </div>
   </div>
 </template>
@@ -56,6 +58,9 @@ export default {
   .time {
     color: $color-fade;
     margin: $blank-size 0;
+  }
+  .body {
+    white-space: pre-line;
   }
 }
 </style>
