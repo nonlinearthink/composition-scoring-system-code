@@ -21,7 +21,7 @@
         <!-- 单词统计 -->
         <van-col>单词统计: {{ wordCount }} words</van-col>
         <!-- 编辑中提示 -->
-        <van-col>{{ isEditing ? "编辑中..." : "" }}</van-col>
+        <van-col>{{ isEditing ? "编辑中" : "" }}</van-col>
       </van-row>
     </div>
     <!-- 作文 -->

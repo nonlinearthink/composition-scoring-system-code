@@ -25,6 +25,8 @@ import {
   Row,
   Search,
   Sticky,
+  Swipe,
+  SwipeItem,
   List,
   Tab,
   Tabbar,
@@ -61,6 +63,8 @@ Vue.use(ActionSheet)
   .use(Row)
   .use(Search)
   .use(Sticky)
+  .use(Swipe)
+  .use(SwipeItem)
   .use(Tab)
   .use(Tabbar)
   .use(TabbarItem)

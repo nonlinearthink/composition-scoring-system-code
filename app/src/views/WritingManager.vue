@@ -151,8 +151,8 @@ export default {
           { title: "已发布", state: 4 }
         ],
         compositions: [], // 作文
-        statusColor: ["#07c160", "#ee0a24", "#1989fa", "#ff976a"], // 状态标签颜色
-        visibilityColor: ["#969799", "#646566", "#323233"] // 可见性标签颜色
+        statusColor: ["#4CAF50", "#F44336", "#448AFF", "#FF5722"], // 状态标签颜色
+        visibilityColor: ["#607D8B", "#9C27B0", "#00BCD4"] // 可见性标签颜色
       },
       totalScore: 100, // 总分
       visibilityList: [
@@ -254,12 +254,20 @@ export default {
             // 清空本地缓存
             this.$store.commit("clearCompositions");
             // 后端数据同步到本地缓存
-            res.data.data.compositionList.forEach(composition => {
-              this.$store.commit(
-                "addComposition",
-                new Composition(composition)
-              );
-            });
+            res.data.data.compositionList
+              .sort((a, b) => {
+                if (a.status === b.status) {
+                  return b.releaseTime - a.releaseTime;
+                } else {
+                  return a.status - b.status;
+                }
+              })
+              .forEach(composition => {
+                this.$store.commit(
+                  "addComposition",
+                  new Composition(composition)
+                );
+              });
             // 成功回调
             if (typeof onSuccess == "function") {
               onSuccess();

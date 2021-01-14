@@ -1,10 +1,29 @@
 <template>
   <div id="app">
+    <transition name="slide-right">
+      <div v-if="setup" class="setup-page">
+        <van-swipe class="swipe" indicator-color="white" :loop="false">
+          <van-swipe-item>英语学习</van-swipe-item>
+          <van-swipe-item>自动批改作文</van-swipe-item>
+          <van-swipe-item>丰富的社区活动</van-swipe-item>
+          <van-swipe-item>
+            <div>
+              Let's Go
+              <font-awesome-icon
+                icon="sign-in-alt"
+                :style="{ marginLeft: '1rem' }"
+                @click="onEnter"
+              />
+            </div>
+          </van-swipe-item>
+        </van-swipe>
+      </div>
+    </transition>
     <transition :name="transitionName">
       <router-view />
     </transition>
     <van-tabbar
-      v-if="tabbar.enable"
+      v-if="tabbar.enable && !setup"
       v-model="tabbar.active"
       route
       fixed
@@ -31,7 +50,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -56,7 +75,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["appVersion"])
+    ...mapState(["appVersion", "setup"])
   },
   watch: {
     $route: function(to, from) {
@@ -73,6 +92,14 @@ export default {
       } else {
         this.transitionName = "slide-right";
       }
+    }
+  },
+  methods: {
+    ...mapMutations(["reverseSetup"]),
+    onEnter() {
+      setTimeout(() => {
+        this.reverseSetup();
+      }, 200);
     }
   }
 };
@@ -116,5 +143,16 @@ export default {
 .slide-left-leave-active {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
+}
+.setup-page {
+  height: 100vh;
+  width: 100vw;
+  .swipe .van-swipe-item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 100vh;
+    text-align: center;
+    background-color: #39a9ed;
+  }
 }
 </style>

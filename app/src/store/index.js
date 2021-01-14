@@ -26,9 +26,13 @@ export default new Vuex.Store({
     view: {
       article: null
     },
-    appVersion: "1.2.0-alpha"
+    appVersion: "1.2.0-alpha",
+    setup: true
   },
   mutations: {
+    reverseSetup(state) {
+      state.setup = !state.setup;
+    },
     viewArticle(state, article) {
       state.view.article = article;
     },
