@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-about">
     <van-nav-bar
-      title="设置"
+      title="关于批多多"
       placeholder
       left-arrow
       safe-area-inset-top
@@ -68,7 +68,7 @@ export default {
         ]
       },
       showAgreement: false,
-      appVersion: "1.3.1-rc1"
+      appVersion: "1.4.0-rc1"
     };
   },
   methods: {

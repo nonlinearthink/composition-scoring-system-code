@@ -2,7 +2,7 @@
   <div id="publish-page">
     <!-- 顶部导航栏 -->
     <van-nav-bar
-      title="编辑发布信息"
+      title="编辑信息"
       placeholder
       left-arrow
       safe-area-inset-top

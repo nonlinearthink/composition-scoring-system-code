@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-security">
     <van-nav-bar
-      title="设置"
+      title="安全隐私"
       placeholder
       left-arrow
       safe-area-inset-top

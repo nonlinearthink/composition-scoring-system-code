@@ -1,7 +1,7 @@
 <template>
   <div id="article-page">
     <van-nav-bar
-      title="浏览推送"
+      title="精选文章"
       placeholder
       safe-area-inset-top
       left-arrow

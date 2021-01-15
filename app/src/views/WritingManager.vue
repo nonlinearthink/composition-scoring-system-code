@@ -1,7 +1,12 @@
 <template>
   <div id="writing-manager-page">
     <!-- 顶部导航栏 -->
-    <van-nav-bar title="作文" placeholder safe-area-inset-top :border="false">
+    <van-nav-bar
+      title="写作管理"
+      placeholder
+      safe-area-inset-top
+      :border="false"
+    >
       <template #right>
         <van-icon
           name="plus"

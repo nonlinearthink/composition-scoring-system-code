@@ -1,7 +1,7 @@
 <template>
   <div id="favorite-page">
     <van-nav-bar
-      title="收藏夹"
+      title="我的收藏"
       placeholder
       safe-area-inset-top
       left-arrow

@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-page">
     <van-nav-bar
-      title="编辑个人资料"
+      title="编辑资料"
       placeholder
       left-arrow
       safe-area-inset-top
