@@ -101,7 +101,7 @@ export default {
   align-items: center;
 }
 .login-form {
-  width: 18rem;
+  width: 20rem;
   background: white;
   margin: 0 auto;
   border-radius: 1rem;

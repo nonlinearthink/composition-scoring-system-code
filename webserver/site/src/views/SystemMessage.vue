@@ -160,7 +160,7 @@ export default {
           .post("/system-message", this.editorForm)
           .then(res => {
             console.log(res.data);
-            this.editorForm.systemMessageId = res.data.data.systemMessageId;
+            this.editorForm.systemMessageId = res.data.data.sMessageId;
             this.dataSource.push(this.editorForm);
             this.$message.success(
               `创建记录${this.editorForm[this.primaryKey]}成功`,
@@ -177,7 +177,7 @@ export default {
           )
           .then(res => {
             console.log(res.data);
-            this.editingTarget.smessageBody = this.editorForm.smessageBody;
+            this.editingTarget.systemMessageBody = this.editorForm.systemMessageBody;
             this.editingTarget.time = this.editorForm.time;
             this.editingTarget.adminName = this.admin.adminName;
             this.$message.success(
@@ -196,8 +196,8 @@ export default {
     onCreate() {
       this.editorForm = {
         adminName: this.admin.adminName,
-        smessageBody: "",
-        smessageId: "",
+        systemMessageBody: "",
+        systemMessageId: "",
         time: ""
       };
       this.editingStatus = 0;
