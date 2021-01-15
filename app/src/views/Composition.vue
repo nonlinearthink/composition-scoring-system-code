@@ -80,7 +80,7 @@
           color="#02a7f0"
           :style="{ marginTop: '1rem' }"
         >
-          <van-tab title="原文" style="padding: 0 1rem;">
+          <van-tab title="拼写建议" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
             <van-row v-html="wordErrorModel"></van-row>
           </van-tab>
@@ -815,5 +815,8 @@ export default {
 .echarts {
   width: calc(100vw - 4rem);
   height: 35vh;
+}
+.show-word-error {
+  line-height: 3rem;
 }
 </style>

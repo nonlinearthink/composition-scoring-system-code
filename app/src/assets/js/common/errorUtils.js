@@ -117,7 +117,7 @@ function parseWordError(text, errorInfo) {
         correctResult[0].error_location.forEach(index => {
           splitedSentence[
             index
-          ] = `<span style="text-decoration: line-through; text-decoration-color: red;">${splitedSentence[index]}</span>${correctResult[0].pred[index]}`;
+          ] = `&nbsp;&nbsp;<span style="position: relative;"><span style="text-decoration: line-through; text-decoration-color: red;">${splitedSentence[index]}</span><span style="position: absolute; top: -1.2rem; left: 0rem;">${correctResult[0].pred[index]}</span></span>&nbsp;&nbsp;`;
         });
         // 合并句子
         let advice = mergeWord(splitedSentence);
@@ -131,7 +131,7 @@ function parseWordError(text, errorInfo) {
       currentSentence++;
     }
     // 添加段落
-    result += "<p>" + paragraph + "</p>";
+    result += "<p style='line-height: 2rem;'>" + paragraph + "</p>";
   }
   // 返回结果
   return result;
