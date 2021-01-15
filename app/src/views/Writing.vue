@@ -191,7 +191,23 @@ export default {
      * @description 提交
      */
     onSubmit() {
-      this.enableSubmit = true;
+      if (this.composition.compositionBody.trim() == "") {
+        this.$toast("不能为空");
+        return;
+      }
+      if (this.composition.compositionBody.match(/[\u4e00-\u9fa5]/) != null) {
+        this.$toast("不能包含中文字符");
+        return;
+      }
+      if (this.composition.compositionBody.match(/[！？。，]/) != null) {
+        this.$toast("不能包含中文标点");
+        return;
+      }
+      if (this.composition.compositionBody.match(/[!?.]$/g)) {
+        this.enableSubmit = true;
+      } else {
+        this.$toast("缺少结尾标点符号");
+      }
     },
     /**
      * @description 创建作文
@@ -240,14 +256,6 @@ export default {
      * @param {Number} type 创建的类型，即status
      */
     onSubmitConfirm(type) {
-      if (this.composition.compositionBody.trim() == "") {
-        this.$toast("作文不能为空");
-        return;
-      }
-      if (this.composition.compositionBody.match(/[\u4e00-\u9fa5]/) != null) {
-        this.$toast("作文不能包含中文字符");
-        return;
-      }
       if (this.isLogin) {
         if (this.editing.type == "cache") {
           this.onCreateComposition(type);
