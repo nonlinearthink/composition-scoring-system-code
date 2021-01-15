@@ -1,12 +1,15 @@
 <template>
   <div id="home-page">
     <van-search
-      v-model="searchString"
-      placeholder="请输入搜索关键词"
+      placeholder="发现更多有趣的灵魂"
       background="#02a7f0"
       shape="round"
       class="search-bar"
-      @click="$toast.fail('此功能暂不支持')"
+      @click="
+        $router.push({
+          path: '/search'
+        })
+      "
     />
     <v-touch
       :swipe-options="{ direction: 'horizontal' }"
@@ -154,7 +157,6 @@ export default {
   },
   data() {
     return {
-      searchString: "",
       active: 0,
       defaultAvatar: require("../assets/images/avatar.svg"),
       followList: null,

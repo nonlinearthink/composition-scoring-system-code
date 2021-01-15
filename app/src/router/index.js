@@ -172,6 +172,18 @@ const routes = [
     name: "ForgetPasswordPage",
     meta: { index: 6, scrollToTop: true },
     component: () => import("../views/ForgetPassword.vue")
+  },
+  {
+    path: "/search",
+    name: "SearchPage",
+    meta: { index: 2, scrollToTop: true },
+    component: () => import("../views/Search.vue")
+  },
+  {
+    path: "/search/result",
+    name: "SearchResultPage",
+    meta: { index: 3, scrollToTop: true },
+    component: () => import("../views/SearchResult.vue")
   }
 ];
 

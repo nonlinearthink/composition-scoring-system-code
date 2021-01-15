@@ -60,7 +60,7 @@
           animated
           color="#02a7f0"
         >
-          <van-tab title="原文" style="padding: 0 1rem;">
+          <van-tab title="单词建议" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
             <van-row v-html="wordErrorModel"></van-row>
           </van-tab>
