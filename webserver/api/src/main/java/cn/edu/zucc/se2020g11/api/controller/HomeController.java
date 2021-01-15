@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -78,6 +76,30 @@ public class HomeController
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
         data.put("hotCardModelList", hotCardModelList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "模糊查询用户名")
+    @PostMapping("/search/{username}")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserByUsername(@PathVariable String username) {
+        List<String> usernameList = homeService.selectUserByUsername(username);
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("usernameList", usernameList);
+        result.setData(data);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @ApiOperation(value = "模糊查询详细用户")
+    @PostMapping("/search/detail/{username}")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserDetailByUsername(@PathVariable String username) {
+        List<UsernameCardModel> usernameCardModelList = homeService.selectUserDetailByUsername(username);
+        ApiResult<Map<String, Object>> result = new ApiResult<>();
+        result.setMsg("获取成功");
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("usernameCardModelList", usernameCardModelList);
         result.setData(data);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
