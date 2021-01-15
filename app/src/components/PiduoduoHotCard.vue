@@ -6,7 +6,12 @@
         class="rankmark"
         :style="{ color: rankColor[rank - 1] }"
       >
-        <font-awesome-icon v-if="rank <= 3" icon="award" class="icon" />
+        <font-awesome-icon
+          v-if="rank <= 3"
+          icon="award"
+          class="icon"
+          :style="{ marginBottom: '0.2rem' }"
+        />
         <div :class="rank <= 3 ? 'rank' : 'rank-only'">
           {{ rank }}
         </div>
