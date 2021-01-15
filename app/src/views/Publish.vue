@@ -26,28 +26,33 @@
           center
           size="large"
           class="composition-title"
-        >
-          <template #extra>
-            <div :style="{ fontSize: '1rem', marginLeft: '0.5rem' }">
-              设置可见性:
-            </div>
-            <div class="composition-visibility" @click="enableSelectVisibility">
-              {{ translate(composition.visibility) }}
-            </div>
-          </template>
-        </van-field>
-      </van-sticky>
-      <van-cell-group title="作文描述">
-        <van-field
-          v-model="composition.description"
-          type="textarea"
-          placeholder="输入作文描述"
-          class="composition-body"
-          :border="false"
-          autosize
         />
-      </van-cell-group>
-      <van-cell-group title="评价报告">
+      </van-sticky>
+      <van-field
+        v-model="composition.description"
+        type="textarea"
+        placeholder="输入作文描述"
+        class="composition-body"
+        :border="false"
+        autosize
+      />
+      <van-cell
+        title="谁可以看"
+        is-link
+        center
+        :value="translate(composition.visibility)"
+        @click="enableSelectVisibility"
+      >
+        <template #icon>
+          <van-icon
+            name="friends-o"
+            color="#02a7f0"
+            size="1rem"
+            :style="{ marginRight: '0.5rem' }"
+          />
+        </template>
+      </van-cell>
+      <van-cell-group title="评价报告" :border="false">
         <van-tabs
           v-model="displayMode"
           :ellipsis="false"
@@ -149,6 +154,7 @@ import { mapState } from "vuex";
 import ECharts from "vue-echarts";
 import "echarts/lib/chart/radar";
 import "echarts/lib/component/radar";
+import "echarts/lib/component/tooltip";
 export default {
   components: {
     "v-chart": ECharts
@@ -220,13 +226,6 @@ export default {
         console.log(res.data);
         let data = res.data.data.compositionCountModel;
         this.radar = {
-          title: {
-            text: "评分细节"
-          },
-          legend: {
-            left: "center",
-            data: ["score"]
-          },
           radar: {
             indicator: [
               { text: "拼写", max: 100 },
@@ -254,9 +253,13 @@ export default {
                     data.lengthScore,
                     data.richnessScore
                   ],
-                  name: "score"
+                  name: "各个评分项"
                 }
-              ]
+              ],
+              tooltip: {
+                trigger: "item",
+                position: ["50%", "50%"]
+              }
             }
           ],
           animationDuration: 1000
@@ -351,9 +354,11 @@ export default {
 <style lang="scss" scoped>
 #publish-page {
   height: 100vh;
+  background: white;
 }
 .composition-title {
-  font-size: $text-large;
+  font-size: $text-normal;
+  margin-bottom: 1px;
 }
 .composition-visibility {
   margin-left: $text-normal / 4;
@@ -373,6 +378,6 @@ export default {
 }
 .echarts {
   width: calc(100vw - 2rem);
-  height: 50vh;
+  height: 35vh;
 }
 </style>

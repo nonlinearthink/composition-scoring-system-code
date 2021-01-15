@@ -27,9 +27,13 @@ export default new Vuex.Store({
       article: null
     },
     appVersion: "1.2.0-alpha",
-    setup: true
+    setup: true,
+    scrollTop: 0
   },
   mutations: {
+    recordScrollTop(state, n) {
+      state.scrollTop = n;
+    },
     reverseSetup(state) {
       state.setup = !state.setup;
     },
