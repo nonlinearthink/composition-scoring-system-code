@@ -9,6 +9,8 @@ import cn.edu.zucc.se2020g11.api.service.FollowService;
 import cn.edu.zucc.se2020g11.api.service.ZoneService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
