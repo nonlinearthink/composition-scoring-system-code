@@ -3,7 +3,7 @@
     <div class="user-card">
       <van-row class="user-info" type="flex" justify="space-between">
         <van-col :style="{ flex: '1' }">
-          <van-row type="flex">
+          <van-row type="flex" align="center">
             <van-col>
               <div
                 class="user-info-avatar"

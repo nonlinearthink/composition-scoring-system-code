@@ -133,7 +133,7 @@ export default {
     },
     onDelete(record) {
       this.axios
-        .delete(`/system-message/${record.smessageId}`)
+        .delete(`/system-message/${record.systemMessageId}`)
         .then(res => {
           console.log(res.data);
           this.dataSource = this.dataSource.filter(
@@ -160,7 +160,7 @@ export default {
           .post("/system-message", this.editorForm)
           .then(res => {
             console.log(res.data);
-            this.editorForm.smessageId = res.data.data.sMessageId;
+            this.editorForm.systemMessageId = res.data.data.systemMessageId;
             this.dataSource.push(this.editorForm);
             this.$message.success(
               `创建记录${this.editorForm[this.primaryKey]}成功`,
@@ -172,7 +172,7 @@ export default {
       } else {
         this.axios
           .put(
-            `/system-message/${this.editingTarget.smessageId}`,
+            `/system-message/${this.editingTarget.systemMessageId}`,
             this.editorForm
           )
           .then(res => {

@@ -13,21 +13,29 @@
         </div>
       </template>
     </van-nav-bar>
-    <van-row style="padding: 1rem;">
-      <span>
-        选择反馈类型:
-      </span>
-      <span class="a-text" @click="select">{{ selectType.name }} </span>
-    </van-row>
-    <van-cell-group title="反馈内容">
-      <van-field
-        v-model="feedback.feedbackBody"
-        type="textarea"
-        placeholder="请描述你的问题，我们会尽快处理"
-        :border="false"
-        autosize
-      />
-    </van-cell-group>
+    <van-field
+      v-model="feedback.feedbackBody"
+      type="textarea"
+      placeholder="请描述你的问题，我们会尽快处理"
+      :border="false"
+      autosize
+    />
+    <van-cell
+      title="选择反馈类型"
+      is-link
+      center
+      :value="selectType.name"
+      @click="select"
+    >
+      <template #icon>
+        <van-icon
+          name="coupon-o"
+          color="#02a7f0"
+          size="1rem"
+          :style="{ marginRight: '0.5rem' }"
+        />
+      </template>
+    </van-cell>
     <van-action-sheet
       v-model="showSelect"
       :actions="actions"
