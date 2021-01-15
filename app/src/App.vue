@@ -92,12 +92,6 @@ export default {
         items: [
           { name: "home", route: "/", icon: "home-o", text: "首页" },
           { name: "feed", route: "/manager", icon: "edit", text: "作文" },
-          {
-            name: "chat",
-            route: "/chat",
-            icon: "chat-o",
-            text: "消息"
-          },
           { name: "user", route: "/user", icon: "user-circle-o", text: "我的" }
         ]
       },

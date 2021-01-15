@@ -18,12 +18,6 @@ const routes = [
     component: () => import("../views/WritingManager.vue")
   },
   {
-    path: "/chat",
-    name: "ChatPage",
-    meta: { index: 3, scrollToTop: true },
-    component: () => import("../views/Chat.vue")
-  },
-  {
     path: "/user",
     name: "UserPage",
     meta: { index: 4, scrollToTop: true },
