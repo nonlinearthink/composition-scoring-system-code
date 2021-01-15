@@ -3,9 +3,39 @@
     <transition name="slide-right">
       <div v-if="setup" class="setup-page">
         <van-swipe class="swipe" indicator-color="white" :loop="false">
-          <van-swipe-item>英语学习</van-swipe-item>
-          <van-swipe-item>自动批改作文</van-swipe-item>
-          <van-swipe-item>丰富的社区活动</van-swipe-item>
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/learn-english.png')"
+              class="piduoduo-avatar"
+            />
+            英语学习
+          </van-swipe-item>
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/auto-correct.png')"
+              class="piduoduo-avatar"
+            />
+            自动批改作文
+          </van-swipe-item>
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/chat-everyone.png')"
+              class="piduoduo-avatar"
+            />
+            丰富的社区活动
+          </van-swipe-item>
           <van-swipe-item>
             <div>
               Let's Go

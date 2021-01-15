@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -68,11 +67,9 @@ export default {
           }
         ]
       },
-      showAgreement: false
+      showAgreement: false,
+      appVersion: "1.3.0-beta"
     };
-  },
-  computed: {
-    ...mapState(["appVersion"])
   },
   methods: {
     goBack() {
