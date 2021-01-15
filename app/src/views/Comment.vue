@@ -50,7 +50,7 @@
             @click="
               $router.push({
                 path: '/composition',
-                query: { compositionId: item.compositionId }
+                query: { compositionId: item.compositionId, openComment: true }
               })
             "
           >

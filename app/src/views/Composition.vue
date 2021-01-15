@@ -416,6 +416,9 @@ export default {
             ],
             animationDuration: 1000
           };
+          if (this.$route.query.openComment) {
+            this.showComment = true;
+          }
           this.axios
             .get(`/error/${this.$route.query.compositionId}/0`)
             .then(res => {
