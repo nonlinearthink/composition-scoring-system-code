@@ -81,6 +81,7 @@ export default {
 .piduoduo-follow-card {
   background: white;
   padding: 1rem;
+  margin: 1px;
   .avatar {
     margin-right: $blank-size/2;
   }

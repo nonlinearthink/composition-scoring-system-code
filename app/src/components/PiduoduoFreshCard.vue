@@ -2,8 +2,26 @@
   <div class="piduoduo-fresh-card" @click="$emit('click')">
     <van-row class="title">{{ title }}</van-row>
     <van-row class="body">{{ body }}</van-row>
-    <van-row type="flex" justify="space-between" class="statusbar">
-      <van-col class="username">{{ username }}</van-col>
+    <van-row
+      type="flex"
+      justify="space-between"
+      class="statusbar"
+      align="center"
+    >
+      <van-col>
+        <van-col>
+          <van-image
+            width="1rem"
+            height="1rem"
+            fit="cover"
+            round
+            :src="avatar"
+          />
+        </van-col>
+        <van-col>
+          <div class="username">{{ username }}</div>
+        </van-col>
+      </van-col>
       <van-col class="statistic">{{ read }}阅读 · {{ comment }}评论</van-col>
     </van-row>
   </div>
@@ -31,6 +49,10 @@ export default {
     comment: {
       type: [Number, String],
       default: 0
+    },
+    avatar: {
+      type: [String],
+      default: require("../assets/images/avatar.svg")
     }
   }
 };
@@ -40,6 +62,7 @@ export default {
 .piduoduo-fresh-card {
   background: white;
   padding: 1rem;
+  margin: 1px;
   .title {
     font-size: $text-large;
     font-weight: 600;
@@ -56,6 +79,9 @@ export default {
   .statusbar {
     color: $color-fade;
     font-size: $text-small;
+  }
+  .username {
+    margin-left: 0.25rem;
   }
 }
 </style>

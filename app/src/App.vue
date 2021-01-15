@@ -1,10 +1,59 @@
 <template>
   <div id="app">
+    <transition name="slide-right">
+      <div v-if="setup" class="setup-page">
+        <van-swipe class="swipe" indicator-color="white" :loop="false">
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/learn-english.png')"
+              class="piduoduo-avatar"
+            />
+            英语学习
+          </van-swipe-item>
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/auto-correct.png')"
+              class="piduoduo-avatar"
+            />
+            自动批改作文
+          </van-swipe-item>
+          <van-swipe-item>
+            <van-image
+              width="5rem"
+              height="5rem"
+              fit="cover"
+              round
+              :src="require('./assets/images/setup/chat-everyone.png')"
+              class="piduoduo-avatar"
+            />
+            丰富的社区活动
+          </van-swipe-item>
+          <van-swipe-item>
+            <div>
+              Let's Go
+              <font-awesome-icon
+                icon="sign-in-alt"
+                :style="{ marginLeft: '1rem' }"
+                @click="onEnter"
+              />
+            </div>
+          </van-swipe-item>
+        </van-swipe>
+      </div>
+    </transition>
     <transition :name="transitionName">
       <router-view />
     </transition>
     <van-tabbar
-      v-if="tabbar.enable"
+      v-if="tabbar.enable && !setup"
       v-model="tabbar.active"
       route
       fixed
@@ -31,6 +80,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -42,17 +92,14 @@ export default {
         items: [
           { name: "home", route: "/", icon: "home-o", text: "首页" },
           { name: "feed", route: "/manager", icon: "edit", text: "作文" },
-          {
-            name: "chat",
-            route: "/chat",
-            icon: "chat-o",
-            text: "消息"
-          },
           { name: "user", route: "/user", icon: "user-circle-o", text: "我的" }
         ]
       },
       transitionName: ""
     };
+  },
+  computed: {
+    ...mapState(["appVersion", "setup"])
   },
   watch: {
     $route: function(to, from) {
@@ -63,7 +110,6 @@ export default {
       } else {
         this.tabbar.enable = false;
       }
-
       // 设置转场动画
       if (to.meta.index > from.meta.index) {
         this.transitionName = "slide-left";
@@ -72,11 +118,13 @@ export default {
       }
     }
   },
-  beforeCreate() {
-    // localStorage.clear();
-    // if (!localStorage.getItem("isLogin")) {
-    //   this.$router.push("/login");
-    // }
+  methods: {
+    ...mapMutations(["reverseSetup"]),
+    onEnter() {
+      setTimeout(() => {
+        this.reverseSetup();
+      }, 200);
+    }
   }
 };
 </script>
@@ -119,5 +167,16 @@ export default {
 .slide-left-leave-active {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
+}
+.setup-page {
+  height: 100vh;
+  width: 100vw;
+  .swipe .van-swipe-item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 100vh;
+    text-align: center;
+    background-color: #39a9ed;
+  }
 }
 </style>

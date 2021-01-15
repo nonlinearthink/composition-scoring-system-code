@@ -332,6 +332,7 @@ import { mapState } from "vuex";
 import ECharts from "vue-echarts";
 import "echarts/lib/chart/radar";
 import "echarts/lib/component/radar";
+import "echarts/lib/component/tooltip";
 export default {
   components: {
     "v-chart": ECharts
@@ -373,9 +374,6 @@ export default {
           this.isFollow = res.data.data.isFollow;
           let data = res.data.data.compositionCountModel;
           this.radar = {
-            title: {
-              text: "评分细节"
-            },
             legend: {
               left: "center",
               data: ["score"]
@@ -407,13 +405,20 @@ export default {
                       data.lengthScore,
                       data.richnessScore
                     ],
-                    name: "score"
+                    name: "各个评分项"
                   }
-                ]
+                ],
+                tooltip: {
+                  trigger: "item",
+                  position: ["50%", "50%"]
+                }
               }
             ],
             animationDuration: 1000
           };
+          if (this.$route.query.openComment) {
+            this.showComment = true;
+          }
           this.axios
             .get(`/error/${this.$route.query.compositionId}/0`)
             .then(res => {
@@ -574,6 +579,7 @@ export default {
           comment.time = new Date().getTime();
           this.commentList.push(comment);
           this.$toast("添加评论成功");
+          this.editingComment = "";
         })
         .catch(err => {
           console.error(err.response.data);
@@ -808,6 +814,6 @@ export default {
 }
 .echarts {
   width: calc(100vw - 4rem);
-  height: 50vh;
+  height: 35vh;
 }
 </style>

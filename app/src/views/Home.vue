@@ -305,7 +305,7 @@ export default {
 }
 .article-card {
   width: 100vw;
-  margin: $blank-size 0;
+  margin: 2px 0;
   background: white;
   text-align: center;
   padding: 0.5rem 0;

@@ -1,7 +1,7 @@
 <template>
   <div id="setting-user-about">
     <van-nav-bar
-      title="设置"
+      title="关于批多多"
       placeholder
       left-arrow
       safe-area-inset-top
@@ -34,6 +34,7 @@
       style="width: 100vw; height: 95vh"
       position="bottom"
       round
+      close-on-popstate
     >
       <iframe
         name="userAgreement"
@@ -66,13 +67,9 @@ export default {
           }
         ]
       },
-      showAgreement: false
+      showAgreement: false,
+      appVersion: "1.4.0-rc1"
     };
-  },
-  computed: {
-    appVersion() {
-      return "1.2.0-alpha";
-    }
   },
   methods: {
     goBack() {
@@ -81,6 +78,14 @@ export default {
     showAgreementPopup(item) {
       if (item.name == "agreement") this.showAgreement = true;
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.showAgreement) {
+      this.showAgreement = false;
+      next(false);
+      return;
+    }
+    next();
   }
 };
 </script>

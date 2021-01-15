@@ -5,7 +5,7 @@
       safe-area-inset-top
       left-arrow
       :border="false"
-      title="评论"
+      title="回复我的"
       @click-left="$router.go(-1)"
     />
     <van-pull-refresh
@@ -50,7 +50,7 @@
             @click="
               $router.push({
                 path: '/composition',
-                query: { compositionId: item.compositionId }
+                query: { compositionId: item.compositionId, openComment: true }
               })
             "
           >

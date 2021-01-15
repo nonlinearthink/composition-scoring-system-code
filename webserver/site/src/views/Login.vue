@@ -1,6 +1,10 @@
 <template>
   <div id="login-page">
     <a-form :form="form" class="login-form" @submit="onSubmit">
+      <div class="logo">
+        <piduoduo-logo class="logo-icon" />
+        <div class="logo-text">批多多后台管理系统</div>
+      </div>
       <a-form-item>
         <a-input
           v-decorator="[
@@ -48,7 +52,11 @@
 
 <script>
 import { mapMutations, mapState } from "vuex";
+import PiduoduoLogo from "@/assets/images/logo.svg";
 export default {
+  components: {
+    PiduoduoLogo
+  },
   computed: {
     ...mapState(["admin"])
   },
@@ -87,12 +95,13 @@ export default {
   height: 100vh;
   width: 100vw;
   background: url(../assets/images/background.png);
+  background-color: #0066cc;
   background-size: cover;
   display: flex;
   align-items: center;
 }
 .login-form {
-  width: 18rem;
+  width: 20rem;
   background: white;
   margin: 0 auto;
   border-radius: 1rem;
@@ -103,10 +112,23 @@ export default {
   padding-bottom: 1rem;
   position: absolute;
   bottom: 0;
-  color: rgba(0, 0, 0, 0.25);
+  color: #c5c5c5;
   font-size: 0.5rem;
 }
 .ant-form-item:last-child {
   margin-bottom: 0;
+}
+.logo {
+  text-align: center;
+  padding-bottom: 1rem;
+  .logo-icon {
+    height: 4rem;
+    height: 4rem;
+    display: inline-block;
+  }
+  .logo-text {
+    font-size: 1rem;
+    text-align: center;
+  }
 }
 </style>

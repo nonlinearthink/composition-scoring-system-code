@@ -25,9 +25,17 @@ export default new Vuex.Store({
     routeAnchor: -1,
     view: {
       article: null
-    }
+    },
+    setup: true,
+    scrollTop: 0
   },
   mutations: {
+    recordScrollTop(state, n) {
+      state.scrollTop = n;
+    },
+    reverseSetup(state) {
+      state.setup = !state.setup;
+    },
     viewArticle(state, article) {
       state.view.article = article;
     },

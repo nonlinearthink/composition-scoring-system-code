@@ -1,38 +1,57 @@
 <template>
   <div id="user-page">
     <div class="user-card">
-      <div class="user-info">
-        <div
-          class="user-info-avatar"
-          @click="
-            onRouteChange({
-              path: '/user/home',
-              query: { user: user.username }
-            })
-          "
-        >
-          <van-image
-            width="4rem"
-            height="4rem"
-            fit="cover"
-            round
-            :src="layout.avatar"
-            class="piduoduo-avatar"
-          />
-        </div>
-        <div v-if="isLogin" class="user-info-other">
-          <div class="nickname">
-            {{ user.nickname }}
-          </div>
-          <van-row v-if="user.signature" class="signature">
-            <van-tag color="orange">个性签名</van-tag>
-            {{ user.signature }}
+      <van-row class="user-info" type="flex" justify="space-between">
+        <van-col :style="{ flex: '1' }">
+          <van-row type="flex" align="center">
+            <van-col>
+              <div
+                class="user-info-avatar"
+                @click="
+                  onRouteChange({
+                    path: '/user/home',
+                    query: { user: user.username }
+                  })
+                "
+              >
+                <van-image
+                  width="4rem"
+                  height="4rem"
+                  fit="cover"
+                  round
+                  :src="layout.avatar"
+                  class="piduoduo-avatar"
+                />
+              </div>
+            </van-col>
+            <van-col :style="{ flex: '1' }">
+              <div v-if="isLogin" class="user-info-other">
+                <div class="nickname">
+                  {{ user.nickname }}
+                </div>
+                <van-row v-if="user.signature" class="signature">
+                  <van-tag color="orange">个性签名</van-tag>
+                  {{ user.signature }}
+                </van-row>
+              </div>
+              <div v-else class="user-info-other" @click="goLogin">
+                <div class="login-button-wrapper">点击登录</div>
+              </div>
+            </van-col>
           </van-row>
-        </div>
-        <div v-else class="user-info-other" @click="goLogin">
-          <div class="login-button-wrapper">点击登录</div>
-        </div>
-      </div>
+        </van-col>
+        <van-col>
+          <van-icon
+            name="envelop-o"
+            size="1.5rem"
+            @click="
+              $router.push({
+                path: '/system/message'
+              })
+            "
+          />
+        </van-col>
+      </van-row>
       <van-row class="statistic-bar">
         <van-col
           v-for="item in layout.statisticBar"
@@ -121,7 +140,6 @@ export default {
             unit: "人",
             text: "粉丝"
           },
-
           {
             name: "composition",
             unit: "篇",
@@ -131,25 +149,27 @@ export default {
         toolCardIconSize: "2rem",
         toolCardItem: [
           {
+            icon: "good-job-o",
+            text: "收到的赞",
+            to: "/message/support"
+          },
+          {
             icon: "star-o",
             text: "我的收藏",
-            color: "#02a7f0",
             to: "/favorite"
           },
           {
-            icon: "todo-list-o",
-            text: "浏览记录",
-            color: "blue",
-            to: "/history"
-          },
-          {
-            icon: "good-job-o",
-            text: "我赞过的",
-            color: "red",
-            to: "/support"
+            icon: "comment-o",
+            text: "回复我的",
+            to: "/comment"
           }
         ],
         settingGroupItem: [
+          {
+            icon: "todo-list-o",
+            text: "浏览记录",
+            to: "/history"
+          },
           {
             icon: "question-o",
             text: "帮助手册",
@@ -249,10 +269,7 @@ export default {
       flex: 0;
     }
     .user-info-other {
-      // 抢占剩余空间
-      flex: 1;
-      // 不设置宽度，由子元素撑开
-      width: 0;
+      max-width: calc(100vw - 10rem);
       .nickname {
         font-size: $text-large;
         font-weight: 900;

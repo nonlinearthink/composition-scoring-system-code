@@ -7,11 +7,13 @@
       left-arrow
       @click-left="onRouteBack"
     />
-    <van-collapse v-model="activeNames" accordion>
+    <van-collapse v-model="activeNames">
       <van-collapse-item
         v-for="item in helpList"
         :key="item.helpId"
         :title="item.helpTitle"
+        :name="item.helpId"
+        class="pre-text"
       >
         {{ item.helpBody }}
       </van-collapse-item>
@@ -23,7 +25,7 @@
 export default {
   data() {
     return {
-      activeNames: "1",
+      activeNames: [],
       helpList: []
     };
   },
@@ -33,6 +35,7 @@ export default {
       .then(res => {
         console.log(res.data);
         this.helpList = res.data.data.helpEntityList;
+        this.activeNames.push(this.helpList[0].helpId);
       })
       .catch(err => console.error(err.response.data));
   },
@@ -44,4 +47,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pre-text {
+  white-space: pre-line;
+}
+</style>

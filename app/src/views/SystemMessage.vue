@@ -48,7 +48,9 @@ export default {
         .get(`/system-message`)
         .then(res => {
           console.log(res.data);
-          this.systemMessages = res.data.data.systemMessageEntityList;
+          this.systemMessages = res.data.data.systemMessageEntityList.sort(
+            (a, b) => b.time - a.time
+          );
           this.loading = false;
         })
         .catch(err => console.error(err.response.data));
@@ -65,6 +67,7 @@ export default {
   margin-bottom: $blank-size;
   background: white;
   padding: $blank-size;
+  white-space: pre-line;
   .time {
     color: $color-fade;
   }
