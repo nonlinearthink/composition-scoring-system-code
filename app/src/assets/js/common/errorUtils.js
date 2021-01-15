@@ -20,7 +20,7 @@ function parseGrammerError(text, errorInfo) {
     .replace("。", ".")
     .replace("！", "!");
   // 文章分段
-  let paragraphList = text.split("\n");
+  let paragraphList = text.split("\n").filter(item => item != "");
   let currentSentence = 0; // 记录句子ID
   let result = []; // 存放结果
   for (let paraId = 0; paraId < paragraphList.length; paraId++) {
@@ -72,6 +72,7 @@ function parseGrammerError(text, errorInfo) {
     // 添加段落
     result.push({ paraId, paragraph });
   }
+  console.log("语法错误");
   // 返回结果
   console.log(result);
   return result;
@@ -115,9 +116,15 @@ function parseWordError(text, errorInfo) {
           .split(" ")
           .filter(item => item != "");
         correctResult[0].error_location.forEach(index => {
-          splitedSentence[
-            index
-          ] = `&nbsp;&nbsp;<span style="position: relative;"><span style="text-decoration: line-through; text-decoration-color: red;">${splitedSentence[index]}</span><span style="position: absolute; top: -1.2rem; left: 0rem;">${correctResult[0].pred[index]}</span></span>&nbsp;&nbsp;`;
+          if (correctResult[0].pred[index] == "-unk-") {
+            splitedSentence[
+              index
+            ] = `&nbsp;<span style="color: red;">${"_?_"}</span>&nbsp;`;
+          } else {
+            splitedSentence[
+              index
+            ] = `&nbsp;&nbsp;<span style="position: relative;"><span style="text-decoration: line-through; text-decoration-color: red;">${splitedSentence[index]}</span><span style="position: absolute; top: -1.2rem; left: 0rem;">${correctResult[0].pred[index]}</span></span>&nbsp;&nbsp;`;
+          }
         });
         // 合并句子
         let advice = mergeWord(splitedSentence);
