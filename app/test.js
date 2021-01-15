@@ -1,12 +1,5 @@
 let testData = {
-  compareResultWord: [
-    {
-      pred: ["i", "love", "you"],
-      id: "230",
-      error_location: [1],
-      sen_id: 0
-    }
-  ]
+  compareResultWord: []
 };
 
 function mergeWord(splitedText) {
