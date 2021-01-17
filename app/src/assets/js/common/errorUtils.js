@@ -11,29 +11,42 @@ function mergeGrammer(splitedText) {
   return mergedText.replace(mergedText[0], mergedText[0].toUpperCase());
 }
 function parseGrammerError(text, errorInfo) {
+  console.log("语法解析");
+  console.log(errorInfo);
   // 对数组执行深拷贝
   let correctResult = JSON.parse(JSON.stringify(errorInfo));
   // 对数组进行排序
   correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
-  text = text
-    .replace("？", "?")
-    .replace("。", ".")
-    .replace("！", "!");
   // 文章分段
-  let paragraphList = text.split("\n").filter(item => item != "");
+  let paragraphList = text
+    .split("\n")
+    .filter(item => item && item != "")
+    .map(item => {
+      item = item.trim();
+      if (!item.match(/[.?!]$/)) {
+        item += ".";
+      }
+      return item;
+    });
+  console.log(paragraphList);
   let currentSentence = 0; // 记录句子ID
   let result = []; // 存放结果
   for (let paraId = 0; paraId < paragraphList.length; paraId++) {
     // 匹配分隔符
     let splitTokens = paragraphList[paraId].match(/[.?!]/g);
+    console.log("匹配分割符");
+    console.log(splitTokens);
     // 按分隔符分句和格式化
     let sentenceList = paragraphList[paraId]
       .split(/[.?!]/)
+      .filter(item => item && item != "")
       .map(
         (sentence, index) => `${sentence}${splitTokens[index]}`.trim() + " "
       );
+    console.log("分割后的句子集合");
+    console.log(sentenceList);
     let paragraph = []; // 存放段落
-    for (let senId = 0; senId < sentenceList.length - 1; senId++) {
+    for (let senId = 0; senId <= sentenceList.length - 1; senId++) {
       // 如果句子ID和纠错句子ID匹配上，则进入处理
       if (
         correctResult.length > 0 &&
@@ -50,29 +63,18 @@ function parseGrammerError(text, errorInfo) {
             error: true,
             advice
           });
-        } else {
-          // 相同则直接记录
-          paragraph.push({
-            senId: currentSentence,
-            origin: sentenceList[senId]
-          });
         }
         // 删除一条纠错记录
         correctResult.splice(0, 1);
-      } else {
-        // 直接记录
-        paragraph.push({
-          senId: currentSentence,
-          origin: sentenceList[senId]
-        });
       }
       // 更新当前的句子ID
       currentSentence++;
     }
-    // 添加段落
-    result.push({ paraId, paragraph });
+    if (paragraph.length > 0) {
+      // 添加段落
+      result.push({ paraId, paragraph });
+    }
   }
-  console.log("语法错误");
   // 返回结果
   console.log(result);
   return result;
@@ -92,12 +94,23 @@ function parseWordError(text, errorInfo) {
   // 对数组进行排序
   correctResult.sort((item1, item2) => item1.sen_id - item2.sen_id);
   // 文章分段
-  let paragraphList = text.split("\n");
+  let paragraphList = text
+    .split("\n")
+    .filter(item => item && item != "")
+    .map(item => {
+      item = item.trim();
+      if (!item.match(/[.?!]$/)) {
+        item += ".";
+      }
+      return item;
+    });
+  // console.log(paragraphList);
   let currentSentence = 0; // 记录句子ID
   let result = ""; // 存放结果
   for (let paraId = 0; paraId < paragraphList.length; paraId++) {
     // 匹配分隔符
     let splitTokens = paragraphList[paraId].match(/[.?!]/g);
+    // console.log(splitTokens);
     // 按分隔符分句和格式化
     let sentenceList = paragraphList[paraId]
       .split(/[.?!]/)
@@ -105,6 +118,7 @@ function parseWordError(text, errorInfo) {
       .map(
         (sentence, index) => `${sentence}`.trim() + splitTokens[index] + " "
       );
+    // console.log(sentenceList);
     let paragraph = ""; // 存放段落
     for (let senId = 0; senId < sentenceList.length; senId++) {
       // 如果句子ID和纠错句子ID匹配上，则进入处理
@@ -119,11 +133,11 @@ function parseWordError(text, errorInfo) {
           if (correctResult[0].pred[index] == "-unk-") {
             splitedSentence[
               index
-            ] = `&nbsp;<span style="color: red;">${"_?_"}</span>&nbsp;`;
+            ] = `&nbsp;<span style="position: relative;"><span style="text-decoration: underline; text-decoration-color: orange;">&nbsp;&nbsp;&nbsp;</span><span style="position: absolute; left: 0.2rem; color: orange">${"?"}</span></span>&nbsp;`;
           } else {
             splitedSentence[
               index
-            ] = `&nbsp;&nbsp;<span style="position: relative;"><span style="text-decoration: line-through; text-decoration-color: red;">${splitedSentence[index]}</span><span style="position: absolute; top: -1.2rem; left: 0rem;">${correctResult[0].pred[index]}</span></span>&nbsp;&nbsp;`;
+            ] = `&nbsp;&nbsp;<span style="position: relative;"><span style="text-decoration: underline; text-decoration-color: orange;">${splitedSentence[index]}</span><span style="position: absolute; top: -1.2rem; left: 0rem; color: orange">${correctResult[0].pred[index]}</span></span>&nbsp;&nbsp;`;
           }
         });
         // 合并句子

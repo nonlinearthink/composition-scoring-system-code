@@ -35,7 +35,6 @@
               <font-awesome-icon v-else id="venus-icon" icon="venus" />
             </van-col>
             <van-col>
-              <van-tag color="#1989fa" plain class="button">私信</van-tag>
               <van-tag
                 v-if="!isFollow && user.username != owner.username"
                 color="red"
@@ -118,7 +117,11 @@ export default {
         this.isFollow = res.data.data.isFollow;
         this.isLoadding = false;
       })
-      .catch(err => console.error(err.response.data));
+      .catch(err => {
+        console.error(err.response.data);
+        this.$toast("请先登录");
+        this.isLoadding = false;
+      });
   },
   methods: {
     onRouteBack() {

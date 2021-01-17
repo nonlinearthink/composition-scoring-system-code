@@ -2,14 +2,22 @@
   <div class="home">
     <a-row :gutter="16">
       <a-col :span="12">
-        <a-statistic title="用户总数" :value="1128" style="margin-right: 50px">
+        <a-statistic
+          title="用户总数"
+          :value="userCount"
+          style="margin-right: 50px"
+        >
           <template #suffix>
             <a-icon type="user" />
           </template>
         </a-statistic>
       </a-col>
       <a-col :span="12">
-        <a-statistic title="作文总数" :value="93" class="demo-class">
+        <a-statistic
+          title="作文总数"
+          :value="compositionCount"
+          class="demo-class"
+        >
           <template #suffix>
             <a-icon type="edit" />
           </template>
@@ -69,8 +77,20 @@ export default {
             data: [40, 39, 10, 40, 39, 80, 40]
           }
         ]
-      }
+      },
+      userCount: 0,
+      compositionCount: 0
     };
+  },
+  created() {
+    this.axios
+      .get("/admin/count")
+      .then(res => {
+        console.log(res);
+        this.userCount = res.data.data.dataCount.userCount;
+        this.compositionCount = res.data.data.dataCount.compositionCount;
+      })
+      .catch(err => console.error(err));
   },
   methods: {
     lastSevenDate() {
