@@ -1,6 +1,8 @@
 package cn.edu.zucc.se2020g11.api.dao;
 
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
+import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
+import cn.edu.zucc.se2020g11.api.model.UsernameCardModel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,4 +30,6 @@ public interface UserEntityMapper {
     int updateUser(UserEntity record);
 
     int selectSum();
+
+    List<UsernameCardModel> selectUserView(String username);
 }

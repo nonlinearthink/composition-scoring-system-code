@@ -188,4 +188,9 @@
     from user
     where username like #{username,jdbcType=VARCHAR}
   </select>
+  <select id="selectUserView" resultType="cn.edu.zucc.se2020g11.api.model.UsernameCardModel">
+    select *
+    from user_view
+    where username like #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>

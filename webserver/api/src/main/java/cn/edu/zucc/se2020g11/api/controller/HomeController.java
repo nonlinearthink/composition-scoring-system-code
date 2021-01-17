@@ -2,6 +2,7 @@ package cn.edu.zucc.se2020g11.api.controller;
 
 import cn.edu.zucc.se2020g11.api.constant.UserType;
 import cn.edu.zucc.se2020g11.api.model.*;
+import cn.edu.zucc.se2020g11.api.service.FollowService;
 import cn.edu.zucc.se2020g11.api.service.HomeService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
@@ -25,10 +26,12 @@ import java.util.Map;
 public class HomeController
 {
     private final HomeService homeService;
+    private final FollowService followService;
 
     @Autowired(required = false)
-    public HomeController(HomeService homeService) {
+    public HomeController(HomeService homeService, FollowService followService) {
         this.homeService = homeService;
+        this.followService = followService;
     }
 
     @ApiOperation(value = "获取推送文章")
@@ -92,10 +95,15 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @LoginRequired(type = UserType.USER)
     @ApiOperation(value = "模糊查询详细用户")
     @PostMapping("/search/detail/{username}")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserDetailByUsername(@PathVariable String username) {
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserDetailByUsername(@PathVariable String username, HttpServletRequest request) {
         List<UsernameCardModel> usernameCardModelList = homeService.selectUserDetailByUsername(username);
+        for(UsernameCardModel u:usernameCardModelList ){
+            Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), u.getUsername());
+            u.setIsFollow(isFollow);
+        }
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
