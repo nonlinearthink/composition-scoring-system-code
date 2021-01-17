@@ -60,11 +60,11 @@
           animated
           color="#02a7f0"
         >
-          <van-tab title="原文" style="padding: 0 1rem;">
+          <van-tab title="单词建议" style="padding: 0 1rem;">
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <van-row v-html="renderText(composition.compositionBody)"></van-row>
+            <van-row v-html="wordErrorModel"></van-row>
           </van-tab>
-          <van-tab title="拼写建议" style="padding: 0 1rem;">
+          <!-- <van-tab title="拼写建议" style="padding: 0 1rem;">
             <div v-for="paragraph in wordErrorModel" :key="paragraph.paraId">
               <div
                 v-for="sentence in paragraph.paragraph.filter(
@@ -88,7 +88,7 @@
                 </span>
               </div>
             </div>
-          </van-tab>
+          </van-tab> -->
           <van-tab title="语法建议" style="padding: 0 1rem;">
             <div v-for="paragraph in grammerErrorModel" :key="paragraph.paraId">
               <div
@@ -379,5 +379,9 @@ export default {
 .echarts {
   width: calc(100vw - 2rem);
   height: 35vh;
+}
+.error-text {
+  text-decoration: line-through;
+  text-decoration-color: red;
 }
 </style>
