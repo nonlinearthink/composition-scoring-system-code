@@ -43,13 +43,6 @@
             <van-row class="nickname">{{ composition.nickname }}</van-row>
             <van-row>
               <van-tag
-                color="#1989fa"
-                plain
-                class="button"
-                @click="$toast('待开放')"
-                >私信</van-tag
-              >
-              <van-tag
                 v-if="
                   !user || (!isFollow && user.username != composition.username)
                 "

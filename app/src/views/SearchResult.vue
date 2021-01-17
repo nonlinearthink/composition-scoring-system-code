@@ -37,10 +37,10 @@
               <van-row :style="{ fontWeight: '600' }">
                 {{ item.nickname }}
               </van-row>
-              <van-row :style="{ color: '#888', fontSize: '0.6rem' }">
+              <van-row :style="{ color: '#888', fontSize: '0.8rem' }">
                 {{ item.signature ? item.signature : "此人很懒，什么都没有写" }}
               </van-row>
-              <van-row :style="{ color: '#888', fontSize: '0.6rem' }">
+              <van-row :style="{ color: '#888', fontSize: '0.8rem' }">
                 <van-col>创作 {{ item.compositionCount }}</van-col>
                 <van-col :style="{ marginLeft: '1rem' }">
                   粉丝 {{ item.followCount }}
@@ -51,6 +51,7 @@
         </van-col>
         <van-col :style="{ marginRight: '0.8rem' }">
           <van-tag
+            v-if="user.username != item.username"
             round
             plain
             :color="item.isFollow ? '#646566' : 'red'"
@@ -66,6 +67,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -73,6 +75,9 @@ export default {
       loading: true,
       finished: true
     };
+  },
+  computed: {
+    ...mapState(["user"])
   },
   created() {
     this.axios

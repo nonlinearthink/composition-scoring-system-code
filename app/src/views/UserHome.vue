@@ -35,7 +35,6 @@
               <font-awesome-icon v-else id="venus-icon" icon="venus" />
             </van-col>
             <van-col>
-              <van-tag color="#1989fa" plain class="button">私信</van-tag>
               <van-tag
                 v-if="!isFollow && user.username != owner.username"
                 color="red"
