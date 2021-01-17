@@ -87,7 +87,7 @@ export default {
     text-overflow: ellipsis;
   }
   .signature {
-    font-size: $text-normal/3;
+    font-size: $text-normal;
     color: $color-fade;
     white-space: nowrap;
     overflow: hidden;
