@@ -118,7 +118,11 @@ export default {
         this.isFollow = res.data.data.isFollow;
         this.isLoadding = false;
       })
-      .catch(err => console.error(err.response.data));
+      .catch(err => {
+        console.error(err.response.data);
+        this.$toast("请先登录");
+        this.isLoadding = false;
+      });
   },
   methods: {
     onRouteBack() {

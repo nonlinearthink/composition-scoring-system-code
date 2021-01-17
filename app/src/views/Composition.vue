@@ -84,27 +84,6 @@
             <!-- eslint-disable-next-line vue/no-v-html -->
             <van-row v-html="wordErrorModel"></van-row>
           </van-tab>
-          <!-- <van-tab title="拼写建议" style="padding: 0 1rem;">
-            <div v-for="paragraph in wordErrorModel" :key="paragraph.paraId">
-              <div
-                v-for="sentence in paragraph.paragraph.filter(
-                  item => item.error
-                )"
-                :key="sentence.senId"
-                :style="{ margin: '0.5rem 0' }"
-              >
-                原文:
-                <span v-if="sentence.error">
-                  {{ sentence.origin }}
-                </span>
-                <br />
-                修改建议:
-                <span v-if="sentence.error" style="color: orange;">
-                  {{ sentence.advice }}
-                </span>
-              </div>
-            </div>
-          </van-tab> -->
           <van-tab title="语法建议" style="padding: 0 1rem;">
             <div v-for="paragraph in grammerErrorModel" :key="paragraph.paraId">
               <div
@@ -124,6 +103,16 @@
                   {{ sentence.advice }}
                 </span>
               </div>
+            </div>
+            <div
+              v-if="grammerErrorModel.length == 0"
+              :style="{
+                textAlign: 'center',
+                marginTop: '1rem',
+                color: 'orange'
+              }"
+            >
+              🎉这就是学霸的世界吗？爱了爱了
             </div>
           </van-tab>
           <van-tab title="评分" style="padding: 0 1rem;">

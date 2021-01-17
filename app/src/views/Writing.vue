@@ -195,12 +195,12 @@ export default {
         this.$toast("不能为空");
         return;
       }
-      if (this.composition.compositionBody.match(/[\u4e00-\u9fa5]/) != null) {
-        this.$toast("不能包含中文字符");
-        return;
-      }
-      if (this.composition.compositionBody.match(/[！？。，]/) != null) {
-        this.$toast("不能包含中文标点");
+      if (
+        this.composition.compositionBody.match(
+          /[^\w\s`~!@#$%^&*()-_=+[{\]};:'",<.>/?]/
+        ) != null
+      ) {
+        this.$toast("包含非法字符");
         return;
       }
       if (this.composition.compositionBody.match(/[!?.]$/g)) {

@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -33,6 +34,9 @@ export default {
       loading: true,
       finished: true
     };
+  },
+  computed: {
+    ...mapState(["isLogin"])
   },
   watch: {
     searchString(newValue) {
@@ -52,6 +56,10 @@ export default {
   },
   methods: {
     onSearch() {
+      if (!this.isLogin) {
+        this.$toast("请先登录");
+        return;
+      }
       this.$router.push({
         path: "/search/result",
         query: { string: this.searchString }
