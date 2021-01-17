@@ -21,7 +21,7 @@ public interface UserEntityMapper {
 
     UserEntity selectByUsernameAndEmail(String username, String email);
 
-    List<String> selectUserByUsername(String key);
+    List<String> selectUserByNickname(String key);
 
     int updateByPrimaryKeySelective(UserEntity record);
 
@@ -31,5 +31,5 @@ public interface UserEntityMapper {
 
     int selectSum();
 
-    List<UsernameCardModel> selectUserView(String username);
+    List<UsernameCardModel> selectUserView(String key);
 }

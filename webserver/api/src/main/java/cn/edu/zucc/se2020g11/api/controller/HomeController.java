@@ -83,10 +83,10 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "模糊查询用户名")
-    @PostMapping("/search/{username}")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserByUsername(@PathVariable String username) {
-        List<String> usernameList = homeService.selectUserByUsername(username);
+    @ApiOperation(value = "模糊查询昵称")
+    @PostMapping("/search/{nickname}")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserByNickname(@PathVariable String nickname) {
+        List<String> usernameList = homeService.selectUserByNickname(nickname);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
         result.setMsg("获取成功");
         Map<String, Object> data = new HashMap<>(1);
@@ -97,9 +97,9 @@ public class HomeController
 
     @LoginRequired(type = UserType.USER)
     @ApiOperation(value = "模糊查询详细用户")
-    @PostMapping("/search/detail/{username}")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserDetailByUsername(@PathVariable String username, HttpServletRequest request) {
-        List<UsernameCardModel> usernameCardModelList = homeService.selectUserDetailByUsername(username);
+    @PostMapping("/search/detail/{nickname}")
+    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserView(@PathVariable String nickname, HttpServletRequest request) {
+        List<UsernameCardModel> usernameCardModelList = homeService.selectUserView(nickname);
         for(UsernameCardModel u:usernameCardModelList ){
             Boolean isFollow = followService.findFollow((String)request.getAttribute("username"), u.getUsername());
             u.setIsFollow(isFollow);

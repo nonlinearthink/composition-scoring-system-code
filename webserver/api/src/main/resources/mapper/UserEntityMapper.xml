@@ -183,14 +183,14 @@
     select count(*)
     from user
   </select>
-  <select id="selectUserByUsername" parameterType="java.lang.String" resultType="java.lang.String">
-    select username
+  <select id="selectUserByNickname" parameterType="java.lang.String" resultType="java.lang.String">
+    select nickname
     from user
-    where username like #{username,jdbcType=VARCHAR}
+    where nickname like #{nickname,jdbcType=VARCHAR}
   </select>
   <select id="selectUserView" resultType="cn.edu.zucc.se2020g11.api.model.UsernameCardModel">
     select *
     from user_view
-    where username like #{username,jdbcType=VARCHAR}
+    where nickname like #{nickname,jdbcType=VARCHAR}
   </select>
 </mapper>

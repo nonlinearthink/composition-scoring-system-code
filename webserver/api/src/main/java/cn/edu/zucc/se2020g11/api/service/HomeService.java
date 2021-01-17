@@ -115,32 +115,13 @@ public class HomeService
         return hotCardModelList;
     }
 
-    public List<String> selectUserByUsername(String username){
-        return userEntityMapper.selectUserByUsername("%" + username + "%");
+    public List<String> selectUserByNickname(String nickname){
+        return userEntityMapper.selectUserByNickname("%" + nickname + "%");
     }
 
-//    public List<UsernameCardModel> selectUserDetailByUsername(String username){
-//        List<String> usernameList = userEntityMapper.selectUserByUsername("%" + username + "%");
-//        List<UsernameCardModel> usernameCardModelList = new ArrayList<>();
-//        for(String s : usernameList){
-//            UsernameCardModel usernameCardModel = new UsernameCardModel();
-//            usernameCardModel.setUsername(s);
-//            usernameCardModel.setNickname(userEntityMapper.selectByPrimaryKey(s).getNickname());
-//            usernameCardModel.setSignature(userEntityMapper.selectByPrimaryKey(s).getSignature());
-//            usernameCardModel.setAvatarUrl(userEntityMapper.selectByPrimaryKey(s).getAvatarUrl());
-//            usernameCardModel.setCompositionCount(666);
-//            usernameCardModel.setFollowCount(666);
-//            usernameCardModel.setIsFollow(true);
-//            usernameCardModelList.add(usernameCardModel);
-//        }
-//
-//        return usernameCardModelList;
-//    }
-
-
-    public List<UsernameCardModel> selectUserDetailByUsername(String username)
+    public List<UsernameCardModel> selectUserView(String nickname)
     {
-        return userEntityMapper.selectUserView("%" + username + "%");
+        return userEntityMapper.selectUserView("%" + nickname + "%");
     }
 
 
