@@ -20,6 +20,6 @@ class AdminServiceTest
     @Test
     public void countData(){
         Map<String, Object> dataCount = adminService.countData();
-        assertThat(dataCount).containsOnlyKeys("userCount", "compositionCount");
+        assertThat(dataCount).containsOnlyKeys("userCount", "compositionCount", "historyCount", "userTodayCount", "compositionTodayCount");
     }
 }
