@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +28,37 @@ import java.util.Map;
 @Api(value = "ImgController")
 public class ImgController
 {
-    @Autowired
-    private ImgService imgService;
-
-    //获取主机端口
-    private String post = "8000";
-    //获取本机ip
+    /**
+     * 获取本机ip
+     */
+    @Value("${res.serverIp}")
     private String host;
-    //图片存放根路径
-    private String rootPath = "C:";
-    //图片存放根目录下的子目录
-    private String sonPath = "/img/";
-    //获取图片链接
+    /**
+     * 获取主机端口
+     */
+    @Value("${server.port}")
+    private String port;
+    /**
+     * 图片存放根路径
+     */
+    @Value("${res.storePath}")
+    private String rootPath;
+    /**
+     * 图片存放根目录下的子目录
+     */
+    @Value("${res.imagePath}")
+    private String sonPath;
+    /**
+     * 获取图片链接
+     */
     private String imgPath;
-
+    private final ImgService imgService;
     private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
+
+    @Autowired
+    public ImgController(ImgService imgService) {
+        this.imgService = imgService;
+    }
 
     @PostMapping("")
     @ResponseBody
@@ -57,24 +74,17 @@ public class ImgController
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
 
-        //获取本机IP
-        try {
-            host = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            logger.error("get server host Exception e:", e);
-        }
-
         // 获取文件名
         String fileName = file.getOriginalFilename();
         //logger.info("上传的文件名为：" + fileName);
         // 设置文件上传后的路径
         String filePath = rootPath + sonPath;
         logger.info("上传的文件路径" + filePath);
-        logger.info("整个图片路径：" + host + ":" + post + sonPath + fileName);
+        logger.info("整个图片路径：" + host + ":" + port + sonPath + fileName);
         //创建文件路径
         File dest = new File(filePath + fileName);
 
-        String imgPath = (host + ":" + post + sonPath + fileName).toString();
+        String imgPath = (host + ":" + port + sonPath + fileName).toString();
 
         // 解决中文问题，linux下中文路径，图片显示问题
         // fileName = UUID.randomUUID() + suffixName;

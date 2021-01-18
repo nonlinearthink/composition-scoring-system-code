@@ -19,6 +19,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class InterceptorConfig extends WebMvcConfigurationSupport {
     @Value("${jwt.http-header}")
     private String httpHeader;
+    @Value("${res.storePath}")
+    private String storePath;
+    @Value("${res.imagePath}")
+    private String imagePath;
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -45,7 +49,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry)
     {
         //指向外部目录
-        registry.addResourceHandler("img//**").addResourceLocations("file:C:/img/");
+        registry.addResourceHandler("img//**").addResourceLocations("file:"+storePath+imagePath);
         super.addResourceHandlers(registry);
     }
 }

@@ -107,3 +107,7 @@ subscribe:
   task-publisher: scoring_task
   result-receiver: scoring_result
   result-notify: scoring_finished
+res:
+  serverIp: 47.98.219.27
+  storePath: /Users/nonlinearthink/Downloads
+  imagePath: /img/
