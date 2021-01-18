@@ -28,14 +28,16 @@
       <a-col :span="12">
         <a-card>
           <a-statistic
-            title="昨日新增用户"
-            :value="11"
+            title="今日新增用户"
+            :value="userTodayCount"
             suffix="位"
-            :value-style="{ color: '#3f8600' }"
+            :value-style="{
+              color: `${compositionTodayCount > 0 ? '#3f8600' : '#9E9E9E'}`
+            }"
             style="margin-right: 50px"
           >
             <template #prefix>
-              <a-icon type="arrow-up" />
+              <a-icon type="arrow-up" v-if="userTodayCount > 0" />
             </template>
           </a-statistic>
         </a-card>
@@ -43,20 +45,25 @@
       <a-col :span="12">
         <a-card>
           <a-statistic
-            title="昨日新增作文"
-            :value="9"
+            title="今日新增作文"
+            :value="compositionTodayCount"
             suffix="篇"
             class="demo-class"
-            :value-style="{ color: '#3f8600' }"
+            :value-style="{
+              color: `${compositionTodayCount > 0 ? '#3f8600' : '#9E9E9E'}`
+            }"
           >
             <template #prefix>
-              <a-icon type="arrow-up" />
+              <a-icon type="arrow-up" v-if="compositionTodayCount > 0" />
             </template>
           </a-statistic>
         </a-card>
       </a-col>
     </a-row>
-    <line-chart :chartdata="datacollection"></line-chart>
+    <line-chart
+      :chartData="datacollection"
+      :options="{ responsive: true, maintainAspectRatio: false }"
+    ></line-chart>
   </div>
 </template>
 
@@ -69,17 +76,19 @@ export default {
   data() {
     return {
       datacollection: {
-        labels: this.lastSevenDate(),
-        datasets: [
-          {
-            label: "活跃用户数",
-            backgroundColor: "#f87979",
-            data: [40, 39, 10, 40, 39, 80, 40]
-          }
-        ]
+        // labels: this.lastSevenDate(),
+        // datasets: [
+        //   {
+        //     label: "活跃用户数",
+        //     backgroundColor: "#f87979",
+        //     data: [40, 39, 10, 40, 39, 80, 40]
+        //   }
+        // ]
       },
       userCount: 0,
-      compositionCount: 0
+      compositionCount: 0,
+      compositionTodayCount: 0,
+      userTodayCount: 0
     };
   },
   created() {
@@ -89,6 +98,28 @@ export default {
         console.log(res);
         this.userCount = res.data.data.dataCount.userCount;
         this.compositionCount = res.data.data.dataCount.compositionCount;
+        this.userTodayCount = res.data.data.dataCount.userTodayCount;
+        this.compositionTodayCount =
+          res.data.data.dataCount.compositionTodayCount;
+        console.log(
+          res.data.data.dataCount.historyCount.map(item => item.count)
+        );
+        this.datacollection = {
+          labels: res.data.data.dataCount.historyCount.map(item => item.date),
+          datasets: [
+            {
+              label: "浏览量",
+              backgroundColor: "#f87979",
+              data: res.data.data.dataCount.historyCount.map(item => item.count)
+            }
+          ]
+        };
+        // this.datacollection.datasets.data = res.data.data.dataCount.historyCount.map(
+        //   item => item.count
+        // );
+        // this.datacollection.labels = res.data.data.dataCount.historyCount.map(
+        //   item => item.date
+        // );
       })
       .catch(err => console.error(err));
   },

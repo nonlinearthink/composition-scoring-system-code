@@ -1,13 +1,14 @@
 <script>
-import { Line } from "vue-chartjs";
+import { Line, mixins } from "vue-chartjs";
 
 export default {
   extends: Line,
+  mixins: [mixins.reactiveProp, mixins.reactiveData],
   props: {
-    chartdata: {
-      type: Object,
-      default: null
-    },
+    // chartdata: {
+    //   type: Object,
+    //   default: null
+    // },
     options: {
       type: Object,
       default: null
@@ -22,11 +23,12 @@ export default {
     this.gradient.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
     this.gradient.addColorStop(1, "rgba(255, 0, 0, 0)");
     this.renderChart(
-      this.chartdata, //相当于data配置
-      {
-        responsive: true, // 长宽，100%.如果要单设长和宽的话，要将responsive 设为false
-        maintainAspectRatio: false
-      }
+      this.chartData, //相当于data配置
+      this.options
+      // {
+      // responsive: true, // 长宽，100%.如果要单设长和宽的话，要将responsive 设为false
+      // maintainAspectRatio: false
+      // }
     );
   }
 };
