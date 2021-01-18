@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.AdminEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
+import cn.edu.zucc.se2020g11.api.dao.HistoryEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.AdminEntity;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
@@ -32,12 +33,14 @@ public class AdminService
     private final AdminEntityMapper adminEntityMapper;
     private final CompositionEntityMapper compositionEntityMapper;
     private final UserEntityMapper userEntityMapper;
+    private final HistoryEntityMapper historyEntityMapper;
 
     @Autowired(required = false)
-    public AdminService(AdminEntityMapper adminEntityMapper, CompositionEntityMapper compositionEntityMapper, UserEntityMapper userEntityMapper) {
+    public AdminService(AdminEntityMapper adminEntityMapper, CompositionEntityMapper compositionEntityMapper, UserEntityMapper userEntityMapper, HistoryEntityMapper historyEntityMapper) {
         this.adminEntityMapper = adminEntityMapper;
         this.compositionEntityMapper = compositionEntityMapper;
         this.userEntityMapper = userEntityMapper;
+        this.historyEntityMapper = historyEntityMapper;
     }
 
     /**
@@ -69,6 +72,9 @@ public class AdminService
         Map<String, Object> data = new HashMap<>(1);
         data.put("userCount", userEntityMapper.selectSum());
         data.put("compositionCount", compositionEntityMapper.selectSum());
+        data.put("userTodayCount", userEntityMapper.selectSumByToday());
+        data.put("compositionTodayCount", compositionEntityMapper.selectSumByToday());
+        data.put("historyCount", historyEntityMapper.selectHistory());
 
         return data;
     }

@@ -193,4 +193,9 @@
     from user_view
     where nickname like #{nickname,jdbcType=VARCHAR}
   </select>
+  <select id="selectSumByToday" resultType="java.lang.Integer">
+    select count(*)
+    from user
+    where defrosting_time > DATE_SUB(curdate(),INTERVAL 0 DAY) and defrosting_time <![CDATA[<]]> DATE_SUB(curdate(),INTERVAL -1 DAY)
+  </select>
 </mapper>

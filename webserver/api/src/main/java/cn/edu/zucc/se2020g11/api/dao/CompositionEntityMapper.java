@@ -36,4 +36,6 @@ public interface CompositionEntityMapper {
     CompositionCountModel selectCountByCompositionId(Integer compositionId);
 
     int selectSum();
+
+    int selectSumByToday();
 }

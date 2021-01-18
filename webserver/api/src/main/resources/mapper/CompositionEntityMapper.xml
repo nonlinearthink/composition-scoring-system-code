@@ -253,4 +253,9 @@
     select count(*)
     from composition
   </select>
+  <select id="selectSumByToday" resultType="java.lang.Integer">
+    select count(*)
+    from composition
+    where release_time > DATE_SUB(curdate(),INTERVAL 0 DAY) and release_time <![CDATA[<]]> DATE_SUB(curdate(),INTERVAL -1 DAY)
+  </select>
 </mapper>

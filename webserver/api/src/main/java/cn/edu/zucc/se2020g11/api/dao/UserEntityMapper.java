@@ -31,5 +31,7 @@ public interface UserEntityMapper {
 
     int selectSum();
 
+    int selectSumByToday();
+
     List<UsernameCardModel> selectUserView(String key);
 }

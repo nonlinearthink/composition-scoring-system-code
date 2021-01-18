@@ -97,4 +97,9 @@
     delete from history
     where composition_id = #{compositionId,jdbcType=INTEGER}
   </delete>
+  <select id="selectHistory" resultType="java.util.HashMap">
+    select date_format(time, '%Y-%m-%d') date, count(*) count
+    from history
+    group by date_format(time, '%Y-%m-%d');
+</select>
 </mapper>
