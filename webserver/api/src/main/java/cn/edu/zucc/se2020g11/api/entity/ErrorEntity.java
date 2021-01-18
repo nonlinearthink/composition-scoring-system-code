@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 错误实体
+ *
  * @author Tuenity
  */
 @Getter

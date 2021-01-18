@@ -6,6 +6,8 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
+ * 历史记录实体
+ *
  * @author Tuenity
  */
 @Getter

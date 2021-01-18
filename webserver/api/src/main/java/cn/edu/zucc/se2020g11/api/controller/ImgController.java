@@ -51,7 +51,6 @@ public class ImgController
     /**
      * 获取图片链接
      */
-    private String imgPath;
     private final ImgService imgService;
     private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
 
@@ -76,7 +75,7 @@ public class ImgController
 
         // 获取文件名
         String fileName = file.getOriginalFilename();
-        //logger.info("上传的文件名为：" + fileName);
+
         // 设置文件上传后的路径
         String filePath = rootPath + sonPath;
         logger.info("上传的文件路径" + filePath);
@@ -84,7 +83,7 @@ public class ImgController
         //创建文件路径
         File dest = new File(filePath + fileName);
 
-        String imgPath = (host + ":" + port + sonPath + fileName).toString();
+        String imgPath = host + ":" + port + sonPath + fileName;
 
         // 解决中文问题，linux下中文路径，图片显示问题
         // fileName = UUID.randomUUID() + suffixName;

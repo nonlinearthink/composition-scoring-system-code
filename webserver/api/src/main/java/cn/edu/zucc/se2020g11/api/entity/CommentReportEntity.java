@@ -6,6 +6,8 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
+ * 评论举报实体
+ *
  * @author Tuenity
  */
 @Getter

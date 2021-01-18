@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
+ * 注册表单
+ *
  * @author nonlinearthink
  */
 @Getter

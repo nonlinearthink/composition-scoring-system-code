@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 管理员实体
+ *
  * @author Tuenity
  */
 @Getter
