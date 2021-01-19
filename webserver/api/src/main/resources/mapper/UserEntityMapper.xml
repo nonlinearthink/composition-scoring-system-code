@@ -135,6 +135,9 @@
       <if test="isMale != null">
         is_male = #{isMale,jdbcType=BIT},
       </if>
+      <if test="defrostingTime != null">
+        #{defrostingTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where username = #{username,jdbcType=VARCHAR}
   </update>
