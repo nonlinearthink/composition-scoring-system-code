@@ -36,7 +36,7 @@ public class CommentViewModel
     private String nickname;
 
     @NotNull(message = "avatarUrl不能为空")
-    private Integer avatarUrl;
+    private String avatarUrl;
 
     @NotNull(message = "title不能为空")
     private String title;
