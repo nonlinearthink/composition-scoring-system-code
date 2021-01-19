@@ -20,7 +20,7 @@
           height="4rem"
           fit="cover"
           round
-          :src="owner.avatarUrl ? owner.avatarUrl : defaultAvatar"
+          :src="owner.avatarUrl ? `http://${owner.avatarUrl}` : defaultAvatar"
           class="avatar"
         />
         <div>

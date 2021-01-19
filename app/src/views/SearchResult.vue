@@ -24,7 +24,11 @@
                 height="3rem"
                 fit="cover"
                 round
-                :src="require('../assets/images/avatar.svg')"
+                :src="
+                  item.avatarUrl
+                    ? `http://${item.avatarUrl}`
+                    : require('../assets/images/avatar.svg')
+                "
                 @click="
                   $router.push({
                     path: '/user/home',

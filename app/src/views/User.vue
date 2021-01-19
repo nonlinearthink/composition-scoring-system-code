@@ -19,7 +19,9 @@
                   height="4rem"
                   fit="cover"
                   round
-                  :src="layout.avatar"
+                  :src="
+                    user.avatarUrl ? `http://${user.avatarUrl}` : layout.avatar
+                  "
                   class="piduoduo-avatar"
                 />
               </div>

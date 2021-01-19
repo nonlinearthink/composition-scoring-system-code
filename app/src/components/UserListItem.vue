@@ -9,7 +9,7 @@
               height="2.5rem"
               fit="cover"
               round
-              :src="avatar ? avatar : defaultAvatar"
+              :src="avatar ? `http://${avatar}` : defaultAvatar"
               class="avatar"
               @click="onClickAvatar"
             />
