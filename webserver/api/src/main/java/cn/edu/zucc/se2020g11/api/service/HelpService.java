@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 帮助服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -20,19 +22,47 @@ public class HelpService
     {
         this.helpEntityMapper = helpEntityMapper;
     }
+
+    /**
+     * 添加帮助
+     *
+     * @param helpEntity 帮助实体
+     * @return 帮助ID
+     */
     public int addHelp(HelpEntity helpEntity)
     {
         helpEntityMapper.insert(helpEntity);
         return helpEntity.getHelpId();
     }
+
+    /**
+     * 删除帮助
+     *
+     * @param helpId 帮助ID
+     * @return 是否删除成功
+     */
     public int deleteHelp(Integer helpId)
     {
         return helpEntityMapper.deleteByPrimaryKey(helpId);
     }
+
+    /**
+     * 获取所有帮助
+     *
+     * @return 帮助列表
+     */
     public List<HelpEntity> selectAllHelps()
     {
         return helpEntityMapper.selectAll();
     }
+
+    /**
+     * 更新帮助
+     *
+     * @param helpEntity 帮助实体
+     * @param helpId 帮助ID
+     * @return 是否更新成功
+     */
     public int updateHelp(HelpEntity helpEntity, Integer helpId)
     {
         helpEntity.setHelpId(helpId);

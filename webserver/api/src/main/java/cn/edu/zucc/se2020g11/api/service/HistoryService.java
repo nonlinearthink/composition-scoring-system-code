@@ -6,7 +6,6 @@ import cn.edu.zucc.se2020g11.api.dao.HistoryEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.HistoryEntity;
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.HistoryModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
+ * 历史记录服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -33,11 +33,25 @@ public class HistoryService
         this.compositionEntityMapper = compositionEntityMapper;
         this.userEntityMapper = userEntityMapper;
     }
+
+    /**
+     * 添加历史记录
+     *
+     * @param historyEntity 历史记录实体
+     * @return 历史记录ID
+     */
     public int addHistory(HistoryEntity historyEntity)
     {
         historyEntityMapper.insert(historyEntity);
         return historyEntity.getHistoryId();
     }
+
+    /**
+     * 获取用户历史记录
+     *
+     * @param username 用户名
+     * @return 历史记录列表
+     */
     public List<HistoryModel> selectHistoryByUser(String username)
     {
         List<HistoryEntity> historyEntityList = historyEntityMapper.selectHistoryByUser(username);
@@ -59,6 +73,13 @@ public class HistoryService
         }
         return  historyModelList;
     }
+
+    /**
+     * 删除文章历史记录
+     *
+     * @param compositionId 文章ID
+     * @return 是否删除成功
+     */
     public int deleteHistoryByCompositionId(Integer compositionId)
     {
         return historyEntityMapper.deleteByCompositionId(compositionId);

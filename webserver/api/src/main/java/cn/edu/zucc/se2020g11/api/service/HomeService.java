@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
+ * 首页服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -35,6 +37,12 @@ public class HomeService
         this.userEntityMapper = userEntityMapper;
         this.historyEntityMapper = historyEntityMapper;
     }
+
+    /**
+     * 获取所有推送文章
+     *
+     * @return 推送文章列表
+     */
     public List<ArticleModel> selectAllArticles()
     {
         List<PushArticleEntity> pushArticleEntityList = pushArticleEntityMapper.selectAll();
@@ -50,6 +58,13 @@ public class HomeService
         }
         return articleModelList;
     }
+
+    /**
+     * 获取关注文章
+     *
+     * @param username 用户名
+     * @return 关注卡片列表
+     */
     public List<FollowCardModel> selectFollowCompositions(String username)
     {
         FollowEntity followEntity = new FollowEntity();
@@ -74,6 +89,12 @@ public class HomeService
         }
         return followCardModelList;
     }
+
+    /**
+     * 获取新鲜文章
+     *
+     * @return 新鲜卡片列表
+     */
     public List<NewCardModel> selectNewCompositions()
     {
         List<CompositionEntity> compositionEntityList = compositionEntityMapper.selectNew();
@@ -92,6 +113,12 @@ public class HomeService
         }
         return newCardModelList;
     }
+
+    /**
+     * 获取热榜文章
+     *
+     * @return 热榜卡片列表
+     */
     public List<HotCardModel> selectHotCompositions()
     {
         List<CompositionCountModel> compositionCountModelList = compositionEntityMapper.selectHot();
@@ -119,15 +146,26 @@ public class HomeService
         return hotCardModelList;
     }
 
+    /**
+     * 搜索用户名
+     *
+     * @param nickname 昵称
+     * @return 用户名列表
+     */
     public List<String> selectUserByNickname(String nickname){
         return userEntityMapper.selectUserByNickname("%" + nickname + "%");
     }
 
+    /**
+     * 获取关注文章
+     *
+     * @param nickname 昵称
+     * @return 用户名卡片列表
+     */
     public List<UsernameCardModel> selectUserView(String nickname)
     {
         return userEntityMapper.selectUserView("%" + nickname + "%");
     }
-
 
     /**
      * Map的value值降序排序

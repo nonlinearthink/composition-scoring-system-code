@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 
 /**
+ * Redis消息队列服务
+ *
  * @author nonlinearthink
  */
 @Service
@@ -22,11 +24,23 @@ public class RedisMessageMqService {
         this.redisTemplate = redisTemplate;
     }
 
+    /**
+     * 加入队列
+     *
+     * @param topic 主题
+     * @param content 内容
+     */
     @Async
     public void push(String topic, Serializable content){
         redisTemplate.opsForList().rightPush(topic, content);
     }
 
+    /**
+     * 获取用户历史记录
+     *
+     * @param topic 主题
+     * @return 序列化消息
+     */
     public Serializable pop(String topic){
         return redisTemplate.opsForList().leftPop(topic);
     }

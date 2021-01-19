@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 空间服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -21,6 +23,12 @@ public class ZoneService
         this.userEntityMapper = userEntityMapper;
     }
 
+    /**
+     * 获取用户空间
+     *
+     * @param targetUsername 目标用户名
+     * @return 空间模型
+     */
     public ZoneModel selectZone(String targetUsername)
     {
         UserEntity userEntity = userEntityMapper.selectByPrimaryKey(targetUsername);
