@@ -1,6 +1,5 @@
 package cn.edu.zucc.se2020g11.api.config;
 
-import cn.edu.zucc.se2020g11.api.config.property.RedisSubscribeProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +20,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.io.Serializable;
 
 /**
+ * Redis配置类
+ *
  * @author nonlinearthink
  */
 @Configuration

@@ -3,8 +3,6 @@ package cn.edu.zucc.se2020g11.api.config.intercepter;
 import cn.edu.zucc.se2020g11.api.service.JwtService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -34,10 +32,9 @@ public class JwtInterceptor implements HandlerInterceptor {
      * @param response HTTP返回信息
      * @param handler  处理器
      * @return 是否成功
-     * @throws Exception 异常
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 不拦截定义在非方法上的映射
         if (!(handler instanceof HandlerMethod)) {
             return true;

@@ -20,10 +20,9 @@ public class CorsInterceptor implements HandlerInterceptor {
      * @param response HTTP返回信息
      * @param handler  处理器
      * @return 是否成功
-     * @throws Exception 异常
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 设置跨域头部信息
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");

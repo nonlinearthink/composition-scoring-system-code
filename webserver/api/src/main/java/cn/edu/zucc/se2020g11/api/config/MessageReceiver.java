@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 
 /**
+ * Redis消息接收类
+ *
  * @author nonlinearthink
  */
 @Component
