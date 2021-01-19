@@ -25,6 +25,7 @@
               width="3.8rem"
               height="3.8rem"
               fit="cover"
+              round
               :src="
                 composition.avatarUrl
                   ? `http://${composition.avatarUrl}`

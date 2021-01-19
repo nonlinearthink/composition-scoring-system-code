@@ -1,6 +1,6 @@
 {
   "name": "@se2020g11/piduoduo-app",
-  "version": "1.4.4-beta",
+  "version": "1.4.6-beta",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

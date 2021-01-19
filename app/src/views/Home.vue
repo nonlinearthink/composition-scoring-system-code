@@ -99,6 +99,7 @@
               :username="item.nickname"
               :update-time="item.releaseTime"
               :score="item.score"
+              :avatar="item.avatarUrl"
               :support="item.supportCount"
               :comment="item.commentCount"
               @click="onEnterComposition(item)"
@@ -137,6 +138,7 @@
               :username="item.nickname"
               :read="item.historyCount"
               :comment="item.commentCount"
+              :avatar="item.avatarUrl"
               @click="onEnterComposition(item)"
             />
           </van-pull-refresh>
@@ -234,7 +236,7 @@ export default {
             res.data.data.followList.forEach(follow => {
               this.followList.push({
                 username: follow.username,
-                avatarUrl: null
+                avatarUrl: follow.avatarUrl
               });
             });
             this.axios
