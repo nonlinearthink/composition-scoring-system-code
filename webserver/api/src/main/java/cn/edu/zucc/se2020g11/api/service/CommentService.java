@@ -5,7 +5,6 @@ import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CommentEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
-import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 评论服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -25,40 +26,93 @@ public class CommentService
     {
         this.commentEntityMapper = commentEntityMapper;
     }
+
+    /**
+     * 获取所有评论
+     *
+     * @return 评论列表
+     */
     public List<CommentEntity> selectAllComments()
     {
         return commentEntityMapper.selectAll();
     }
+
+    /**
+     * 获取指定文章评论
+     *
+     * @param compositionId 文章ID
+     * @return 评论列表
+     */
     public List<CommentEntity> selectComment(Integer compositionId)
     {
         return commentEntityMapper.selectAllSelective(compositionId);
     }
+
+    /**
+     * 获取指定评论
+     *
+     * @param commentId 评论ID
+     * @return 评论实体
+     */
     public CommentEntity selectCommentById(Integer commentId)
     {
         return commentEntityMapper.selectByPrimaryKey(commentId);
     }
+
+    /**
+     * 获取评论视图
+     *
+     * @param targetUsername 目标用户名
+     * @return 评论视图列表
+     */
     public List<CommentViewModel> selectCommentView(String targetUsername)
     {
         return commentEntityMapper.selectCommentView(targetUsername);
     }
+
+    /**
+     * 添加评论
+     *
+     * @param commentEntity 评论实体
+     * @return 评论ID
+     */
     public int addComment(CommentEntity commentEntity)
     {
         commentEntity.setStatus(0);
         commentEntityMapper.insert(commentEntity);
         return commentEntity.getCommentId();
     }
-    public int deleteComment(Integer commentId)
+
+    /**
+     * 删除评论
+     *
+     * @param commentId 评论ID
+     */
+    public void deleteComment(Integer commentId)
     {
         int num = commentEntityMapper.deleteByPrimaryKey(commentId);
         if(num == 0){
             throw new BaseException(ErrorDictionary.NO_SUPPORT, LogCategory.BUSINESS);
         }
-        return num;
     }
-    public int deleteCommentByCompositionId(Integer compositionId)
+
+    /**
+     * 删除指定文章评论
+     *
+     * @param compositionId 文章ID
+     */
+    public void deleteCommentByCompositionId(Integer compositionId)
     {
-        return commentEntityMapper.deleteByCompositionId(compositionId);
+        commentEntityMapper.deleteByCompositionId(compositionId);
     }
+
+    /**
+     * 更新评论状态
+     *
+     * @param commentEntity 评论实体
+     * @param commentId 评论ID
+     * @return 是否更新成功
+     */
     public int updateCommentByStatus(CommentEntity commentEntity, Integer commentId)
     {
         commentEntity.setCommentId(commentId);

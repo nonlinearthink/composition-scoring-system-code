@@ -45,6 +45,7 @@ public class HomeService
             articleModel.setArticleTitle(p.getArticleTitle());
             articleModel.setArticleBody(p.getArticleBody());
             articleModel.setTime(p.getTime());
+            articleModel.setAvatarUrl(p.getAvatarUrl());
             articleModelList.add(articleModel);
         }
         return articleModelList;

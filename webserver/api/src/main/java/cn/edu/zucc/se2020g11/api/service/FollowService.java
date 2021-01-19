@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 关注服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -31,6 +33,13 @@ public class FollowService
         this.followEntityMapper = followEntityMapper;
         this.userEntityMapper = userEntityMapper;
     }
+
+    /**
+     * 添加关注
+     *
+     * @param followEntity 关注实体
+     * @return 关注ID
+     */
     public int addFollow(FollowEntity followEntity)
     {
         if(followEntity.getUsername().equals(followEntity.getTargetUsername())){
@@ -41,14 +50,35 @@ public class FollowService
         followEntityMapper.insert(followEntity);
         return followEntity.getFollowId();
     }
+
+    /**
+     * 获取我的关注
+     *
+     * @param followEntity 关注实体
+     * @return 我的关注列表
+     */
     public List<FollowEntity> selectAllFollows(FollowEntity followEntity)
     {
         return followEntityMapper.selectAllSelective(followEntity);
     }
+
+    /**
+     * 获取关注我的
+     *
+     * @param followEntity 关注实体
+     * @return 关注我的列表
+     */
     public List<FollowEntity> selectAllFollowers(FollowEntity followEntity)
     {
         return followEntityMapper.selectAllSelectiveByUser(followEntity);
     }
+
+    /**
+     * 查找关注的用户
+     *
+     * @param followEntityList 关注列表
+     * @return 用户列表
+     */
     public List<UserEntity> findFollows(List<FollowEntity> followEntityList)
     {
         List<UserEntity>  userEntityList = new ArrayList<>();
@@ -57,6 +87,13 @@ public class FollowService
         }
         return userEntityList;
     }
+
+    /**
+     * 查找关注我的用户
+     *
+     * @param followEntityList 关注列表
+     * @return 用户列表
+     */
     public List<UserEntity> findFollowers(List<FollowEntity> followEntityList)
     {
         List<UserEntity>  userEntityList = new ArrayList<>();
@@ -65,6 +102,14 @@ public class FollowService
         }
         return userEntityList;
     }
+
+    /**
+     * 判断是否关注
+     *
+     * @param username 用户
+     * @param targetUsername 目标用户
+     * @return 是否关注
+     */
     public Boolean findFollow(String username, String targetUsername)
     {
         FollowEntity followEntity = new FollowEntity();
@@ -73,6 +118,13 @@ public class FollowService
         List<FollowEntity> followEntityList = followEntityMapper.selectByUsernameAndTargetUsername(followEntity);
         return followEntityList.size() > 0;
     }
+
+    /**
+     * 获取关注信息
+     *
+     * @param userEntityList 用户列表
+     * @return 关注模型
+     */
     public List<FollowModel> getFollowInfo(List<UserEntity> userEntityList)
     {
         List<FollowModel>  followModelList = new ArrayList<>();
@@ -86,6 +138,13 @@ public class FollowService
         }
         return followModelList;
     }
+
+    /**
+     * 删除关注
+     *
+     * @param followEntity 关注实体
+     * @return 是否删除成功
+     */
     public int deleteFollow(FollowEntity followEntity)
     {
         int num = followEntityMapper.deleteByUsernameAndTargetUsername(followEntity);

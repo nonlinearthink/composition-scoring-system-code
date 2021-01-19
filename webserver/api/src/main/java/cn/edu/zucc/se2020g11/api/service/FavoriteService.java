@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 收藏服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -29,6 +31,13 @@ public class FavoriteService
         this.favoriteEntityMapper = favoriteEntityMapper;
         this.compositionEntityMapper = compositionEntityMapper;
     }
+
+    /**
+     * 添加收藏
+     *
+     * @param favoriteEntity 错误实体
+     * @return 收藏ID
+     */
     public int addFavorite(FavoriteEntity favoriteEntity)
     {
         if(favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity).size() > 0){
@@ -37,10 +46,24 @@ public class FavoriteService
         favoriteEntityMapper.insert(favoriteEntity);
         return favoriteEntity.getFavoriteId();
     }
+
+    /**
+     * 获取用户全部收藏
+     *
+     * @param username 用户名
+     * @return 收藏列表
+     */
     public List<FavoriteEntity> selectAllFavorites(String username)
     {
         return favoriteEntityMapper.selectAllSelective(username);
     }
+
+    /**
+     * 查找收藏文章
+     *
+     * @param favoriteEntityList 收藏列表
+     * @return 文章列表
+     */
     public List<CompositionEntity> findFavoriteComposition(List<FavoriteEntity> favoriteEntityList)
     {
         List<CompositionEntity>  compositionEntityList = new ArrayList<>();
@@ -49,6 +72,14 @@ public class FavoriteService
         }
         return compositionEntityList;
     }
+
+    /**
+     * 判断是否收藏
+     *
+     * @param username 用户名
+     * @param compositionId 文章ID
+     * @return 是否收藏
+     */
     public Boolean findFavorite(String username, Integer compositionId)
     {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
@@ -57,6 +88,13 @@ public class FavoriteService
         List<FavoriteEntity> favoriteEntityList = favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity);
         return favoriteEntityList.size() > 0;
     }
+
+    /**
+     * 删除收集
+     *
+     * @param favoriteEntity 收藏实体
+     * @return 是否删除成功
+     */
     public int deleteFavorite(FavoriteEntity favoriteEntity)
     {
         int num = favoriteEntityMapper.deleteByUsernameAndCompositionId(favoriteEntity);
@@ -65,6 +103,13 @@ public class FavoriteService
         }
         return num;
     }
+
+    /**
+     * 删除文章收藏
+     *
+     * @param compositionId 文章ID
+     * @return 是否删除成功过
+     */
     public int deleteFavoriteByCompositionId(Integer compositionId)
     {
         return favoriteEntityMapper.deleteByCompositionId(compositionId);

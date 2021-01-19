@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 管理员服务层
+ *
  * @author nonlinearthink
  */
 @Service
@@ -71,6 +73,7 @@ public class AdminService
         data.put("userTodayCount", userEntityMapper.selectSumByToday());
         data.put("compositionTodayCount", compositionEntityMapper.selectSumByToday());
         data.put("historyCount", historyEntityMapper.selectHistory());
+        logger.info("查询统计数据成功");
 
         return data;
     }
