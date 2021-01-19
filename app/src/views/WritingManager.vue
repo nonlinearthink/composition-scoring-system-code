@@ -29,13 +29,12 @@
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
           <div class="main-container">
             <!-- 翻转卡片列表 -->
-            <rotate-card
+            <div
               v-for="item in layout.compositions"
               :key="item.compositionId"
               class="composition-card"
             >
-              <!-- 卡片正面 -->
-              <div class="front-side" @click="onEnterEditing(item)">
+              <div class=" front-side" @click="onEnterEditing(item)">
                 <!-- 标题 -->
                 <van-row v-if="item.title" class="title">
                   <van-col>
@@ -79,44 +78,7 @@
                   </van-col>
                 </van-row>
               </div>
-              <!-- 反面 -->
-              <template #reverse>
-                <div class="back-side">
-                  <van-row class="row">
-                    <van-col span="8">亮点内容</van-col>
-                    <van-col span="8">
-                      亮点词:
-                      <span class="highlight">
-                        {{ 0 + "个" }}
-                      </span>
-                    </van-col>
-                    <van-col span="8">
-                      亮点句:
-                      <span class="highlight">
-                        {{ 0 + "个" }}
-                      </span>
-                    </van-col>
-                  </van-row>
-                  <van-row class="row">
-                    <van-col span="8">错误内容</van-col>
-                    <van-col span="8">
-                      拼写错误:
-                      <span class="error">{{ 0 + "个" }}</span>
-                    </van-col>
-                    <van-col span="8">
-                      语法错误:
-                      <span class="error">
-                        {{ 0 + "个" }}
-                      </span>
-                    </van-col>
-                  </van-row>
-                  <van-row class="row">
-                    <van-col span="8">高频错误</van-col>
-                    <van-col span="16"></van-col>
-                  </van-row>
-                </div>
-              </template>
-            </rotate-card>
+            </div>
           </div>
         </van-pull-refresh>
       </van-tab>
@@ -134,14 +96,10 @@
 </template>
 
 <script>
-import RotateCard from "@/components/RotateCard";
 import { mapState } from "vuex";
 import dateUtils from "../assets/js/common/dateUtils";
 import Composition from "../assets/js/types/composition";
 export default {
-  components: {
-    RotateCard
-  },
   data() {
     return {
       activeTab: "", // 当前选中的tab
@@ -365,11 +323,13 @@ export default {
   @include padding-horizontal($blank-size);
 }
 .action-button-icon {
-  backface-visibility: hidden;
   padding: 0.25rem 1rem;
 }
 .composition-card {
   @include margin-vertical($blank-size);
+  background: white;
+  border-radius: 0.8rem;
+  padding: 0.01rem 0;
   .front-side {
     margin: $blank-size;
     .title {
@@ -400,23 +360,6 @@ export default {
       @include margin-vertical($text-normal * 0.4);
       width: 100%;
       color: $color-danger;
-    }
-  }
-  .back-side {
-    height: 100%;
-    margin: $blank-size;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    .highlight {
-      color: orange;
-    }
-    .error {
-      color: red;
-    }
-    .row {
-      @include margin-vertical($text-normal * 0.5);
     }
   }
 }
