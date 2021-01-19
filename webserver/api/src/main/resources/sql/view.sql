@@ -71,3 +71,24 @@ left join composition c
 on u.username = c.username
 group by u.username) tb2
 where tb1.username = tb2.username;
+
+/*==============================================================*/
+/* View: report_count                                            */
+/*==============================================================*/
+create view report_count
+as
+select a.username, a.composition_report_count, b.comment_report_count, a.composition_report_count+b.comment_report_count count, b.frozen from
+(select c.username, count(*) composition_report_count
+from user u
+left join composition_report c
+on u.username=c.username
+where c.status=1
+group by c.username)a, 
+(select co.username, count(*) comment_report_count, frozen
+from user u
+left join comment_report co
+on u.username=co.username
+where co.status=1
+group by co.username)b
+where a.username=b.username
+order by count desc
