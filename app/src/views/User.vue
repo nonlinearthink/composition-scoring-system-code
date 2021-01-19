@@ -20,7 +20,9 @@
                   fit="cover"
                   round
                   :src="
-                    user.avatarUrl ? `http://${user.avatarUrl}` : layout.avatar
+                    user && user.avatarUrl
+                      ? `http://${user.avatarUrl}`
+                      : layout.avatar
                   "
                   class="piduoduo-avatar"
                 />
