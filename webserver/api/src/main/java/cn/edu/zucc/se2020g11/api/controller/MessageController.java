@@ -1,8 +1,0 @@
-package cn.edu.zucc.se2020g11.api.controller;
-
-/**
- * @author Tuenity
- */
-public class MessageController
-{
-}

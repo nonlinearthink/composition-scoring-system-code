@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
+ * 忘记密码模型
+ *
  * @author nonlinearthink
  */
 @Getter

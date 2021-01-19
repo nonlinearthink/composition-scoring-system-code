@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 关注模型
+ * 热榜卡片模型
  *
  * @author nonlinearthink
  */

@@ -6,6 +6,8 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
+ * 推送文章实体
+ *
  * @author Tuenity
  */
 @Getter

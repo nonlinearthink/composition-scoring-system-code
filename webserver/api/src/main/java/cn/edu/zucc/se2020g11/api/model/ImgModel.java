@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 密码修改模型
+ * 图片模型
  *
  * @author nonlinearthink
  */

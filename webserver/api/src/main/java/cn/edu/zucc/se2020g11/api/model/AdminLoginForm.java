@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
- * 登录表结构
+ * 管理员登录表单
  *
  * @author nonlinearthink
  */

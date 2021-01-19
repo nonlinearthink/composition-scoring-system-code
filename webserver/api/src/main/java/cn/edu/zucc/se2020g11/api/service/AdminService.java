@@ -7,9 +7,7 @@ import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.HistoryEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.AdminEntity;
-import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.model.AdminLoginForm;
-import cn.edu.zucc.se2020g11.api.model.LoginForm;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

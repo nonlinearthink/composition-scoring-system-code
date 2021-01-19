@@ -101,7 +101,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
+        <!-- Commons Pool -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -148,12 +148,6 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>3.0.3</version>
         </dependency>
-        <!-- word-checker, 用于单词拼写检查 -->
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>word-checker</artifactId>
-            <version>0.0.1</version>
-        </dependency>
         <!-- jpa -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -171,11 +165,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.9</version>
-        </dependency>
-        <!-- 热部署 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
     </dependencies>
 

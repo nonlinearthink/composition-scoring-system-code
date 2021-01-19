@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
- * 关注模型
+ * 用户名卡片模型
  *
  * @author nonlinearthink
  */
