@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 帮助控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -37,8 +39,12 @@ public class HelpController
     @LoginRequired(type = UserType.ADMIN)
     @PostMapping("")
     @ApiOperation(value = "添加帮助手册")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "helpEntity", value = "帮助", required = true, dataType =
+                    "HelpEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addHelp(@RequestBody HelpEntity helpEntity, HttpServletRequest request) {
         helpEntity.setAdminName((String)request.getAttribute("username"));
         int id = helpService.addHelp(helpEntity);
@@ -53,12 +59,8 @@ public class HelpController
     @LoginRequired(type = UserType.ADMIN)
     @ApiOperation(value = "删除帮助手册")
     @DeleteMapping("/{helpId}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
-                    "String"),
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+    @ApiImplicitParam(paramType = "path", name = "helpId", value = "帮助ID", required = true, dataType =
                     "Integer")
-    })
     public ResponseEntity<ApiResult<Boolean>> deleteHelp(@PathVariable("helpId") Integer helpId) {
         helpService.deleteHelp(helpId);
         ApiResult<Boolean> result = new ApiResult<>();
@@ -71,10 +73,10 @@ public class HelpController
     @ApiOperation(value = "更新帮助手册")
     @PutMapping("/{helpId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "helpId", value = "帮助ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "helpEntity", value = "帮助", required = true, dataType =
+                    "HelpEntity")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateHelp(@PathVariable("helpId") Integer helpId, @RequestBody HelpEntity helpEntity) {
         helpService.updateHelp(helpEntity, helpId);
@@ -83,8 +85,8 @@ public class HelpController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "获取帮助手册")
     @GetMapping("")
+    @ApiOperation(value = "获取帮助手册")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllHelps() {
         List<HelpEntity> helpEntityList = helpService.selectAllHelps();
         ApiResult<Map<String, Object>> result = new ApiResult<>();

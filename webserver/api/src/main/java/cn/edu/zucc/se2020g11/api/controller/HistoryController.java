@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 历史记录控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -39,6 +41,8 @@ public class HistoryController
     @LoginRequired(type = UserType.USER)
     @GetMapping("")
     @ApiOperation(value = "获取当前用户所有历史记录")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectHistoryByUser(HttpServletRequest request) {
         List<HistoryModel> historyModelList = historyService.selectHistoryByUser((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -53,10 +57,10 @@ public class HistoryController
     @PostMapping("/{compositionId}")
     @ApiOperation(value = "用户访问添加历史记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
-                    "String"),
-            @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
-                    "CompositionEntity")
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
     })
     public ResponseEntity<ApiResult<Map<String, Object>>> addHistory(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         HistoryEntity historyEntity = new HistoryEntity();

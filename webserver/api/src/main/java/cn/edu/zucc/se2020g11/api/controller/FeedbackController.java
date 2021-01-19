@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 反馈控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -35,10 +37,14 @@ public class FeedbackController
     }
 
     @LoginRequired(type = UserType.USER)
-    @PostMapping("")
     @ApiOperation(value = "添加用户反馈")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @PostMapping("")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "feedbackEntity", value = "反馈", required = true, dataType =
+                    "FeedbackEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addFeedback(@RequestBody FeedbackEntity feedbackEntity, HttpServletRequest request) {
         feedbackEntity.setUsername((String)request.getAttribute("username"));
         int id = feedbackService.addFeedback(feedbackEntity);
@@ -51,13 +57,13 @@ public class FeedbackController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "更新用户反馈")
     @PutMapping("/{feedbackId}")
+    @ApiOperation(value = "更新用户反馈")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "feedbackId", value = "反馈ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "feedbackEntity", value = "反馈", required = true, dataType =
+                    "FeedbackEntity")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateFeedback(@PathVariable("feedbackId") Integer feedbackId,
                                                                    @RequestBody FeedbackEntity feedbackEntity) {
@@ -68,8 +74,8 @@ public class FeedbackController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "获取用户反馈")
     @GetMapping("")
+    @ApiOperation(value = "获取用户反馈")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFeedbacks() {
         List<FeedbackEntity> feedbackEntityList = feedbackService.selectAllFeedbacks();
         ApiResult<Map<String, Object>> result = new ApiResult<>();

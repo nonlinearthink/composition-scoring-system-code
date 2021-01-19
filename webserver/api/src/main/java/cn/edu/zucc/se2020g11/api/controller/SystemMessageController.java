@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 系统消息控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -37,8 +39,12 @@ public class SystemMessageController
     @LoginRequired(type = UserType.ADMIN)
     @PostMapping("")
     @ApiOperation(value = "添加系统消息")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "systemMessageEntity", value = "系统消息", required = true, dataType =
+                    "SystemMessageEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addSystemMessage(@RequestBody SystemMessageEntity systemMessageEntity, HttpServletRequest request) {
         systemMessageEntity.setAdminName((String)request.getAttribute("username"));
         int id = systemMessageService.addSystemMessage(systemMessageEntity);
@@ -51,37 +57,40 @@ public class SystemMessageController
     }
 
     @LoginRequired(type = UserType.ADMIN)
+    @DeleteMapping("/{systemMessageId}")
     @ApiOperation(value = "删除系统消息")
-    @DeleteMapping("/{sMessageId}")
-    @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+    @ApiImplicitParam(paramType = "path", name = "systemMessageId", value = "系统消息ID", required = true, dataType =
             "Integer")
-    public ResponseEntity<ApiResult<Boolean>> deleteSystemMessage(@PathVariable("sMessageId") Integer sMessageId, HttpServletRequest request) {
-        systemMessageService.deleteSystemMessage(sMessageId);
+    public ResponseEntity<ApiResult<Boolean>> deleteSystemMessage(@PathVariable("systemMessageId") Integer systemMessageId) {
+        systemMessageService.deleteSystemMessage(systemMessageId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @LoginRequired(type = UserType.ADMIN)
+    @PutMapping("/{systemMessageId}")
     @ApiOperation(value = "更新系统消息")
-    @PutMapping("/{sMessageId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "systemMessageId", value = "系统消息ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "systemMessageEntity", value = "系统消息", required = true, dataType =
+                    "SystemMessageEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
     })
-    public  ResponseEntity<ApiResult<Boolean>> updateSystemMessage(@PathVariable("sMessageId") Integer sMessageId,
+    public  ResponseEntity<ApiResult<Boolean>> updateSystemMessage(@PathVariable("systemMessageId") Integer systemMessageId,
                                                              @RequestBody SystemMessageEntity systemMessageEntity, HttpServletRequest request) {
         systemMessageEntity.setAdminName((String)request.getAttribute("username"));
-        systemMessageService.updateSystemMessage(systemMessageEntity, sMessageId);
+        systemMessageService.updateSystemMessage(systemMessageEntity, systemMessageId);
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("修改成功");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "获取系统消息")
+
     @GetMapping("")
+    @ApiOperation(value = "获取系统消息")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllSystemMessages() {
         List<SystemMessageEntity> systemMessageEntityList = systemMessageService.selectAllSystemMessages();
         ApiResult<Map<String, Object>> result = new ApiResult<>();

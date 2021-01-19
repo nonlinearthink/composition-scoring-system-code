@@ -5,6 +5,8 @@ import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.model.ImgModel;
 import cn.edu.zucc.se2020g11.api.service.ImgService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 图片控制器
+ *
  * @author Tuenity
  */
 @RestController
@@ -61,6 +65,9 @@ public class ImgController
 
     @PostMapping("")
     @ResponseBody
+    @ApiOperation(value = "上传图片")
+    @ApiImplicitParam(paramType = "body", name = "file", value = "文章ID", required = true, dataType =
+            "MultipartFile")
     public ResponseEntity<ApiResult<Map<String, Object>>> upload(@RequestParam("img") MultipartFile file) {
 
         ApiResult<Map<String, Object>> result = new ApiResult<>();

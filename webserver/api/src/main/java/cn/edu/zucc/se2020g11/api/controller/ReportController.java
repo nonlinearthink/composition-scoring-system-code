@@ -20,12 +20,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 举报控制器
+ *
  * @author Tuenity
  */
 @RestController
@@ -47,8 +48,8 @@ public class ReportController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "获取违规信息")
     @GetMapping("")
+    @ApiOperation(value = "获取违规信息")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllReports() {
         List<ReportModel> reportModelList = reportService.selectAllReports();
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -60,8 +61,14 @@ public class ReportController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "管理员冻结或解冻用户账号")
     @PutMapping("/{username}")
+    @ApiOperation(value = "管理员冻结或解冻用户账号")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "body", name = "userEntity", value = "用户", required = true, dataType =
+                    "UserEntity")
+    })
     public ResponseEntity<ApiResult<Boolean>> freezeUser(@PathVariable("username") String username, @RequestBody UserEntity userEntity) {
         userEntity.setUsername(username);
         userEntity.setFrozen(userEntity.getFrozen());
@@ -75,8 +82,12 @@ public class ReportController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/composition/{compositionId}")
     @ApiOperation(value = "提交作文举报")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "compositionReportEntity", value = "作文举报", required = true, dataType =
+                    "CompositionReportEntity")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addCompositionReport(@PathVariable("compositionId") Integer compositionId, @RequestBody CompositionReportEntity compositionReportEntity) {
         compositionReportEntity.setUsername(compositionService.selectCompositionById(compositionId).getUsername());
         compositionReportEntity.setCompositionId(compositionId);
@@ -92,8 +103,12 @@ public class ReportController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/comment/{commentId}")
     @ApiOperation(value = "提交评论举报")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "commentId", value = "评论ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "commentReportEntity", value = "评论举报", required = true, dataType =
+                    "CommentReportEntity")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addCommentReport(@PathVariable("commentId") Integer commentId, @RequestBody CommentReportEntity commentReportEntity) {
         commentReportEntity.setUsername(commentService.selectCommentById(commentId).getUsername());
         commentReportEntity.setCommentId(commentId);
@@ -110,10 +125,10 @@ public class ReportController
     @ApiOperation(value = "更新作文举报状态")
     @PutMapping("/composition/status/{compositionReportId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "compositionReportId", value = "文章举报ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "compositionReportEntity", value = "文章举报", required = true, dataType =
+                    "CompositionReportEntity")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateCompositionReport(@PathVariable("compositionReportId") Integer compositionReportId,
                                                               @RequestBody CompositionReportEntity compositionReportEntity) {
@@ -127,10 +142,10 @@ public class ReportController
     @ApiOperation(value = "更新评论举报状态")
     @PutMapping("/comment/status/{commentReportId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "commentId", value = "评论ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "commentReportEntity", value = "评论举报", required = true, dataType =
+                    "CommentReportEntity")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateCommentReport(@PathVariable("commentReportId") Integer commentReportId,
                                                               @RequestBody CommentReportEntity commentReportEntity) {

@@ -6,6 +6,8 @@ import cn.edu.zucc.se2020g11.api.service.FollowService;
 import cn.edu.zucc.se2020g11.api.service.HomeService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 首页控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -34,8 +38,9 @@ public class HomeController
         this.followService = followService;
     }
 
-    @ApiOperation(value = "获取推送文章")
+
     @GetMapping("/article")
+    @ApiOperation(value = "获取推送文章")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllArticles() {
         List<ArticleModel> articleModelList = homeService.selectAllArticles();
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -47,8 +52,10 @@ public class HomeController
     }
 
     @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "获取关注文章")
     @GetMapping("/follow")
+    @ApiOperation(value = "获取关注文章")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectFollowCompositions(HttpServletRequest request) {
         List<FollowCardModel> followCardModelList = homeService.selectFollowCompositions((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -59,8 +66,8 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "获取新鲜文章")
     @GetMapping("/new")
+    @ApiOperation(value = "获取新鲜文章")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectNewCompositions() {
         List<NewCardModel> newCardModelList = homeService.selectNewCompositions();
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -71,8 +78,8 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "获取热榜文章")
     @GetMapping("/hot")
+    @ApiOperation(value = "获取热榜文章")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectHotCompositions() {
         List<HotCardModel> hotCardModelList = homeService.selectHotCompositions();
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -83,8 +90,10 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation(value = "模糊查询昵称")
     @PostMapping("/search/{nickname}")
+    @ApiOperation(value = "模糊查询昵称")
+    @ApiImplicitParam(paramType = "path", name = "nickname", value = "昵称", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectUserByNickname(@PathVariable String nickname) {
         List<String> usernameList = homeService.selectUserByNickname(nickname);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -96,8 +105,14 @@ public class HomeController
     }
 
     @LoginRequired(type = UserType.USER)
-    @ApiOperation(value = "模糊查询详细用户")
     @PostMapping("/search/detail/{nickname}")
+    @ApiOperation(value = "模糊查询详细用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "nickname", value = "昵称", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> selectUserView(@PathVariable String nickname, HttpServletRequest request) {
         List<UsernameCardModel> usernameCardModelList = homeService.selectUserView(nickname);
         for(UsernameCardModel u:usernameCardModelList ){

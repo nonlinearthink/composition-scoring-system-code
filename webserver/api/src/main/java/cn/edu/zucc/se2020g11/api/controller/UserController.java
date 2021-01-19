@@ -24,6 +24,8 @@ import java.util.Map;
 
 
 /**
+ * 用户控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -136,6 +138,7 @@ public class UserController {
         jwtService.clearTokenCache((String)request.getAttribute("username"));
         ApiResult<Boolean> result = new ApiResult<>();
         result.setMsg("删除成功");
+        logger.info("用户成功退出");
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

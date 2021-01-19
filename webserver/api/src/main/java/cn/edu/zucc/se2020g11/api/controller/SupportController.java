@@ -8,6 +8,8 @@ import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
 import cn.edu.zucc.se2020g11.api.service.SupportService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 点赞控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -37,6 +41,8 @@ public class SupportController
     @LoginRequired(type = UserType.USER)
     @GetMapping("")
     @ApiOperation(value = "获取当前用户点赞的所有文章")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllSupports(HttpServletRequest request) {
         List<SupportEntity> supportEntityList = supportService.selectAllSupports((String)request.getAttribute("username"));
         List<CompositionEntity> compositionEntityList = supportService.findSupportedComposition(supportEntityList);
@@ -51,6 +57,8 @@ public class SupportController
     @LoginRequired(type = UserType.USER)
     @GetMapping("/all")
     @ApiOperation(value = "获取收到的赞")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectSupportView(HttpServletRequest request) {
         List<SupportViewModel> supportViewModelList = supportService.selectSupportView((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -64,6 +72,12 @@ public class SupportController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/{compositionId}")
     @ApiOperation(value = "用户点赞")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addSupport(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         SupportEntity supportEntity = new SupportEntity();
         supportEntity.setUsername((String)request.getAttribute("username"));
@@ -80,6 +94,12 @@ public class SupportController
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/{compositionId}")
     @ApiOperation(value = "用户取消点赞")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> deleteSupport(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         SupportEntity supportEntity = new SupportEntity();
         supportEntity.setUsername((String)request.getAttribute("username"));

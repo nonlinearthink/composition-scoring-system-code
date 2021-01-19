@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 评论控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -55,6 +57,8 @@ public class CommentController
     @LoginRequired(type = UserType.USER)
     @GetMapping("/all")
     @ApiOperation(value = "获取评论我的")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectCommentView(HttpServletRequest request) {
         List<CommentViewModel> commentViewModelList = commentService.selectCommentView((String)request.getAttribute("username"));
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -67,6 +71,8 @@ public class CommentController
 
     @GetMapping("/{compositionId}")
     @ApiOperation(value = "获取当前作文的所有评论")
+    @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+            "Integer")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectComment(@PathVariable("compositionId") Integer compositionId) {
         List<CommentEntity> commentEntityList = commentService.selectComment(compositionId);
         ApiResult<Map<String, Object>> result = new ApiResult<>();
@@ -80,6 +86,14 @@ public class CommentController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/{compositionId}")
     @ApiOperation(value = "用户添加评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "评论", required = true, dataType =
+                    "CommentEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addComment(@PathVariable("compositionId") Integer compositionId, @RequestBody @Validated CommentEntity commentEntity, HttpServletRequest request) {
         commentEntity.setCompositionId(compositionId);
         commentEntity.setUsername((String)request.getAttribute("username"));
@@ -95,6 +109,12 @@ public class CommentController
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/{commentId}")
     @ApiOperation(value = "用户删除评论")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "commentId", value = "评论ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> deleteComment(@PathVariable("commentId") Integer commentId,HttpServletRequest request) {
         permissionService.validateComment((String)request.getAttribute("username"), commentId);
         commentService.deleteComment(commentId);
@@ -107,12 +127,10 @@ public class CommentController
     @ApiOperation(value = "管理员修改评论状态")
     @PutMapping("/valid/{commentId}")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
-                    "String"),
-            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "作文ID", required = true, dataType =
+            @ApiImplicitParam(paramType = "path", name = "commentId", value = "评论ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "compositionEntity", value = "作文", required = true, dataType =
-                    "CompositionEntity")
+            @ApiImplicitParam(paramType = "body", name = "commentEntity", value = "评论", required = true, dataType =
+                    "CommentEntity")
     })
     public ResponseEntity<ApiResult<Boolean>> updateCommentByStatus(@PathVariable("commentId") Integer commentId,
                                                                        @RequestBody CommentEntity commentEntity) {

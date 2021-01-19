@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 关注控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -39,6 +41,12 @@ public class FollowController
 
     @GetMapping("/{username}")
     @ApiOperation(value = "获取当前用户关注的所有人")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "body", name = "followEntity", value = "关注", required = true, dataType =
+                    "FollowEntity")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFollows(@PathVariable("username") String username, FollowEntity followEntity) {
         followEntity.setUsername(username);
         List<FollowEntity> followEntityList = followService.selectAllFollows(followEntity);
@@ -54,6 +62,12 @@ public class FollowController
 
     @GetMapping("/{username}/follower")
     @ApiOperation(value = "获取关注当前用户的所有人")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "body", name = "followEntity", value = "关注", required = true, dataType =
+                    "FollowEntity")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFollowers(@PathVariable("username") String username, FollowEntity followEntity) {
         followEntity.setTargetUsername(username);
         List<FollowEntity> followEntityList = followService.selectAllFollowers(followEntity);
@@ -70,6 +84,12 @@ public class FollowController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/{username}")
     @ApiOperation(value = "用户添加关注")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "目标用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "当前用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addFollow(@PathVariable("username") String username, HttpServletRequest request) {
         FollowEntity followEntity = new FollowEntity();
         followEntity.setUsername((String)request.getAttribute("username"));
@@ -86,6 +106,12 @@ public class FollowController
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/{username}")
     @ApiOperation(value = "用户取消关注")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "username", value = "目标用户名", required = true, dataType =
+                    "String"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "当前用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("username") String username, HttpServletRequest request) {
         FollowEntity followEntity = new FollowEntity();
         followEntity.setUsername((String)request.getAttribute("username"));

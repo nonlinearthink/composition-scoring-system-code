@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 错误控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -28,7 +30,7 @@ import java.util.Map;
 @Api(value = "ErrorController")
 public class ErrorController
 {
-    private ErrorService errorService;
+    private final ErrorService errorService;
 
     @Autowired(required = false)
     public ErrorController(ErrorService errorService)
@@ -38,7 +40,12 @@ public class ErrorController
 
     @GetMapping("/{compositionId}/{errorType}")
     @ApiOperation(value = "获取作文批改信息")
-    @ApiImplicitParam(paramType = "path", name = "username", value = "用户名", required = true, dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "path", name = "errorType", value = "错误类型", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> selectError(@PathVariable("compositionId") Integer compositionId, @PathVariable("errorType") String errorType) {
         ErrorEntity errorEntity = errorService.selectError(compositionId, errorType);
         JSONArray jsonArray = JSONObject.parseArray(errorEntity.getText());

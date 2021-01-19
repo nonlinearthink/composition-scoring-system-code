@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 推送文章控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -38,8 +40,12 @@ public class ArticleController
     @LoginRequired(type = UserType.ADMIN)
     @PostMapping("")
     @ApiOperation(value = "添加推送文章")
-    @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-            "PushArticle")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "pushArticleEntity", value = "文章", required = true, dataType =
+                    "PushArticleEntity"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addArticle(@RequestBody PushArticleEntity pushArticleEntity, HttpServletRequest request) {
         pushArticleEntity.setAdminName((String)request.getAttribute("username"));
         int id = articleService.addArticle(pushArticleEntity);
@@ -52,8 +58,8 @@ public class ArticleController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "删除推送文章")
     @DeleteMapping("/{articleId}")
+    @ApiOperation(value = "删除推送文章")
     @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
             "Integer")
     public ResponseEntity<ApiResult<Boolean>> deleteArticle(@PathVariable("articleId") Integer articleId) {
@@ -64,13 +70,13 @@ public class ArticleController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "更新推送文章")
     @PutMapping("/{articleId}")
+    @ApiOperation(value = "更新推送文章")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "articleId", value = "文章ID", required = true, dataType =
                     "Integer"),
-            @ApiImplicitParam(paramType = "body", name = "pushArticle", value = "文章", required = true, dataType =
-                    "PushArticle")
+            @ApiImplicitParam(paramType = "body", name = "pushArticleEntity", value = "文章", required = true, dataType =
+                    "PushArticleEntity")
     })
     public  ResponseEntity<ApiResult<Boolean>> updateArticle(@PathVariable("articleId") Integer articleId,
                                                       @RequestBody PushArticleEntity pushArticleEntity) {
@@ -81,8 +87,8 @@ public class ArticleController
     }
 
     @LoginRequired(type = UserType.ADMIN)
-    @ApiOperation(value = "获取推送文章")
     @GetMapping("")
+    @ApiOperation(value = "获取推送文章")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllArticles() {
         List<PushArticleEntity> pushArticleEntityList = articleService.selectAllArticles();
         ApiResult<Map<String, Object>> result = new ApiResult<>();

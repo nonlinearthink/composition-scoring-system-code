@@ -7,6 +7,8 @@ import cn.edu.zucc.se2020g11.api.model.ApiResult;
 import cn.edu.zucc.se2020g11.api.service.FavoriteService;
 import cn.edu.zucc.se2020g11.api.util.annotation.LoginRequired;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 收藏控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -36,6 +40,8 @@ public class FavoriteController
     @LoginRequired(type = UserType.USER)
     @GetMapping("")
     @ApiOperation(value = "获取当前用户收藏的所有文章")
+    @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+            "String")
     public ResponseEntity<ApiResult<Map<String, Object>>> selectAllFavorites(HttpServletRequest request) {
         List<FavoriteEntity> favoriteEntityList = favoriteService.selectAllFavorites((String)request.getAttribute("username"));
         List<CompositionEntity> compositionEntityList = favoriteService.findFavoriteComposition(favoriteEntityList);
@@ -50,6 +56,12 @@ public class FavoriteController
     @LoginRequired(type = UserType.USER)
     @PostMapping("/{compositionId}")
     @ApiOperation(value = "用户收藏")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Map<String, Object>>> addSupport(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         favoriteEntity.setUsername((String)request.getAttribute("username"));
@@ -66,6 +78,12 @@ public class FavoriteController
     @LoginRequired(type = UserType.USER)
     @DeleteMapping("/{compositionId}")
     @ApiOperation(value = "用户取消收藏")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "compositionId", value = "文章ID", required = true, dataType =
+                    "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "username", value = "用户名", required = true, dataType =
+                    "String")
+    })
     public ResponseEntity<ApiResult<Boolean>> deleteComposition(@PathVariable("compositionId") Integer compositionId, HttpServletRequest request) {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
         favoriteEntity.setUsername((String)request.getAttribute("username"));
