@@ -25,7 +25,7 @@
             height="3rem"
             fit="cover"
             round
-            :src="item.avatarUrl == null ? defaultAvatar : item.avatarUrl"
+            :src="item.avatarUrl ? `http://${item.avatarUrl}` : defaultAvatar"
             style="padding-right: 1rem;"
             @click="
               $router.push({

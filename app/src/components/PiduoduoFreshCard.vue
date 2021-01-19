@@ -15,7 +15,11 @@
             height="1rem"
             fit="cover"
             round
-            :src="avatar"
+            :src="
+              avatar
+                ? `http://${avatar}`
+                : require('../assets/images/avatar.svg')
+            "
           />
         </van-col>
         <van-col>
@@ -52,7 +56,7 @@ export default {
     },
     avatar: {
       type: [String],
-      default: require("../assets/images/avatar.svg")
+      default: null
     }
   }
 };

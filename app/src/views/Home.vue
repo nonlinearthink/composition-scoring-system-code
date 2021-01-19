@@ -73,7 +73,11 @@
                     height="3rem"
                     fit="cover"
                     round
-                    :src="item.avatarUrl ? item.avatarUrl : defaultAvatar"
+                    :src="
+                      item.avatarUrl
+                        ? `http://${item.avatarUrl}`
+                        : defaultAvatar
+                    "
                     @click="
                       onRouteChange({
                         path: '/user/home',

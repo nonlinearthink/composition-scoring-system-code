@@ -80,7 +80,7 @@ export default new Vuex.Store({
       state.compositions.splice(index, 1, composition);
     },
     updateUser(state, user) {
-      state.user = user;
+      state.user = { ...state.user, ...user };
     },
     updateToken(state, token) {
       state.token = token;

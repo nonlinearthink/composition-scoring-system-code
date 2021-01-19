@@ -12,13 +12,22 @@
       </template>
     </van-nav-bar>
     <van-form>
+      <van-field name="avatar" label="头像">
+        <template #input>
+          <van-uploader
+            v-model="fileList"
+            :after-read="afterRead"
+            :max-count="1"
+          />
+        </template>
+      </van-field>
       <van-field
         v-model="form.nickname"
         label="昵称"
         placeholder="请填写昵称"
         :rules="[{ required: true, message: '昵称不能为空' }]"
       />
-      <van-field name="radio" label="性别">
+      <van-field name="sex" label="性别">
         <template #input>
           <van-radio-group v-model="form.isMale" direction="horizontal">
             <van-radio name="true" icon-size="1rem">
@@ -70,8 +79,10 @@ export default {
         nickname: "",
         isMale: null,
         signature: null,
-        phone: null
-      }
+        phone: null,
+        avatarUrl: null
+      },
+      fileList: []
     };
   },
   computed: {
@@ -79,7 +90,8 @@ export default {
       if (
         this.user.nickname != this.form.nickname ||
         this.user.signature != this.form.signature ||
-        this.user.phone != this.form.phone
+        this.user.phone != this.form.phone ||
+        this.user.avatarUrl != this.form.avatarUrl
       ) {
         return true;
       } else if (
@@ -135,6 +147,38 @@ export default {
     onSubmitCancel() {
       this.routePassport = true;
       this.onRouteBack();
+    },
+    afterRead(file) {
+      // 此时可以自行将文件上传至服务器
+      console.log(file);
+      let renameFile = new File(
+        [file.file],
+        `${this.user.username}-${Date.now()}`,
+        {
+          type: file.type
+        }
+      );
+      file.file = renameFile;
+      file.status = "uploading";
+      file.message = "上传中...";
+      let data = new FormData();
+      data.append("img", file.file);
+      console.log(data);
+      this.axios
+        .post("/img", data, {
+          headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(res => {
+          console.log(res);
+          this.form.avatarUrl = res.data.data.imgModel.url;
+          file.status = "done";
+          file.message = "上传成功";
+        })
+        .catch(err => {
+          console.error(err);
+          file.status = "failed";
+          file.message = "上传失败";
+        });
     }
   },
   /**

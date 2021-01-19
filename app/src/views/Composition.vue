@@ -26,9 +26,9 @@
               height="3.8rem"
               fit="cover"
               :src="
-                composition.avatarUrl == null
-                  ? defaultAvatar
-                  : composition.avatarUrl
+                composition.avatarUrl
+                  ? `http://${composition.avatarUrl}`
+                  : defaultAvatar
               "
               class="avatar"
               @click="
