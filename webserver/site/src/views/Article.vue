@@ -2,6 +2,27 @@
   <div id="article-page">
     <a-modal v-model="editorVisible" title="编辑" okText="提交" @ok="onUpdate">
       <!-- 在此插入编辑用的表单 -->
+      <a-upload
+        name="avatar"
+        list-type="picture-card"
+        class="avatar-uploader"
+        :show-upload-list="false"
+        :customRequest="onUpload"
+        @change="handleChange"
+      >
+        <img
+          v-if="editorForm.avatarUrl"
+          :src="editorForm.avatarUrl"
+          alt="avatar"
+          :style="{ width: '100%', objectFit: 'cover' }"
+        />
+        <div v-else>
+          <a-icon :type="loadingAvatar ? 'loading' : 'plus'" />
+          <div class="ant-upload-text">
+            Upload
+          </div>
+        </div>
+      </a-upload>
       <a-form-model-item label="推送标题">
         <a-input
           v-model="editorForm.articleTitle"
@@ -39,6 +60,17 @@
         </a-descriptions-item>
         <a-descriptions-item label="推送内容" :span="3">
           {{ viewTarget.articleBody }}
+        </a-descriptions-item>
+        <a-descriptions-item
+          v-if="viewTarget.avatarUrl"
+          label="推送图片"
+          :span="3"
+        >
+          <img
+            :src="viewTarget.avatarUrl"
+            alt="avatar"
+            :style="{ width: '100%', objectFit: 'cover' }"
+          />
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
@@ -80,6 +112,11 @@
 <script>
 import moment from "moment";
 import { mapState } from "vuex";
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 export default {
   data() {
     // 在此定义表结构
@@ -133,7 +170,8 @@ export default {
       editingTarget: null,
       editingStatus: 0,
       viewVisible: false,
-      viewTarget: null
+      viewTarget: null,
+      loadingAvatar: false
     };
   },
   computed: {
@@ -180,7 +218,8 @@ export default {
         articleBody: "",
         articleId: "",
         articleTitle: "",
-        time: ""
+        time: "",
+        avatarUrl: null
       };
       this.editingStatus = 0;
       this.editorVisible = true;
@@ -221,6 +260,42 @@ export default {
           })
           .catch(err => console.error(err.response.data));
       }
+    },
+    handleChange(info) {
+      if (info.file.status === "uploading") {
+        this.loadingAvatar = true;
+        return;
+      }
+      if (info.file.status === "done") {
+        getBase64(info.file.originFileObj, imageUrl => {
+          this.imageUrl = imageUrl;
+          this.loadingAvatar = false;
+        });
+      }
+    },
+    onUpload(file) {
+      console.log(file);
+      let renameFile = new File([file.file], `admin-${Date.now()}`, {
+        type: file.type
+      });
+      file.file = renameFile;
+      this.loadingAvatar = true;
+      let data = new FormData();
+      data.append("img", file.file);
+      console.log(data);
+      this.axios
+        .post("/img", data, {
+          headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(res => {
+          console.log(res);
+          this.loadingAvatar = false;
+          this.editorForm.avatarUrl = `http://${res.data.data.imgModel.url}`;
+        })
+        .catch(err => {
+          console.error(err);
+          this.loadingAvatar = false;
+        });
     }
   }
 };

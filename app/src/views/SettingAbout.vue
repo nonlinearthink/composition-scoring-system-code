@@ -68,7 +68,7 @@ export default {
         ]
       },
       showAgreement: false,
-      appVersion: "1.4.6-beta"
+      appVersion: "1.4.7-beta"
     };
   },
   methods: {

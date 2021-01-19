@@ -32,7 +32,7 @@
             :value="userTodayCount"
             suffix="位"
             :value-style="{
-              color: `${compositionTodayCount > 0 ? '#3f8600' : '#9E9E9E'}`
+              color: `${userTodayCount > 0 ? '#3f8600' : '#9E9E9E'}`
             }"
             style="margin-right: 50px"
           >

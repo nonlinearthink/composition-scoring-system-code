@@ -46,9 +46,11 @@
                 fit="cover"
                 class="preview-image"
                 :src="
-                  require(`../assets/images/background/background-${(item.articleId %
-                    10) +
-                    1}.png`)
+                  item.avatarUrl
+                    ? item.avatarUrl
+                    : require(`../assets/images/background/background-${(item.articleId %
+                        10) +
+                        1}.png`)
                 "
                 radius="0.5rem"
               />
