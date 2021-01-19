@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 点赞服务层
+ *
  * @author Tuenity
  */
 @Service
@@ -30,6 +32,13 @@ public class SupportService
         this.supportEntityMapper = supportEntityMapper;
         this.compositionEntityMapper = compositionEntityMapper;
     }
+
+    /**
+     * 添加点赞
+     *
+     * @param supportEntity 点赞实体
+     * @return 点赞ID
+     */
     public int addSupport(SupportEntity supportEntity)
     {
         if(supportEntityMapper.selectByUsernameAndCompositionId(supportEntity).size() > 0){
@@ -38,14 +47,35 @@ public class SupportService
         supportEntityMapper.insert(supportEntity);
         return supportEntity.getSupportId();
     }
+
+    /**
+     * 获取用户点赞
+     *
+     * @param username 用户名
+     * @return 点赞列表
+     */
     public List<SupportEntity> selectAllSupports(String username)
     {
         return supportEntityMapper.selectAllSelective(username);
     }
+
+    /**
+     * 获取用户点赞视图
+     *
+     * @param targetUsername 目标用户名
+     * @return 点赞视图列表
+     */
     public List<SupportViewModel> selectSupportView(String targetUsername)
     {
         return supportEntityMapper.selectSupportView(targetUsername);
     }
+
+    /**
+     * 获取点赞文章
+     *
+     * @param supportEntityList 点赞列表
+     * @return 文章列表
+     */
     public List<CompositionEntity> findSupportedComposition(List<SupportEntity> supportEntityList)
     {
         List<CompositionEntity>  compositionEntityList = new ArrayList<>();
@@ -54,6 +84,14 @@ public class SupportService
         }
         return compositionEntityList;
     }
+
+    /**
+     * 判断是否点赞
+     *
+     * @param username 用户名
+     * @param compositionId 文章ID
+     * @return 是否点赞
+     */
     public Boolean findSupport(String username, Integer compositionId)
     {
         SupportEntity supportEntity = new SupportEntity();
@@ -62,6 +100,13 @@ public class SupportService
         List<SupportEntity> supportEntityList = supportEntityMapper.selectByUsernameAndCompositionId(supportEntity);
         return supportEntityList.size() > 0;
     }
+
+    /**
+     * 删除点赞
+     *
+     * @param supportEntity 点赞实体
+     * @return 是否删除成功
+     */
     public int deleteSupport(SupportEntity supportEntity)
     {
         int num = supportEntityMapper.deleteByUsernameAndCompositionId(supportEntity);
@@ -70,6 +115,13 @@ public class SupportService
         }
         return num;
     }
+
+    /**
+     * 删除文章点赞
+     *
+     * @param compositionId 文章ID
+     * @return 是否删除成功
+     */
     public int deleteSupportByCompositionId(Integer compositionId)
     {
         return supportEntityMapper.deleteByCompositionId(compositionId);

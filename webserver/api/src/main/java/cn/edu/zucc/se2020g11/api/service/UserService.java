@@ -9,7 +9,6 @@ import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -17,6 +16,8 @@ import org.springframework.util.DigestUtils;
 import java.util.Date;
 
 /**
+ * 用户服务层
+ *
  * @author nonlinearthink
  */
 @Service
@@ -25,12 +26,10 @@ public class UserService {
     private final Logger logger = LogManager.getLogger(LogCategory.BUSINESS.getPosition());
 
     private final UserEntityMapper userEntityMapper;
-    private final StringRedisTemplate stringRedisTemplate;
 
     @Autowired(required = false)
-    public UserService(UserEntityMapper userEntityMapper, StringRedisTemplate stringRedisTemplate) {
+    public UserService(UserEntityMapper userEntityMapper) {
         this.userEntityMapper = userEntityMapper;
-        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     private String oneWayEncryption(String password) {
@@ -63,6 +62,7 @@ public class UserService {
         }
         // 创建账号
         userEntityMapper.insert(user);
+        logger.info("用户注册成功");
     }
 
     /**

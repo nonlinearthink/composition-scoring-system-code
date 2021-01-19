@@ -131,6 +131,12 @@ public class JwtService {
         return username;
     }
 
+    /**
+     * 添加token
+     *
+     * @param token 令牌
+     * @param username 用户名
+     */
     @Async
     public void cacheToken(String token, String username) {
         // 设置一天的密钥
@@ -138,6 +144,11 @@ public class JwtService {
         logger.info("设置" + username + "的 token 缓存");
     }
 
+    /**
+     * 清除token
+     *
+     * @param username 用户名
+     */
     @Async
     public void clearTokenCache(String username) {
         redisTemplate.delete(prefix + username);

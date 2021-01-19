@@ -2,7 +2,6 @@ package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
 import cn.edu.zucc.se2020g11.api.constant.LogCategory;
-import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 验证码服务
+ *
  * @author nonlinearthink
  */
 @Service

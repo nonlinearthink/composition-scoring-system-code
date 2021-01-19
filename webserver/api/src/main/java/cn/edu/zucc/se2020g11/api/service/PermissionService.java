@@ -14,6 +14,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 /**
+ * 认证服务层
+ *
  * @author nonlinearthink
  */
 @Service
@@ -36,6 +38,12 @@ public class PermissionService
         this.commentEntityMapper = commentEntityMapper;
     }
 
+    /**
+     * 认证作文
+     *
+     * @param username 用户名
+     * @param compositionId 文章ID
+     */
     public void validateComposition(String username, Integer compositionId) throws BaseException
     {
         if (!username.equals(compositionEntityMapper.selectByPrimaryKey(compositionId).getUsername())) {
@@ -44,6 +52,12 @@ public class PermissionService
         logger.info("文章权限认证成功");
     }
 
+    /**
+     * 认证评论
+     *
+     * @param username 用户名
+     * @param commentId 评论ID
+     */
     public void validateComment(String username, Integer commentId) throws BaseException
     {
         if (!username.equals(commentEntityMapper.selectByPrimaryKey(commentId).getUsername())) {

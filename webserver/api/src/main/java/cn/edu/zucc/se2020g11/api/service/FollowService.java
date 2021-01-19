@@ -6,7 +6,6 @@ import cn.edu.zucc.se2020g11.api.dao.FollowEntityMapper;
 import cn.edu.zucc.se2020g11.api.dao.UserEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
-import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
 import cn.edu.zucc.se2020g11.api.model.FollowModel;
 import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
