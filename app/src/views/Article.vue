@@ -11,9 +11,11 @@
       fit="cover"
       class="preview-image"
       :src="
-        require(`../assets/images/background/background-${(article.articleId %
-          10) +
-          1}.png`)
+        article.avatarUrl
+          ? article.avatarUrl
+          : require(`../assets/images/background/background-${(article.articleId %
+              10) +
+              1}.png`)
       "
     />
     <div class="content">
