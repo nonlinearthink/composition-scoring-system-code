@@ -35,6 +35,7 @@
       position="bottom"
       round
       close-on-popstate
+      closeable
     >
       <iframe
         name="userAgreement"
@@ -68,7 +69,7 @@ export default {
         ]
       },
       showAgreement: false,
-      appVersion: "1.4.7-beta"
+      appVersion: "1.5.0-beta"
     };
   },
   methods: {

@@ -769,7 +769,7 @@ export default {
   }
 }
 .popup {
-  height: 95vh;
+  height: 90vh;
   background: #f8f8f8;
   .title {
     font-size: $text-large;

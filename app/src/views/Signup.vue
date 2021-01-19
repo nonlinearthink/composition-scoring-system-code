@@ -71,6 +71,7 @@
       style="width: 100vw; height: 95vh"
       position="bottom"
       round
+      closeable
     >
       <iframe
         name="userAgreement"
