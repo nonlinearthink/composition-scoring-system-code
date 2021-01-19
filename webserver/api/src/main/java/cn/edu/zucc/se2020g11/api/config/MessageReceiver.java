@@ -34,7 +34,11 @@ public class  MessageReceiver {
         this.compositionService = compositionService;
     }
 
-    /**接收消息的方法*/
+    /**
+     * 接收消息
+     *
+     * @param message 消息
+     */
     public void receiveMessage(String message){
         System.out.println("收到一条消息："+message);
         LinkedHashMap linkedHashMap = (LinkedHashMap)messageMqService.pop(resultReceiver);

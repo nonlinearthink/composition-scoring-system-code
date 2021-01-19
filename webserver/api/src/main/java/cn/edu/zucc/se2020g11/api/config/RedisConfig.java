@@ -29,6 +29,12 @@ public class RedisConfig {
     @Value("${subscribe.result-notify}")
     private String resultNotify;
 
+    /**
+     * redis模板类
+     *
+     * @param redisConnectionFactory  redis连接工厂
+     * @return RedisTemplate<String, Serializable>
+     */
     @Bean
     RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
@@ -42,6 +48,12 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    /**
+     * 缓存管理
+     *
+     * @param factory  工厂
+     * @return CacheManager
+     */
     @Bean
     public CacheManager cacheManager(LettuceConnectionFactory factory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
@@ -50,6 +62,13 @@ public class RedisConfig {
         return RedisCacheManager.builder(factory).cacheDefaults(redisCacheConfiguration).build();
     }
 
+    /**
+     * 监听容器管理
+     *
+     * @param connectionFactory  连接工厂
+     * @param listenerAdapter  监听器
+     * @return RedisMessageListenerContainer
+     */
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
                                             MessageListenerAdapter listenerAdapter) {
@@ -62,11 +81,15 @@ public class RedisConfig {
         return container;
     }
 
-
+    /**
+     * 监听处理器
+     *
+     * @param receiver  消息接收实体
+     * @return MessageListenerAdapter
+     */
     @Bean
     MessageListenerAdapter listenerAdapter(MessageReceiver receiver) {
         //这个地方 是给messageListenerAdapter 传入一个消息接受的处理器，利用反射的方法调用“receiveMessage”
-        //也有好几个重载方法，这边默认调用处理器的方法 叫handleMessage 可以自己到源码里面看
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 }

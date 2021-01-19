@@ -1,6 +1,5 @@
 package cn.edu.zucc.se2020g11.api.model;
 
-import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;

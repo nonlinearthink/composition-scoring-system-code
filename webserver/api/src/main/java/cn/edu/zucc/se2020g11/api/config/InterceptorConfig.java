@@ -45,6 +45,11 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
         super.addInterceptors(registry);
     }
 
+    /**
+     * 指向外部目录
+     *
+     * @param registry 资源处理注册表
+     */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry)
     {

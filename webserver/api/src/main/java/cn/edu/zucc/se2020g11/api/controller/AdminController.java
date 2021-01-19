@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 管理员控制器
+ *
  * @author nonlinearthink
  */
 @RestController
@@ -53,6 +55,7 @@ public class AdminController
         data.put("token", jwtService.generateToken(adminLoginForm.getAdminName(), UserType.ADMIN));
         data.put("admin", admin);
         result.setData(data);
+        logger.info("管理员登录");
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

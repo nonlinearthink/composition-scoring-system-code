@@ -1,7 +1,5 @@
 package cn.edu.zucc.se2020g11.api.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
