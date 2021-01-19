@@ -7,7 +7,16 @@
       shape="round"
       class="search-bar"
       @search="onSearch"
-    />
+    >
+      <template #left>
+        <van-icon
+          name="arrow-left"
+          :style="{ marginRight: '1rem' }"
+          color="white"
+          @click="$router.go(-1)"
+        />
+      </template>
+    </van-search>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了">
       <van-cell
         v-for="item in userList"
