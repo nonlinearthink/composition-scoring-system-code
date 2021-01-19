@@ -7,6 +7,7 @@
     <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="article_body" jdbcType="VARCHAR" property="articleBody" />
     <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
   </resultMap>
   <sql id="Base_Column_List">
     article_id, admin_name, time, article_body, article_title
@@ -23,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.zucc.se2020g11.api.entity.PushArticleEntity" useGeneratedKeys="true" keyProperty="articleId">
     insert into push_article (article_id, admin_name, time,
-                              article_body, article_title)
+                              article_body, article_title, avatar_url)
     values (#{articleId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP},
-            #{articleBody,jdbcType=VARCHAR}, #{articleTitle,jdbcType=VARCHAR})
+            #{articleBody,jdbcType=VARCHAR}, #{articleTitle,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.zucc.se2020g11.api.entity.PushArticleEntity">
     insert into push_article
@@ -45,6 +46,9 @@
       <if test="articleTitle != null">
         article_title,
       </if>
+      <if test="avatarUrl != null">
+        avatar_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="articleId != null">
@@ -61,6 +65,9 @@
       </if>
       <if test="articleTitle != null">
         #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -79,6 +86,9 @@
       <if test="articleTitle != null">
         article_title = #{articleTitle,jdbcType=VARCHAR},
       </if>
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
@@ -87,7 +97,8 @@
     set admin_name = #{adminName,jdbcType=VARCHAR},
         time = #{time,jdbcType=TIMESTAMP},
         article_body = #{articleBody,jdbcType=VARCHAR},
-        article_title = #{articleTitle,jdbcType=VARCHAR}
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR}
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
   <select id="selectAll" parameterType="cn.edu.zucc.se2020g11.api.entity.PushArticleEntity" resultMap="BaseResultMap">

@@ -28,4 +28,7 @@ public class ArticleModel
 
     @NotNull(message = "time不能为空")
     private Date time;
+
+    @NotNull(message = "avatarUrl不能为空")
+    private String avatarUrl;
 }

@@ -22,4 +22,6 @@ public class PushArticleEntity {
     private String articleBody;
 
     private Date time;
+
+    private String avatarUrl;
 }
