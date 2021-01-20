@@ -42,6 +42,7 @@ public class SupportService
     public int addSupport(SupportEntity supportEntity)
     {
         if(supportEntityMapper.selectByUsernameAndCompositionId(supportEntity).size() > 0){
+            // 重复点赞
             throw new BaseException(ErrorDictionary.REPEAT_SUPPORT, LogCategory.BUSINESS);
         }
         supportEntityMapper.insert(supportEntity);

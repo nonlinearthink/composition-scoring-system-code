@@ -42,8 +42,10 @@ public class FollowService
     public int addFollow(FollowEntity followEntity)
     {
         if(followEntity.getUsername().equals(followEntity.getTargetUsername())){
+            // 关注自己
             throw new BaseException(ErrorDictionary.FOLLOW_ERROR, LogCategory.BUSINESS);
         } else if(followEntityMapper.selectByUsernameAndTargetUsername(followEntity).size() > 0){
+            // 重复关注
             throw new BaseException(ErrorDictionary.REPEAT_FOLLOW, LogCategory.BUSINESS);
         }
         followEntityMapper.insert(followEntity);

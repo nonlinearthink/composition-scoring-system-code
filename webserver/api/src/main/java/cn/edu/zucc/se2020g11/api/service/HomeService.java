@@ -147,17 +147,7 @@ public class HomeService
     }
 
     /**
-     * 搜索用户名
-     *
-     * @param nickname 昵称
-     * @return 用户名列表
-     */
-    public List<String> selectUserByNickname(String nickname){
-        return userEntityMapper.selectUserByNickname("%" + nickname + "%");
-    }
-
-    /**
-     * 获取关注文章
+     * 搜索昵称
      *
      * @param nickname 昵称
      * @return 用户名卡片列表

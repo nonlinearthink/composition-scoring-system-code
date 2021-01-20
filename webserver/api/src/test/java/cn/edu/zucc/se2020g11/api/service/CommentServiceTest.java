@@ -52,7 +52,7 @@ class CommentServiceTest
     @Test
     void selectCommentView()
     {
-        List<CommentViewModel> commentViewModelList =  commentService.selectCommentView("test");
+        List<CommentViewModel> commentViewModelList =  commentService.selectCommentView("unit");
 
         assertThat(commentViewModelList).isNotEmpty()
                 .hasOnlyElementsOfType(CommentViewModel.class);

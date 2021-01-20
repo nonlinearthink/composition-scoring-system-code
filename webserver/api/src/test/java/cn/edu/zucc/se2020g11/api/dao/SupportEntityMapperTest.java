@@ -23,21 +23,21 @@ class SupportEntityMapperTest
     void deleteByUsernameAndCompositionId()
     {
         SupportEntity supportEntity = new SupportEntity();
-        supportEntity.setUsername("test");
-        supportEntity.setCompositionId(1);
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(336);
         assertThat(supportEntityMapper.deleteByUsernameAndCompositionId(supportEntity)).isGreaterThan(0);
     }
 
     @Test
     void deleteByCompositionId()
     {
-        assertThat(supportEntityMapper.deleteByCompositionId(1)).isGreaterThan(0);
+        assertThat(supportEntityMapper.deleteByCompositionId(336)).isGreaterThan(0);
     }
 
     @Test
     void selectAllSelective()
     {
-        assertThat(supportEntityMapper.selectAllSelective("test")).isNotEmpty()
+        assertThat(supportEntityMapper.selectAllSelective("unit")).isNotEmpty()
                 .hasOnlyElementsOfType(SupportEntity.class);
     }
 
@@ -45,8 +45,8 @@ class SupportEntityMapperTest
     void selectByUsernameAndCompositionId()
     {
         SupportEntity supportEntity = new SupportEntity();
-        supportEntity.setUsername("test");
-        supportEntity.setCompositionId(1);
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(336);
         assertThat(supportEntityMapper.selectByUsernameAndCompositionId(supportEntity)).isNotEmpty()
                 .hasOnlyElementsOfType(SupportEntity.class);
     }
@@ -54,13 +54,13 @@ class SupportEntityMapperTest
     @Test
     void countSupport()
     {
-        assertThat(supportEntityMapper.countSupport(1)).isGreaterThan(0);
+        assertThat(supportEntityMapper.countSupport(336)).isGreaterThan(0);
     }
 
     @Test
     void selectSupportView()
     {
-        assertThat(supportEntityMapper.selectSupportView("test")).isNotEmpty()
+        assertThat(supportEntityMapper.selectSupportView("unit")).isNotEmpty()
                 .hasOnlyElementsOfType(SupportViewModel.class);
     }
 }

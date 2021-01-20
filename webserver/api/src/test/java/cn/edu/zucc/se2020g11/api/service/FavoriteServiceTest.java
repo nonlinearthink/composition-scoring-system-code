@@ -27,8 +27,8 @@ class FavoriteServiceTest
     void addFavorite()
     {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        favoriteEntity.setCompositionId(3);
-        favoriteEntity.setUsername("test");
+        favoriteEntity.setCompositionId(338);
+        favoriteEntity.setUsername("unit");
 
         int num = favoriteService.addFavorite(favoriteEntity);
         assertThat(num).isGreaterThan(0);
@@ -37,7 +37,7 @@ class FavoriteServiceTest
     @Test
     void selectAllFavorites()
     {
-        List<FavoriteEntity> favoriteEntityList = favoriteService.selectAllFavorites("test");
+        List<FavoriteEntity> favoriteEntityList = favoriteService.selectAllFavorites("unit");
 
         assertThat(favoriteEntityList).isNotEmpty()
                 .hasOnlyElementsOfType(FavoriteEntity.class);
@@ -48,8 +48,8 @@ class FavoriteServiceTest
     {
         List<FavoriteEntity> favoriteEntityList = new ArrayList<>();
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        favoriteEntity.setUsername("test");
-        favoriteEntity.setCompositionId(1);
+        favoriteEntity.setUsername("unit");
+        favoriteEntity.setCompositionId(336);
         favoriteEntityList.add(favoriteEntity);
 
         List<CompositionEntity> compositionEntityList = favoriteService.findFavoriteComposition(favoriteEntityList);
@@ -60,7 +60,7 @@ class FavoriteServiceTest
     @Test
     void findFavorite()
     {
-        Boolean isFavorite = favoriteService.findFavorite("test", 1);
+        Boolean isFavorite = favoriteService.findFavorite("unit", 336);
 
         assertThat(isFavorite).isTrue();
     }
@@ -69,8 +69,8 @@ class FavoriteServiceTest
     void deleteFavorite()
     {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        favoriteEntity.setUsername("test");
-        favoriteEntity.setCompositionId(1);
+        favoriteEntity.setUsername("unit");
+        favoriteEntity.setCompositionId(336);
 
         int num = favoriteService.deleteFavorite(favoriteEntity);
         assertThat(num).isGreaterThan(0);
@@ -79,7 +79,7 @@ class FavoriteServiceTest
     @Test
     void deleteFavoriteByCompositionId()
     {
-        int num = favoriteService.deleteFavoriteByCompositionId(1);
+        int num = favoriteService.deleteFavoriteByCompositionId(336);
 
         assertThat(num).isGreaterThan(0);
     }

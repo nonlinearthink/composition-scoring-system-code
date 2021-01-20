@@ -4,6 +4,7 @@ import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
+import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,18 +30,27 @@ class SupportServiceTest
     @Test
     void addSupport()
     {
+        // 正常点赞
         SupportEntity supportEntity = new SupportEntity();
-        supportEntity.setUsername("test");
-        supportEntity.setCompositionId(3);
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(338);
 
         int num = supportService.addSupport(supportEntity);
         assertThat(num).isGreaterThan(0);
+
+        // 重复点赞
+        supportEntity = new SupportEntity();
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(336);
+
+        SupportEntity finalSupportEntity = supportEntity;
+        assertThatExceptionOfType(BaseException.class).isThrownBy(() -> supportService.addSupport(finalSupportEntity));
     }
 
     @Test
     void selectAllSupports()
     {
-        List<SupportEntity> supportEntityList = supportService.selectAllSupports("test");
+        List<SupportEntity> supportEntityList = supportService.selectAllSupports("unit");
 
         assertThat(supportEntityList).isNotEmpty()
                 .hasOnlyElementsOfType(SupportEntity.class);
@@ -48,7 +59,7 @@ class SupportServiceTest
     @Test
     void selectSupportView()
     {
-        List<SupportViewModel> supportViewModelList = supportService.selectSupportView("test");
+        List<SupportViewModel> supportViewModelList = supportService.selectSupportView("unit");
 
         assertThat(supportViewModelList).isNotEmpty()
                 .hasOnlyElementsOfType(SupportViewModel.class);
@@ -71,7 +82,7 @@ class SupportServiceTest
     @Test
     void findSupport()
     {
-        Boolean isSupport = supportService.findSupport("test", 1);
+        Boolean isSupport = supportService.findSupport("unit", 336);
 
         assertThat(isSupport).isTrue();
     }
@@ -80,8 +91,8 @@ class SupportServiceTest
     void deleteSupport()
     {
         SupportEntity supportEntity = new SupportEntity();
-        supportEntity.setUsername("test");
-        supportEntity.setCompositionId(1);
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(336);
 
         int num = supportService.deleteSupport(supportEntity);
         assertThat(num).isGreaterThan(0);
@@ -90,7 +101,7 @@ class SupportServiceTest
     @Test
     void deleteSupportByCompositionId()
     {
-        int num = supportService.deleteSupportByCompositionId(1);
+        int num = supportService.deleteSupportByCompositionId(336);
 
         assertThat(num).isGreaterThan(0);
     }
