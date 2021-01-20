@@ -311,6 +311,9 @@ export default {
     onPublish() {
       this.composition.releaseTime = new Date().getTime();
       this.composition.status = 4;
+      if (!this.composition.visibility) {
+        this.composition.visibility = 1;
+      }
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)
         .then(res => {

@@ -134,7 +134,7 @@
           评论列表
         </van-badge>
         <van-row
-          v-for="comment in commentList.slice(0, 3)"
+          v-for="comment in commentListCut"
           :key="comment.commentId"
           class="comment-item"
         >
@@ -160,9 +160,19 @@
               <van-col class="username">{{ comment.username }}</van-col>
               <van-col class="time">
                 {{ timeIntervalString(comment.time) }}
-                <div class="a-text" @click="onClickCommentReport(comment)">
-                  举报
-                </div>
+                <van-popover
+                  v-if="isLogin"
+                  v-model="comment.showPopover"
+                  placement="left"
+                  theme="dark"
+                  trigger="click"
+                  :actions="comment.actions"
+                  @select="onSelect"
+                >
+                  <template #reference>
+                    <van-icon name="weapp-nav" />
+                  </template>
+                </van-popover>
               </van-col>
             </van-row>
             <van-row type="flex" justify="space-between">
@@ -272,6 +282,19 @@
                 <van-col class="username">{{ comment.username }}</van-col>
                 <van-col class="time">
                   {{ timeIntervalString(comment.time) }}
+                  <van-popover
+                    v-if="isLogin"
+                    v-model="comment.showPopover"
+                    placement="left"
+                    theme="dark"
+                    trigger="click"
+                    :actions="comment.actions"
+                    @select="onSelect"
+                  >
+                    <template #reference>
+                      <van-icon name="weapp-nav" />
+                    </template>
+                  </van-popover>
                 </van-col>
               </van-row>
               <van-row>{{ comment.commentBody }}</van-row>
@@ -325,6 +348,7 @@ export default {
       editingComment: "",
       showComment: false,
       composition: null,
+      commentListCut: [],
       commentList: [],
       defaultAvatar: require("../assets/images/avatar.svg"),
       isFavorite: false,
@@ -336,6 +360,10 @@ export default {
       wordErrorModel: null,
       displayMode: 0,
       radar: null
+      // actions: [
+      //   { text: "举报", icon: "add-o" },
+      //   { text: "删除", icon: "music-o" }
+      // ]
     };
   },
   computed: {
@@ -351,7 +379,16 @@ export default {
         .then(res => {
           console.log(res.data);
           this.composition = res.data.data.compositionCountModel;
-          this.commentList = res.data.data.commentEntityList;
+          this.commentList = res.data.data.commentEntityList.map(item => {
+            let actions = [{ text: "举报", commentId: item.commentId }];
+            if (item.username == this.user.username) {
+              actions.push({ text: "删除", commentId: item.commentId });
+            }
+            return { ...item, showPopover: false, actions };
+          });
+          this.commentListCut = JSON.parse(
+            JSON.stringify(this.commentList.slice(0, 3))
+          );
           this.isSupport = res.data.data.isSupport;
           this.isFavorite = res.data.data.isFavorite;
           this.isFollow = res.data.data.isFollow;
@@ -440,7 +477,12 @@ export default {
         .then(res => {
           console.log(res.data);
           this.composition = res.data.data.compositionCountModel;
-          this.commentList = res.data.data.commentEntityList;
+          this.commentList = res.data.data.commentEntityList.map(item => {
+            return { ...item, showPopover: false };
+          });
+          this.commentListCut = JSON.parse(
+            JSON.stringify(this.commentList.slice(0, 3))
+          );
           this.isSupport = false;
           this.isFavorite = false;
           this.isFollow = false;
@@ -560,7 +602,15 @@ export default {
           comment.commentId = res.data.data.commentId;
           comment.username = this.user.username;
           comment.time = new Date().getTime();
+          comment.showPopover = false;
+          comment.actions = [
+            { text: "举报", commentId: res.data.data.commentId },
+            { text: "删除", commentId: res.data.data.commentId }
+          ];
           this.commentList.push(comment);
+          this.commentListCut = JSON.parse(
+            JSON.stringify(this.commentList.slice(0, 3))
+          );
           this.$toast("添加评论成功");
           this.editingComment = "";
         })
@@ -667,14 +717,30 @@ export default {
       });
     },
     onClickCommentReport(comment) {
-      if (!this.isLogin) {
-        this.$toast("请先登录");
-        return;
-      }
       this.$router.push({
         path: "/report",
         query: { commentId: comment.commentId, type: 1 }
       });
+    },
+    onSelect(action) {
+      console.log(action);
+      if (action.text == "举报") {
+        this.onClickCommentReport({ commentId: action.commentId });
+      } else if (action.text == "删除") {
+        console.log(1);
+        this.axios
+          .delete(`/comment/${action.commentId}`)
+          .then(res => {
+            console.log(res.data);
+            this.commentList = this.commentList.filter(
+              item => item.commentId != action.commentId
+            );
+            this.commentListCut = JSON.parse(
+              JSON.stringify(this.commentList.slice(0, 3))
+            );
+          })
+          .catch(err => console.log(err));
+      }
     },
     ...dateUtils
   }

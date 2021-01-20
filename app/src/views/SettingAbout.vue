@@ -69,7 +69,7 @@ export default {
         ]
       },
       showAgreement: false,
-      appVersion: "1.5.1-beta"
+      appVersion: "1.5.2-beta"
     };
   },
   methods: {
