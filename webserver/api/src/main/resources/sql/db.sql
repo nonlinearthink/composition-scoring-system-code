@@ -1,445 +1,331 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2020/11/17 14:40:41                          */
+/* Created on:     2021/1/20 1:50:35                            */
 /*==============================================================*/
+
 
 drop table if exists admin;
 
-drop table if exists advertisement;
+drop table if exists comment;
 
-drop table if exists advertiser;
+drop table if exists comment_report;
 
 drop table if exists composition;
 
-drop table if exists composition_comment;
+drop table if exists composition_report;
 
-drop table if exists composition_favorite;
+drop table if exists error;
 
-drop table if exists composition_history;
-
-drop table if exists composition_support;
-
-drop table if exists dynamic;
-
-drop table if exists dynamic_comment;
-
-drop table if exists dynamic_support;
-
-drop table if exists essay;
-
-drop table if exists essay_comment;
-
-drop table if exists essay_favorite;
-
-drop table if exists essay_history;
-
-drop table if exists essay_support;
+drop table if exists favorite;
 
 drop table if exists feedback;
 
 drop table if exists follow;
 
-drop table if exists grammer_error;
+drop table if exists help;
 
-drop table if exists message;
+drop table if exists history;
 
-drop table if exists spell_error;
+drop table if exists push_article;
+
+drop table if exists support;
 
 drop table if exists system_message;
 
-drop table if exists userEntity;
+drop table if exists user;
 
 /*==============================================================*/
 /* Table: admin                                                 */
 /*==============================================================*/
 create table admin
 (
-   admin_name           varchar(32) not null  comment 'ç®¡ç†å‘˜è´¦å·',
-   password             varchar(32)  comment 'å¯†ç ',
+   admin_name           varchar(32) not null comment '¹ÜÀíÔ±ÕËºÅ',
+   password             varchar(32) comment 'ÃÜÂë',
    primary key (admin_name)
 );
 
-/*==============================================================*/
-/* Table: advertisement                                         */
-/*==============================================================*/
-create table advertisement
-(
-   advertisement_id     int not null auto_increment  comment 'å¹¿å‘ŠID',
-   advertiser_name      varchar(32)  comment 'å¹¿å‘Šå•†è´¦å·',
-   location             varchar(16)  comment 'æŠ•æ”¾ä½ç½®',
-   image_url            varchar(32)  comment 'å±•ç¤ºå›¾ç‰‡åœ°å€',
-   source_url           varchar(32)  comment 'è·³è½¬é“¾æ¥åœ°å€',
-   view_count           int  comment 'è§‚çœ‹è®¡æ•°',
-   click_count          int  comment 'ç‚¹å‡»è®¡æ•°',
-   primary key (advertisement_id)
-);
+alter table admin comment '¹ÜÀíÔ±';
 
 /*==============================================================*/
-/* Table: advertiser                                            */
+/* Table: comment                                               */
 /*==============================================================*/
-create table advertiser
+create table comment
 (
-   advertiser_name      varchar(32) not null  comment 'å¹¿å‘Šå•†è´¦å·',
-   password             varchar(32)  comment 'å¯†ç ',
-   company              varchar(64)  comment 'æ‰€å±å…¬å¸',
-   address              varchar(64)  comment 'åœ°å€',
-   phone                varchar(16)  comment 'ç”µè¯(åº§æœºã€æ‰‹æœº)',
-   email                varchar(32)  comment 'ç”µå­é‚®ä»¶',
-   valid_days           int  comment 'æœåŠ¡æœ‰æ•ˆæ—¥æœŸ',
-   primary key (advertiser_name)
+   comment_id           int not null auto_increment comment '×÷ÎÄÆÀÂÛID',
+   composition_id       int comment '×÷ÎÄID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   comment_body         varchar(512) comment 'ÆÀÂÛÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   status               int comment '×´Ì¬',
+   primary key (comment_id)
 );
+
+alter table comment comment '¶Ô×÷ÎÄµÄÆÀÂÛ';
+
+/*==============================================================*/
+/* Table: comment_report                                        */
+/*==============================================================*/
+create table comment_report
+(
+   comment_report_id    int not null auto_increment comment '¾Ù±¨ID',
+   comment_id           int comment '×÷ÎÄÆÀÂÛID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   comment_report_body  varchar(64) comment '¾Ù±¨ÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   status               int comment '×´Ì¬',
+   primary key (comment_report_id)
+);
+
+alter table comment_report comment 'ÆÀÂÛ¾Ù±¨';
 
 /*==============================================================*/
 /* Table: composition                                           */
 /*==============================================================*/
 create table composition
 (
-   composition_id       int not null auto_increment  comment 'ä½œæ–‡ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   title                varchar(64)  comment 'æ ‡é¢˜',
-   composition_body     varchar(4096)  comment 'ä½œæ–‡å†…å®¹',
-   release_time         timestamp  comment 'å‘å¸ƒæ—¶é—´',
-   composition_type     varchar(8)  comment 'ä½œæ–‡ç±»å‹',
-   share_count          int  comment 'è¢«åˆ†äº«æ¬¡æ•°',
-   score                int  comment 'åˆ†æ•°',
+   composition_id       int not null auto_increment comment '×÷ÎÄID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   release_time         timestamp comment '·¢²¼Ê±¼ä',
+   composition_body     varchar(4096) comment '×÷ÎÄÄÚÈİ',
+   status               int comment '×´Ì¬',
+   title                varchar(64) comment '±êÌâ',
+   description          varchar(4096) comment 'ÃèÊö',
+   visibility           int comment '¿É¼ûĞÔ£¬1Îª½ö×Ô¼º¿É¼û£¬2Îª¹Ø×¢µÄÈË¿É¼û£¬3ÎªËùÓĞÈË¿É¼û',
+   score                int comment '·ÖÊı',
+   valid                int comment 'ºÏ·¨ĞÔ',
+   word_score           decimal(10) comment 'µ¥´ÊÆÀ·Ö',
+   grammar_score        decimal(10) comment 'Óï·¨ÆÀ·Ö',
+   sentence_fluency_score decimal(10) comment '¾ä×ÓÁ÷³©³Ì¶ÈÆÀ·Ö',
+   length_score         decimal(10) comment '³¤¶ÈÆÀ·Ö',
+   richness_score       decimal(10) comment '·á¸»³Ì¶ÈÆÀ·Ö',
    primary key (composition_id)
 );
 
 /*==============================================================*/
-/* Table: composition_comment                                   */
+/* Table: composition_report                                    */
 /*==============================================================*/
-create table composition_comment
+create table composition_report
 (
-   ccomment_id3         int not null auto_increment  comment 'ä½œæ–‡è¯„è®ºID',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   next_ccomment_id3    int  comment 'ä½œæ–‡è¯„è®ºID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   comment_body         varchar(512)  comment 'è¯„è®ºå†…å®¹',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (ccomment_id3)
+   composition_report_id int not null auto_increment comment '¾Ù±¨ID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   composition_id       int comment '×÷ÎÄID',
+   composition_report_body varchar(64) comment '¾Ù±¨ÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   status               int comment '×´Ì¬',
+   primary key (composition_report_id)
 );
 
-/*==============================================================*/
-/* Table: composition_favorite                                  */
-/*==============================================================*/
-create table composition_favorite
-(
-   c_favotite_id        int not null auto_increment  comment 'ä½œæ–‡æ”¶è—ID',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (c_favotite_id)
-);
+alter table composition_report comment '×÷ÎÄ¾Ù±¨';
 
 /*==============================================================*/
-/* Table: composition_history                                   */
+/* Table: error                                                 */
 /*==============================================================*/
-create table composition_history
+create table error
 (
-   c_history_id         int not null auto_increment  comment 'ä½œæ–‡æµè§ˆå†å²ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (c_history_id)
+   error_id             int not null auto_increment comment '´íÎóID',
+   composition_id       int comment '×÷ÎÄID',
+   text                 varchar(256) comment 'ÄÚÈİ',
+   error_type           varchar(32) comment '´íÎóÀàĞÍ',
+   primary key (error_id)
 );
 
-/*==============================================================*/
-/* Table: composition_support                                   */
-/*==============================================================*/
-create table composition_support
-(
-   dsupport_id3         int not null auto_increment  comment 'ä½œæ–‡ç‚¹èµID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (dsupport_id3)
-);
+alter table error comment '´íÎó';
 
 /*==============================================================*/
-/* Table: dynamic                                               */
+/* Table: favorite                                              */
 /*==============================================================*/
-create table dynamic
+create table favorite
 (
-   dynamic_id           int not null auto_increment  comment 'åŠ¨æ€ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   dynamic_body         varchar(1024)  comment 'åŠ¨æ€å†…å®¹',
-   release_time         timestamp  comment 'å‘å¸ƒæ—¶é—´',
-   is_share             bool  comment 'æ˜¯å¦æ˜¯è½¬å‘çš„åŠ¨æ€',
-   source               varchar(64)  comment 'è½¬å‘çš„åŠ¨æ€çš„æºåœ°å€',
-   primary key (dynamic_id)
+   favorite_id          int not null auto_increment comment '×÷ÎÄÊÕ²ØID',
+   composition_id       int comment '×÷ÎÄID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (favorite_id)
 );
 
-/*==============================================================*/
-/* Table: dynamic_comment                                       */
-/*==============================================================*/
-create table dynamic_comment
-(
-   dcomment_id2         int not null auto_increment  comment 'åŠ¨æ€è¯„è®ºID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   next_dcomment_id2    int  comment 'åŠ¨æ€è¯„è®ºID',
-   dynamic_id           int  comment 'åŠ¨æ€ID',
-   comment_body         varchar(512)  comment 'è¯„è®ºå†…å®¹',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (dcomment_id2)
-);
-
-/*==============================================================*/
-/* Table: dynamic_support                                       */
-/*==============================================================*/
-create table dynamic_support
-(
-   dsupport_id2         int not null auto_increment  comment 'åŠ¨æ€ç‚¹èµID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   dynamic_id           int  comment 'åŠ¨æ€ID',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (dsupport_id2)
-);
-
-/*==============================================================*/
-/* Table: essay                                                 */
-/*==============================================================*/
-create table essay
-(
-   essay_id             int not null auto_increment  comment 'éšç¬”ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   title                varchar(64)  comment 'æ ‡é¢˜',
-   essay_body           varchar(8192)  comment 'éšç¬”å†…å®¹',
-   release_time         timestamp  comment 'å‘å¸ƒæ—¶é—´',
-   category             varchar(64)  comment 'åˆ†ç±»',
-   tag                  varchar(256)  comment 'æ ‡ç­¾',
-   share_count          int  comment 'è¢«åˆ†äº«æ¬¡æ•°',
-   primary key (essay_id)
-);
-
-/*==============================================================*/
-/* Table: essay_comment                                         */
-/*==============================================================*/
-create table essay_comment
-(
-   e_comment_id         int not null auto_increment  comment 'éšç¬”è¯„è®ºID',
-   essay_id             int  comment 'éšç¬”ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   comment_body         varchar(512)  comment 'è¯„è®ºå†…å®¹',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (e_comment_id)
-);
-
-/*==============================================================*/
-/* Table: essay_favorite                                        */
-/*==============================================================*/
-create table essay_favorite
-(
-   e_favorite_id        int not null auto_increment  comment 'éšç¬”æ”¶è—ID',
-   essay_id             int  comment 'éšç¬”ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (e_favorite_id)
-);
-
-/*==============================================================*/
-/* Table: essay_history                                         */
-/*==============================================================*/
-create table essay_history
-(
-   e_history_id         int not null auto_increment  comment 'æ”¶è—æµè§ˆå†å²ID',
-   essay_id             int  comment 'éšç¬”ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (e_history_id)
-);
-
-/*==============================================================*/
-/* Table: essay_support                                         */
-/*==============================================================*/
-create table essay_support
-(
-   e_support_id         int not null auto_increment  comment 'éšç¬”ç‚¹èµID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   essay_id             int  comment 'éšç¬”ID',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (e_support_id)
-);
+alter table favorite comment 'ÊÕ²Ø';
 
 /*==============================================================*/
 /* Table: feedback                                              */
 /*==============================================================*/
 create table feedback
 (
-   feedback_id          int not null auto_increment  comment 'åé¦ˆID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   feedback_body        varchar(1024)  comment 'åé¦ˆå†…å®¹',
-   feedback_type        varchar(16)  comment 'åé¦ˆç±»å‹',
+   feedback_id          int not null auto_increment comment '·´À¡ID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   feedback_body        varchar(1024) comment '·´À¡ÄÚÈİ',
+   feedback_type        varchar(16) comment '·´À¡ÀàĞÍ',
+   time                 timestamp comment 'Ê±¼ä',
+   status               int comment '×´Ì¬',
    primary key (feedback_id)
 );
+
+alter table feedback comment '·´À¡';
 
 /*==============================================================*/
 /* Table: follow                                                */
 /*==============================================================*/
 create table follow
 (
-   follow_id            int not null auto_increment  comment 'å…³æ³¨ID',
-   user_name            varchar(32) not null  comment 'ç”¨æˆ·å',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (follow_id, user_name)
+   follow_id            int not null auto_increment comment '¹Ø×¢ID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   target_username      varchar(32) comment 'ÓÃ»§Ãû',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (follow_id)
 );
 
-/*==============================================================*/
-/* Table: grammer_error                                         */
-/*==============================================================*/
-create table grammer_error
-(
-   grammer_error_id     int not null auto_increment  comment 'è¯­æ³•é”™è¯¯ID',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   text                 varchar(256)  comment 'é”™è¯¯ä¿¡æ¯',
-   primary key (grammer_error_id)
-);
+alter table follow comment '¹Ø×¢';
 
 /*==============================================================*/
-/* Table: message                                               */
+/* Table: help                                                  */
 /*==============================================================*/
-create table message
+create table help
 (
-   message_id           int not null auto_increment  comment 'é€šä¿¡ID',
-   user_name            varchar(32)  comment 'ç”¨æˆ·å',
-   next_user_name       varchar(32)  comment 'ç”¨æˆ·å',
-   `order`              int  comment 'åºå·',
-   message_body         varchar(256)  comment 'æ¶ˆæ¯å†…å®¹',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (message_id)
+   help_id              int not null auto_increment comment '°ïÖúID',
+   admin_name           varchar(32) comment '¹ÜÀíÔ±ÕËºÅ',
+   help_title           varchar(64) comment '°ïÖú±êÌâ',
+   help_body            varchar(2048) comment '°ïÖúÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (help_id)
 );
 
+alter table help comment '°ïÖú';
+
 /*==============================================================*/
-/* Table: spell_error                                           */
+/* Table: history                                               */
 /*==============================================================*/
-create table spell_error
+create table history
 (
-   spell_error_id       int not null auto_increment  comment 'æ‹¼å†™é”™è¯¯ID',
-   composition_id       int  comment 'ä½œæ–‡ID',
-   text                 varchar(256)  comment 'é”™è¯¯ä¿¡æ¯',
-   primary key (spell_error_id)
+   history_id           int not null auto_increment comment '×÷ÎÄä¯ÀÀÀúÊ·ID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   composition_id       int comment '×÷ÎÄID',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (history_id)
 );
+
+alter table history comment 'ä¯ÀÀÀúÊ·';
+
+/*==============================================================*/
+/* Table: push_article                                          */
+/*==============================================================*/
+create table push_article
+(
+   article_id           int not null auto_increment comment 'ÎÄÕÂID',
+   admin_name           varchar(32) comment '¹ÜÀíÔ±ÕËºÅ',
+   article_title        varchar(64),
+   article_body         varchar(2048) comment 'ÎÄÕÂÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   avatar_url           varchar(128) comment 'Í¼Æ¬µØÖ·',
+   primary key (article_id)
+);
+
+alter table push_article comment 'ÍÆËÍÎÄÕÂ';
+
+/*==============================================================*/
+/* Table: support                                               */
+/*==============================================================*/
+create table support
+(
+   support_id           int not null auto_increment comment '×÷ÎÄµãÔŞID',
+   username             varchar(32) comment 'ÓÃ»§Ãû',
+   composition_id       int comment '×÷ÎÄID',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (support_id)
+);
+
+alter table support comment 'µãÔŞ';
 
 /*==============================================================*/
 /* Table: system_message                                        */
 /*==============================================================*/
 create table system_message
 (
-   s_message_id         int not null auto_increment  comment 'ç³»ç»Ÿæ¨é€ä¿¡æ¯ID',
-   s_message_body       varchar(2048)  comment 'ç³»ç»Ÿæ¨é€ä¿¡æ¯å†…å®¹',
-   date_time            timestamp  comment 'æ—¥æœŸ',
-   primary key (s_message_id)
+   system_message_id    int not null auto_increment comment 'ÏµÍ³ÍÆËÍĞÅÏ¢ID',
+   admin_name           varchar(32) comment '¹ÜÀíÔ±ÕËºÅ',
+   system_message_body  varchar(2048) comment 'ÏµÍ³ÍÆËÍĞÅÏ¢ÄÚÈİ',
+   time                 timestamp comment 'Ê±¼ä',
+   primary key (system_message_id)
 );
 
+alter table system_message comment 'ÏµÍ³ĞÅÏ¢';
+
 /*==============================================================*/
-/* Table: userEntity                                                  */
+/* Table: user                                                  */
 /*==============================================================*/
 create table user
 (
-   user_name            varchar(32) not null  comment 'ç”¨æˆ·å',
-   password             varchar(32) not null  comment 'å¯†ç ',
-   nick_name            varchar(64)  comment 'æ˜µç§°',
-   signature            varchar(512)  comment 'ä¸ªæ€§ç­¾å',
-   avatar_url           varchar(128)  comment 'å¤´åƒåœ°å€',
-   phone                varchar(16)  comment 'ç”µè¯(åº§æœºã€æ‰‹æœº)',
-   email                varchar(32)  comment 'ç”µå­é‚®ä»¶',
-   is_male              bool  comment 'æ˜¯å¦ä¸ºç”·æ€§',
-   vip_days             int  comment 'VIPå‰©ä½™æ—¶é—´',
-   anthority            int  comment 'æƒé™ç­‰çº§',
-   primary key (user_name)
+   username             varchar(32) not null comment 'ÓÃ»§Ãû',
+   password             varchar(32) not null comment 'ÃÜÂë',
+   nickname             varchar(64) comment 'êÇ³Æ',
+   email                varchar(32) not null comment 'µç×ÓÓÊ¼ş',
+   phone                varchar(16) comment 'µç»°(×ù»ú¡¢ÊÖ»ú)',
+   signature            varchar(512) comment '¸öĞÔÇ©Ãû',
+   avatar_url           varchar(128) comment 'Í¼Æ¬µØÖ·',
+   is_male              bool comment 'ÊÇ·ñÎªÄĞĞÔ',
+   vip_days             int comment 'VIPÊ£ÓàÊ±¼ä',
+   frozen               bool default false comment 'ÊÇ·ñ±»¶³½á',
+   defrosting_time      timestamp comment '½â¶³Ê±¼ä',
+   primary key (username)
 );
 
-alter table advertisement add constraint FK_ADVERTIS_RELEASE_ADVERTIS foreign key (advertiser_name)
-      references advertiser (advertiser_name) on delete restrict on update restrict;
+alter table user comment 'ÓÃ»§';
 
-alter table composition add constraint FK_COMPOSIT_WRITE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table composition_comment add constraint FK_COMPOSIT_HAVE8_COMPOSIT foreign key (composition_id)
+alter table comment add constraint FK_Relationship_12 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
-alter table composition_comment add constraint FK_COMPOSIT_REPLY3_COMPOSIT foreign key (next_ccomment_id3)
-      references composition_comment (ccomment_id3) on delete restrict on update restrict;
+alter table comment add constraint FK_Relationship_5 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table composition_comment add constraint FK_COMPOSIT_SUBMIT_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table comment_report add constraint FK_Relationship_27 foreign key (comment_id)
+      references comment (comment_id) on delete restrict on update restrict;
 
-alter table composition_favorite add constraint FK_COMPOSIT_FAVORITE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table comment_report add constraint FK_Relationship_28 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table composition_favorite add constraint FK_COMPOSIT_HAVE10_COMPOSIT foreign key (composition_id)
+alter table composition add constraint FK_Relationship_9 foreign key (username)
+      references user (username) on delete restrict on update restrict;
+
+alter table composition_report add constraint FK_Relationship_24 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
-alter table composition_history add constraint FK_COMPOSIT_HAVE12_COMPOSIT foreign key (composition_id)
+alter table composition_report add constraint FK_Relationship_26 foreign key (username)
+      references user (username) on delete restrict on update restrict;
+
+alter table error add constraint FK_Relationship_14 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
-alter table composition_history add constraint FK_COMPOSIT_HAVE13_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table favorite add constraint FK_Relationship_7 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table composition_support add constraint FK_COMPOSIT_GIVE6_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table composition_support add constraint FK_COMPOSIT_HAVE11_COMPOSIT foreign key (composition_id)
+alter table favorite add constraint FK_Relationship_8 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
-alter table dynamic add constraint FK_DYNAMIC_WRITE3_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table feedback add constraint FK_Relationship_2 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table dynamic_comment add constraint FK_DYNAMIC__COMMENT_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table follow add constraint FK_Relationship_1 foreign key (target_username)
+      references user (username) on delete restrict on update restrict;
 
-alter table dynamic_comment add constraint FK_DYNAMIC__HAVE7_DYNAMIC foreign key (dynamic_id)
-      references dynamic (dynamic_id) on delete restrict on update restrict;
+alter table follow add constraint FK_Relationship_19 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table dynamic_comment add constraint FK_DYNAMIC__REPLY2_DYNAMIC_ foreign key (next_dcomment_id2)
-      references dynamic_comment (dcomment_id2) on delete restrict on update restrict;
+alter table help add constraint FK_Relationship_25 foreign key (admin_name)
+      references admin (admin_name) on delete restrict on update restrict;
 
-alter table dynamic_support add constraint FK_DYNAMIC__GIVE4_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table dynamic_support add constraint FK_DYNAMIC__HAVE6_DYNAMIC foreign key (dynamic_id)
-      references dynamic (dynamic_id) on delete restrict on update restrict;
-
-alter table essay add constraint FK_ESSAY_WRITE2_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table essay_comment add constraint FK_ESSAY_CO_GIVE2_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table essay_comment add constraint FK_ESSAY_CO_HAVE3_ESSAY foreign key (essay_id)
-      references essay (essay_id) on delete restrict on update restrict;
-
-alter table essay_favorite add constraint FK_ESSAY_FA_GIVE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table essay_favorite add constraint FK_ESSAY_FA_HAVE5_ESSAY foreign key (essay_id)
-      references essay (essay_id) on delete restrict on update restrict;
-
-alter table essay_history add constraint FK_ESSAY_HI_HAVE_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table essay_history add constraint FK_ESSAY_HI_HAVE2_ESSAY foreign key (essay_id)
-      references essay (essay_id) on delete restrict on update restrict;
-
-alter table essay_support add constraint FK_ESSAY_SU_GIVE3_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table essay_support add constraint FK_ESSAY_SU_HAVE4_ESSAY foreign key (essay_id)
-      references essay (essay_id) on delete restrict on update restrict;
-
-alter table feedback add constraint FK_FEEDBACK_GIVE5_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table follow add constraint FK_FOLLOW_RELATIONS_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
-
-alter table grammer_error add constraint FK_GRAMMER__RELATIONS_COMPOSIT foreign key (composition_id)
+alter table history add constraint FK_Relationship_13 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
 
-alter table message add constraint FK_MESSAGE_RECEIVE_USER foreign key (next_user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table history add constraint FK_Relationship_6 foreign key (username)
+      references user (username) on delete restrict on update restrict;
 
-alter table message add constraint FK_MESSAGE_SEND_USER foreign key (user_name)
-      references user (user_name) on delete restrict on update restrict;
+alter table push_article add constraint FK_Relationship_23 foreign key (admin_name)
+      references admin (admin_name) on delete restrict on update restrict;
 
-alter table spell_error add constraint FK_SPELL_ER_RELATIONS_COMPOSIT foreign key (composition_id)
+alter table support add constraint FK_Relationship_10 foreign key (username)
+      references user (username) on delete restrict on update restrict;
+
+alter table support add constraint FK_Relationship_11 foreign key (composition_id)
       references composition (composition_id) on delete restrict on update restrict;
+
+alter table system_message add constraint FK_Relationship_22 foreign key (admin_name)
+      references admin (admin_name) on delete restrict on update restrict;
+
