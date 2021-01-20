@@ -83,6 +83,7 @@
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
+    <!-- 确认删除 -->
     <van-dialog
       v-model="enableDeleteConfirm"
       title="删除确认"
@@ -122,26 +123,37 @@ export default {
         { value: 1, name: "私密" },
         { value: 2, name: "仅粉丝可见" },
         { value: 3, name: "公开" }
-      ]
+      ] // 可见性文字说明
     };
   },
   computed: {
+    // 获取本地保存的文章列表、用户信息、路由标记、登录信息
     ...mapState(["compositions", "user", "routeAnchor", "isLogin"])
   },
   watch: {
+    /**
+     * 监听当前的标签
+     * @description 如果标签改变则重构布局
+     */
     activeTab() {
       this.restoreLayout();
     },
+    /**
+     * @description 监听作文列表，如果作文列表改变则重构布局
+     */
     compositions() {
       this.restoreLayout();
     }
   },
   created() {
+    // 把路由请求参数中的string转换成number
     this.activeTab = Number(this.$route.query.tab);
+    // 如果存在路由标点则转换当前选中的tab
     if (this.routeAnchor >= 0) {
       this.activeTab = this.routeAnchor;
       this.$store.commit("setRouteAnchor", -1);
     }
+    // 开启加载特效
     this.loading = true;
     // 加载数据
     this.onLoad(
@@ -150,6 +162,7 @@ export default {
     );
   },
   methods: {
+    // 导入日期工具函数
     ...dateUtils,
     /**
      * @description 翻译可见性

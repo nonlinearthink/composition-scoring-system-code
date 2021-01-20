@@ -8,6 +8,7 @@
       safe-area-inset-top
       @click-left="onRouteBack"
     >
+      <!-- 提交按钮 -->
       <template #right>
         <van-icon
           name="success"
@@ -16,6 +17,7 @@
         />
       </template>
     </van-nav-bar>
+    <!-- 写作状态栏 -->
     <div id="writing-statebar">
       <van-row type="flex" justify="space-between">
         <!-- 单词统计 -->
@@ -24,7 +26,7 @@
         <van-col>{{ isEditing ? "编辑中" : "" }}</van-col>
       </van-row>
     </div>
-    <!-- 作文 -->
+    <!-- 作文编辑框 -->
     <van-field
       v-model="composition.compositionBody"
       type="textarea"
@@ -74,24 +76,38 @@ import Composition from "../assets/js/types/composition";
 export default {
   data() {
     return {
+      // 即将跳转的路由缓存，用于路由拦截
       toRouteCache: null,
+      // 作文数据
       composition: null,
+      // 是否进入提交选择
       isSubmit: false,
+      // 是否进入退出选择
       enableQuitConfirm: false,
+      // 是否提示登录
       enableLoginRequire: false,
+      // 是否开启提交
       enableSubmit: false,
+      // 路由护照，允许拥有护照的一切界面通行，用于路由拦截
       routePassport: false,
+      // 是否在编辑中
       isEditing: false
     };
   },
   computed: {
-    // 当前内容是否已缓存
+    /**
+     * @description 当前内容是否已缓存
+     */
     isCache() {
       return (
         this.editing[this.editing.type].compositionBody ==
         this.composition.compositionBody
       );
     },
+    /**
+     * @description 字数统计
+     * @return 可见性解析之后的字符串
+     */
     wordCount() {
       let len;
       try {
@@ -102,6 +118,7 @@ export default {
       }
       return len;
     },
+    // 获取本地存储的登录信息和编辑状态
     ...mapState(["isLogin", "editing"])
   },
   created() {
@@ -191,10 +208,12 @@ export default {
      * @description 提交
      */
     onSubmit() {
+      // 文本判空
       if (this.composition.compositionBody.trim() == "") {
         this.$toast("不能为空");
         return;
       }
+      // 非法字符检测
       if (
         this.composition.compositionBody.match(
           /[^\w\s`~!@#$%^&*()-_=+[{\]};:'",<.>/?]/
@@ -203,6 +222,7 @@ export default {
         this.$toast("包含非法字符");
         return;
       }
+      // 标点符号检测
       if (this.composition.compositionBody.match(/[!?.]$/g)) {
         this.enableSubmit = true;
       } else {
@@ -214,15 +234,20 @@ export default {
      * @param {Number} type 创建的类型，即status
      */
     onCreateComposition(type) {
+      // 创建一篇作文
       let composition = new Composition({
         compositionBody: this.composition.compositionBody,
         status: type,
         releaseDate: new Date().getTime()
       });
+      // 发送创建作文请求
       this.axios.post("/composition", composition).then(res => {
         composition.compositionId = res.data.data.compositionId;
+        // 同步到本地存储
         this.$store.commit("addComposition", composition);
+        // 获取路由通行证
         this.routePassport = true;
+        // 跳转
         this.$router.push("/manager");
         this.$toast("添加成功");
       });
@@ -231,13 +256,18 @@ export default {
      * @description 更新作文
      */
     onUpdateComposition() {
+      // 更新作文时间
       this.composition.releaseDate = new Date().getTime();
+      // 发送更新作文请求
       this.axios
         .put(`/composition/${this.composition.compositionId}`, this.composition)
         .then(res => {
           console.log(res.data);
+          // 同步到本地存储
           this.$store.commit("updateComposition", this.composition);
+          // 获取路由通行证
           this.routePassport = true;
+          // 跳转
           this.$router.push("/manager");
         })
         .catch(err => {
@@ -245,6 +275,7 @@ export default {
         });
     },
     onPublish() {
+      // 获取路由通行证
       this.routePassport = true;
       // 设置需要编辑的作文
       this.$store.commit("editingPublish", new Composition(this.composition));
@@ -259,6 +290,7 @@ export default {
       if (this.isLogin) {
         if (this.editing.type == "cache") {
           this.onCreateComposition(type);
+          // 清理本地缓存
           this.$store.commit("clearCache");
         } else {
           this.composition.status = 2;

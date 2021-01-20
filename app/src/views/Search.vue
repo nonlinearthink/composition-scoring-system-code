@@ -20,12 +20,12 @@
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了">
       <van-cell
         v-for="item in userList"
-        :key="item"
-        :title="item"
+        :key="item.username"
+        :title="item.nickname"
         @click="
           $router.push({
             path: '/user/home',
-            query: { user: item }
+            query: { user: item.username }
           })
         "
       />
@@ -52,9 +52,9 @@ export default {
       if (newValue != "") {
         this.loading = true;
         this.finished = false;
-        this.axios.post(`/home/search/${newValue}`).then(res => {
+        this.axios.post(`/home/search/detail/${newValue}`).then(res => {
           console.log(res.data);
-          this.userList = res.data.data.usernameList;
+          this.userList = res.data.data.usernameCardModelList;
           this.loading = false;
           this.finished = true;
         });

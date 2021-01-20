@@ -1,5 +1,6 @@
 <template>
   <div id="user-home-page">
+    <!-- 导航栏 -->
     <van-nav-bar
       placeholder
       safe-area-inset-top
@@ -7,14 +8,18 @@
       :border="false"
       @click-left="onRouteBack"
     />
+    <!-- 加载特效 -->
     <van-loading
       v-if="isLoadding"
       color="#1989fa"
       style="text-align: center;"
     />
     <div v-else>
+      <!-- 头像背景 -->
       <div class="avatar-background"></div>
+      <!-- 用户信息 -->
       <div class="user-info">
+        <!-- 头像 -->
         <van-image
           width="4rem"
           height="4rem"
@@ -26,7 +31,9 @@
         <div>
           <van-row type="flex" justify="space-between">
             <van-col>
+              <!-- 用户名 -->
               <span class="username">{{ owner.nickname }}</span>
+              <!-- 性别 -->
               <font-awesome-icon
                 v-if="owner.isMale"
                 id="mars-icon"
@@ -35,6 +42,17 @@
               <font-awesome-icon v-else id="venus-icon" icon="venus" />
             </van-col>
             <van-col>
+              <!-- 资料编辑按钮 -->
+              <van-tag
+                v-if="user.username == owner.username"
+                color="#555"
+                plain
+                class="button"
+                @click="$router.push('/setting/user')"
+              >
+                编辑资料
+              </van-tag>
+              <!-- 关注按钮 -->
               <van-tag
                 v-if="!isFollow && user.username != owner.username"
                 color="red"
@@ -56,10 +74,12 @@
             </van-col>
           </van-row>
         </div>
+        <!-- 个性签名 -->
         <div class="signature">
           {{ showSignature(owner.signature) }}
         </div>
       </div>
+      <!-- 作文列表 -->
       <div
         v-if="compositions && compositions.length != 0"
         class="composition-list"
@@ -70,10 +90,14 @@
           class="favorite-card"
           @click="onEnterComposition(item)"
         >
+          <!-- 标题 -->
           <van-row class="title">{{ item.title }}</van-row>
+          <!-- 正文 -->
           <van-row class="body">{{ item.compositionBody }}</van-row>
           <van-row type="flex" justify="space-between" class="statusbar">
+            <!-- 用户名 -->
             <van-col class="username">{{ item.username }}</van-col>
+            <!-- 时间 -->
             <van-col class="time">
               {{ translateTime(item.releaseTime) }}
             </van-col>
@@ -81,6 +105,7 @@
           <van-divider />
         </div>
       </div>
+      <!-- 默认状态 -->
       <div
         v-else
         style="text-align: center; background: white; padding: 2rem 0;"
@@ -97,17 +122,24 @@ import moment from "moment";
 export default {
   data() {
     return {
+      // 默认头像
       defaultAvatar: require("../assets/images/avatar.svg"),
+      // 当前主页的拥有者
       owner: null,
+      // 文章列表
       compositions: null,
+      // 是否关注栏当前主页的用户
       isFollow: false,
+      // 是否开启加载特效
       isLoadding: true
     };
   },
   computed: {
+    // 获取本地存储的用户信息
     ...mapState(["user"])
   },
   created() {
+    // 请求个人空间的数据
     this.axios
       .get(`/zone/${this.$route.query.user}`)
       .then(res => {
@@ -124,12 +156,22 @@ export default {
       });
   },
   methods: {
+    /**
+     * @description 路由返回
+     */
     onRouteBack() {
       this.$router.go(-1);
     },
+    /**
+     * @description 时间格式化
+     * @return 格式化后的时间
+     */
     translateTime(timestamp) {
       return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
     },
+    /**
+     * @description 点击关注
+     */
     onClickFollow() {
       this.axios
         .post(`/follow/${this.owner.username}`)
@@ -140,6 +182,9 @@ export default {
         })
         .catch(err => console.error(err.response.data));
     },
+    /**
+     * @description 取消关注
+     */
     onDiscardFollow() {
       this.axios
         .delete(`/follow/${this.owner.username}`)
@@ -150,9 +195,16 @@ export default {
         })
         .catch(err => console.error(err.response.data));
     },
+    /**
+     * @description 默认个性签名
+     * @return 默认个性签名
+     */
     showSignature(text) {
       return text ? text : "这位天龙人很懒，什么都没写呢";
     },
+    /**
+     * @description 路由跳转
+     */
     onEnterComposition(item) {
       this.$router.push({
         path: "/composition",
