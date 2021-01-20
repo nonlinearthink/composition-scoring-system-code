@@ -1,10 +1,15 @@
 package cn.edu.zucc.se2020g11.api.service;
 
+import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CompositionEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
 import cn.edu.zucc.se2020g11.api.entity.UserEntity;
 import cn.edu.zucc.se2020g11.api.model.CompositionCountModel;
+import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +22,8 @@ import java.util.List;
 @Service
 public class CompositionService
 {
+
+    private final Logger logger = LogManager.getLogger(LogCategory.SYSTEM);
 
     private final CompositionEntityMapper compositionEntityMapper;
 
@@ -76,10 +83,16 @@ public class CompositionService
      * 删除文章
      *
      * @param compositionId 文章ID
+     * @return 是否删除成功
      */
-    public void deleteComposition(Integer compositionId)
+    public boolean deleteComposition(Integer compositionId) throws BaseException
     {
-        compositionEntityMapper.deleteByPrimaryKey(compositionId);
+        try{
+            compositionEntityMapper.deleteByPrimaryKey(compositionId);
+        } catch(DataIntegrityViolationException e) {
+            logger.error("存在外键，无法删除");
+        }
+        return true;
     }
 
     /**

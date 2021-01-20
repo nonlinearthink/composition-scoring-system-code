@@ -1,6 +1,7 @@
 package cn.edu.zucc.se2020g11.api.service;
 
 import cn.edu.zucc.se2020g11.api.entity.CompositionEntity;
+import cn.edu.zucc.se2020g11.api.entity.FavoriteEntity;
 import cn.edu.zucc.se2020g11.api.entity.FollowEntity;
 import cn.edu.zucc.se2020g11.api.entity.SupportEntity;
 import cn.edu.zucc.se2020g11.api.model.SupportViewModel;
@@ -90,12 +91,21 @@ class SupportServiceTest
     @Test
     void deleteSupport()
     {
+        // 正常取消点赞
         SupportEntity supportEntity = new SupportEntity();
         supportEntity.setUsername("unit");
         supportEntity.setCompositionId(336);
 
         int num = supportService.deleteSupport(supportEntity);
         assertThat(num).isGreaterThan(0);
+
+        // 未点赞取消点赞
+        supportEntity = new SupportEntity();
+        supportEntity.setUsername("unit");
+        supportEntity.setCompositionId(336);
+
+        SupportEntity finalSupportEntity = supportEntity;
+        assertThatExceptionOfType(BaseException.class).isThrownBy(() -> supportService.deleteSupport(finalSupportEntity));
     }
 
     @Test

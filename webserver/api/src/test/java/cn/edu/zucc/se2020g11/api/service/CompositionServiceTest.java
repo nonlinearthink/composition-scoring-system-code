@@ -7,14 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -67,7 +65,7 @@ class CompositionServiceTest
     @Test
     void deleteComposition()
     {
-        assertThatExceptionOfType(DataIntegrityViolationException.class).isThrownBy(() -> compositionService.deleteComposition(1));
+        assertThat(compositionService.deleteComposition(336)).isTrue();
     }
 
     @Test

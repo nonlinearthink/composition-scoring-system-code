@@ -39,6 +39,7 @@ public class PermissionService
      *
      * @param username 用户名
      * @param compositionId 文章ID
+     * @return 是否认证成功
      */
     public boolean validateComposition(String username, Integer compositionId) throws BaseException
     {
@@ -54,6 +55,7 @@ public class PermissionService
      *
      * @param username 用户名
      * @param commentId 评论ID
+     * @return 是否认证成功
      */
     public boolean validateComment(String username, Integer commentId) throws BaseException
     {
