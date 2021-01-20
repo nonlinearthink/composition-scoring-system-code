@@ -55,6 +55,12 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
     {
         //指向外部目录
         registry.addResourceHandler("img//**").addResourceLocations("file:"+storePath+imagePath);
+        registry.addResourceHandler("/**").addResourceLocations(
+                "classpath:/static/");
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
+                "classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations(
+                "classpath:/META-INF/resources/webjars/");
         super.addResourceHandlers(registry);
     }
 }
