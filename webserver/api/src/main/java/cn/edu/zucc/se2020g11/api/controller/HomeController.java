@@ -90,20 +90,6 @@ public class HomeController
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PostMapping("/search/{nickname}")
-    @ApiOperation(value = "模糊查询昵称")
-    @ApiImplicitParam(paramType = "path", name = "nickname", value = "昵称", required = true, dataType =
-            "String")
-    public ResponseEntity<ApiResult<Map<String, Object>>> selectUserByNickname(@PathVariable String nickname) {
-        List<String> usernameList = homeService.selectUserByNickname(nickname);
-        ApiResult<Map<String, Object>> result = new ApiResult<>();
-        result.setMsg("获取成功");
-        Map<String, Object> data = new HashMap<>(1);
-        data.put("usernameList", usernameList);
-        result.setData(data);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
     @LoginRequired(type = UserType.USER)
     @PostMapping("/search/detail/{nickname}")
     @ApiOperation(value = "模糊查询详细用户")

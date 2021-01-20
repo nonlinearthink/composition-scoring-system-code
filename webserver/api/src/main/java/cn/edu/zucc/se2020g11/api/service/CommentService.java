@@ -1,11 +1,8 @@
 package cn.edu.zucc.se2020g11.api.service;
 
-import cn.edu.zucc.se2020g11.api.constant.ErrorDictionary;
-import cn.edu.zucc.se2020g11.api.constant.LogCategory;
 import cn.edu.zucc.se2020g11.api.dao.CommentEntityMapper;
 import cn.edu.zucc.se2020g11.api.entity.CommentEntity;
 import cn.edu.zucc.se2020g11.api.model.CommentViewModel;
-import cn.edu.zucc.se2020g11.api.util.exception.BaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,23 +84,24 @@ public class CommentService
      * 删除评论
      *
      * @param commentId 评论ID
+     * @return 是否删除成功
      */
-    public void deleteComment(Integer commentId)
+    public boolean deleteComment(Integer commentId)
     {
-        int num = commentEntityMapper.deleteByPrimaryKey(commentId);
-        if(num == 0){
-            throw new BaseException(ErrorDictionary.NO_SUPPORT, LogCategory.BUSINESS);
-        }
+        commentEntityMapper.deleteByPrimaryKey(commentId);
+        return true;
     }
 
     /**
      * 删除指定文章评论
      *
      * @param compositionId 文章ID
+     * @return 是否删除成功
      */
-    public void deleteCommentByCompositionId(Integer compositionId)
+    public boolean deleteCommentByCompositionId(Integer compositionId)
     {
         commentEntityMapper.deleteByCompositionId(compositionId);
+        return true;
     }
 
     /**

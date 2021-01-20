@@ -35,12 +35,13 @@ public class FavoriteService
     /**
      * 添加收藏
      *
-     * @param favoriteEntity 错误实体
+     * @param favoriteEntity 收藏实体
      * @return 收藏ID
      */
     public int addFavorite(FavoriteEntity favoriteEntity)
     {
         if(favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity).size() > 0){
+            // 重复收藏
             throw new BaseException(ErrorDictionary.REPEAT_FAVORITE, LogCategory.BUSINESS);
         }
         favoriteEntityMapper.insert(favoriteEntity);
@@ -99,6 +100,7 @@ public class FavoriteService
     {
         int num = favoriteEntityMapper.deleteByUsernameAndCompositionId(favoriteEntity);
         if(num == 0){
+            // 未收藏
             throw new BaseException(ErrorDictionary.NO_FAVORITE, LogCategory.BUSINESS);
         }
         return num;

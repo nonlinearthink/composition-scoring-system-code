@@ -52,7 +52,7 @@ class CommentServiceTest
     @Test
     void selectCommentView()
     {
-        List<CommentViewModel> commentViewModelList =  commentService.selectCommentView("test");
+        List<CommentViewModel> commentViewModelList =  commentService.selectCommentView("unit");
 
         assertThat(commentViewModelList).isNotEmpty()
                 .hasOnlyElementsOfType(CommentViewModel.class);
@@ -74,12 +74,16 @@ class CommentServiceTest
     void deleteComment()
     {
         assertThatExceptionOfType(DataIntegrityViolationException.class).isThrownBy(() -> commentService.deleteComment(1));
+
+        assertThat(commentService.deleteComment(80)).isTrue();
     }
 
     @Test
     void deleteCommentByCompositionId()
     {
         assertThatExceptionOfType(DataIntegrityViolationException.class).isThrownBy(() -> commentService.deleteCommentByCompositionId(1));
+
+        assertThat(commentService.deleteCommentByCompositionId(336)).isTrue();
     }
 
     @Test

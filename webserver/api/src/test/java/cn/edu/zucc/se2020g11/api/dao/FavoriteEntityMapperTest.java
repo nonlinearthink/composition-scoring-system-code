@@ -22,21 +22,21 @@ class FavoriteEntityMapperTest
     void deleteByUsernameAndCompositionId()
     {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        favoriteEntity.setUsername("test");
-        favoriteEntity.setCompositionId(1);
+        favoriteEntity.setUsername("unit");
+        favoriteEntity.setCompositionId(336);
         assertThat(favoriteEntityMapper.deleteByUsernameAndCompositionId(favoriteEntity)).isGreaterThan(0);
     }
 
     @Test
     void deleteByCompositionId()
     {
-        assertThat(favoriteEntityMapper.deleteByCompositionId(1)).isGreaterThan(0);
+        assertThat(favoriteEntityMapper.deleteByCompositionId(336)).isGreaterThan(0);
     }
 
     @Test
     void selectAllSelective()
     {
-        assertThat(favoriteEntityMapper.selectAllSelective("test")).isNotEmpty()
+        assertThat(favoriteEntityMapper.selectAllSelective("unit")).isNotEmpty()
                 .hasOnlyElementsOfType(FavoriteEntity.class);
     }
 
@@ -44,8 +44,8 @@ class FavoriteEntityMapperTest
     void selectByUsernameAndCompositionId()
     {
         FavoriteEntity favoriteEntity = new FavoriteEntity();
-        favoriteEntity.setUsername("test");
-        favoriteEntity.setCompositionId(1);
+        favoriteEntity.setUsername("unit");
+        favoriteEntity.setCompositionId(336);
         assertThat(favoriteEntityMapper.selectByUsernameAndCompositionId(favoriteEntity)).isNotEmpty()
                 .hasOnlyElementsOfType(FavoriteEntity.class);
     }

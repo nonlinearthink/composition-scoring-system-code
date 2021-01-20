@@ -1,9 +1,6 @@
 package cn.edu.zucc.se2020g11.api.service;
 
-import cn.edu.zucc.se2020g11.api.model.ArticleModel;
-import cn.edu.zucc.se2020g11.api.model.FollowCardModel;
-import cn.edu.zucc.se2020g11.api.model.HotCardModel;
-import cn.edu.zucc.se2020g11.api.model.NewCardModel;
+import cn.edu.zucc.se2020g11.api.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +56,15 @@ class HomeServiceTest
 
         assertThat(hotCardModelList).isNotEmpty()
                 .hasOnlyElementsOfType(HotCardModel.class);
+    }
+
+    @Test
+    void selectUserView()
+    {
+        List<UsernameCardModel> usernameCardModelList = homeService.selectUserView("u");
+
+        assertThat(usernameCardModelList).isNotEmpty()
+                .hasOnlyElementsOfType(UsernameCardModel.class);
     }
 
 }

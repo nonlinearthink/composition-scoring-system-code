@@ -22,22 +22,22 @@ class CommentEntityMapperTest
     @Test
     void deleteByCompositionId()
     {
-        assertThat(commentEntityMapper.deleteByCompositionId(3)).isGreaterThan(0);
+        assertThat(commentEntityMapper.deleteByCompositionId(336)).isGreaterThan(0);
     }
 
     @Test
     void updateByStatus()
     {
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setCommentId(1);
-        commentEntity.setStatus(0);
+        commentEntity.setCommentId(80);
+        commentEntity.setStatus(1);
         assertThat(commentEntityMapper.updateByStatus(commentEntity)).isGreaterThan(0);
     }
 
     @Test
     void selectAllSelective()
     {
-        assertThat(commentEntityMapper.selectAllSelective(1)).isNotEmpty()
+        assertThat(commentEntityMapper.selectAllSelective(336)).isNotEmpty()
                 .hasOnlyElementsOfType(CommentEntity.class);
     }
 
@@ -57,7 +57,7 @@ class CommentEntityMapperTest
     @Test
     void selectCommentView()
     {
-        assertThat(commentEntityMapper.selectCommentView("test")).isNotEmpty()
+        assertThat(commentEntityMapper.selectCommentView("unit")).isNotEmpty()
                 .hasOnlyElementsOfType(CommentViewModel.class);
     }
 }
